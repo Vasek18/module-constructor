@@ -12,3 +12,17 @@
 */
 
 Route::get('/', "HomeController@index");
+
+Route::get('/personal/reg', 'Auth\AuthController@index');
+Route::get('/personal/auth', 'Auth\AuthController@index');
+
+
+Route::get('example/register', 'Auth\AuthController@getRegister');
+Route::post('example/register', 'Auth\AuthController@postRegister');
+Route::get('example/login', 'Auth\AuthController@getLogin');
+Route::post('example/login', 'Auth\AuthController@postLogin');
+Route::get('example/logout', 'Auth\AuthController@getLogout');
+Route::get('example/email', 'Auth\PasswordController@getEmail');
+Route::post('example/email', 'Auth\PasswordController@postEmail');
+Route::get('example/reset/{code}', 'Auth\PasswordController@getReset');
+Route::post('example/reset', 'Auth\PasswordController@postReset');

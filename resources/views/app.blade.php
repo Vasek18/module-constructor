@@ -30,8 +30,13 @@
 
             <div class="collapse navbar-collapse" id="top-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#">Авторизация</a></li>
-                    <li><a href="#">Регистрация</a></li>
+                    @if (Auth::guest())
+                        <li><a href="/personal/auth/">Авторизация</a></li>
+                        <li><a href="/personal/reg/">Регистрация</a></li>
+                    @else
+                        <li><a href="#">Личный кабинет</a></li>
+                        <li><a href="{{ action('Auth\AuthController@getLogout') }}">Выйти</a></li>
+                    @endif
                 </ul>
             </div>
         </div>
