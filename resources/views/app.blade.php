@@ -32,7 +32,7 @@
 
                 <div class="collapse navbar-collapse" id="top-navbar-collapse-1">
                     <ul class="nav navbar-nav navbar-right">
-                        @if (Auth::guest())
+                        @if (!Auth::check())
                             <li><a href="/personal/auth/">Авторизация</a></li>
                             <li><a href="/personal/reg/">Регистрация</a></li>
                         @else

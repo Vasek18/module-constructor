@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
@@ -11,6 +12,7 @@ use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\Registrar;
 
 class AuthController extends Controller{
+	protected $redirectTo = '/';
 	/*
 	|--------------------------------------------------------------------------
 	| Registration & Login Controller
@@ -42,6 +44,9 @@ class AuthController extends Controller{
 		return view("auth.auth");
 	}
 
+	public function index_reg(){
+		return view("auth.register");
+	}
 	/**
 	 * Get a validator for an incoming registration request.
 	 *
@@ -50,7 +55,7 @@ class AuthController extends Controller{
 	 */
 	protected function validator(array $data){
 		return Validator::make($data, [
-			'name'     => 'required|max:255',
+			'first_name'     => 'required|max:255',
 			'email'    => 'required|email|max:255|unique:users',
 			'password' => 'required|confirmed|min:6',
 		]);
@@ -64,13 +69,13 @@ class AuthController extends Controller{
 	 */
 	protected function create(array $data){
 		return User::create([
-			'name'     => $data['name'],
+			'name'     => $data['first_name'],
 			'email'    => $data['email'],
 			'password' => bcrypt($data['password']),
 		]);
 	}
 
-	public function postLogin(){
-
+	public function postLogin(Guard $auth){
+		//dd($auth);
 	}
 }
