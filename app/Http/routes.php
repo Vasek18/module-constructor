@@ -13,18 +13,25 @@
 
 Route::get('/', "HomeController@index");
 
+// Страница авторизации регистрации
 Route::get('/personal/auth', 'Auth\AuthController@index');
 Route::get('/personal/reg', 'Auth\AuthController@index_reg');
 
-
+// Логин
+Route::get('personal/login', 'Auth\AuthController@getLogin');
 Route::post('personal/login', 'Auth\AuthController@postLogin');
 
-Route::get('example/login', 'Auth\AuthController@getLogin');
-Route::get('example/email', 'Auth\PasswordController@getEmail');
-Route::post('example/email', 'Auth\PasswordController@postEmail');
-Route::get('example/reset/{code}', 'Auth\PasswordController@getReset');
-Route::post('example/reset', 'Auth\PasswordController@postReset');
-
+// Регистрация
 Route::get('auth/register', 'Auth\AuthController@getRegister');
 Route::post('auth/register', 'Auth\AuthController@postRegister');
-Route::post('auth/logout', 'Auth\AuthController@getLogout');
+
+// выход
+Route::get('auth/logout', 'Auth\AuthController@getLogout');
+
+// Роуты запроса ссылки для сброса пароля
+Route::get('password/email', 'Auth\PasswordController@getEmail');
+Route::post('password/email', 'Auth\PasswordController@postEmail');
+
+// Роуты сброса пароля
+Route::get('password/reset/{token}', 'Auth\PasswordController@getReset');
+Route::post('password/reset', 'Auth\PasswordController@postReset');

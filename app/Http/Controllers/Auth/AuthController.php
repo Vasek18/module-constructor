@@ -12,7 +12,8 @@ use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\Registrar;
 
 class AuthController extends Controller{
-	protected $redirectTo = '/';
+	protected $redirectTo = '/'; // перенаправление в случае удачной регистрации
+	protected $loginPath = '/personal/auth/'; // перенаправление в случае неудачной регистрации
 	/*
 	|--------------------------------------------------------------------------
 	| Registration & Login Controller
@@ -73,9 +74,5 @@ class AuthController extends Controller{
 			'email'    => $data['email'],
 			'password' => bcrypt($data['password']),
 		]);
-	}
-
-	public function postLogin(Guard $auth){
-		//dd($auth);
 	}
 }
