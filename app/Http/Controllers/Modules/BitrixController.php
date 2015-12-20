@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Modules;
 
+use App\Models\Modules\Bitrix;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -40,11 +41,8 @@ class BitrixController extends Controller{
 	 * @return
 	 */
 	public function create(Request $request){
-		dd($request->all());
-		// todo вынести в модуль
-		//DB::table('bitrixes')->insert(
-		//	array('email' => 'john@example.com', 'votes' => 0)
-		//);
+		//dd($request->all());
+		Bitrix::create($request->all());
 
 		return redirect($this->rootFolder);
 	}
