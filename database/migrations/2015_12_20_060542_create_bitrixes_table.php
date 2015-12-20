@@ -14,13 +14,13 @@ class CreateBitrixesTable extends Migration{
 	public function up(){
 		Schema::create('bitrixes', function (Blueprint $table){
 			$table->increments('id');
-			$table->string('name');
-			$table->text('description')->nullable();
-			$table->string('partner_name');
-			$table->string('partner_uri');
-			$table->string('partner_code')->nullable();
+			$table->string('MODULE_NAME');
+			$table->text('MODULE_DESCRIPTION')->nullable();
+			$table->string('MODULE_CODE');
+			$table->string('PARTNER_NAME');
+			$table->string('PARTNER_URI');
+			$table->string('PARTNER_CODE')->nullable();
 			$table->integer('user_id');
-			$table->timestamp('published_at')->nullable(); // мб лишнее
 			$table->timestamps();
 		});
 	}

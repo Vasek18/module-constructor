@@ -42,7 +42,9 @@ class BitrixController extends Controller{
 	 */
 	public function create(Request $request){
 		//dd($request->all());
-		Bitrix::create($request->all());
+
+		// создание записи в бд и шаблона
+		Bitrix::store($request);
 
 		return redirect($this->rootFolder);
 	}
