@@ -35,3 +35,6 @@ Route::post('password/email', 'Auth\PasswordController@postEmail');
 // Роуты сброса пароля
 Route::get('password/reset/{token}', 'Auth\PasswordController@getReset');
 Route::post('password/reset', 'Auth\PasswordController@postReset');
+
+// Битрикс
+Route::get('construct/bitrix', 'Modules\BitrixController@index');
