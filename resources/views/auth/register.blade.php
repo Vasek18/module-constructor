@@ -43,6 +43,20 @@
                             </div>
 
                             <div class="form-group">
+                                <label class="col-md-4 control-label">Название компании</label>
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" name="company_name" value="{{ old('company_name') }}">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Сайт компании</label>
+                                <div class="col-md-6">
+                                    <input type="url" class="form-control" name="site" value="{{ old('site') }}">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
                                 <label class="col-md-4 control-label">Пароль</label>
                                 <div class="col-md-6">
                                     <input type="password" class="form-control" name="password">
