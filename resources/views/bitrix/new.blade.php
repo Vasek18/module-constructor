@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Создание модуля для Битрикс</div>
+                    <div class="panel-heading">Создание модуля для Битрикс - шаг 1</div>
                     <div class="panel-body">
                         @if (count($errors) > 0)
                             <div class="alert alert-danger">
@@ -61,7 +61,7 @@
                                 <label class="col-md-4 control-label">Описание модуля</label>
                                 <div class="col-md-6">
                                     <textarea name="MODULE_DESCRIPTION" class="form-control" aria-describedby="MODULE_DESCRIPTION_help"></textarea>
-                                    <span class="help-block" id="MODULE_DESCRIPTION_help">Это описание будет показываться только в админке у пакупателей в списках установленных модулей. Не обязательно</span>
+                                    <span class="help-block" id="MODULE_DESCRIPTION_help">Это описание будет показываться только в админке у покупателей в списках установленных модулей. Не обязательно</span>
                                 </div>
                             </div>
 
@@ -70,7 +70,7 @@
                                 <div class="col-md-6">
                                     <input type="text" class="form-control" name="MODULE_CODE"
                                            value="" required pattern="[a-z]+" aria-describedby="MODULE_CODE_help">
-                                    <span class="help-block" id="MODULE_CODE_help">Идентификатор модуля на сатйе Битрикса и в админках покупателей. Учавствует в названии модуля {Код партнёра}.{Код модуля}.<br>Только маленькие латинские буквы</span>
+                                    <span class="help-block" id="MODULE_CODE_help">Идентификатор модуля на сайте Битрикса и в админках покупателей. Учавствует в названии модуля {Код партнёра}.{Код модуля}.<br>Только маленькие латинские буквы</span>
                                 </div>
                             </div>
 
@@ -82,6 +82,10 @@
                                 </div>
                             </div>
                         </form>
+                        <div class="step-description">
+                            <h2>Описание шага</h2>
+                            <p>На этом шаге создаётся простейший модуль для Битрикса. По сути это всего лишь шаблон модуля, с заполненными основными полями, поскольку в нём отсутствует какой-либо полезный функционал. Уже на данном этапе модуль можно устанавливать и удалять; всю полезную нагрузку можно будет создать в последующих шагах.</p>
+                        </div>
                     </div>
                 </div>
             </div>
