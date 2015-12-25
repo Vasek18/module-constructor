@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Modules;
 
+use App\Models\User;
+use Auth;
 use App\Models\Modules\Bitrix;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -32,7 +34,8 @@ class BitrixController extends Controller{
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index(){
-		return view("bitrix.new");
+		$user = Auth::user();
+		return view("bitrix.new", compact('user')); // передаём данные из таблицы пользователей, чтобы подставлять их в формы
 	}
 
 	/**
