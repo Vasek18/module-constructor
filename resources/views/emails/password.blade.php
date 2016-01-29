@@ -1,1 +1,1 @@
-Перейдите по ссылке, чтобы восстановить пароль: {{ url(action('Auth\PasswordController@getReset').'/'.$token) }}
+Перейдите по ссылке, чтобы восстановить пароль: {{ url('password/reset/'.$token) }}
