@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Auth;
 use App\Models\User;
+use Carbon\Carbon;
 
 class Bitrix extends Model{
 	//
@@ -51,5 +52,10 @@ class Bitrix extends Model{
 		}
 		$user->save();
 
+	}
+
+	// форматирование вида даты
+	public function getUpdatedAtAttribute($date){
+		return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('Y-m-d');
 	}
 }

@@ -17,7 +17,7 @@ class PersonalController extends Controller{
 	 */
 	public function index(){
 		$user_id = Auth::user()->id; // todo имхо id можно и меньше кровью получить
-		// получаем все модули юзера // todo только этого юзера
+		// получаем все модули юзера
 		$data = [
 			'bitrix_modules' => Bitrix::where("user_id", $user_id)->orderBy('created_at', 'desc')->get()
 		];
