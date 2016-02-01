@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Models\Modules\Bitrix;
 
 class PersonalController extends Controller{
 	/**
@@ -14,7 +15,11 @@ class PersonalController extends Controller{
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index(){
-		return view("personal.index");
+		// получаем все модули юзера // todo только этого юзера
+		$data = [
+			'modules' => Bitrix::latest()->get()
+		];
+		return view("personal.index", $data);
 	}
 
 	/**
