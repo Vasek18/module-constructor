@@ -12,10 +12,10 @@
                     <div class="panel-body">
                         <p> {{$module->MODULE_DESCRIPTION}} </p>
                         <div class="actions pull-right">
-                            <a href="#" class="btn btn-sm btn-primary">
+                            <a href="{{ action('Modules\BitrixController@detail', $module->id) }}" class="btn btn-sm btn-primary">
                                 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                             </a>
-                            <a href="#" class="btn btn-sm btn-danger">
+                            <a href="{{ action('Modules\BitrixController@delete', $module->id) }}" class="btn btn-sm btn-danger">
                                 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                             </a>
                         </div>

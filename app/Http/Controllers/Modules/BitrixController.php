@@ -54,9 +54,9 @@ class BitrixController extends Controller{
 		]);
 
 		// создание записи в бд и шаблона
-		Bitrix::store($request);
+		$id = Bitrix::store($request);
 
-		return redirect($this->rootFolder);
+		return redirect(action('Modules\BitrixController@detail', $id));
 	}
 
 
@@ -65,4 +65,14 @@ class BitrixController extends Controller{
 	//		'MODULE_CODE'     => 'required|max:255|unique:bitrixes',
 	//	]);
 	//}
+
+	// детальная страница модуля
+	public function detail($id){
+		// todo проверка на авторство модуля
+		$data = [
+			'module' => Bitrix::find($id)
+		];
+		//dd(Bitrix::where("id", $id)->get());
+		return view("bitrix.detail", $data);
+	}
 }

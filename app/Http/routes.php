@@ -42,3 +42,5 @@ Route::get('/personal', 'PersonalController@index');
 // Битрикс
 Route::get('construct/bitrix', 'Modules\BitrixController@index'); // показ страницы создания
 Route::post('construct/bitrix/create', 'Modules\BitrixController@create'); // сабмит формы создания // создание модуля
+Route::get('my-modules/bitrix/{id}', 'Modules\BitrixController@detail'); // детальная страница модуля
+Route::get('my-modules/bitrix/{id}/delete', 'Modules\BitrixController@delete'); // детальная страница модуля
