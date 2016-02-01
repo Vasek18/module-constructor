@@ -36,7 +36,7 @@
                             <li><a href="/personal/auth/">Авторизация</a></li>
                             <li><a href="/personal/reg/">Регистрация</a></li>
                         @else
-                            <li><a href="#">Личный кабинет</a></li>
+                            <li><a href="{{ action('PersonalController@index') }}">Личный кабинет</a></li>
                             <li><a href="{{ action('Auth\AuthController@getLogout') }}">Выйти</a></li>
                         @endif
                     </ul>

@@ -36,6 +36,9 @@ Route::post('password/email', 'Auth\PasswordController@postEmail');
 Route::get('password/reset/{token}', 'Auth\PasswordController@getReset');
 Route::post('password/reset', 'Auth\PasswordController@postReset');
 
+// Личный кабинет
+Route::get('/personal', 'PersonalController@index');
+
 // Битрикс
 Route::get('construct/bitrix', 'Modules\BitrixController@index'); // показ страницы создания
 Route::post('construct/bitrix/create', 'Modules\BitrixController@create'); // сабмит формы создания // создание модуля
