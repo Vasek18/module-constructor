@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Modules\Bitrix;
+use Auth;
 
 class PersonalController extends Controller{
 	/**
@@ -15,10 +16,12 @@ class PersonalController extends Controller{
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index(){
+		$user_id = Auth::user()->id; // todo имхо id можно и меньше кровью получить
 		// получаем все модули юзера // todo только этого юзера
 		$data = [
-			'modules' => Bitrix::latest()->get()
+			'bitrix_modules' => Bitrix::where("user_id", $user_id)->orderBy('created_at', 'desc')->get()
 		];
+
 		return view("personal.index", $data);
 	}
 
