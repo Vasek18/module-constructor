@@ -24,13 +24,13 @@ Class {MODULE_CLASS_NAME} extends CModule{
 	}
 
 	function InstallDB($arParams = array()){
-		RegisterModuleDependences('main', 'OnBuildGlobalMenu', self::MODULE_ID, '{INCLUDE_CLASS_NAME}', 'OnBuildGlobalMenu');
+		//RegisterModuleDependences('main', 'OnBuildGlobalMenu', self::MODULE_ID, '{INCLUDE_CLASS_NAME}', 'OnBuildGlobalMenu');
 
 		return true;
 	}
 
 	function UnInstallDB($arParams = array()){
-		UnRegisterModuleDependences('main', 'OnBuildGlobalMenu', self::MODULE_ID, '{INCLUDE_CLASS_NAME}', 'OnBuildGlobalMenu');
+		//UnRegisterModuleDependences('main', 'OnBuildGlobalMenu', self::MODULE_ID, '{INCLUDE_CLASS_NAME}', 'OnBuildGlobalMenu');
 
 		return true;
 	}

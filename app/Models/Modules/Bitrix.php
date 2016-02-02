@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Auth;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class Bitrix extends Model{
 	//
@@ -22,6 +23,8 @@ class Bitrix extends Model{
 	protected $fillable = ['MODULE_NAME', 'MODULE_DESCRIPTION', 'MODULE_CODE', 'PARTNER_NAME', 'PARTNER_URI', 'PARTNER_CODE'];
 
 	// создание модуля (записывание в бд)
+	// todo валидация данных
+	// todo проверять на уникальность пару код партнёра / код модуля
 	public static function store(Request $request){
 		$user_id = Auth::user()->id; // todo имхо id можно и меньше кровью получить
 
@@ -40,11 +43,23 @@ class Bitrix extends Model{
 		}
 		$user->save();
 
-		// создание файлов модуля на серваке
+		// создание файлов модуля пользователя на серваке
+		// берём индексный файл
+		$installIndexFilePath = 'bitrix/install/index.php';
+		$installIndexFile = Storage::disk('modules_templates')->get($installIndexFilePath);
+
+		// воссоздаём начальную структуру
+		$myModuleFolder = $request->PARTNER_CODE.".".$request->MODULE_CODE; // todo так можно скачать модуль, зная всего два эти параметра, а они открытые
+		Storage::disk('user_modules')->makeDirectory($myModuleFolder."/install");
+		// подставляем значения в шаблон
+		$template_search = ['{MODULE_CLASS_NAME}', '{MODULE_ID}'];
+		$template_replace= [$request->PARTNER_CODE."_".$request->MODULE_CODE, $request->PARTNER_CODE.".".$request->MODULE_CODE];
+		$installIndexFile = str_replace($template_search, $template_replace, $installIndexFile);
+		//dd($installIndexFile);
+		// кладём в пользовательский модуль файл-точку_входа_установки
+		Storage::disk('user_modules')->put($myModuleFolder."/install/index.php", $installIndexFile);
 
 		// запись в БД
-		// todo валидация данных
-		// todo наверное надо проверять на уникальность пару код партнёра / код модуля
 		$bitrix->MODULE_NAME = $request->MODULE_NAME;
 		$bitrix->MODULE_DESCRIPTION = $request->MODULE_DESCRIPTION;
 		$bitrix->MODULE_CODE = $request->MODULE_CODE;
@@ -52,6 +67,7 @@ class Bitrix extends Model{
 		$bitrix->PARTNER_URI = $request->PARTNER_URI;
 		$bitrix->PARTNER_CODE = $request->PARTNER_CODE;
 		$bitrix->user_id = $user_id;
+		$bitrix->link = $myModuleFolder;
 		if ($bitrix->save()){
 			return $bitrix->id;
 		}
