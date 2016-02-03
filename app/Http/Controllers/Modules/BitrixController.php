@@ -35,6 +35,7 @@ class BitrixController extends Controller{
 	 */
 	public function index(){
 		$user = Auth::user();
+
 		return view("bitrix.new", compact('user')); // передаём данные из таблицы пользователей, чтобы подставлять их в формы
 	}
 
@@ -49,8 +50,8 @@ class BitrixController extends Controller{
 		// валидация
 		// todo нет смысла повторять валидацию с условий в html5, тут надо проверять что как в базе и не пропускать атаки из скриптов
 		$this->validate($request, [
-			'PARTNER_NAME'     => 'required|max:255', // exists:table,column
-			'MODULE_CODE'     => 'required|max:255',
+			'PARTNER_NAME' => 'required|max:255', // exists:table,column
+			'MODULE_CODE'  => 'required|max:255',
 		]);
 
 		// создание записи в бд и шаблона
@@ -72,15 +73,16 @@ class BitrixController extends Controller{
 		$data = [
 			'module' => Bitrix::find($id)
 		];
+
 		//dd(Bitrix::where("id", $id)->get());
 		return view("bitrix.detail", $data);
 	}
 
+	// кнопка скачивания зип архива
 	public function download_zip($id){
-		// todo проверка на авторство модуля
-		$data = [
-			'module' => Bitrix::find($id)
-		];
-
+		if ($pathToZip = Bitrix::generateZip($id)){
+			return response()->download($pathToZip)->deleteFileAfterSend(true);
+		}
+		return redirect(action('Modules\BitrixController@detail', $id));
 	}
 }

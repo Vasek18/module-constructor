@@ -8,6 +8,10 @@ use Auth;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
+use ZipArchive;
+use RecursiveIteratorIterator;
+use RecursiveDirectoryIterator;
+use Chumper\Zipper\Zipper;
 
 class Bitrix extends Model{
 	//
@@ -53,7 +57,7 @@ class Bitrix extends Model{
 		Storage::disk('user_modules')->makeDirectory($myModuleFolder."/install");
 		// подставляем значения в шаблон
 		$template_search = ['{MODULE_CLASS_NAME}', '{MODULE_ID}'];
-		$template_replace= [$request->PARTNER_CODE."_".$request->MODULE_CODE, $request->PARTNER_CODE.".".$request->MODULE_CODE];
+		$template_replace = [$request->PARTNER_CODE."_".$request->MODULE_CODE, $request->PARTNER_CODE.".".$request->MODULE_CODE];
 		$installIndexFile = str_replace($template_search, $template_replace, $installIndexFile);
 		//dd($installIndexFile);
 		// кладём в пользовательский модуль файл-точку_входа_установки
@@ -76,5 +80,18 @@ class Bitrix extends Model{
 	// форматирование вида даты
 	public function getUpdatedAtAttribute($date){
 		return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('Y-m-d');
+	}
+
+	// создаёт архив модуля для скачивания
+	// todo проверки на успех
+	public static function generateZip($id){
+		$module = Bitrix::find($id);
+		$folder = $module->PARTNER_CODE.".".$module->MODULE_CODE;
+		$archiveName = $module->PARTNER_CODE."_".$module->MODULE_CODE.".zip";
+		$rootFolder = Storage::disk('user_modules')->getDriver()->getAdapter()->getPathPrefix();
+
+		$zipper = new \Chumper\Zipper\Zipper;
+		$zipper->make($archiveName)->add($rootFolder.$folder);
+		return $archiveName;
 	}
 }
