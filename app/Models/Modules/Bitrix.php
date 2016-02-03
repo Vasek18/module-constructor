@@ -67,7 +67,6 @@ class Bitrix extends Model{
 		$bitrix->PARTNER_URI = $request->PARTNER_URI;
 		$bitrix->PARTNER_CODE = $request->PARTNER_CODE;
 		$bitrix->user_id = $user_id;
-		$bitrix->link = $myModuleFolder;
 		if ($bitrix->save()){
 			return $bitrix->id;
 		}

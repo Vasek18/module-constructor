@@ -44,3 +44,4 @@ Route::get('construct/bitrix', 'Modules\BitrixController@index'); // показ 
 Route::post('construct/bitrix/create', 'Modules\BitrixController@create'); // сабмит формы создания // создание модуля
 Route::get('my-modules/bitrix/{id}', 'Modules\BitrixController@detail'); // детальная страница модуля
 Route::get('my-modules/bitrix/{id}/delete', 'Modules\BitrixController@delete'); // детальная страница модуля
+Route::get('my-modules/bitrix/{id}/download', 'Modules\BitrixController@download_zip'); // скачать архив

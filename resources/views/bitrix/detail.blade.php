@@ -10,6 +10,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Модуль {{$module->PARTNER_CODE}}.{{$module->MODULE_CODE}}</div>
                     <div class="panel-body">
+                        <a href="{{ action('Modules\BitrixController@download_zip', $module->id) }}">Скачать</a>
                     </div>
                 </div>
             </div>

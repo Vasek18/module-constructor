@@ -75,4 +75,12 @@ class BitrixController extends Controller{
 		//dd(Bitrix::where("id", $id)->get());
 		return view("bitrix.detail", $data);
 	}
+
+	public function download_zip($id){
+		// todo проверка на авторство модуля
+		$data = [
+			'module' => Bitrix::find($id)
+		];
+
+	}
 }
