@@ -68,7 +68,6 @@ class Bitrix extends Model{
 		Storage::disk('user_modules')->put($myModuleFolder."/install/index.php", $installIndexFile);
 		Storage::disk('user_modules')->put($myModuleFolder."/include.php", $includeFile);
 		Storage::disk('user_modules')->put($myModuleFolder."/install/version.php", $versionFile);
-
 		// .создание папки модуля пользователя на серваке
 
 		// запись в БД
