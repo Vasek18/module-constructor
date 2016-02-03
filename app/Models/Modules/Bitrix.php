@@ -24,7 +24,7 @@ class Bitrix extends Model{
 	protected $table = 'bitrixes';
 
 	// на случай, если я где-то буду использовать create, эти поля можно будет записывать
-	protected $fillable = ['MODULE_NAME', 'MODULE_DESCRIPTION', 'MODULE_CODE', 'PARTNER_NAME', 'PARTNER_URI', 'PARTNER_CODE', 'version'];
+	protected $fillable = ['MODULE_NAME', 'MODULE_DESCRIPTION', 'MODULE_CODE', 'PARTNER_NAME', 'PARTNER_URI', 'PARTNER_CODE'];
 
 	// создание модуля (записывание в бд)
 	// todo валидация данных
@@ -47,21 +47,29 @@ class Bitrix extends Model{
 		}
 		$user->save();
 
-		// создание файлов модуля пользователя на серваке
-		// берём индексный файл
-		$installIndexFilePath = 'bitrix/install/index.php';
-		$installIndexFile = Storage::disk('modules_templates')->get($installIndexFilePath);
-
+		// создание папки модуля пользователя на серваке
+		// берём файлы из шаблона
+		$installIndexFile = Storage::disk('modules_templates')->get('bitrix/install/index.php'); // файл-точка_входа_установки
+		$includeFile = Storage::disk('modules_templates')->get('bitrix/include.php'); // обязательный, но пока ненужный файл
+		$versionFile = Storage::disk('modules_templates')->get('bitrix/install/version.php');
+		$myModuleFolder = $request->PARTNER_CODE.".".$request->MODULE_CODE; // папка модуля // todo так можно скачать модуль, зная всего два эти параметра, а они открытые (Если вообще можно обращаться к этим папкам)
 		// воссоздаём начальную структуру
-		$myModuleFolder = $request->PARTNER_CODE.".".$request->MODULE_CODE; // todo так можно скачать модуль, зная всего два эти параметра, а они открытые
 		Storage::disk('user_modules')->makeDirectory($myModuleFolder."/install");
-		// подставляем значения в шаблон
+		// подставляем значения в шаблон индексного файла
 		$template_search = ['{MODULE_CLASS_NAME}', '{MODULE_ID}'];
 		$template_replace = [$request->PARTNER_CODE."_".$request->MODULE_CODE, $request->PARTNER_CODE.".".$request->MODULE_CODE];
 		$installIndexFile = str_replace($template_search, $template_replace, $installIndexFile);
-		//dd($installIndexFile);
-		// кладём в пользовательский модуль файл-точку_входа_установки
+		// подставляем значения в файл версии
+		$template_search = ['{VERSION}', '{DATE_TIME}'];
+		$template_replace = [$request->MODULE_VERSION, date('Y-m-d H:i:s')];
+		$versionFile = str_replace($template_search, $template_replace, $versionFile);
+
+		// кладём файлы в пользовательский модуль
 		Storage::disk('user_modules')->put($myModuleFolder."/install/index.php", $installIndexFile);
+		Storage::disk('user_modules')->put($myModuleFolder."/include.php", $includeFile);
+		Storage::disk('user_modules')->put($myModuleFolder."/install/version.php", $versionFile);
+
+		// .создание папки модуля пользователя на серваке
 
 		// запись в БД
 		$bitrix->MODULE_NAME = $request->MODULE_NAME;
