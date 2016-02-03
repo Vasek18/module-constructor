@@ -75,6 +75,15 @@
                             </div>
 
                             <div class="form-group">
+                                <label class="col-md-4 control-label">Версия модуля</label>
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" name="MODULE_VERSION"
+                                           value="0.0.1" required pattern="[0-9\.]+" aria-describedby="MODULE_VERSION_help">
+                                    <span class="help-block" id="MODULE_VERSION_help">Версия модуля.<br>3 цифры разделённые точками не ниже 0.0.1</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
                                 <div class="col-md-6 col-md-offset-4">
                                     <button type="submit" class="btn btn-primary">
                                         Создать модуль

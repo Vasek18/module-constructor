@@ -21,6 +21,7 @@ class CreateBitrixesTable extends Migration{
 			$table->string('PARTNER_URI');
 			$table->string('PARTNER_CODE')->nullable();
 			$table->integer('user_id');
+			$table->string('VERSION');
 			$table->timestamps();
 		});
 	}
