@@ -12,7 +12,7 @@ use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\Registrar;
 
 class AuthController extends Controller{
-	protected $redirectTo = '/'; // перенаправление в случае удачной регистрации
+	protected $redirectTo = '/personal/'; // перенаправление в случае удачной регистрации
 	protected $loginPath = '/personal/auth/'; // перенаправление в случае неудачной регистрации
 	/*
 	|--------------------------------------------------------------------------
