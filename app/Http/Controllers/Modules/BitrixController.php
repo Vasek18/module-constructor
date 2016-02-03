@@ -7,6 +7,7 @@ use Auth;
 use App\Models\Modules\Bitrix;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 
 class BitrixController extends Controller{
 	protected $rootFolder = '/construct/bitrix/'; // корневая папка модуля
@@ -79,10 +80,27 @@ class BitrixController extends Controller{
 	}
 
 	// кнопка скачивания зип архива
+	// todo проверка на владение модулем
 	public function download_zip($id){
 		if ($pathToZip = Bitrix::generateZip($id)){
 			return response()->download($pathToZip)->deleteFileAfterSend(true);
 		}
 		return redirect(action('Modules\BitrixController@detail', $id));
+	}
+
+	// удаление модуля
+	// todo проверка на владение модулем
+	// todo подтверждение удаления
+	public function delete($id){
+		if (!$id){
+			return false;
+		}
+		$module = Bitrix::find($id);
+		// удаляем папку
+		$myModuleFolder = $module->PARTNER_CODE.".".$module->MODULE_CODE;
+		Storage::disk('user_modules')->deleteDirectory($myModuleFolder);
+		// удаляем запись из БД
+		$module->delete();
+		return redirect(action("PersonalController@index"));
 	}
 }
