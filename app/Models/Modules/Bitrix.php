@@ -48,26 +48,37 @@ class Bitrix extends Model{
 		$user->save();
 
 		// создание папки модуля пользователя на серваке
+		$myModuleFolder = $request->PARTNER_CODE.".".$request->MODULE_CODE; // папка модуля // todo так можно скачать модуль, зная всего два эти параметра, а они открытые (Если вообще можно обращаться к этим папкам)
+		$LANG_KEY = strtoupper($request->PARTNER_CODE."_".$request->MODULE_CODE);
 		// берём файлы из шаблона
 		$installIndexFile = Storage::disk('modules_templates')->get('bitrix/install/index.php'); // файл-точка_входа_установки
 		$includeFile = Storage::disk('modules_templates')->get('bitrix/include.php'); // обязательный, но пока ненужный файл
 		$versionFile = Storage::disk('modules_templates')->get('bitrix/install/version.php');
-		$myModuleFolder = $request->PARTNER_CODE.".".$request->MODULE_CODE; // папка модуля // todo так можно скачать модуль, зная всего два эти параметра, а они открытые (Если вообще можно обращаться к этим папкам)
+		$indexLangFile = Storage::disk('modules_templates')->get('bitrix/lang/ru/install/index.php');
 		// воссоздаём начальную структуру
 		Storage::disk('user_modules')->makeDirectory($myModuleFolder."/install");
 		// подставляем значения в шаблон индексного файла
-		$template_search = ['{MODULE_CLASS_NAME}', '{MODULE_ID}'];
-		$template_replace = [$request->PARTNER_CODE."_".$request->MODULE_CODE, $request->PARTNER_CODE.".".$request->MODULE_CODE];
+		$template_search = ['{MODULE_CLASS_NAME}', '{MODULE_ID}', '{LANG_KEY}'];
+		$template_replace = [$request->PARTNER_CODE."_".$request->MODULE_CODE, $request->PARTNER_CODE.".".$request->MODULE_CODE, $LANG_KEY];
 		$installIndexFile = str_replace($template_search, $template_replace, $installIndexFile);
 		// подставляем значения в файл версии
 		$template_search = ['{VERSION}', '{DATE_TIME}'];
 		$template_replace = [$request->MODULE_VERSION, date('Y-m-d H:i:s')];
 		$versionFile = str_replace($template_search, $template_replace, $versionFile);
+		// работаем с лангами
+		// воссоздаём начальную структуру
+		Storage::disk('user_modules')->makeDirectory($myModuleFolder."/lang/ru/install");
+		// подставляем значения в шаблон индексного файла
+		$template_search = ['{LANG_KEY}', '{MODULE_NAME}', '{MODULE_DESCRIPTION}', '{PARTNER_NAME}', '{PARTNER_URI}'];
+		$template_replace = [$LANG_KEY, $request->MODULE_NAME, $request->MODULE_DESCRIPTION, $request->PARTNER_NAME, $request->PARTNER_URI];
+		$indexLangFile = str_replace($template_search, $template_replace, $indexLangFile);
+		// .работаем с лангами
 
 		// кладём файлы в пользовательский модуль
 		Storage::disk('user_modules')->put($myModuleFolder."/install/index.php", $installIndexFile);
 		Storage::disk('user_modules')->put($myModuleFolder."/include.php", $includeFile);
 		Storage::disk('user_modules')->put($myModuleFolder."/install/version.php", $versionFile);
+		Storage::disk('user_modules')->put($myModuleFolder."/lang/ru/install/index.php", $indexLangFile);
 		// .создание папки модуля пользователя на серваке
 
 		// запись в БД

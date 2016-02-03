@@ -16,11 +16,11 @@ Class {MODULE_CLASS_NAME} extends CModule{
 		include(dirname(__FILE__)."/version.php");
 		$this->MODULE_VERSION = $arModuleVersion["VERSION"];
 		$this->MODULE_VERSION_DATE = $arModuleVersion["VERSION_DATE"];
-		$this->MODULE_NAME = GetMessage("{MODULE_ID}_MODULE_NAME");
-		$this->MODULE_DESCRIPTION = GetMessage("{MODULE_ID}_MODULE_DESC");
+		$this->MODULE_NAME = GetMessage("{LANG_KEY}_MODULE_NAME");
+		$this->MODULE_DESCRIPTION = GetMessage("{LANG_KEY}_MODULE_DESC");
 
-		$this->PARTNER_NAME = GetMessage("{MODULE_ID}_PARTNER_NAME");
-		$this->PARTNER_URI = GetMessage("{MODULE_ID}_PARTNER_URI");
+		$this->PARTNER_NAME = GetMessage("{LANG_KEY}_PARTNER_NAME");
+		$this->PARTNER_URI = GetMessage("{LANG_KEY}_PARTNER_URI");
 	}
 
 	function InstallDB($arParams = array()){
