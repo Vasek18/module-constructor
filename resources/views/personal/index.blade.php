@@ -9,7 +9,7 @@
             <h3>Битрикс</h3>
             @foreach($bitrix_modules as $module)
                 <div class="panel panel-default">
-                    <div class="panel-heading">{{$module->PARTNER_CODE}}.{{$module->MODULE_NAME}}</div>
+                    <div class="panel-heading">Модуль "{{$module->MODULE_NAME}}" ({{$module->PARTNER_CODE}}.{{$module->MODULE_CODE}})</div>
                     <div class="panel-body">
                         <p> {{$module->MODULE_DESCRIPTION}} </p>
                         <div class="actions pull-right">
