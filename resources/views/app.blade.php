@@ -33,11 +33,11 @@
                 <div class="collapse navbar-collapse" id="top-navbar-collapse-1">
                     <ul class="nav navbar-nav navbar-right">
                         @if (!Auth::check())
-                            <li><a href="/personal/auth/">Авторизация</a></li>
-                            <li><a href="/personal/reg/">Регистрация</a></li>
+                            <li><a href="{{ route('auth') }}">Авторизация</a></li>
+                            <li><a href="{{ route('reg') }}">Регистрация</a></li>
                         @else
-                            <li><a href="{{ action('PersonalController@index') }}">Личный кабинет</a></li>
-                            <li><a href="{{ action('Auth\AuthController@getLogout') }}">Выйти</a></li>
+                            <li><a href="{{ route('personal') }}">Личный кабинет</a></li>
+                            <li><a href="{{ route('logout') }}">Выйти</a></li>
                         @endif
                     </ul>
                 </div>

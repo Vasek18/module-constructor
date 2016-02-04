@@ -14,8 +14,8 @@
 Route::get('/', "HomeController@index");
 
 // Страница авторизации регистрации
-Route::get('/personal/auth', 'Auth\AuthController@index');
-Route::get('/personal/reg', 'Auth\AuthController@index_reg');
+Route::get('/personal/auth', ['as' => 'auth', 'uses' => 'Auth\AuthController@index']);
+Route::get('/personal/reg', ['as' => 'reg', 'uses' => 'Auth\AuthController@index_reg']);
 
 // Логин
 Route::get('personal/login', 'Auth\AuthController@getLogin');
@@ -26,7 +26,7 @@ Route::get('auth/register', 'Auth\AuthController@getRegister');
 Route::post('auth/register', 'Auth\AuthController@postRegister');
 
 // выход
-Route::get('auth/logout', 'Auth\AuthController@getLogout');
+Route::get('auth/logout', ['as' => 'logout', 'uses' => 'Auth\AuthController@getLogout']);
 
 // Роуты запроса ссылки для сброса пароля
 Route::get('password/email', 'Auth\PasswordController@getEmail');
@@ -37,7 +37,8 @@ Route::get('password/reset/{token}', 'Auth\PasswordController@getReset');
 Route::post('password/reset', 'Auth\PasswordController@postReset');
 
 // Личный кабинет
-Route::get('/personal', 'PersonalController@index');
+Route::get('/personal', ['as' => 'personal', 'uses' => 'PersonalController@index']);
+
 
 // Битрикс
 Route::get('construct/bitrix', 'Modules\BitrixController@index'); // показ страницы создания
