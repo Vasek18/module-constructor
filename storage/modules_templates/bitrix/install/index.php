@@ -1,5 +1,7 @@
 <?
 use \Bitrix\Main\Localization\Loc;
+use \Bitrix\Main\Application;
+
 Loc::loadMessages(__FILE__);
 
 Class {MODULE_CLASS_NAME} extends CModule{
@@ -14,7 +16,7 @@ Class {MODULE_CLASS_NAME} extends CModule{
 
 	function __construct(){
 		$arModuleVersion = array();
-		include(dirname(__FILE__)."/version.php");
+		include(__DIR__."/version.php");
 		$this->MODULE_VERSION = $arModuleVersion["VERSION"];
 		$this->MODULE_VERSION_DATE = $arModuleVersion["VERSION_DATE"];
 		$this->MODULE_NAME = Loc::getMessage("{LANG_KEY}_MODULE_NAME");
@@ -25,14 +27,10 @@ Class {MODULE_CLASS_NAME} extends CModule{
 	}
 
 	function InstallDB($arParams = array()){
-		//RegisterModuleDependences('main', 'OnBuildGlobalMenu', self::MODULE_ID, '{INCLUDE_CLASS_NAME}', 'OnBuildGlobalMenu');
-
 		return true;
 	}
 
 	function UnInstallDB($arParams = array()){
-		//UnRegisterModuleDependences('main', 'OnBuildGlobalMenu', self::MODULE_ID, '{INCLUDE_CLASS_NAME}', 'OnBuildGlobalMenu');
-
 		return true;
 	}
 
@@ -102,18 +100,42 @@ Class {MODULE_CLASS_NAME} extends CModule{
 		return true;
 	}
 
+	public function isVersionD7(){
+		return CheckVersion(\Bitrix\Main\ModuleManager::getVersion('main'), '14.00.00');
+	}
+
 	function DoInstall(){
+
 		global $APPLICATION;
-		$this->InstallFiles();
-		$this->InstallDB();
-		RegisterModule(self::MODULE_ID);
+		if ($this->isVersionD7()){
+			\Bitrix\Main\ModuleManager::registerModule($this->MODULE_ID);
+
+			$this->InstallDB();
+			$this->InstallEvents();
+			$this->InstallFiles();
+		}else{
+			$APPLICATION->ThrowException(Loc::getMessage("{LANG_KEY}_INSTALL_ERROR_VERSION"));
+		}
+
+		//$APPLICATION->IncludeAdminFile(Loc::getMessage("{LANG_KEY}_INSTALL"), $this->GetPath()."/install/step.php");
 	}
 
 	function DoUninstall(){
+
 		global $APPLICATION;
-		UnRegisterModule(self::MODULE_ID);
-		$this->UnInstallDB();
+
+		$context = Application::getInstance()->getContext();
+		$request = $context->getRequest();
+
 		$this->UnInstallFiles();
+		$this->UnInstallEvents();
+
+		if ($request["savedata"] != "Y")
+			$this->UnInstallDB();
+
+		\Bitrix\Main\ModuleManager::unRegisterModule($this->MODULE_ID);
+
+		//$APPLICATION->IncludeAdminFile(Loc::getMessage("{LANG_KEY}_UNINSTALL"), $this->GetPath()."/install/unstep.php");
 	}
 }
 ?>

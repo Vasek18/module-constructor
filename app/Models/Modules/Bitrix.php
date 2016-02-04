@@ -29,10 +29,10 @@ class Bitrix extends Model{
 	// создание модуля (записывание в бд)
 	// todo валидация данных
 	public static function store(Request $request){
-		// проверка на уникальность пары код партнёра / код модуля
-		if (Bitrix::where('PARTNER_CODE', $request->PARTNER_CODE)->where('MODULE_CODE', $request->MODULE_CODE)->get()){
-			return false; // todo выброс ошибки
-		}
+		// проверка на уникальность пары код партнёра / код модуля // todo не работает
+		//if (Bitrix::where('PARTNER_CODE', $request->PARTNER_CODE)->where('MODULE_CODE', $request->MODULE_CODE)->get()){
+		//	return false; // todo выброс ошибки
+		//}
 
 
 		$user_id = Auth::user()->id;
@@ -62,7 +62,7 @@ class Bitrix extends Model{
 
 	// создание папки с модулем на серваке
 	// todo проверка защиты
-	public function createFolder(Request $request){
+	public static function createFolder(Request $request){
 		$myModuleFolder = $request->PARTNER_CODE.".".$request->MODULE_CODE; // папка модуля // todo так можно скачать модуль, зная всего два эти параметра, а они открытые (Если вообще можно обращаться к этим папкам)
 		$LANG_KEY = strtoupper($request->PARTNER_CODE."_".$request->MODULE_CODE);
 
@@ -102,7 +102,7 @@ class Bitrix extends Model{
 	}
 
 	// на будущее сохраняем какие-то поля в таблицу пользователя, если они не были указаны, но были указаны сейчас
-	private function completeUserProfile($user_id, Request $request){
+	static private function completeUserProfile($user_id, Request $request){
 		$user = User::find($user_id);
 		if (!$user->bitrix_partner_code){
 			$user->bitrix_partner_code = $request->PARTNER_CODE;
