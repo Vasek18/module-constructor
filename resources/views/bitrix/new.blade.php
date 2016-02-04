@@ -43,7 +43,7 @@
                                 <label class="col-md-4 control-label">Код партнёра</label>
                                 <div class="col-md-6">
                                     <input type="text" class="form-control" name="PARTNER_CODE"
-                                           value="{{ $user["bitrix_partner_code"] }}" required pattern="[a-z]+" aria-describedby="PARTNER_CODE_help">
+                                           value="{{ $user["bitrix_partner_code"] }}" required pattern="[a-z]+[a-z0-9]*" aria-describedby="PARTNER_CODE_help">
                                     <span class="help-block" id="PARTNER_CODE_help">Код партнёра, который указан у вас в личном кабинете партнёра на сайте Битрикса. Учавствует в названии модуля {Код партнёра}.{Код модуля}.<br>Только маленькие латинские буквы</span>
                                 </div>
                             </div>
@@ -69,7 +69,7 @@
                                 <label class="col-md-4 control-label">Код модуля</label>
                                 <div class="col-md-6">
                                     <input type="text" class="form-control" name="MODULE_CODE"
-                                           value="" required pattern="[a-z]+" aria-describedby="MODULE_CODE_help">
+                                           value="" required pattern="[a-z]+[a-z0-9]*" aria-describedby="MODULE_CODE_help">
                                     <span class="help-block" id="MODULE_CODE_help">Идентификатор модуля на сайте Битрикса и в админках покупателей. Учавствует в названии модуля {Код партнёра}.{Код модуля}.<br>Только маленькие латинские буквы</span>
                                 </div>
                             </div>
