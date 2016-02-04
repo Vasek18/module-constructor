@@ -1,5 +1,6 @@
 <?
-IncludeModuleLangFile(__FILE__);
+use \Bitrix\Main\Localization\Loc;
+Loc::loadMessages(__FILE__);
 
 Class {MODULE_CLASS_NAME} extends CModule{
 	const MODULE_ID = '{MODULE_ID}';
@@ -16,11 +17,11 @@ Class {MODULE_CLASS_NAME} extends CModule{
 		include(dirname(__FILE__)."/version.php");
 		$this->MODULE_VERSION = $arModuleVersion["VERSION"];
 		$this->MODULE_VERSION_DATE = $arModuleVersion["VERSION_DATE"];
-		$this->MODULE_NAME = GetMessage("{LANG_KEY}_MODULE_NAME");
-		$this->MODULE_DESCRIPTION = GetMessage("{LANG_KEY}_MODULE_DESC");
+		$this->MODULE_NAME = Loc::getMessage("{LANG_KEY}_MODULE_NAME");
+		$this->MODULE_DESCRIPTION = Loc::getMessage("{LANG_KEY}_MODULE_DESC");
 
-		$this->PARTNER_NAME = GetMessage("{LANG_KEY}_PARTNER_NAME");
-		$this->PARTNER_URI = GetMessage("{LANG_KEY}_PARTNER_URI");
+		$this->PARTNER_NAME = Loc::getMessage("{LANG_KEY}_PARTNER_NAME");
+		$this->PARTNER_URI = Loc::getMessage("{LANG_KEY}_PARTNER_URI");
 	}
 
 	function InstallDB($arParams = array()){
