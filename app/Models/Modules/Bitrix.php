@@ -45,6 +45,8 @@ class Bitrix extends Model{
 		// создание папки модуля пользователя на серваке
 		$bitrix::createFolder($request);
 
+		dd();
+
 		// запись в БД
 		$bitrix->MODULE_NAME = $request->MODULE_NAME;
 		$bitrix->MODULE_DESCRIPTION = $request->MODULE_DESCRIPTION;
@@ -64,41 +66,40 @@ class Bitrix extends Model{
 	// todo проверка защиты
 	public static function createFolder(Request $request){
 		$myModuleFolder = $request->PARTNER_CODE.".".$request->MODULE_CODE; // папка модуля // todo так можно скачать модуль, зная всего два эти параметра, а они открытые (Если вообще можно обращаться к этим папкам)
-		$LANG_KEY = strtoupper($request->PARTNER_CODE."_".$request->MODULE_CODE);
-
-		// берём файлы из шаблона
-		$installIndexFile = Storage::disk('modules_templates')->get('bitrix/install/index.php'); // файл-точка_входа_установки
-		$includeFile = Storage::disk('modules_templates')->get('bitrix/include.php'); // обязательный, но пока ненужный файл
-		$versionFile = Storage::disk('modules_templates')->get('bitrix/install/version.php');
-		$indexLangFile = Storage::disk('modules_templates')->get('bitrix/lang/ru/install/index.php');
 
 		// воссоздаём начальную структуру
 		Storage::disk('user_modules')->makeDirectory($myModuleFolder."/install");
 
-		// подставляем значения в шаблон индексного файла
-		$template_search = ['{MODULE_CLASS_NAME}', '{MODULE_ID}', '{LANG_KEY}'];
-		$template_replace = [$request->PARTNER_CODE."_".$request->MODULE_CODE, $request->PARTNER_CODE.".".$request->MODULE_CODE, $LANG_KEY];
-		$installIndexFile = str_replace($template_search, $template_replace, $installIndexFile);
+		// подставляем значения в шаблон индексного файла и шагов установки
+		Bitrix::changeVarsInModuleFileAndSave('bitrix/install/index.php', $request);
+		Bitrix::changeVarsInModuleFileAndSave('bitrix/install/step.php', $request);
+		Bitrix::changeVarsInModuleFileAndSave('bitrix/install/unstep.php', $request);
 
 		// подставляем значения в файл версии
-		$template_search = ['{VERSION}', '{DATE_TIME}'];
-		$template_replace = [$request->MODULE_VERSION, date('Y-m-d H:i:s')];
-		$versionFile = str_replace($template_search, $template_replace, $versionFile);
+		Bitrix::changeVarsInModuleFileAndSave('bitrix/install/version.php', $request);
 
-		// работаем с лангами
-		// воссоздаём начальную структуру
+		// воссоздаём начальную структуру для ланга
 		Storage::disk('user_modules')->makeDirectory($myModuleFolder."/lang/ru/install");
 		// подставляем значения в шаблон индексного файла
-		$template_search = ['{LANG_KEY}', '{MODULE_NAME}', '{MODULE_DESCRIPTION}', '{PARTNER_NAME}', '{PARTNER_URI}'];
-		$template_replace = [$LANG_KEY, $request->MODULE_NAME, $request->MODULE_DESCRIPTION, $request->PARTNER_NAME, $request->PARTNER_URI];
-		$indexLangFile = str_replace($template_search, $template_replace, $indexLangFile);
-		// .работаем с лангами
+		Bitrix::changeVarsInModuleFileAndSave('bitrix/lang/ru/install/index.php', $request);
+	}
 
-		// кладём файлы в пользовательский модуль
-		Storage::disk('user_modules')->put($myModuleFolder."/install/index.php", $installIndexFile);
-		Storage::disk('user_modules')->put($myModuleFolder."/include.php", $includeFile);
-		Storage::disk('user_modules')->put($myModuleFolder."/install/version.php", $versionFile);
-		Storage::disk('user_modules')->put($myModuleFolder."/lang/ru/install/index.php", $indexLangFile);
+	// подставляем нужные значения в заготовку
+	public static function changeVarsInModuleFileAndSave($path, $request){
+		$LANG_KEY = strtoupper($request->PARTNER_CODE."_".$request->MODULE_CODE);
+		$template_search = ['{MODULE_CLASS_NAME}', '{MODULE_ID}', '{LANG_KEY}', '{VERSION}', '{DATE_TIME}', '{MODULE_NAME}', '{MODULE_DESCRIPTION}', '{PARTNER_NAME}', '{PARTNER_URI}'];
+		$template_replace = [$request->PARTNER_CODE."_".$request->MODULE_CODE, $request->PARTNER_CODE.".".$request->MODULE_CODE, $LANG_KEY, $request->MODULE_VERSION, date('Y-m-d H:i:s'), $request->MODULE_NAME, $request->MODULE_DESCRIPTION, $request->PARTNER_NAME, $request->PARTNER_URI];
+
+		// подставляем нужные значения в шаблон
+		$file = Storage::disk('modules_templates')->get($path);
+		$file = str_replace($template_search, $template_replace, $file);
+
+		// записываем в модуль
+		$myModuleFolder = $request->PARTNER_CODE.".".$request->MODULE_CODE; // папка модуля
+		$count = 1; // только первое вхождение
+		$outputFilePath = str_replace("bitrix", $myModuleFolder, $path, $count); // todo если изменить диск,то можно избавиться от такой замены
+		Storage::disk('user_modules')->put($outputFilePath, $file);
+
 	}
 
 	// на будущее сохраняем какие-то поля в таблицу пользователя, если они не были указаны, но были указаны сейчас
@@ -131,6 +132,7 @@ class Bitrix extends Model{
 
 		$zipper = new \Chumper\Zipper\Zipper;
 		$zipper->make($archiveName)->add($rootFolder.$folder);
+
 		return $archiveName;
 	}
 }

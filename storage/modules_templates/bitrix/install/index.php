@@ -104,6 +104,14 @@ Class {MODULE_CLASS_NAME} extends CModule{
 		return CheckVersion(\Bitrix\Main\ModuleManager::getVersion('main'), '14.00.00');
 	}
 
+	public function GetPath($notDocumentRoot = false){
+		if ($notDocumentRoot){
+			return str_ireplace(Application::getDocumentRoot(), '', dirname(__DIR__));
+		}else{
+			return dirname(__DIR__);
+		}
+	}
+
 	function DoInstall(){
 
 		global $APPLICATION;
@@ -117,7 +125,7 @@ Class {MODULE_CLASS_NAME} extends CModule{
 			$APPLICATION->ThrowException(Loc::getMessage("{LANG_KEY}_INSTALL_ERROR_VERSION"));
 		}
 
-		//$APPLICATION->IncludeAdminFile(Loc::getMessage("{LANG_KEY}_INSTALL"), $this->GetPath()."/install/step.php");
+		$APPLICATION->IncludeAdminFile(Loc::getMessage("{LANG_KEY}_INSTALL"), $this->GetPath()."/install/step.php");
 	}
 
 	function DoUninstall(){
@@ -135,7 +143,7 @@ Class {MODULE_CLASS_NAME} extends CModule{
 
 		\Bitrix\Main\ModuleManager::unRegisterModule($this->MODULE_ID);
 
-		//$APPLICATION->IncludeAdminFile(Loc::getMessage("{LANG_KEY}_UNINSTALL"), $this->GetPath()."/install/unstep.php");
+		$APPLICATION->IncludeAdminFile(Loc::getMessage("{LANG_KEY}_UNINSTALL"), $this->GetPath()."/install/unstep.php");
 	}
 }
 ?>
