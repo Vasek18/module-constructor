@@ -11,8 +11,6 @@ Class {MODULE_CLASS_NAME} extends CModule{
 	var $MODULE_VERSION_DATE;
 	var $MODULE_NAME;
 	var $MODULE_DESCRIPTION;
-	var $MODULE_CSS;
-	var $strError = '';
 
 	function __construct(){
 		$arModuleVersion = array();
@@ -24,6 +22,14 @@ Class {MODULE_CLASS_NAME} extends CModule{
 
 		$this->PARTNER_NAME = Loc::getMessage("{LANG_KEY}_PARTNER_NAME");
 		$this->PARTNER_URI = Loc::getMessage("{LANG_KEY}_PARTNER_URI");
+
+		$this->exclusionAdminFiles=array(
+			'..',
+			'.',
+			'menu.php',
+			'operation_description.php',
+			'task_description.php'
+		);
 	}
 
 	function InstallDB($arParams = array()){
@@ -43,23 +49,20 @@ Class {MODULE_CLASS_NAME} extends CModule{
 	}
 
 	function InstallFiles($arParams = array()){
-		if (is_dir($p = $_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/'.self::MODULE_ID.'/admin')){
-			if ($dir = opendir($p)){
-				while (false !== $item = readdir($dir)){
-					if ($item == '..' || $item == '.' || $item == 'menu.php')
-						continue;
-					file_put_contents($file = $_SERVER['DOCUMENT_ROOT'].'/bitrix/admin/'.self::MODULE_ID.'_'.$item,
-						'<'.'? require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/'.self::MODULE_ID.'/admin/'.$item.'");?'.'>');
-				}
-				closedir($dir);
-			}
+		$path = $this->GetPath()."/install/components";
+
+		if (\Bitrix\Main\IO\Directory::isDirectoryExists($path)){
+			CopyDirFiles($path, $_SERVER["DOCUMENT_ROOT"]."/bitrix/components", true, true);
 		}
-		if (is_dir($p = $_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/'.self::MODULE_ID.'/install/components')){
-			if ($dir = opendir($p)){
+
+		if (\Bitrix\Main\IO\Directory::isDirectoryExists($path = $this->GetPath().'/admin')){
+			CopyDirFiles($this->GetPath()."/install/admin/", $_SERVER["DOCUMENT_ROOT"]."/bitrix/admin"); //если есть файлы для копирования
+			if ($dir = opendir($path)){
 				while (false !== $item = readdir($dir)){
-					if ($item == '..' || $item == '.')
+					if (in_array($item, $this->exclusionAdminFiles))
 						continue;
-					CopyDirFiles($p.'/'.$item, $_SERVER['DOCUMENT_ROOT'].'/bitrix/components/'.$item, $ReWrite = true, $Recursive = true);
+					file_put_contents($_SERVER['DOCUMENT_ROOT'].'/bitrix/admin/'.$this->MODULE_ID.'_'.$item,
+						'<'.'? require($_SERVER["DOCUMENT_ROOT"]."'.$this->GetPath(true).'/admin/'.$item.'");?'.'>');
 				}
 				closedir($dir);
 			}
@@ -69,29 +72,15 @@ Class {MODULE_CLASS_NAME} extends CModule{
 	}
 
 	function UnInstallFiles(){
-		if (is_dir($p = $_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/'.self::MODULE_ID.'/admin')){
-			if ($dir = opendir($p)){
-				while (false !== $item = readdir($dir)){
-					if ($item == '..' || $item == '.')
-						continue;
-					unlink($_SERVER['DOCUMENT_ROOT'].'/bitrix/admin/'.self::MODULE_ID.'_'.$item);
-				}
-				closedir($dir);
-			}
-		}
-		if (is_dir($p = $_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/'.self::MODULE_ID.'/install/components')){
-			if ($dir = opendir($p)){
-				while (false !== $item = readdir($dir)){
-					if ($item == '..' || $item == '.' || !is_dir($p0 = $p.'/'.$item))
-						continue;
+		\Bitrix\Main\IO\Directory::deleteDirectory($_SERVER["DOCUMENT_ROOT"].'/bitrix/components/'.$this->MODULE_ID.'/');
 
-					$dir0 = opendir($p0);
-					while (false !== $item0 = readdir($dir0)){
-						if ($item0 == '..' || $item0 == '.')
-							continue;
-						DeleteDirFilesEx('/bitrix/components/'.$item.'/'.$item0);
-					}
-					closedir($dir0);
+		if (\Bitrix\Main\IO\Directory::isDirectoryExists($path = $this->GetPath().'/admin')){
+			DeleteDirFiles($_SERVER["DOCUMENT_ROOT"].$this->GetPath().'/install/admin/', $_SERVER["DOCUMENT_ROOT"].'/bitrix/admin');
+			if ($dir = opendir($path)){
+				while (false !== $item = readdir($dir)){
+					if (in_array($item, $this->exclusionAdminFiles))
+						continue;
+					\Bitrix\Main\IO\File::deleteFile($_SERVER['DOCUMENT_ROOT'].'/bitrix/admin/'.$this->MODULE_ID.'_'.$item);
 				}
 				closedir($dir);
 			}

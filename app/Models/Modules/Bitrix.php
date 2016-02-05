@@ -45,8 +45,6 @@ class Bitrix extends Model{
 		// создание папки модуля пользователя на серваке
 		$bitrix::createFolder($request);
 
-		dd();
-
 		// запись в БД
 		$bitrix->MODULE_NAME = $request->MODULE_NAME;
 		$bitrix->MODULE_DESCRIPTION = $request->MODULE_DESCRIPTION;
@@ -77,6 +75,9 @@ class Bitrix extends Model{
 
 		// подставляем значения в файл версии
 		Bitrix::changeVarsInModuleFileAndSave('bitrix/install/version.php', $request);
+
+		// этот файл просто до сих пор обязательный
+		Bitrix::changeVarsInModuleFileAndSave('bitrix/include.php', $request);
 
 		// воссоздаём начальную структуру для ланга
 		Storage::disk('user_modules')->makeDirectory($myModuleFolder."/lang/ru/install");
