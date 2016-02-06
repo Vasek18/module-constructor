@@ -23,3 +23,7 @@ footer{
 .creator a{
 	color: #777;
 }
+.row.option{
+	margin-top: 15px;
+	margin-bottom: 15px;
+}

@@ -47,3 +47,4 @@ Route::get('my-modules/bitrix/{id}', 'Modules\BitrixController@detail'); // де
 Route::get('my-modules/bitrix/{id}/delete', 'Modules\BitrixController@delete'); // детальная страница модуля
 Route::get('my-modules/bitrix/{id}/download', 'Modules\BitrixController@download_zip'); // скачать архив
 Route::get('my-modules/bitrix/{id}/admin_options', 'Modules\BitrixController@admin_options'); // поля для страницы настроек
+Route::post('my-modules/bitrix/{id}/admin_options_save', 'Modules\BitrixController@admin_options_save'); // сохранение полей для страницы настроек

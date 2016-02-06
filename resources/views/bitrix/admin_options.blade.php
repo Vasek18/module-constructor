@@ -16,23 +16,35 @@
                             ({{$module->PARTNER_CODE}}.{{$module->MODULE_CODE}})
                         </div>
                         <div class="panel-body">
-                            <form class="">
+                            <form role="form" method="POST" action="{{ action('Modules\BitrixController@admin_options_save', $module->id) }}" >
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                <div class="row option-headers">
+                                    <div class="col-md-2">
+                                        <label>Код свойства</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label>Название свойства</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>Тип свойства</label>
+                                    </div>
+                                </div>
                                 @foreach($options as $option)
                                     <div class="row">
                                         <div class="col-md-2">
-                                            <label class="sr-only" for="option_1_id">ID</label>
-                                            <input type="text" class="form-control" name="option_1_id" id="option_1_id"
+                                            <label class="sr-only" for="option_{{$i}}_id">ID</label>
+                                            <input type="text" class="form-control" name="option_{{$i}}_id" id="option_{{$i}}_id"
                                                    placeholder="ID">
                                         </div>
                                         <div class="col-md-2">
-                                            <label class="sr-only" for="option_1_name">Название</label>
-                                            <input type="text" class="form-control" name="option_1_name"
-                                                   id="option_1_name"
+                                            <label class="sr-only" for="option_{{$i}}_name">Название</label>
+                                            <input type="text" class="form-control" name="option_{{$i}}_name"
+                                                   id="option_{{$i}}_name"
                                                    placeholder="Название">
                                         </div>
                                         <div class="col-md-2">
-                                            <label class="sr-only" for="option_1_type">Тип</label>
-                                            <select class="form-control" name="option_1_type" id="option_1_type">
+                                            <label class="sr-only" for="option_{{$i}}_type">Тип</label>
+                                            <select class="form-control" name="option_{{$i}}_type" id="option_{{$i}}_type">
                                                 <option value="">Выберите тип</option>
                                                 @foreach($optionsTypes as $type)
                                                     <option value="">{{$type->NAME_RU}}</option>
@@ -40,56 +52,61 @@
                                             </select>
                                         </div>
                                         <div class="col-md-2">
-                                            <label class="sr-only" for="option_1_width">Ширина</label>
-                                            <input type="text" class="form-control" name="option_1_width"
-                                                   id="option_1_width"
+                                            <label class="sr-only" for="option_{{$i}}_width">Ширина</label>
+                                            <input type="text" class="form-control" name="option_{{$i}}_width"
+                                                   id="option_{{$i}}_width"
                                                    placeholder="Ширина">
                                         </div>
                                         <div class="col-md-2">
-                                            <label class="sr-only" for="option_1_height">Высота</label>
-                                            <input type="text" class="form-control" name="option_1_height"
-                                                   id="option_1_height"
+                                            <label class="sr-only" for="option_{{$i}}_height">Высота</label>
+                                            <input type="text" class="form-control" name="option_{{$i}}_height"
+                                                   id="option_{{$i}}_height"
                                                    placeholder="Высота">
                                         </div>
                                     </div>
                                 @endforeach
                                 {{-- Дополнительно показываем ещё несколько пустых строк --}}
                                 @for ($i = 0; $i < 5; $i++)
-                                    <div class="row">
+                                    <div class="row option">
                                         <div class="col-md-2">
-                                            <label class="sr-only" for="option_1_id">ID</label>
-                                            <input type="text" class="form-control" name="option_1_id" id="option_1_id"
-                                                   placeholder="ID">
+                                            <label class="sr-only" for="option_{{$i}}_code">Код</label>
+                                            <input type="text" class="form-control" name="option_code[]" id="option_{{$i}}_code"
+                                                   placeholder="Код">
                                         </div>
-                                        <div class="col-md-2">
-                                            <label class="sr-only" for="option_1_name">Название</label>
-                                            <input type="text" class="form-control" name="option_1_name"
-                                                   id="option_1_name"
+                                        <div class="col-md-3">
+                                            <label class="sr-only" for="option_{{$i}}_name">Название</label>
+                                            <input type="text" class="form-control" name="option_{{$i}}_name"
+                                                   id="option_{{$i}}_name"
                                                    placeholder="Название">
                                         </div>
                                         <div class="col-md-2">
-                                            <label class="sr-only" for="option_1_type">Тип</label>
-                                            <select class="form-control" name="option_1_type" id="option_1_type">
+                                            <label class="sr-only" for="option_{{$i}}_type">Тип</label>
+                                            <select class="form-control" name="option_{{$i}}_type" id="option_{{$i}}_type">
                                                 <option value="">Выберите тип</option>
                                                 @foreach($optionsTypes as $type)
-                                                    <option value="">{{$type->NAME_RU}}</option>
+                                                    <option value="{{$type->FORM_TYPE}}">{{$type->NAME_RU}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
                                         <div class="col-md-2">
-                                            <label class="sr-only" for="option_1_width">Ширина</label>
-                                            <input type="text" class="form-control" name="option_1_width"
-                                                   id="option_1_width"
+                                            <label class="sr-only" for="option_{{$i}}_width">Ширина</label>
+                                            <input type="text" class="form-control" name="option_{{$i}}_width"
+                                                   id="option_{{$i}}_width"
                                                    placeholder="Ширина">
                                         </div>
                                         <div class="col-md-2">
-                                            <label class="sr-only" for="option_1_height">Высота</label>
-                                            <input type="text" class="form-control" name="option_1_height"
-                                                   id="option_1_height"
+                                            <label class="sr-only" for="option_{{$i}}_height">Высота</label>
+                                            <input type="text" class="form-control" name="option_{{$i}}_height"
+                                                   id="option_{{$i}}_height"
                                                    placeholder="Высота">
                                         </div>
                                     </div>
                                 @endfor
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <button class="btn btn-primary btn-block">Сохранить</button>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                     @else

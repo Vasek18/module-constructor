@@ -115,10 +115,35 @@ class BitrixController extends Controller{
 
 		// todo проверка на авторство модуля
 		$data = [
-			'module' => Bitrix::find($id),
+			'module'       => Bitrix::find($id),
 			'optionsTypes' => $optionsTypes,
-			'options' => $options
+			'options'      => $options
 		];
+
 		return view("bitrix.admin_options", $data); // передаём данные из таблицы пользователей, чтобы подставлять их в формы
+	}
+
+	// сохранение полей для страницы настроек
+	public function admin_options_save($id, Request $request){
+		// перебираем все строки полей
+		foreach($request->option_code as $i => $option_code){
+			$prop = [];
+			if (!$option_code){ // отметаем пустые строки
+				continue;
+			}
+			if (!$request['option_'.$i.'_name']){ // если у поля нет имени
+				continue;
+			}
+			if (!$request['option_'.$i.'_type']){ // если у поля нет типа
+				continue;
+			}
+			$prop["code"] = $option_code;
+			$prop["name"] = $request['option_'.$i.'_name'];
+			$prop["type"] = $request['option_'.$i.'_type'];
+			print_r($prop);
+		}
+		dd($request);
+		//return redirect(action('Modules\BitrixController@detail', $id));
+
 	}
 }
