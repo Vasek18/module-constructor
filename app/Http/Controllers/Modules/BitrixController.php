@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Modules;
 use App\Models\User;
 use Auth;
 use App\Models\Modules\Bitrix;
+use App\Models\Modules\BitrixAdminOptions;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class BitrixController extends Controller{
 	protected $rootFolder = '/construct/bitrix/'; // корневая папка модуля
@@ -108,9 +110,14 @@ class BitrixController extends Controller{
 
 	// страница настроек для страницы настроек
 	public function admin_options($id){
+		$optionsTypes = DB::table('bitrix_modules_options_types')->get();
+		$options = BitrixAdminOptions::where('module_id', $id)->get();
+
 		// todo проверка на авторство модуля
 		$data = [
-			'module' => Bitrix::find($id)
+			'module' => Bitrix::find($id),
+			'optionsTypes' => $optionsTypes,
+			'options' => $options
 		];
 		return view("bitrix.admin_options", $data); // передаём данные из таблицы пользователей, чтобы подставлять их в формы
 	}
