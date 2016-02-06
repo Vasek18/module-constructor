@@ -85,6 +85,7 @@ class BitrixController extends Controller{
 		if ($pathToZip = Bitrix::generateZip($id)){
 			return response()->download($pathToZip)->deleteFileAfterSend(true);
 		}
+
 		return redirect(action('Modules\BitrixController@detail', $id));
 	}
 
@@ -101,6 +102,16 @@ class BitrixController extends Controller{
 		Storage::disk('user_modules')->deleteDirectory($myModuleFolder);
 		// удаляем запись из БД
 		$module->delete();
+
 		return redirect(action("PersonalController@index"));
+	}
+
+	// страница настроек для страницы настроек
+	public function admin_options($id){
+		// todo проверка на авторство модуля
+		$data = [
+			'module' => Bitrix::find($id)
+		];
+		return view("bitrix.admin_options", $data); // передаём данные из таблицы пользователей, чтобы подставлять их в формы
 	}
 }

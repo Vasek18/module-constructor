@@ -7,19 +7,12 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-3">
-                {{-- todo Вынести --}}
-                <div class="list-group">
-                    <a href="#" class="list-group-item">Детальная</a>
-                    <a href="#" class="list-group-item">Добавление инфоблоков</a>
-                    <a href="#" class="list-group-item">Добавление компонентов</a>
-                    <a href="#" class="list-group-item">Работа с событиями</a>
-                    <a href="#" class="list-group-item">Добавление сервисов</a>
-                </div>
+                @include('bitrix.menu')
             </div>
             <div class="col-md-8">
                 <div class="panel panel-default">
                     @if ($module->id)
-                        <div class="panel-heading">Модуль "{{$module->MODULE_NAME}}" ({{$module->PARTNER_CODE}}.{{$module->MODULE_CODE}})</div>
+                        <div class="panel-heading">Основное | Модуль "{{$module->MODULE_NAME}}" ({{$module->PARTNER_CODE}}.{{$module->MODULE_CODE}})</div>
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-md-10">

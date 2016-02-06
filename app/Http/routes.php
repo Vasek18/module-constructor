@@ -46,3 +46,4 @@ Route::post('construct/bitrix/create', 'Modules\BitrixController@create'); // с
 Route::get('my-modules/bitrix/{id}', 'Modules\BitrixController@detail'); // детальная страница модуля
 Route::get('my-modules/bitrix/{id}/delete', 'Modules\BitrixController@delete'); // детальная страница модуля
 Route::get('my-modules/bitrix/{id}/download', 'Modules\BitrixController@download_zip'); // скачать архив
+Route::get('my-modules/bitrix/{id}/admin_options', 'Modules\BitrixController@admin_options'); // поля для страницы настроек
