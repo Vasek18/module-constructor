@@ -29,7 +29,7 @@
                                         <label>Тип свойства</label>
                                     </div>
                                 </div>
-                                @foreach($options as $option)
+                                @foreach($options as $i => $option)
                                     <div class="row">
                                         <div class="col-md-2">
                                             <label class="sr-only" for="option_{{$i}}_id">ID</label>
@@ -84,7 +84,7 @@
                                             <select class="form-control" name="option_{{$i}}_type" id="option_{{$i}}_type">
                                                 <option value="">Выберите тип</option>
                                                 @foreach($optionsTypes as $type)
-                                                    <option value="{{$type->FORM_TYPE}}">{{$type->NAME_RU}}</option>
+                                                    <option value="{{$type->id}}">{{$type->NAME_RU}}</option>
                                                 @endforeach
                                             </select>
                                         </div>

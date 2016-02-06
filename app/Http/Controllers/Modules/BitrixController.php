@@ -124,7 +124,7 @@ class BitrixController extends Controller{
 	}
 
 	// сохранение полей для страницы настроек
-	public function admin_options_save($id, Request $request){
+	public function admin_options_save($module_id, Request $request){
 		// перебираем все строки полей
 		foreach($request->option_code as $i => $option_code){
 			$prop = [];
@@ -137,13 +137,18 @@ class BitrixController extends Controller{
 			if (!$request['option_'.$i.'_type']){ // если у поля нет типа
 				continue;
 			}
+
+			$prop["module_id"] = $module_id;
 			$prop["code"] = $option_code;
 			$prop["name"] = $request['option_'.$i.'_name'];
-			$prop["type"] = $request['option_'.$i.'_type'];
-			print_r($prop);
+			$prop["type_id"] = $request['option_'.$i.'_type'];
+			$prop["height"] = $request['option_'.$i.'_height'];
+			$prop["width"] = $request['option_'.$i.'_width'];
+
+			// записываем в бд
+			BitrixAdminOptions::store($prop);
 		}
-		dd($request);
-		//return redirect(action('Modules\BitrixController@detail', $id));
+		return redirect(action('Modules\BitrixController@admin_options', $module_id));
 
 	}
 }
