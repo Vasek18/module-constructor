@@ -8,13 +8,17 @@ class BitrixAdminOptions extends Model{
 	protected $table = 'bitrix_modules_options';
 
 	public static function store($fields){
-		// todo проверка кода и имени на уникальность (в области этого модуля) (по отдельности)
-
-		$option = new BitrixAdminOptions;
+		// если есть поле с таким же кодом, обновляем старое, а не создаём новое
+		if (BitrixAdminOptions::where('module_id', $fields["module_id"])->where('code', $fields["code"])->count()){
+			$id = BitrixAdminOptions::where('module_id', $fields["module_id"])->where('code', $fields["code"])->first()->id;
+			$option = BitrixAdminOptions::find($id);
+		}else{
+			$option = new BitrixAdminOptions;
+			$option->code = $fields['code'];
+		}
 
 		// запись в БД
 		$option->module_id = $fields['module_id'];
-		$option->code = $fields['code'];
 		$option->name = $fields['name'];
 		$option->type_id = $fields['type_id'];
 		$option->height = $fields['height'];
