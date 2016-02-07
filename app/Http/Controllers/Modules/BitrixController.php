@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Modules;
 
-use App\Models\User;
 use Auth;
 use App\Models\Modules\Bitrix;
 use App\Models\Modules\BitrixAdminOptions;
@@ -149,6 +148,9 @@ class BitrixController extends Controller{
 			BitrixAdminOptions::store($prop);
 		}
 
+		// записываем в папку модуля
+		BitrixAdminOptions::saveOptionFile($module_id);
+
 		return redirect(action('Modules\BitrixController@admin_options', $module_id));
 	}
 
@@ -160,6 +162,9 @@ class BitrixController extends Controller{
 		$module = BitrixAdminOptions::find($option_id);
 		// удаляем запись из БД
 		$module->delete();
+
+		// производим замены в папке модуля
+		BitrixAdminOptions::saveOptionFile($module_id);
 
 		return redirect(action('Modules\BitrixController@admin_options', $module_id));
 	}
