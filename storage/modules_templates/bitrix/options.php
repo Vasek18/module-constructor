@@ -20,7 +20,7 @@ $aTabs = array(
 	array(
 		'DIV'     => 'props',
 		'TAB'     => Loc::getMessage('{LANG_KEY}_TAB_SETTINGS'),
-		'OPTIONS' => array({options})
+		'OPTIONS' => array({OPTIONS})
 	),
 	array(
 		"DIV"   => "rights",
@@ -56,7 +56,7 @@ $tabControl = new CAdminTabControl('tabControl', $aTabs);
 <? $tabControl->Begin(); ?>
 <form method='post'
 	  action='<? echo $APPLICATION->GetCurPage() ?>?mid=<?=htmlspecialcharsbx($request['mid'])?>&amp;lang=<?=$request['lang']?>'
-	  name='{_MODULE_ID}_settings'>
+	  name='{MODULE_CLASS_NAME}_settings'>
 
 	<? foreach ($aTabs as $aTab):
 		if ($aTab['OPTIONS']):?>

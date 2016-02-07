@@ -72,7 +72,7 @@
                                     </div>
                                 @endforeach
                                 {{-- Дополнительно показываем ещё несколько пустых строк --}}
-                                @for ($j = $i+1; $j < $i+5; $j++)
+                                @for ($j = isset($i)?$i:0; $j < isset($i)?$i+5:5; $j++)
                                     <div class="row option">
                                         <div class="col-md-2">
                                             <label class="sr-only" for="option_{{$j}}_code">Код</label>

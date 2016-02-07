@@ -33,8 +33,12 @@ class BitrixAdminOptions extends Model{
 	// сохраняем настройки в папку модуля
 	static public function saveOptionFile($module_id){
 		if (BitrixAdminOptions::where('module_id', $module_id)->count()){
+			$module = Bitrix::find($module_id);
+			$LANG_KEY = strtoupper($module->PARTNER_CODE."_".$module->MODULE_CODE);
+
 			$options = BitrixAdminOptions::where('module_id', $module_id)->get();
 			$optionsString = '';
+			$optionsLangString = '';
 
 			// получаем типы полей
 			$dboptionsTypes = DB::table('bitrix_modules_options_types')->get(); // приводим к типу, где ключом выступает id // todo скорее всего есть способ легче всё это получать
@@ -42,26 +46,34 @@ class BitrixAdminOptions extends Model{
 			foreach ($dboptionsTypes as $option){
 				$optionsTypes[$option->id] = $option;
 			}
+
 			foreach ($options as $option){
 				$option_type = $optionsTypes[$option->type_id]->FORM_TYPE;
-				// параметры textarea - высота и ширина
-				// параметры text - ширина
-				// параметры select - список опшионов
+
 				$field_params_in_string = '';
 				if ($option_type == "text"){
+					// параметры text - ширина
 					$field_params_in_string = ', '.$option->width;
 				}
 				if ($option_type == "textarea"){
+					// параметры textarea - высота и ширина
 					$field_params_in_string = ', '.$option->height.', '.$option->width;
+				}
+				if ($option_type == "select"){
+					// параметры select - список опшионов
 				}
 
 				// код, название, значение по умолчанию, [тип поля, параметры]
-				$string = "array('".$option->code."', Loc::getMessage('{LANG_KEY}_".strtoupper($option->code)."_TITLE'), '', array('".$option_type."'".$field_params_in_string.")),";
+				$string = "array('".$option->code."', Loc::getMessage('".$LANG_KEY."_".strtoupper($option->code)."_TITLE'), '', array('".$option_type."'".$field_params_in_string.")), ";
 				//echo $string;
 
 				$optionsString .= $string;
+
+				$optionsLangString .= '$MESS["'.$LANG_KEY.'_'.strtoupper($option->code).'_TITLE"] = "'.$option->name.'";';
 			}
 		}
-		dd($optionsString);
+
+		Bitrix::changeVarsInModuleFileAndSave('bitrix/options.php', $module_id, Array("{OPTIONS}"), Array($optionsString));
+		Bitrix::changeVarsInModuleFileAndSave('bitrix/lang/ru/options.php', $module_id, Array("{OPTIONS_LANG}"), Array($optionsLangString));
 	}
 }
