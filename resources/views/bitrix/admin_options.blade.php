@@ -38,8 +38,8 @@
                                 @foreach($options as $i => $option)
                                     <div class="row option">
                                         <input type="hidden" name="option_number" value="{{$i}}">
-                                        <input type="hidden" name="option_{{$i}}_width">
-                                        <input type="hidden" name="option_{{$i}}_height">
+                                        <input type="hidden" name="option_{{$i}}_width" value="{{$option->width}}">
+                                        <input type="hidden" name="option_{{$i}}_height" value="{{$option->height}}">
                                         <input type="hidden" name="option_{{$i}}_vals">
                                         <div class="col-md-2">
                                             <label class="sr-only" for="option_{{$i}}_id">ID</label>
