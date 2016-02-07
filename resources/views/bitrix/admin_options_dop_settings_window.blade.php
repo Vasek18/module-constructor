@@ -7,7 +7,24 @@
                 <h4 class="modal-title">Дополнительные настройки</h4>
             </div>
             <div class="modal-body">
+                <div class="form-group" data-for_type_ids="2">
+                    <label for="">Высота</label>
+                    <input class="form-control" type="text" name="" id="" value="">
+                </div>
+                <div class="form-group" data-for_type_ids="1,2">
+                    <label for="">Ширина</label>
+                    <input class="form-control" type="text" name="" id="" value="">
+                </div>
+                <div class="form-group" data-for_type_ids="3,4,5">
+                    <label for="">Значения</label>
+                    <input class="form-control" type="text" name="" id="" value="">
+                </div>
+                <div class="form-group" data-for_type_ids="3,4,5">
+                    <label for="">Специальные значения</label>
+                    <div class="special-vals-list">
 
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary">Закрыть</button>

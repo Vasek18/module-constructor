@@ -1,7 +1,9 @@
 @extends('app')
 
 @section('content')
-
+    @push('scripts')
+    <script src="/js/bitrix_module_admin_options.js"></script>
+    @endpush
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-3">
