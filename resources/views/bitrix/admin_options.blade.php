@@ -2,8 +2,6 @@
 
 @section('content')
 
-    {{-- todo Проверка на наличие пришедших данных --}}
-
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-3">
@@ -72,7 +70,7 @@
                                     </div>
                                 @endforeach
                                 {{-- Дополнительно показываем ещё несколько пустых строк --}}
-                                @for ($j = isset($i)?$i:0; $j < isset($i)?$i+5:5; $j++)
+                                @for ($j = count($options); $j < count($options)+5; $j++)
                                     <div class="row option">
                                         <div class="col-md-2">
                                             <label class="sr-only" for="option_{{$j}}_code">Код</label>

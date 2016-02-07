@@ -124,6 +124,9 @@ class BitrixController extends Controller{
 
 	// сохранение полей для страницы настроек
 	public function admin_options_save($module_id, Request $request){
+		// удаляем старые свойства, чтобы при изменение уже заполненной строчки, старые данные с этой строчки не существовали
+		BitrixAdminOptions::where('module_id', $module_id)->delete();
+
 		// перебираем все строки полей
 		foreach ($request->option_code as $i => $option_code){
 			$prop = [];
@@ -159,9 +162,8 @@ class BitrixController extends Controller{
 		if (!$option_id || !$module_id){
 			return false;
 		}
-		$module = BitrixAdminOptions::find($option_id);
 		// удаляем запись из БД
-		$module->delete();
+		BitrixAdminOptions::destroy($option_id);
 
 		// производим замены в папке модуля
 		BitrixAdminOptions::saveOptionFile($module_id);
