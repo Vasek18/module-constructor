@@ -24,6 +24,7 @@ class BitrixAdminOptions extends Model{
 		$option->type_id = $fields['type_id'];
 		$option->height = $fields['height'];
 		$option->width = $fields['width'];
+		//dd($fields);
 
 		if ($option->save()){
 			return $option->id;
@@ -71,9 +72,9 @@ class BitrixAdminOptions extends Model{
 
 				$optionsLangString .= '$MESS["'.$LANG_KEY.'_'.strtoupper($option->code).'_TITLE"] = "'.$option->name.'";'.PHP_EOL;
 			}
-		}
 
-		Bitrix::changeVarsInModuleFileAndSave('bitrix/options.php', $module_id, Array("{OPTIONS}"), Array($optionsString));
-		Bitrix::changeVarsInModuleFileAndSave('bitrix/lang/ru/options.php', $module_id, Array("{OPTIONS_LANG}"), Array($optionsLangString));
+			Bitrix::changeVarsInModuleFileAndSave('bitrix/options.php', $module_id, Array("{OPTIONS}"), Array($optionsString));
+			Bitrix::changeVarsInModuleFileAndSave('bitrix/lang/ru/options.php', $module_id, Array("{OPTIONS_LANG}"), Array($optionsLangString));
+		}
 	}
 }

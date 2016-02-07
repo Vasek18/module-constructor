@@ -14,7 +14,7 @@ class CreateBitrixModulesOptionsTable extends Migration{
 			$table->increments('id');
 			$table->integer('module_id');
 			$table->integer('type_id');
-			$table->integer('code');
+			$table->string('code');
 			$table->string('name');
 			$table->integer('height')->nullable();
 			$table->integer('width')->nullable();
