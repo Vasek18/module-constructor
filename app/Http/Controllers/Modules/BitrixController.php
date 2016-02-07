@@ -126,7 +126,7 @@ class BitrixController extends Controller{
 	// сохранение полей для страницы настроек
 	public function admin_options_save($module_id, Request $request){
 		// перебираем все строки полей
-		foreach($request->option_code as $i => $option_code){
+		foreach ($request->option_code as $i => $option_code){
 			$prop = [];
 			if (!$option_code){ // отметаем пустые строки
 				continue;
@@ -148,7 +148,19 @@ class BitrixController extends Controller{
 			// записываем в бд
 			BitrixAdminOptions::store($prop);
 		}
-		return redirect(action('Modules\BitrixController@admin_options', $module_id));
 
+		return redirect(action('Modules\BitrixController@admin_options', $module_id));
+	}
+
+	// удаление поля для страницы настроек
+	public function admin_option_delete($module_id, $option_id){
+		if (!$option_id || !$module_id){
+			return false;
+		}
+		$module = BitrixAdminOptions::find($option_id);
+		// удаляем запись из БД
+		$module->delete();
+
+		return redirect(action('Modules\BitrixController@admin_options', $module_id));
 	}
 }

@@ -63,6 +63,12 @@
                                                    id="option_{{$i}}_height"
                                                    placeholder="Высота" value="{{$option->height}}">
                                         </div>
+                                        <div class="col-md-1">
+                                            <a href="{{ action('Modules\BitrixController@admin_option_delete', [$module->id, $option->id]) }}"
+                                               class="btn btn-sm btn-danger">
+                                                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                            </a>
+                                        </div>
                                     </div>
                                 @endforeach
                                 {{-- Дополнительно показываем ещё несколько пустых строк --}}
