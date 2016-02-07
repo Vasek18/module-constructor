@@ -64,12 +64,12 @@ class BitrixAdminOptions extends Model{
 				}
 
 				// код, название, значение по умолчанию, [тип поля, параметры]
-				$string = "array('".$option->code."', Loc::getMessage('".$LANG_KEY."_".strtoupper($option->code)."_TITLE'), '', array('".$option_type."'".$field_params_in_string.")), ";
+				$string = PHP_EOL."array('".$option->code."', Loc::getMessage('".$LANG_KEY."_".strtoupper($option->code)."_TITLE'), '', array('".$option_type."'".$field_params_in_string.")),";
 				//echo $string;
 
 				$optionsString .= $string;
 
-				$optionsLangString .= '$MESS["'.$LANG_KEY.'_'.strtoupper($option->code).'_TITLE"] = "'.$option->name.'";';
+				$optionsLangString .= '$MESS["'.$LANG_KEY.'_'.strtoupper($option->code).'_TITLE"] = "'.$option->name.'";'.PHP_EOL;
 			}
 		}
 
