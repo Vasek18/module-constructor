@@ -18,10 +18,10 @@ class CreateUsersTable extends Migration
             $table->string('last_name');
             $table->string('email')->unique();
             $table->string('password', 60);
-            $table->string('site'); // сайт пользователя
-            $table->string('company_name'); // название его компании
-            $table->string('bitrix_partner_code'); // для модулей Битрикс
-            $table->string('bitrix_company_name'); // для модулей Битрикс // возможно не надо в виду company_name
+            $table->string('site')->nullable(); // сайт пользователя
+            $table->string('company_name')->nullable(); // название его компании
+            $table->string('bitrix_partner_code')->nullable()->unique(); // для модулей Битрикс
+            $table->string('bitrix_company_name')->nullable(); // для модулей Битрикс // возможно не надо в виду company_name
             $table->rememberToken();
             $table->timestamps();
         });

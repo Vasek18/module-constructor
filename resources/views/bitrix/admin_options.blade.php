@@ -23,8 +23,14 @@
                                     <div class="col-md-3">
                                         <label>Название свойства</label>
                                     </div>
-                                    <div class="col-md-2">
+                                    <div class="col-md-3">
                                         <label>Тип свойства</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>Доп. поля</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label>Удалить</label>
                                     </div>
                                 </div>
                                 @foreach($options as $i => $option)
@@ -40,31 +46,22 @@
                                                    id="option_{{$i}}_name"
                                                    placeholder="Название" value="{{$option->name}}">
                                         </div>
-                                        <div class="col-md-2">
+                                        <div class="col-md-3">
                                             <label class="sr-only" for="option_{{$i}}_type">Тип</label>
                                             <select class="form-control" name="option_{{$i}}_type" id="option_{{$i}}_type">
-                                                <option value="">Выберите тип</option>
                                                 @foreach($optionsTypes as $type)
                                                     <option @if ($option->type_id == $type->id) selected @endif value="{{$type->id}}">{{$type->NAME_RU}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
                                         <div class="col-md-2">
-                                            <label class="sr-only" for="option_{{$i}}_width">Ширина</label>
-                                            <input type="text" class="form-control" name="option_{{$i}}_width"
-                                                   id="option_{{$i}}_width"
-                                                   placeholder="Ширина" value="{{$option->width}}">
+                                            <a href="#" class="btn btn-default" data-toggle="modal" data-target="#admin_options_dop_settings_window">Редактировать</a>
                                         </div>
                                         <div class="col-md-2">
-                                            <label class="sr-only" for="option_{{$i}}_height">Высота</label>
-                                            <input type="text" class="form-control" name="option_{{$i}}_height"
-                                                   id="option_{{$i}}_height"
-                                                   placeholder="Высота" value="{{$option->height}}">
-                                        </div>
-                                        <div class="col-md-1">
                                             <a href="{{ action('Modules\BitrixController@admin_option_delete', [$module->id, $option->id]) }}"
-                                               class="btn btn-sm btn-danger">
+                                               class="btn btn-danger">
                                                 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                                Удалить
                                             </a>
                                         </div>
                                     </div>
@@ -83,26 +80,19 @@
                                                    id="option_{{$j}}_name"
                                                    placeholder="Название">
                                         </div>
-                                        <div class="col-md-2">
+                                        <div class="col-md-3">
                                             <label class="sr-only" for="option_{{$j}}_type">Тип</label>
                                             <select class="form-control" name="option_{{$j}}_type" id="option_{{$j}}_type">
-                                                <option value="">Выберите тип</option>
                                                 @foreach($optionsTypes as $type)
                                                     <option value="{{$type->id}}">{{$type->NAME_RU}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
                                         <div class="col-md-2">
-                                            <label class="sr-only" for="option_{{$j}}_width">Ширина</label>
-                                            <input type="text" class="form-control" name="option_{{$j}}_width"
-                                                   id="option_{{$j}}_width"
-                                                   placeholder="Ширина">
+
                                         </div>
                                         <div class="col-md-2">
-                                            <label class="sr-only" for="option_{{$j}}_height">Высота</label>
-                                            <input type="text" class="form-control" name="option_{{$j}}_height"
-                                                   id="option_{{$j}}_height"
-                                                   placeholder="Высота">
+
                                         </div>
                                     </div>
                                 @endfor
@@ -122,4 +112,5 @@
             </div>
         </div>
     </div>
+    @include('bitrix.admin_options_dop_settings_window')
 @stop
