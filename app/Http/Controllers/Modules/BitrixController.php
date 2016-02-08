@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Modules;
 use Auth;
 use App\Models\Modules\Bitrix;
 use App\Models\Modules\BitrixAdminOptions;
+use App\Models\Modules\BitrixEventsHandlers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
@@ -173,12 +174,26 @@ class BitrixController extends Controller{
 		return redirect(action('Modules\BitrixController@admin_options', $module_id));
 	}
 
+	// страница обработчиков событий
 	public function events_handlers($module_id){
 		// todo проверка на авторство модуля
+
+		$handlers = BitrixEventsHandlers::where('module_id', $module_id)->get();
 		$data = [
-			'module'       => Bitrix::find($module_id)
+			'module'   => Bitrix::find($module_id),
+			'handlers' => $handlers
 		];
 
 		return view("bitrix.events_handlers", $data); // передаём данные из таблицы пользователей, чтобы подставлять их в формы
+	}
+
+	// сохранение обработчиков
+	public function events_handlers_save($module_id, Request $request){
+
+	}
+
+	// удаление обработчика
+	public function events_handler_delete($module_id, $handler_id){
+
 	}
 }

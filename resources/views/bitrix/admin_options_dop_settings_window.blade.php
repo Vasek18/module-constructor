@@ -18,8 +18,8 @@
                         <input class="form-control" type="text" name="option_width" id="option_width" value="">
                     </div>
                     <div class="form-group" data-for_type_ids="3,4,5">
-                        <label for="option_{{$i}}_vals">Значения</label>
-                        <input class="form-control" type="text" name="option_{{$i}}_vals" id="option_{{$i}}_vals"
+                        <label for="option_vals">Значения</label>
+                        <input class="form-control" type="text" name="option_vals" id="option_vals"
                                value="">
                     </div>
                     <div class="form-group" data-for_type_ids="3,4,5">
