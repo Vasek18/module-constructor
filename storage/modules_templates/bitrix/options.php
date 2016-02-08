@@ -69,6 +69,7 @@ $tabControl = new CAdminTabControl('tabControl', $aTabs);
 	<?
 	$tabControl->BeginNextTab();
 
+	require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/admin/group_rights.php");
 
 	$tabControl->Buttons(); ?>
 
