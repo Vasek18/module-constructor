@@ -11,6 +11,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
+// todo
+// вообще во всех методах надо проверять авторство
+// много копипаста, например, код отвечающий за настройки и обработчики практически одинаков
+
 class BitrixController extends Controller{
 	protected $rootFolder = '/construct/bitrix/'; // корневая папка модуля
 
@@ -189,11 +193,53 @@ class BitrixController extends Controller{
 
 	// сохранение обработчиков
 	public function events_handlers_save($module_id, Request $request){
+		// удаляем старые обработчики, чтобы при изменение уже заполненной строчки, старые данные с этой строчки не существовали
+		BitrixEventsHandlers::where('module_id', $module_id)->delete();
 
+		// перебираем все строки полей
+		foreach ($request->event as $i => $event){
+			$handler = [];
+			if (!$event){ // отметаем пустые строки
+				continue;
+			}
+			// обязательные поля
+			if (!$request['class_'.$i]){
+				continue;
+			}
+			if (!$request['method_'.$i]){
+				continue;
+			}
+			if (!$request['php_code_'.$i]){
+				continue;
+			}
+
+			$handler["module_id"] = $module_id;
+			$handler["event"] = $event;
+			$handler["class"] = $request['class_'.$i];
+			$handler["method"] = $request['method_'.$i];
+			$handler["php_code"] = $request['php_code_'.$i];
+
+			// записываем в бд
+			BitrixEventsHandlers::store($handler);
+		}
+
+		// записываем в папку модуля
+		//BitrixAdminOptions::saveOptionFile($module_id);
+
+		return redirect(action('Modules\BitrixController@events_handlers', $module_id));
 	}
 
 	// удаление обработчика
 	public function events_handler_delete($module_id, $handler_id){
+		if (!$handler_id || !$module_id){
+			return false;
+		}
+		// удаляем запись из БД
+		BitrixEventsHandlers::destroy($handler_id);
 
+		// производим замены в папке модуля
+		//BitrixAdminOptions::saveOptionFile($module_id);
+
+		return redirect(action('Modules\BitrixController@events_handlers', $module_id));
 	}
 }
