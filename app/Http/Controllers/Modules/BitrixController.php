@@ -172,4 +172,13 @@ class BitrixController extends Controller{
 
 		return redirect(action('Modules\BitrixController@admin_options', $module_id));
 	}
+
+	public function events_handlers($module_id){
+		// todo проверка на авторство модуля
+		$data = [
+			'module'       => Bitrix::find($module_id)
+		];
+
+		return view("bitrix.events_handlers", $data); // передаём данные из таблицы пользователей, чтобы подставлять их в формы
+	}
 }

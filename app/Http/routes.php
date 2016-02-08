@@ -49,3 +49,4 @@ Route::get('my-modules/bitrix/{id}/download', 'Modules\BitrixController@download
 Route::get('my-modules/bitrix/{id}/admin_options', 'Modules\BitrixController@admin_options'); // поля для страницы настроек
 Route::post('my-modules/bitrix/{id}/admin_options_save', 'Modules\BitrixController@admin_options_save'); // сохранение полей для страницы настроек
 Route::get('my-modules/bitrix/{module_id}/admin_option_delete/{option_id}', 'Modules\BitrixController@admin_option_delete'); // удаление поля для страницы настроек
+Route::get('my-modules/bitrix/{id}/events_handlers', 'Modules\BitrixController@events_handlers'); // привязка к событиясм
