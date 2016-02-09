@@ -110,6 +110,8 @@ class BitrixController extends Controller{
 		$module->delete();
 		// удаляем связанные свойства
 		BitrixAdminOptions::where('module_id', $id)->delete();
+		// удаляем связанные обработчики
+		BitrixEventsHandlers::where('module_id', $id)->delete();
 
 		return redirect(action("PersonalController@index"));
 	}
