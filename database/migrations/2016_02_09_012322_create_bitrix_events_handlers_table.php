@@ -13,6 +13,7 @@ class CreateBitrixEventsHandlersTable extends Migration{
 		Schema::create('bitrix_events_handlers', function (Blueprint $table){
 			$table->increments('id');
 			$table->integer('module_id');
+			$table->string('from_module');
 			$table->string('event');
 			$table->string('class');
 			$table->string('method');

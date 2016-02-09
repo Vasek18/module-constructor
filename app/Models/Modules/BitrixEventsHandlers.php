@@ -13,6 +13,7 @@ class BitrixEventsHandlers extends Model{
 
 		// запись в БД
 		$handler->module_id = $fields['module_id'];
+		$handler->from_module = $fields['from_module'];
 		$handler->event = $fields['event'];
 		$handler->class = $fields['class'];
 		$handler->method = $fields['method'];
@@ -36,8 +37,8 @@ class BitrixEventsHandlers extends Model{
 			$handlers = BitrixEventsHandlers::where('module_id', $module_id)->get();
 
 			foreach ($handlers as $handler){
-				$installHandlersCode .= "\t\t".'\Bitrix\Main\EventManager::getInstance()->registerEventHandler("'.$moduleIDForBitrix.'", "'.$handler->event.'", $this->MODULE_ID, "'.$handler->class.'", "'.$handler->method.'");'.PHP_EOL;
-				$uninstallHandlersCode .= "\t\t".'\Bitrix\Main\EventManager::getInstance()->unRegisterEventHandler("'.$moduleIDForBitrix.'", "'.$handler->event.'", $this->MODULE_ID, "'.$handler->class.'", "'.$handler->method.'");'.PHP_EOL;
+				$installHandlersCode .= "\t\t".'\Bitrix\Main\EventManager::getInstance()->registerEventHandler("'.$handler->from_module.'", "'.$handler->event.'", $this->MODULE_ID, "'.$handler->class.'", "'.$handler->method.'");'.PHP_EOL;
+				$uninstallHandlersCode .= "\t\t".'\Bitrix\Main\EventManager::getInstance()->unRegisterEventHandler("'.$handler->from_module.'", "'.$handler->event.'", $this->MODULE_ID, "'.$handler->class.'", "'.$handler->method.'");'.PHP_EOL;
 			}
 			//dd($installHandlersCode);
 

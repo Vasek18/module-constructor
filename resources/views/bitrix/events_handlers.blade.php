@@ -3,10 +3,10 @@
 @section('content')
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-2">
                 @include('bitrix.menu')
             </div>
-            <div class="col-md-8">
+            <div class="col-md-9">
                 <div class="panel panel-default">
                     @if ($module->id)
                         <div class="panel-heading">Привязка к событиям | Модуль "{{$module->MODULE_NAME}}"
@@ -17,7 +17,10 @@
                                   action="{{ action('Modules\BitrixController@events_handlers_save', $module->id) }}">
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 <div class="row option-headers">
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
+                                        <label>Модуль генерирующий событие</label>
+                                    </div>
+                                    <div class="col-md-2">
                                         <label>Событие</label>
                                     </div>
                                     <div class="col-md-2">
@@ -26,13 +29,19 @@
                                     <div class="col-md-2">
                                         <label>Метод для обработчика</label>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <label>Код обработчика</label>
                                     </div>
                                 </div>
                                 @foreach($handlers as $i => $handler)
                                     <div class="row option">
-                                        <div class="col-md-3">
+                                        <div class="col-md-2">
+                                            <label class="sr-only" for="from_module_{{$i}}">Модуль</label>
+                                            <input type="text" class="form-control" name="from_module_{{$i}}"
+                                                   id="from_module_{{$i}}"
+                                                   placeholder="Модуль" value="{{$handler->from_module}}">
+                                        </div>
+                                        <div class="col-md-2">
                                             <label class="sr-only" for="event_{{$i}}">Событие</label>
                                             <input type="text" class="form-control" name="event[]"
                                                    id="event_{{$i}}"
@@ -50,7 +59,7 @@
                                                    id="method_{{$i}}"
                                                    placeholder="Метод для обработчика" value="{{$handler->method}}">
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <label class="sr-only" for="php_code_{{$i}}">Код для обработчика</label>
                                             <textarea class="form-control" name="php_code_{{$i}}"
                                                       id="php_code_{{$i}}"
@@ -68,7 +77,14 @@
                                 {{-- Дополнительно показываем ещё несколько пустых строк --}}
                                 @for ($j = count($handlers); $j < count($handlers)+5; $j++)
                                     <div class="row option">
-                                        <div class="col-md-3">
+                                        <div class="col-md-2">
+                                            <label class="sr-only" for="from_module_{{$j}}">Модуль</label>
+                                            <input type="text" class="form-control" name="from_module_{{$j}}"
+                                                   id="from_module_{{$j}}"
+                                                   placeholder="Модуль"
+                                                    >
+                                        </div>
+                                        <div class="col-md-2">
                                             <label class="sr-only" for="event_{{$j}}">Событие</label>
                                             <input type="text" class="form-control" name="event[]"
                                                    id="event_{{$j}}"
@@ -89,7 +105,7 @@
                                                    placeholder="Метод для обработчика"
                                                     >
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <label class="sr-only" for="php_code_{{$j}}">Код для обработчика</label>
                                             <textarea class="form-control" name="php_code_{{$j}}"
                                                       id="php_code_{{$j}}"

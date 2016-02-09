@@ -212,9 +212,13 @@ class BitrixController extends Controller{
 			if (!$request['php_code_'.$i]){
 				continue;
 			}
+			if (!$request['from_module_'.$i]){
+				continue;
+			}
 
 			$handler["module_id"] = $module_id;
 			$handler["event"] = $event;
+			$handler["from_module"] = $request['from_module_'.$i];
 			$handler["class"] = $request['class_'.$i];
 			$handler["method"] = $request['method_'.$i];
 			$handler["php_code"] = $request['php_code_'.$i];
