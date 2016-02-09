@@ -3,6 +3,7 @@
 namespace App\Models\Modules;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class BitrixEventsHandlers extends Model{
 	protected $table = 'bitrix_events_handlers';
@@ -24,12 +25,27 @@ class BitrixEventsHandlers extends Model{
 	}
 
 	// сохраняем обработчики в папку модуля
-	static public function saveOptionFile($module_id){
+	static public function saveEventsInFolder($module_id){
 		if (BitrixEventsHandlers::where('module_id', $module_id)->count()){
 			$module = Bitrix::find($module_id);
 			$LANG_KEY = strtoupper($module->PARTNER_CODE."_".$module->MODULE_CODE);
+			$moduleIDForBitrix = $module->PARTNER_CODE.".".$module->MODULE_CODE;
+			$installHandlersCode = '';
+			$uninstallHandlersCode = '';
 
 			$handlers = BitrixEventsHandlers::where('module_id', $module_id)->get();
+
+			foreach ($handlers as $handler){
+				$installHandlersCode .= "\t\t".'\Bitrix\Main\EventManager::getInstance()->registerEventHandler("'.$moduleIDForBitrix.'", "'.$handler->event.'", $this->MODULE_ID, "'.$handler->class.'", "'.$handler->method.'");'.PHP_EOL;
+				$uninstallHandlersCode .= "\t\t".'\Bitrix\Main\EventManager::getInstance()->unRegisterEventHandler("'.$moduleIDForBitrix.'", "'.$handler->event.'", $this->MODULE_ID, "'.$handler->class.'", "'.$handler->method.'");'.PHP_EOL;
+			}
+			//dd($installHandlersCode);
+
+			// записываем код установки и удаления
+			$file = Storage::disk('user_modules')->get($moduleIDForBitrix.'/install/index.php');
+			$file = preg_replace('/function InstallEvents\(\)\{[^\}]+\}/i', 'function InstallEvents(){'.PHP_EOL.$installHandlersCode.PHP_EOL.'}', $file);
+			$file = preg_replace('/function UnInstallEvents\(\)\{[^\}]+\}/i', 'function InstallEvents(){'.PHP_EOL.$uninstallHandlersCode.PHP_EOL.'}', $file);
+			Storage::disk('user_modules')->put($moduleIDForBitrix.'/install/index.php', $file);
 		}
 	}
 }

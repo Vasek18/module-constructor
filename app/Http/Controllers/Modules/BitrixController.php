@@ -224,7 +224,7 @@ class BitrixController extends Controller{
 		}
 
 		// записываем в папку модуля
-		//BitrixAdminOptions::saveOptionFile($module_id);
+		BitrixEventsHandlers::saveEventsInFolder($module_id);
 
 		return redirect(action('Modules\BitrixController@events_handlers', $module_id));
 	}
@@ -238,7 +238,7 @@ class BitrixController extends Controller{
 		BitrixEventsHandlers::destroy($handler_id);
 
 		// производим замены в папке модуля
-		//BitrixAdminOptions::saveOptionFile($module_id);
+		BitrixEventsHandlers::saveEventsInFolder($module_id);
 
 		return redirect(action('Modules\BitrixController@events_handlers', $module_id));
 	}

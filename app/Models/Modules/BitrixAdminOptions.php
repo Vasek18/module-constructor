@@ -42,7 +42,7 @@ class BitrixAdminOptions extends Model{
 			$optionsLangString = '';
 
 			// получаем типы полей
-			$dboptionsTypes = DB::table('bitrix_modules_options_types')->get(); // приводим к типу, где ключом выступает id // todo скорее всего есть способ легче всё это получать
+			$dboptionsTypes = DB::table('bitrix_modules_options_types')->get(); // приводим к типу, где ключом выступает id, чтобы получать инфу по идентификатору типа // todo скорее всего есть способ легче всё это получать
 			$optionsTypes = [];
 			foreach ($dboptionsTypes as $option){
 				$optionsTypes[$option->id] = $option;
