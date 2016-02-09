@@ -70,6 +70,7 @@ class Bitrix extends Model{
 
 		// воссоздаём начальную структуру
 		Storage::disk('user_modules')->makeDirectory($myModuleFolder."/install");
+		Storage::disk('user_modules')->makeDirectory($myModuleFolder."/lib");
 
 		// подставляем значения в шаблон индексного файла и шагов установки
 		Bitrix::changeVarsInModuleFileAndSave('bitrix/install/index.php', $module_id);
