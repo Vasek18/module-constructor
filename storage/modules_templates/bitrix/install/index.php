@@ -5,7 +5,6 @@ use \Bitrix\Main\Application;
 Loc::loadMessages(__FILE__);
 
 Class {MODULE_CLASS_NAME} extends CModule{
-	const MODULE_ID = '{MODULE_ID}';
 	var	$MODULE_ID = '{MODULE_ID}';
 	var $MODULE_VERSION;
 	var $MODULE_VERSION_DATE;

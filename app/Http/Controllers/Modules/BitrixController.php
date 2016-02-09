@@ -85,6 +85,18 @@ class BitrixController extends Controller{
 		return view("bitrix.detail", $data);
 	}
 
+	// редактирование параметра
+	public function edit_param($id, Request $request){
+		if ($request->module_name){
+
+		}
+		if ($request->module_description){
+
+		}
+
+		return redirect(action('Modules\BitrixController@detail', $id));
+	}
+
 	// кнопка скачивания зип архива
 	// todo проверка на владение модулем
 	public function download_zip($id){

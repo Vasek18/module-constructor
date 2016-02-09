@@ -44,7 +44,8 @@ Route::get('/personal', ['as' => 'personal', 'uses' => 'PersonalController@index
 Route::get('construct/bitrix', 'Modules\BitrixController@index'); // показ страницы создания
 Route::post('construct/bitrix/create', 'Modules\BitrixController@create'); // сабмит формы создания // создание модуля
 Route::get('my-modules/bitrix/{id}', 'Modules\BitrixController@detail'); // детальная страница модуля
-Route::get('my-modules/bitrix/{id}/delete', 'Modules\BitrixController@delete'); // детальная страница модуля
+Route::post('my-modules/bitrix/{id}/edit_param', 'Modules\BitrixController@edit_param'); // детальная страница модуля
+Route::get('my-modules/bitrix/{id}/delete', 'Modules\BitrixController@delete'); // удалить модуль
 Route::get('my-modules/bitrix/{id}/download', 'Modules\BitrixController@download_zip'); // скачать архив
 Route::get('my-modules/bitrix/{id}/admin_options', 'Modules\BitrixController@admin_options'); // поля для страницы настроек
 Route::post('my-modules/bitrix/{id}/admin_options_save', 'Modules\BitrixController@admin_options_save'); // сохранение полей для страницы настроек
