@@ -260,4 +260,12 @@ class BitrixController extends Controller{
 
 		return redirect(action('Modules\BitrixController@events_handlers', $module_id));
 	}
+
+	// страница списка компонентов модуля
+	public function components($module_id){
+		$data = [
+			'module' => Bitrix::find($module_id),
+		];
+		return view("bitrix.components", $data);
+	}
 }
