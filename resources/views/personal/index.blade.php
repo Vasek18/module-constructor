@@ -12,7 +12,7 @@
                     <div class="panel-heading">Модуль "{{$module->MODULE_NAME}}" ({{$module->PARTNER_CODE}}.{{$module->MODULE_CODE}})</div>
                     <div class="panel-body">
                         <p> {{$module->MODULE_DESCRIPTION}} </p>
-                        <div class="actions pull-right">
+                        <div class="actions pull-left">
                             <a href="{{ action('Modules\BitrixController@detail', $module->id) }}"
                                class="btn btn-sm btn-primary">
                                 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
