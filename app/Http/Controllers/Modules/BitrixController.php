@@ -268,4 +268,20 @@ class BitrixController extends Controller{
 		];
 		return view("bitrix.components", $data);
 	}
+
+	// страница добавления компонента
+	public function new_components($module_id){
+		$data = [
+			'module' => Bitrix::find($module_id),
+		];
+		return view("bitrix.components.new", $data);
+	}
+
+	// добавление компонента
+	public function component_create($module_id, Request $request){
+		// создание записи в бд и шаблона
+		//$id = Bitrix::store($request);
+		//
+		//return redirect(action('Modules\BitrixController@detail', $id));
+	}
 }

@@ -54,3 +54,4 @@ Route::get('my-modules/bitrix/{id}/events_handlers', ['as' => 'bitrix_module_eve
 Route::post('my-modules/bitrix/{id}/events_handlers_save', 'Modules\BitrixController@events_handlers_save'); // сохранение обработчиков событий
 Route::get('my-modules/bitrix/{module_id}/events_handler_delete/{option_id}', 'Modules\BitrixController@events_handler_delete'); // удаление обработчика событий
 Route::get('my-modules/bitrix/{id}/components', ['as' => 'bitrix_module_components', 'uses' => 'Modules\BitrixController@components']); // компоненты
+Route::get('my-modules/bitrix/{id}/new_components', ['as' => 'bitrix_new_component', 'uses' => 'Modules\BitrixController@new_components']); // компоненты

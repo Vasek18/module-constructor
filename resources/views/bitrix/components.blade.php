@@ -16,7 +16,7 @@
                             ({{$module->PARTNER_CODE}}.{{$module->MODULE_CODE}})
                         </div>
                         <div class="panel-body">
-                            <a href="#" class="btn btn-primary">Добавить компонент</a>
+                            <a href="{{ route('bitrix_new_component', $module->id) }}" class="btn btn-primary">Добавить компонент</a>
                         </div>
                     @else
                         <div class="panel-body">
