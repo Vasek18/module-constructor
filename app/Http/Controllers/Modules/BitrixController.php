@@ -6,6 +6,7 @@ use Auth;
 use App\Models\Modules\Bitrix;
 use App\Models\Modules\BitrixAdminOptions;
 use App\Models\Modules\BitrixEventsHandlers;
+use App\Models\Modules\BitrixComponent;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
@@ -76,6 +77,7 @@ class BitrixController extends Controller{
 
 	// детальная страница модуля
 	public function detail($id){
+		//dd($id);
 		// todo проверка на авторство модуля
 		$data = [
 			'module' => Bitrix::find($id)
@@ -279,9 +281,9 @@ class BitrixController extends Controller{
 
 	// добавление компонента
 	public function component_create($module_id, Request $request){
-		// создание записи в бд и шаблона
-		//$id = Bitrix::store($request);
+		//dd($request->all());
+		$id = BitrixComponent::store($module_id, $request);
 		//
-		//return redirect(action('Modules\BitrixController@detail', $id));
+		return redirect(route('bitrix_module_detail', $module_id));
 	}
 }

@@ -16,6 +16,7 @@ class CreateBitrixComponentsTable extends Migration{
 			$table->increments('id');
 			$table->integer('module_id');
 			$table->string('name');
+			$table->string('code');
 			$table->text('desc');
 			$table->timestamps();
 		});
