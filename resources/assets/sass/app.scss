@@ -1,36 +1,31 @@
-html,
-body {
+// @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+
+html, body{
   height: 100%;
 }
-
-#wrap {
+#wrap{
   min-height: 100%;
   height: auto !important;
   height: 100%;
   margin: 0 auto -80px auto;
 }
-
-#push {
+#push{
   height: 80px;
 }
-
-footer {
+footer{
   height: 80px;
   border-top: 2px solid #aaa;
 }
-
-.creator {
+.creator{
   padding: 10px 0;
   margin: 30px 0 0 0;
   text-align: center;
   font-size: 17px;
 }
-
-.creator a {
+.creator a{
   color: #777;
 }
-
-.row.option {
+.row.option{
   margin-top: 15px;
   margin-bottom: 15px;
 }

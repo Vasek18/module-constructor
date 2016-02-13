@@ -16,7 +16,15 @@
                             ({{$module->PARTNER_CODE}}.{{$module->MODULE_CODE}})
                         </div>
                         <div class="panel-body">
-                            <a href="{{ route('bitrix_new_component', $module->id) }}" class="btn btn-primary">Добавить компонент</a>
+                            <a href="{{ route('bitrix_new_component', $module->id) }}" class="btn btn-primary">Добавить
+                                компонент</a>
+                            <br>
+                            <br>
+                            <div class="list-group">
+                                @foreach($components as $component)
+                                    <a class="list-group-item" href="#">Компонент "{{$module->MODULE_NAME}}"</a>
+                                @endforeach
+                            </div>
                         </div>
                     @else
                         <div class="panel-body">

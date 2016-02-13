@@ -16,7 +16,7 @@
                             ({{$module->PARTNER_CODE}}.{{$module->MODULE_CODE}})
                         </div>
                         <div class="panel-body">
-                            <form role="form" method="POST" action="{{ action('Modules\BitrixController@admin_options_save', $module->id) }}" >
+                            <form role="form" method="POST" action="{{ action('Modules\BitrixOptionsController@store', $module->id) }}" >
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 <div class="row option-headers">
                                     <div class="col-md-2">
@@ -64,7 +64,7 @@
                                             <a href="#" class="btn btn-default" data-toggle="modal" data-target="#admin_options_dop_settings_window">Редактировать</a>
                                         </div>
                                         <div class="col-md-2">
-                                            <a href="{{ action('Modules\BitrixController@admin_option_delete', [$module->id, $option->id]) }}"
+                                            <a href="{{ action('Modules\BitrixOptionsController@destroy', [$module->id, $option->id]) }}"
                                                class="btn btn-danger">
                                                 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                                                 Удалить

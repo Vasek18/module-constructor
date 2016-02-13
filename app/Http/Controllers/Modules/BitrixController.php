@@ -130,7 +130,7 @@ class BitrixController extends Controller{
 		return redirect(action("PersonalController@index"));
 	}
 
-	// страница настроек для страницы настроек
+/*	// страница настроек для страницы настроек
 	public function admin_options($id){
 		$optionsTypes = DB::table('bitrix_modules_options_types')->get();
 		$options = BitrixAdminOptions::where('module_id', $id)->get();
@@ -192,7 +192,7 @@ class BitrixController extends Controller{
 		BitrixAdminOptions::saveOptionFile($module_id);
 
 		return redirect(action('Modules\BitrixController@admin_options', $module_id));
-	}
+	}*/
 
 	// страница обработчиков событий
 	public function events_handlers($module_id){
@@ -265,8 +265,10 @@ class BitrixController extends Controller{
 
 	// страница списка компонентов модуля
 	public function components($module_id){
+		$components = BitrixAdminOptions::where('module_id', $module_id)->get();
 		$data = [
 			'module' => Bitrix::find($module_id),
+			'components' => $components
 		];
 		return view("bitrix.components", $data);
 	}
