@@ -106,30 +106,4 @@ class BitrixController extends Controller{
 
 		return redirect(action("PersonalController@index"));
 	}
-
-	// страница списка компонентов модуля
-	public function components($module_id){
-		$components = BitrixAdminOptions::where('module_id', $module_id)->get();
-		$data = [
-			'module' => Bitrix::find($module_id),
-			'components' => $components
-		];
-		return view("bitrix.components", $data);
-	}
-
-	// страница добавления компонента
-	public function new_components($module_id){
-		$data = [
-			'module' => Bitrix::find($module_id),
-		];
-		return view("bitrix.components.new", $data);
-	}
-
-	// добавление компонента
-	public function component_create($module_id, Request $request){
-		//dd($request->all());
-		$id = BitrixComponent::store($module_id, $request);
-		//
-		return redirect(route('bitrix_module_detail', $module_id));
-	}
 }
