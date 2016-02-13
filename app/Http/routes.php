@@ -42,13 +42,15 @@ Route::post('my-modules/bitrix/{id}/edit_param', 'Modules\BitrixController@edit_
 Route::get('my-modules/bitrix/{id}/delete', 'Modules\BitrixController@delete'); // удалить модуль
 Route::get('my-modules/bitrix/{id}/download', 'Modules\BitrixController@download_zip'); // скачать архив
 // настройки
-Route::get('my-modules/bitrix/{id}/admin_options', ['as' => 'bitrix_module_admin_options', 'uses' => 'Modules\BitrixOptionsController@show']); // поля для страницы настроек
-Route::post('my-modules/bitrix/{id}/admin_options_save', 'Modules\BitrixOptionsController@store'); // сохранение полей для страницы настроек
-Route::get('my-modules/bitrix/{module_id}/admin_option_delete/{option_id}', 'Modules\BitrixOptionsController@destroy'); // удаление поля для страницы настроек
+Route::get('my-modules/bitrix/{id}/admin_options', ['as' => 'bitrix_module_admin_options', 'uses' => 'Modules\BitrixOptionsController@show']);
+Route::post('my-modules/bitrix/{id}/admin_options_save', 'Modules\BitrixOptionsController@store');
+Route::get('my-modules/bitrix/{module_id}/admin_option_delete/{option_id}', 'Modules\BitrixOptionsController@destroy');
 // .настройки
-Route::get('my-modules/bitrix/{id}/events_handlers', ['as' => 'bitrix_module_events_handlers', 'uses' => 'Modules\BitrixController@events_handlers']); // привязка к событиям
-Route::post('my-modules/bitrix/{id}/events_handlers_save', 'Modules\BitrixController@events_handlers_save'); // сохранение обработчиков событий
-Route::get('my-modules/bitrix/{module_id}/events_handler_delete/{option_id}', 'Modules\BitrixController@events_handler_delete'); // удаление обработчика событий
+// обработчики событий
+Route::get('my-modules/bitrix/{id}/events_handlers', ['as' => 'bitrix_module_events_handlers', 'uses' => 'Modules\BitrixEventHandlersController@show']);
+Route::post('my-modules/bitrix/{id}/events_handlers_save', 'Modules\BitrixEventHandlersController@store');
+Route::get('my-modules/bitrix/{module_id}/events_handler_delete/{option_id}', 'Modules\BitrixEventHandlersController@destroy');
+// .обработчики событий
 Route::get('my-modules/bitrix/{id}/components', ['as' => 'bitrix_module_components', 'uses' => 'Modules\BitrixController@components']); // компоненты
 Route::get('my-modules/bitrix/{id}/new_components', ['as' => 'bitrix_new_component', 'uses' => 'Modules\BitrixController@new_components']); // компоненты
 Route::post('my-modules/bitrix/{id}/component_create','Modules\BitrixController@component_create'); // создание компонента

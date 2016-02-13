@@ -14,7 +14,7 @@
                         </div>
                         <div class="panel-body">
                             <form role="form" method="POST"
-                                  action="{{ action('Modules\BitrixController@events_handlers_save', $module->id) }}">
+                                  action="{{ action('Modules\BitrixEventHandlersController@store', $module->id) }}">
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 <div class="row option-headers">
                                     <div class="col-md-2">
@@ -67,7 +67,7 @@
                                                       rows="10">{{$handler->php_code}}</textarea>
                                         </div>
                                         <div class="col-md-1">
-                                            <a href="{{ action('Modules\BitrixController@events_handler_delete', [$module->id, $handler->id]) }}"
+                                            <a href="{{ action('Modules\BitrixEventHandlersController@destroy', [$module->id, $handler->id]) }}"
                                                class="btn btn-danger">
                                                 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                                             </a>
