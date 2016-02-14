@@ -4,13 +4,10 @@ namespace App\Http\Controllers\Modules;
 
 use Auth;
 use App\Models\Modules\Bitrix;
-use App\Models\Modules\BitrixAdminOptions;
-use App\Models\Modules\BitrixEventsHandlers;
-use App\Models\Modules\BitrixComponent;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\DB;
+use App\Http\Requests;
 
 // todo
 // вообще во всех методах надо проверять авторство
@@ -36,16 +33,7 @@ class BitrixController extends Controller{
 		return view("bitrix.new", compact('user')); // передаём данные из таблицы пользователей, чтобы подставлять их в формы
 	}
 
-	public function store(Request $request){
-		//dd($request->all());
-
-		// валидация
-		// todo нет смысла повторять валидацию с условий в html5, тут надо проверять что как в базе и не пропускать атаки из скриптов
-		$this->validate($request, [
-			'PARTNER_NAME' => 'required|max:255', // exists:table,column
-			'MODULE_CODE'  => 'required|max:255',
-		]);
-
+	public function store(Requests\BitrixCreateRequest $request){
 		// создание записи в бд и шаблона
 		$id = Bitrix::store($request);
 
