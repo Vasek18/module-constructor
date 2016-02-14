@@ -77,4 +77,9 @@ class BitrixAdminOptions extends Model{
 			Bitrix::changeVarsInModuleFileAndSave('bitrix/lang/ru/options.php', $module_id, Array("{OPTIONS_LANG}"), Array($optionsLangString));
 		}
 	}
+
+	// связи с другими моделями
+	public function module(){
+		return $this->belongsTo('App\Models\Modules\Bitrix');
+	}
 }

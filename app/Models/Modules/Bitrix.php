@@ -156,7 +156,11 @@ class Bitrix extends Model{
 		return $archiveName;
 	}
 
+	// связи с другими моделями
 	public function creator(){
 		return $this->belongsTo('App\Models\User');
+	}
+	public function options(){
+		return $this->hasMany('App\Models\Modules\BitrixAdminOptions');
 	}
 }

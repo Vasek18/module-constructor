@@ -99,10 +99,6 @@ class BitrixController extends Controller{
 		Storage::disk('user_modules')->deleteDirectory($myModuleFolder);
 		// удаляем запись из БД
 		$module->delete();
-		// удаляем связанные свойства
-		BitrixAdminOptions::where('module_id', $id)->delete();
-		// удаляем связанные обработчики
-		BitrixEventsHandlers::where('module_id', $id)->delete();
 
 		return redirect(action("PersonalController@index"));
 	}

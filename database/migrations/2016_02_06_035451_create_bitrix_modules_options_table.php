@@ -12,8 +12,9 @@ class CreateBitrixModulesOptionsTable extends Migration{
 	public function up(){
 		Schema::create('bitrix_modules_options', function (Blueprint $table){
 			$table->increments('id');
-			$table->integer('module_id');
-			$table->integer('type_id');
+			$table->integer('module_id')->unsigned();
+			$table->foreign('module_id')->references('id')->on('bitrixes')->onDelete('cascade');
+			$table->integer('type_id')->unsigned();
 			$table->string('code');
 			$table->string('name');
 			$table->integer('height')->nullable();
