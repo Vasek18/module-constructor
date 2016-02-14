@@ -55,7 +55,7 @@
                                         <div class="col-md-3">
                                             <label class="sr-only" for="option_{{$i}}_type">Тип</label>
                                             <select class="form-control" name="option_{{$i}}_type" id="option_{{$i}}_type">
-                                                @foreach($optionsTypes as $type)
+                                                @foreach(DB::table('bitrix_modules_options_types')->get() as $type)
                                                     <option @if ($option->type_id == $type->id) selected @endif value="{{$type->id}}">{{$type->NAME_RU}}</option>
                                                 @endforeach
                                             </select>
@@ -89,7 +89,7 @@
                                         <div class="col-md-3">
                                             <label class="sr-only" for="option_{{$j}}_type">Тип</label>
                                             <select class="form-control" name="option_{{$j}}_type" id="option_{{$j}}_type">
-                                                @foreach($optionsTypes as $type)
+                                                @foreach(DB::table('bitrix_modules_options_types')->get() as $type)
                                                     <option value="{{$type->id}}">{{$type->NAME_RU}}</option>
                                                 @endforeach
                                             </select>

@@ -54,7 +54,7 @@ class BitrixEventHandlersController extends Controller{
 			$handler["from_module"] = $request['from_module_'.$i];
 			$handler["class"] = $request['class_'.$i];
 			$handler["method"] = $request['method_'.$i];
-			$handler["php_code"] = $request['php_code_'.$i];
+			$handler["php_code"] = trim($request['php_code_'.$i]);
 
 			// записываем в бд
 			BitrixEventsHandlers::store($handler);

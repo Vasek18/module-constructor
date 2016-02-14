@@ -9,25 +9,21 @@ use App\Http\Controllers\Controller;
 use Auth;
 use App\Models\Modules\Bitrix;
 use App\Models\Modules\BitrixAdminOptions;
-use Illuminate\Support\Facades\DB;
 
 class BitrixOptionsController extends Controller{
 
 	// страница настроек для страницы настроек
-	public function show($id){
-		$optionsTypes = DB::table('bitrix_modules_options_types')->get();
-		$options = BitrixAdminOptions::where('module_id', $id)->get();
+	public function show(Bitrix $module){
+		$options = BitrixAdminOptions::where('module_id', $module->id)->get();
 
 		$data = [
-			'module'       => Bitrix::find($id),
-			'optionsTypes' => $optionsTypes,
+			'module'       => $module,
 			'options'      => $options
 		];
 
 		return view("bitrix.admin_options", $data);
 	}
 
-	// сохранение полей для страницы настроек
 	public function store($module_id, Request $request){
 		// удаляем старые свойства, чтобы при изменение уже заполненной строчки, старые данные с этой строчки не существовали
 		BitrixAdminOptions::where('module_id', $module_id)->delete();
