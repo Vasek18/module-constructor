@@ -46,7 +46,7 @@ class BitrixEventsHandlers extends Model{
 				$template_search = Array('{MODULE_NAMESPACE}', '{CLASS_NAMESPACE}', '{CLASS}', '{METHOD}', '{PHP_CODE}');
 				$template_replace = Array($moduleNamespace, $classNamespace, $handler->class, $handler->method, $handler->php_code);
 				$handlerFile = str_replace($template_search, $template_replace, $handlerTemplate);
-				Storage::disk('user_modules')->put($moduleIDForBitrix.'/lib/'.$handler->class.'.php', $handlerFile);
+				Storage::disk('user_modules')->put($moduleIDForBitrix.'/lib/'.strtolower($handler->class).'.php', $handlerFile);
 			}
 			//dd($installHandlersCode);
 
