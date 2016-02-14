@@ -8,10 +8,6 @@ use Auth;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
-use ZipArchive;
-use RecursiveIteratorIterator;
-use RecursiveDirectoryIterator;
-use Chumper\Zipper\Zipper;
 
 class Bitrix extends Model{
 	//

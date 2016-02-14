@@ -17,7 +17,7 @@
                                class="btn btn-sm btn-primary">
                                 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                             </a>
-                            <a href="{{ action('Modules\BitrixController@delete', $module->id) }}"
+                            <a href="{{ action('Modules\BitrixController@destroy', $module->id) }}"
                                class="btn btn-sm btn-danger">
                                 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                             </a>

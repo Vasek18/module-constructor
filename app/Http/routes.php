@@ -36,10 +36,10 @@ Route::get('/personal', ['as' => 'personal', 'uses' => 'PersonalController@index
 
 // Битрикс
 Route::get('construct/bitrix', 'Modules\BitrixController@index'); // показ страницы создания
-Route::post('construct/bitrix/create', 'Modules\BitrixController@create'); // сабмит формы создания // создание модуля
-Route::get('my-modules/bitrix/{id}',  ['as' => 'bitrix_module_detail', 'uses' => 'Modules\BitrixController@detail']); // детальная страница модуля
+Route::post('construct/bitrix/create', 'Modules\BitrixController@store'); // сабмит формы создания // создание модуля
+Route::get('my-modules/bitrix/{module}',  ['as' => 'bitrix_module_detail', 'uses' => 'Modules\BitrixController@detail']); // детальная страница модуля
 Route::post('my-modules/bitrix/{id}/edit_param', 'Modules\BitrixController@edit_param'); // детальная страница модуля
-Route::get('my-modules/bitrix/{id}/delete', 'Modules\BitrixController@delete'); // удалить модуль
+Route::get('my-modules/bitrix/{module}/delete', 'Modules\BitrixController@destroy'); // удалить модуль
 Route::get('my-modules/bitrix/{id}/download', 'Modules\BitrixController@download_zip'); // скачать архив
 // настройки
 Route::get('my-modules/bitrix/{module}/admin_options', ['as' => 'bitrix_module_admin_options', 'uses' => 'Modules\BitrixOptionsController@show']);

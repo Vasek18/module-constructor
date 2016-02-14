@@ -59,7 +59,7 @@
                                     <a class="btn btn-primary btn-block"
                                        href="{{ action('Modules\BitrixController@download_zip', $module->id) }}">Скачать</a>
                                     <a class="btn btn-danger btn-block"
-                                       href="{{ action('Modules\BitrixController@delete', $module->id) }}">Удалить</a>
+                                       href="{{ action('Modules\BitrixController@destroy', $module->id) }}">Удалить</a>
                                 </div>
 
                             </div>

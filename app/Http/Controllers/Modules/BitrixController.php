@@ -36,7 +36,7 @@ class BitrixController extends Controller{
 		return view("bitrix.new", compact('user')); // передаём данные из таблицы пользователей, чтобы подставлять их в формы
 	}
 
-	public function create(Request $request){
+	public function store(Request $request){
 		//dd($request->all());
 
 		// валидация
@@ -53,11 +53,11 @@ class BitrixController extends Controller{
 	}
 
 	// детальная страница модуля
-	public function detail($id){
+	public function detail(Bitrix $module){
 		//dd($id);
 		// todo проверка на авторство модуля
 		$data = [
-			'module' => Bitrix::find($id)
+			'module' => $module
 		];
 
 		//dd(Bitrix::where("id", $id)->get());
@@ -83,17 +83,13 @@ class BitrixController extends Controller{
 			return response()->download($pathToZip)->deleteFileAfterSend(true);
 		}
 
-		return redirect(action('Modules\BitrixController@detail', $id));
+		return back();
 	}
 
 	// удаление модуля
 	// todo проверка на владение модулем
 	// todo подтверждение удаления
-	public function delete($id){
-		if (!$id){
-			return false;
-		}
-		$module = Bitrix::find($id);
+	public function destroy(Bitrix $module){
 		// удаляем папку
 		$myModuleFolder = $module->PARTNER_CODE.".".$module->MODULE_CODE;
 		Storage::disk('user_modules')->deleteDirectory($myModuleFolder);
