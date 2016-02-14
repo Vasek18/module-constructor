@@ -155,4 +155,8 @@ class Bitrix extends Model{
 
 		return $archiveName;
 	}
+
+	public function creator(){
+		return $this->belongsTo('App\Models\User');
+	}
 }
