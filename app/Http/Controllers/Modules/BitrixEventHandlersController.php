@@ -13,6 +13,11 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Modules\BitrixEventsHandlers;
 
 class BitrixEventHandlersController extends Controller{
+
+	public function __construct(){
+		$this->middleware('auth');
+	}
+
 	// страница обработчиков событий
 	public function show($module_id){
 		$handlers = BitrixEventsHandlers::where('module_id', $module_id)->get();

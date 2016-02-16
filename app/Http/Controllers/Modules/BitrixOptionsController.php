@@ -12,13 +12,17 @@ use App\Models\Modules\BitrixAdminOptions;
 
 class BitrixOptionsController extends Controller{
 
+	public function __construct(){
+		$this->middleware('auth');
+	}
+
 	// страница настроек для страницы настроек
 	public function show(Bitrix $module){
 		$options = BitrixAdminOptions::where('module_id', $module->id)->get();
 
 		$data = [
-			'module'       => $module,
-			'options'      => $options
+			'module'  => $module,
+			'options' => $options
 		];
 
 		return view("bitrix.admin_options", $data);

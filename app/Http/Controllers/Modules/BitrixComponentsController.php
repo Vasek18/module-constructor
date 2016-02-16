@@ -11,6 +11,10 @@ use App\Models\Modules\BitrixAdminOptions;
 use App\Models\Modules\BitrixComponent;
 
 class BitrixComponentsController extends Controller{
+	public function __construct(){
+		$this->middleware('auth');
+	}
+
 	public function show($module_id){
 		$components = BitrixAdminOptions::where('module_id', $module_id)->get();
 		$data = [

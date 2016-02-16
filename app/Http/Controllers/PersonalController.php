@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -10,6 +9,11 @@ use App\Models\Modules\Bitrix;
 use Auth;
 
 class PersonalController extends Controller{
+
+	public function __construct(){
+		$this->middleware('auth');
+	}
+
 	/**
 	 * Display a listing of the resource.
 	 *
