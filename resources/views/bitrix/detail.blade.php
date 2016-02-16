@@ -5,6 +5,7 @@
 @stop
 
 @section('page')
+    {{--также нужна краткая сводка со всех остальных страниц--}}
     <div class="row">
         <div class="col-md-10">
             <form method="post"

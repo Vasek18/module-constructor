@@ -36,6 +36,7 @@ Class {MODULE_CLASS_NAME} extends CModule{
 	}
 
 	function UnInstallDB($arParams = array()){
+		\Bitrix\Main\Config\Option::delete($this->MODULE_ID);
 		return true;
 	}
 
