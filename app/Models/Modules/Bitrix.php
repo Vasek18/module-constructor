@@ -159,4 +159,8 @@ class Bitrix extends Model{
 	public function options(){
 		return $this->hasMany('App\Models\Modules\BitrixAdminOptions');
 	}
+
+	public function ownedBy(User $user){
+		return $this->user_id == $user->id;
+	}
 }
