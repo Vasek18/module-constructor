@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests;
+use App\Http\Controllers\Traits\UserOwnModule;
 
 // todo
 // вообще во всех методах надо проверять авторство
@@ -15,6 +16,8 @@ use App\Http\Requests;
 
 class BitrixController extends Controller{
 	protected $rootFolder = '/construct/bitrix/'; // корневая папка модуля
+
+	use UserOwnModule;
 
 	/*
 	|--------------------------------------------------------------------------
@@ -24,8 +27,8 @@ class BitrixController extends Controller{
 	|
 	*/
 	public function __construct(){
-		$this->middleware('auth');
 		parent::__construct();
+		$this->middleware('auth');
 	}
 
 	public function index(){
@@ -64,8 +67,11 @@ class BitrixController extends Controller{
 	}
 
 	// кнопка скачивания зип архива
-	// todo проверка на владение модулем
-	public function download_zip($id){
+	public function download_zip($id, Request $request){
+		if (!$this->userCreatedModule($id)){
+			return $this->unauthorized($request);
+		}
+
 		if ($pathToZip = Bitrix::generateZip($id)){
 			return response()->download($pathToZip)->deleteFileAfterSend(true);
 		}
