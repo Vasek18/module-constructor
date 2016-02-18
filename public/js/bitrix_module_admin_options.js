@@ -1,4 +1,25 @@
 // показ модального окна с доп. настройками
+$('.option .modal').on('show.bs.modal', function(event){
+	var button = $(event.relatedTarget);
+	var row = button.parents(".row.option");
+	var type_id = row.find("[name $= _type]").val();
+	var modal_form = row.find('.modal');
+
+	// скрываем все поля
+	modal_form.find('.form-group').hide();
+	// показываем поля доступные для этого типа поля
+	modal_form.find('[data-for_type_ids *= "' + type_id + '"]').show();
+});
+
+
+
+/*
+
+
+
+
+
+// показ модального окна с доп. настройками
 // todo вывод уже установленных значений
 $('#admin_options_dop_settings_window').on('show.bs.modal', function(event){
 	var button = $(event.relatedTarget);
@@ -37,4 +58,4 @@ $('#admin_options_dop_settings_window .save').on('click', function(event){
 	form.trigger("reset");
 
 	return false;
-});
+});*/

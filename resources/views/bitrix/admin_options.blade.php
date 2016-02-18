@@ -29,10 +29,10 @@
         </div>
         @foreach($options as $i => $option)
             <div class="row option">
-                <input type="hidden" name="option_number" value="{{$i}}">
+               {{-- <input type="hidden" name="option_number" value="{{$i}}">
                 <input type="hidden" name="option_{{$i}}_width" value="{{$option->width}}">
                 <input type="hidden" name="option_{{$i}}_height" value="{{$option->height}}">
-                <input type="hidden" name="option_{{$i}}_vals">
+                <input type="hidden" name="option_{{$i}}_vals">--}}
                 <div class="col-md-2">
                     <label class="sr-only" for="option_{{$i}}_id">ID</label>
                     <input type="text" class="form-control" name="option_code[]" id="option_{{$i}}_id"
@@ -47,7 +47,7 @@
                 <div class="col-md-3">
                     <label class="sr-only" for="option_{{$i}}_type">Тип</label>
                     <select class="form-control" name="option_{{$i}}_type" id="option_{{$i}}_type">
-                        @foreach(DB::table('bitrix_modules_options_types')->get() as $type)
+                        @foreach($options_types as $type)
                             <option @if ($option->type_id == $type->id) selected
                                     @endif value="{{$type->id}}">{{$type->NAME_RU}}</option>
                         @endforeach
@@ -55,7 +55,8 @@
                 </div>
                 <div class="col-md-2">
                     <a href="#" class="btn btn-default" data-toggle="modal"
-                       data-target="#admin_options_dop_settings_window">Редактировать</a>
+                       data-target="#admin_options_dop_settings_window_{{$i}}">Редактировать</a>
+                    @include('bitrix.admin_options_dop_settings_window', ['option' => $option, 'i' => $i])
                 </div>
                 <div class="col-md-2">
                     <a href="{{ action('Modules\BitrixOptionsController@destroy', [$module->id, $option->id]) }}"
@@ -83,19 +84,22 @@
                 <div class="col-md-3">
                     <label class="sr-only" for="option_{{$j}}_type">Тип</label>
                     <select class="form-control" name="option_{{$j}}_type" id="option_{{$j}}_type">
-                        @foreach(DB::table('bitrix_modules_options_types')->get() as $type)
+                        @foreach($options_types as $type)
                             <option value="{{$type->id}}">{{$type->NAME_RU}}</option>
                         @endforeach
                     </select>
                 </div>
                 <div class="col-md-2">
                     <a href="#" class="btn btn-default" data-toggle="modal"
-                       data-target="#admin_options_dop_settings_window">Редактировать</a>
+                       data-target="#admin_options_dop_settings_window_{{$j}}">Редактировать</a>
+                    @include('bitrix.admin_options_dop_settings_window', ['option' => '', 'i' => $j])
                 </div>
                 <div class="col-md-2">
 
                 </div>
             </div>
+            {{--модальное окно для доп настроек--}}
+
         @endfor
         <div class="row">
             <div class="col-md-12">
@@ -103,5 +107,5 @@
             </div>
         </div>
     </form>
-    @include('bitrix.admin_options_dop_settings_window')
+    {{--@include('bitrix.admin_options_dop_settings_window')--}}
 @stop

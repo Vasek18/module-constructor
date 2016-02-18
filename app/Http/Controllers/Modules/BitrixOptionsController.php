@@ -6,9 +6,9 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use Auth;
 use App\Models\Modules\Bitrix;
 use App\Models\Modules\BitrixAdminOptions;
+use Illuminate\Support\Facades\DB;
 
 class BitrixOptionsController extends Controller{
 
@@ -19,10 +19,12 @@ class BitrixOptionsController extends Controller{
 	// страница настроек для страницы настроек
 	public function show(Bitrix $module){
 		$options = BitrixAdminOptions::where('module_id', $module->id)->get();
+		$options_types = DB::table('bitrix_modules_options_types')->get();
 
 		$data = [
 			'module'  => $module,
-			'options' => $options
+			'options' => $options,
+			'options_types' => $options_types
 		];
 
 		return view("bitrix.admin_options", $data);

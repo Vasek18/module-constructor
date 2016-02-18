@@ -82,4 +82,8 @@ class BitrixAdminOptions extends Model{
 	public function module(){
 		return $this->belongsTo('App\Models\Modules\Bitrix');
 	}
+
+	public function vals(){
+		return $this->hasMany('App\Models\Modules\BitrixAdminOptionsVals', "option_id");
+	}
 }
