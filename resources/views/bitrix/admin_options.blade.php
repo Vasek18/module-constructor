@@ -89,7 +89,8 @@
                     </select>
                 </div>
                 <div class="col-md-2">
-
+                    <a href="#" class="btn btn-default" data-toggle="modal"
+                       data-target="#admin_options_dop_settings_window">Редактировать</a>
                 </div>
                 <div class="col-md-2">
 
