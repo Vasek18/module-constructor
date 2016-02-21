@@ -28,6 +28,7 @@
             </div>
         </div>
         @foreach($options as $i => $option)
+            {{--{{dd($option)}}--}}
             <div class="row option">
                {{-- <input type="hidden" name="option_number" value="{{$i}}">
                 <input type="hidden" name="option_{{$i}}_width" value="{{$option->width}}">

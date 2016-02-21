@@ -19,38 +19,41 @@
                            value="{{$option && $option->width}}">
                 </div>
 
-                {{--{{dd($option)}}--}}
+{{--                {{dd($option->vals)}}--}}
                 <div class="form-group" data-for_type_ids="3,4,5">
                     <label for="option_vals">Значения</label>
                     @if ($option && $option->vals)
                         @foreach($option->vals as $val)
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-5">
                                     <input class="form-control" type="text" name="option_{{$i}}_vals_key[]"
                                            value="{{$val->key}}">
                                 </div>
+                                <div class="col-md-1">=&gt;</div>
                                 <div class="col-md-6">
                                     <input class="form-control" type="text" name="option_{{$i}}_vals_name[]"
                                            value="{{$val->name}}">
                                 </div>
                             </div>
                         @endforeach
-                        @for($j = count($vals); $j<=count($vals)+5;$j++)
+                        @for($j = count($option->vals); $j<=count($option->vals)+5;$j++)
                             <div class="row">
-                                <div class="col-md-6">
-                                    <input class="form-control" type="text" name="option_{{$j}}_vals_key[]">
+                                <div class="col-md-5">
+                                    <input class="form-control" type="text" name="option_{{$i}}_vals_key[]">
                                 </div>
+                                <div class="col-md-1">=&gt;</div>
                                 <div class="col-md-6">
-                                    <input class="form-control" type="text" name="option_{{$j}}_vals_name[]">
+                                    <input class="form-control" type="text" name="option_{{$i}}_vals_name[]">
                                 </div>
                             </div>
                         @endfor
                     @else
                         @for($j = 0; $j<=5;$j++)
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-5">
                                     <input class="form-control" type="text" name="option_{{$j}}_vals_key[]">
                                 </div>
+                                <div class="col-md-1">=&gt;</div>
                                 <div class="col-md-6">
                                     <input class="form-control" type="text" name="option_{{$j}}_vals_name[]">
                                 </div>
