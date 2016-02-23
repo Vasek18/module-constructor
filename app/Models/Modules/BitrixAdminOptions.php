@@ -60,12 +60,19 @@ class BitrixAdminOptions extends Model{
 					// параметры textarea - высота и ширина
 					$field_params_in_string = ', '.$option->height.', '.$option->width;
 				}
-				if ($option_type == "select"){
-					// параметры select - список опшионов
+				if ($option_type == "selectbox"){
+					$vals = BitrixAdminOptionsVals::where('option_id', $option->id)->get();
+					if (count($vals)){
+						$field_params_in_string = ', Array(';
+						foreach ($vals as $val){
+							$field_params_in_string .= "'".$val->key."' => '".$val->name."', ";
+						}
+						$field_params_in_string .= ')';
+					}
 				}
 
 				// код, название, значение по умолчанию, [тип поля, параметры]
-				$string = PHP_EOL."array('".$option->code."', Loc::getMessage('".$LANG_KEY."_".strtoupper($option->code)."_TITLE'), '', array('".$option_type."'".$field_params_in_string.")),";
+				$string = PHP_EOL."\t\t\tarray('".$option->code."', Loc::getMessage('".$LANG_KEY."_".strtoupper($option->code)."_TITLE'), '', array('".$option_type."'".$field_params_in_string.")),";
 				//echo $string;
 
 				$optionsString .= $string;
