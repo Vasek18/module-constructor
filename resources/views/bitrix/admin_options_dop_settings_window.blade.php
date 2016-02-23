@@ -10,12 +10,12 @@
                 <input type="hidden" name="option_number">
                 <div class="form-group" data-for_type_ids="2">
                     <label for="option_{{$i}}_height">Высота</label>
-                    <input class="form-control" type="text" name="option_{{$i}}_height" id="option_{{$i}}_height"
+                    <input class="form-control" type="text" name="option_height[]" id="option_{{$i}}_height"
                            value="{{$option && $option->height}}">
                 </div>
                 <div class="form-group" data-for_type_ids="1,2">
                     <label for="option_{{$i}}_width">Ширина</label>
-                    <input class="form-control" type="text" name="option_{{$i}}_width" id="option_{{$i}}_width"
+                    <input class="form-control" type="text" name="option_width[]" id="option_{{$i}}_width"
                            value="{{$option && $option->width}}">
                 </div>
 
@@ -62,7 +62,7 @@
                     @endif
                 </div>
                 <div class="form-group" data-for_type_ids="3,4,5">
-                    <label for="">Специальные значения</label>
+                    <label for="">Функция генерации</label>
                     <div class="special-vals-list">
 
                     </div>

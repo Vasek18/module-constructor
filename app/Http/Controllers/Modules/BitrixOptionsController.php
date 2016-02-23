@@ -46,24 +46,28 @@ class BitrixOptionsController extends Controller{
 		//dd($request);
 
 		// перебираем все строки полей
+		// todo я могу без цикла и перебирания полей обойтись
 		foreach ($request->option_code as $i => $option_code){
 			$prop = [];
 			if (!$option_code){ // отметаем пустые строки
 				continue;
 			}
-			if (!$request['option_'.$i.'_name']){ // если у поля нет имени
+			if (!$request['option_name'][$i]){ // если у поля нет имени
 				continue;
 			}
-			if (!$request['option_'.$i.'_type']){ // если у поля нет типа
+			if (!$request['option_type'][$i]){ // если у поля нет типа
+				continue;
+			}
+			if ($request['module_id'][$i] != $module_id){ // от хитрых хуесосов
 				continue;
 			}
 
-			$prop["module_id"] = $module_id;
+			$prop["module_id"] = $request['module_id'][$i];
 			$prop["code"] = $option_code;
-			$prop["name"] = $request['option_'.$i.'_name'];
-			$prop["type_id"] = $request['option_'.$i.'_type'];
-			$prop["height"] = $request['option_'.$i.'_height'];
-			$prop["width"] = $request['option_'.$i.'_width'];
+			$prop["name"] = $request['option_name'][$i];
+			$prop["type_id"] = $request['option_type'][$i];
+			$prop["height"] = $request['option_height'][$i];
+			$prop["width"] = $request['option_width'][$i];
 
 			// записываем в бд
 			$options_id = BitrixAdminOptions::store($prop);

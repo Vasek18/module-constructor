@@ -27,13 +27,11 @@
                 <label>Удалить</label>
             </div>
         </div>
+        {{--todo вынести row--}}
         @foreach($options as $i => $option)
             {{--{{dd($option)}}--}}
             <div class="row option">
-               {{-- <input type="hidden" name="option_number" value="{{$i}}">
-                <input type="hidden" name="option_{{$i}}_width" value="{{$option->width}}">
-                <input type="hidden" name="option_{{$i}}_height" value="{{$option->height}}">
-                <input type="hidden" name="option_{{$i}}_vals">--}}
+                <input type="hidden" name="module_id[]" value="{{$module->id}}">
                 <div class="col-md-2">
                     <label class="sr-only" for="option_{{$i}}_id">ID</label>
                     <input type="text" class="form-control" name="option_code[]" id="option_{{$i}}_id"
@@ -41,13 +39,13 @@
                 </div>
                 <div class="col-md-3">
                     <label class="sr-only" for="option_{{$i}}_name">Название</label>
-                    <input type="text" class="form-control" name="option_{{$i}}_name"
+                    <input type="text" class="form-control" name="option_name[]"
                            id="option_{{$i}}_name"
                            placeholder="Название" value="{{$option->name}}">
                 </div>
                 <div class="col-md-3">
                     <label class="sr-only" for="option_{{$i}}_type">Тип</label>
-                    <select class="form-control" name="option_{{$i}}_type" id="option_{{$i}}_type">
+                    <select class="form-control" name="option_type[]" id="option_{{$i}}_type">
                         @foreach($options_types as $type)
                             <option @if ($option->type_id == $type->id) selected
                                     @endif value="{{$type->id}}">{{$type->NAME_RU}}</option>
@@ -78,13 +76,13 @@
                 </div>
                 <div class="col-md-3">
                     <label class="sr-only" for="option_{{$j}}_name">Название</label>
-                    <input type="text" class="form-control" name="option_{{$j}}_name"
+                    <input type="text" class="form-control" name="option_name[]"
                            id="option_{{$j}}_name"
                            placeholder="Название">
                 </div>
                 <div class="col-md-3">
                     <label class="sr-only" for="option_{{$j}}_type">Тип</label>
-                    <select class="form-control" name="option_{{$j}}_type" id="option_{{$j}}_type">
+                    <select class="form-control" name="option_type[]" id="option_{{$j}}_type">
                         @foreach($options_types as $type)
                             <option value="{{$type->id}}">{{$type->NAME_RU}}</option>
                         @endforeach

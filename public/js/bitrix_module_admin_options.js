@@ -2,8 +2,10 @@
 $('.option .modal').on('show.bs.modal', function(event){
 	var button = $(event.relatedTarget);
 	var row = button.parents(".row.option");
-	var type_id = row.find("[name $= _type]").val();
+	var type_id = row.find("[name *= _type]").val();
 	var modal_form = row.find('.modal');
+
+	console.log(type_id)
 
 	// скрываем все поля
 	modal_form.find('.form-group').hide();
