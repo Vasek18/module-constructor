@@ -40,10 +40,10 @@ class BitrixOptionsController extends Controller{
 	}
 
 	public function store($module_id, Request $request){
-		// удаляем старые свойства, чтобы при изменение уже заполненной строчки, старые данные с этой строчки не существовали
-		BitrixAdminOptions::where('module_id', $module_id)->delete();
+		dd($request);
 
-		//dd($request);
+		// удаляем старые свойства, чтобы при изменение уже заполненной строчки, старые данные с этой строчки не существовали
+		//BitrixAdminOptions::where('module_id', $module_id)->delete();
 
 		// перебираем все строки полей
 		// todo я могу без цикла и перебирания полей обойтись

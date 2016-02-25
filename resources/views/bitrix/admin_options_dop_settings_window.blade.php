@@ -23,7 +23,7 @@
                 <div class="form-group only-one" data-for_type_ids="3,4,5">
                     <div class="item">
                         <label>
-                            <input type="radio" name="option_vals" value="array">
+                            <input type="radio" name="option_{{$i}}_vals_type" value="array">
                             <b>Конкретные значения</b>
                         </label>
                         @if ($option && $option->vals)
@@ -68,14 +68,14 @@
                     <div>или</div>
                     <div class="item">
                         <label>
-                            <input type="radio" name="option_vals" value="iblocks_list">
+                            <input type="radio" name="option_{{$i}}_vals_type" value="iblocks_list">
                             <b>Список инфоблоков</b>
                         </label>
                     </div>
                     <div>или</div>
                     <div class="item">
                         <label>
-                            <input type="radio" name="option_vals" value="iblocks_items_list">
+                            <input type="radio" name="option_{{$i}}_vals_type" value="iblocks_items_list">
                             <b>Список элементов инфоблока</b>
                         </label>
                         <input type="text" name="iblock" class="form-control" placeholder="Инфоблок">
@@ -83,7 +83,7 @@
                     <div>или</div>
                     <div class="item">
                         <label>
-                            <input type="radio" name="option_vals" value="iblocks_props_list">
+                            <input type="radio" name="option_{{$i}}_vals_type" value="iblocks_props_list">
                             <b>Список свойств инфоблока</b>
                         </label>
                         <input type="text" name="iblock" class="form-control" placeholder="Инфоблок">

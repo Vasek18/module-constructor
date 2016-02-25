@@ -17,9 +17,9 @@ class CreateBitrixModulesOptionsTable extends Migration{
 			$table->integer('type_id')->unsigned();
 			$table->string('code');
 			$table->string('name');
-			$table->integer('height')->nullable(); // todo значения по умолчанию
-			$table->integer('width')->nullable(); // todo значения по умолчанию
-			$table->integer('vals')->nullable();
+			$table->integer('height')->nullable()->default(3);
+			$table->integer('width')->nullable()->default(20);
+			$table->integer('spec_vals')->nullable();
 			$table->timestamps();
 		});
 	}

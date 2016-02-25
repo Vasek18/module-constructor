@@ -16,7 +16,7 @@ class CreateBitrixModulesOptionsValsForSelectTable extends Migration{
 			$table->foreign('option_id')->references('id')->on('bitrix_modules_options')->onDelete('cascade');
 			$table->integer('sort');
 			$table->string('key');
-			$table->string('name'); // todo поменять на value
+			$table->string('value');
 			$table->timestamps();
 		});
 	}
