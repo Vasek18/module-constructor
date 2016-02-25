@@ -19,52 +19,74 @@
                            value="{{$option && $option->width}}">
                 </div>
 
-{{--                {{dd($option->vals)}}--}}
-                <div class="form-group" data-for_type_ids="3,4,5">
-                    <label for="option_vals">Значения</label>
-                    @if ($option && $option->vals)
-                        @foreach($option->vals as $val)
-                            <div class="row">
-                                <div class="col-md-5">
-                                    <input class="form-control" type="text" name="option_{{$i}}_vals_key[]"
-                                           value="{{$val->key}}">
+                {{--                {{dd($option->vals)}}--}}
+                <div class="form-group only-one" data-for_type_ids="3,4,5">
+                    <div class="item">
+                        <label>
+                            <input type="radio" name="option_vals" value="array">
+                            <b>Конкретные значения</b>
+                        </label>
+                        @if ($option && $option->vals)
+                            @foreach($option->vals as $val)
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <input class="form-control" type="text" name="option_{{$i}}_vals_key[]"
+                                               value="{{$val->key}}">
+                                    </div>
+                                    <div class="col-md-1">=&gt;</div>
+                                    <div class="col-md-6">
+                                        <input class="form-control" type="text" name="option_{{$i}}_vals_name[]"
+                                               value="{{$val->name}}">
+                                    </div>
                                 </div>
-                                <div class="col-md-1">=&gt;</div>
-                                <div class="col-md-6">
-                                    <input class="form-control" type="text" name="option_{{$i}}_vals_name[]"
-                                           value="{{$val->name}}">
+                            @endforeach
+                            @for($j = count($option->vals); $j<=count($option->vals)+5;$j++)
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <input class="form-control" type="text" name="option_{{$i}}_vals_key[]">
+                                    </div>
+                                    <div class="col-md-1">=&gt;</div>
+                                    <div class="col-md-6">
+                                        <input class="form-control" type="text" name="option_{{$i}}_vals_name[]">
+                                    </div>
                                 </div>
-                            </div>
-                        @endforeach
-                        @for($j = count($option->vals); $j<=count($option->vals)+5;$j++)
-                            <div class="row">
-                                <div class="col-md-5">
-                                    <input class="form-control" type="text" name="option_{{$i}}_vals_key[]">
+                            @endfor
+                        @else
+                            @for($j = 0; $j<=5;$j++)
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <input class="form-control" type="text" name="option_{{$j}}_vals_key[]">
+                                    </div>
+                                    <div class="col-md-1">=&gt;</div>
+                                    <div class="col-md-6">
+                                        <input class="form-control" type="text" name="option_{{$j}}_vals_name[]">
+                                    </div>
                                 </div>
-                                <div class="col-md-1">=&gt;</div>
-                                <div class="col-md-6">
-                                    <input class="form-control" type="text" name="option_{{$i}}_vals_name[]">
-                                </div>
-                            </div>
-                        @endfor
-                    @else
-                        @for($j = 0; $j<=5;$j++)
-                            <div class="row">
-                                <div class="col-md-5">
-                                    <input class="form-control" type="text" name="option_{{$j}}_vals_key[]">
-                                </div>
-                                <div class="col-md-1">=&gt;</div>
-                                <div class="col-md-6">
-                                    <input class="form-control" type="text" name="option_{{$j}}_vals_name[]">
-                                </div>
-                            </div>
-                        @endfor
-                    @endif
-                </div>
-                <div class="form-group" data-for_type_ids="3,4,5">
-                    <label for="">Функция генерации</label>
-                    <div class="special-vals-list">
-
+                            @endfor
+                        @endif
+                    </div>
+                    <div>или</div>
+                    <div class="item">
+                        <label>
+                            <input type="radio" name="option_vals" value="iblocks_list">
+                            <b>Список инфоблоков</b>
+                        </label>
+                    </div>
+                    <div>или</div>
+                    <div class="item">
+                        <label>
+                            <input type="radio" name="option_vals" value="iblocks_items_list">
+                            <b>Список элементов инфоблока</b>
+                        </label>
+                        <input type="text" name="iblock" class="form-control" placeholder="Инфоблок">
+                    </div>
+                    <div>или</div>
+                    <div class="item">
+                        <label>
+                            <input type="radio" name="option_vals" value="iblocks_props_list">
+                            <b>Список свойств инфоблока</b>
+                        </label>
+                        <input type="text" name="iblock" class="form-control" placeholder="Инфоблок">
                     </div>
                 </div>
             </div>
