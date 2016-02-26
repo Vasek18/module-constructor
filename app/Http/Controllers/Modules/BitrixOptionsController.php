@@ -69,7 +69,21 @@ class BitrixOptionsController extends Controller{
 			$prop["height"] = $request['option_height'][$i];
 			$prop["width"] = $request['option_width'][$i];
 			$prop["spec_vals"] = $request['option_'.$i.'_vals_type'];
-			$prop["spec_vals_args"] = $request['iblock_'.$i]; // todo здесь же может быть больше аргументов
+			if ($request['option_'.$i.'_spec_args'] && is_array($request['option_'.$i.'_spec_args'])){
+				$prop["spec_vals_args"] = '';
+				foreach ($request['option_'.$i.'_spec_args'] as $arg){
+					if ($arg){
+						if (!$prop["spec_vals_args"]){
+							$prop["spec_vals_args"] .= $arg;
+						}else{
+							$prop["spec_vals_args"] .= ', '.$arg;
+						}
+					}
+				}
+			}
+			if ($request['option_'.$i.'_spec_args'] && !is_array($request['option_'.$i.'_spec_args'])){
+				$prop["spec_vals_args"] = $request['option_'.$i.'_spec_args'];
+			}
 
 			//dd($prop);
 			// записываем в бд
@@ -77,16 +91,18 @@ class BitrixOptionsController extends Controller{
 
 			// сохранение опций
 			if ($prop["type_id"] == 3 || $prop["type_id"] == 4 || $prop["type_id"] == 5){ // todo хардкода
-				if (count($request['option_'.$i.'_vals_key']) && $request["option_0_vals_type"] == "array"){
+				//dd($request["option_'.$i.'_vals_type"]);
+				if (count($request['option_'.$i.'_vals_key']) && $request['option_'.$i.'_vals_type'] == "array"){
+					//dd($prop);
 					//dd($request['option_'.$i.'_vals_key']);
 					foreach ($request['option_'.$i.'_vals_key'] as $io => $option_val_key){
-						if (!$option_val_key || !$request['option_'.$i.'_vals_name'][$io]){
+						if (!$option_val_key || !$request['option_'.$i.'_vals_value'][$io]){
 							continue;
 						}
 						$val = new BitrixAdminOptionsVals;
 						$val->option_id = $options_id;
 						$val->key = $option_val_key;
-						$val->name = $request['option_'.$i.'_vals_name'][$io];
+						$val->value = $request['option_'.$i.'_vals_value'][$io];
 						//dd($val);
 						$val->save();
 					}
