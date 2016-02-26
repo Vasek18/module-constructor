@@ -11,7 +11,7 @@ $('.option .modal').on('show.bs.modal', function(event){
 	modal_form.find('[data-for_type_ids *= "' + type_id + '"]').show();
 	// блокируем исключающиеся варианты, если нужно
 	modal_form.find(".only-one input:not([type=radio])").prop("disabled", true);
-	modal_form.find(".only-one input[type=radio]:first").click();
+	modal_form.find(".only-one input[type=radio]:first").change();
 });
 
 

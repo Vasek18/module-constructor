@@ -9,7 +9,8 @@ class BitrixAdminOptions extends Model{
 	protected $table = 'bitrix_modules_options';
 
 	public static function store($fields){
-		// если есть поле с таким же кодом, обновляем старое, а не создаём новое
+		//dd($fields);
+		// если есть поле с таким же кодом, обновляем старое, а не создаём новое // на самом деле в контроллере всё и так удаляется (нужно ли это?)
 		if (BitrixAdminOptions::where('module_id', $fields["module_id"])->where('code', $fields["code"])->count()){
 			$id = BitrixAdminOptions::where('module_id', $fields["module_id"])->where('code', $fields["code"])->first()->id;
 			$option = BitrixAdminOptions::find($id);
@@ -24,7 +25,16 @@ class BitrixAdminOptions extends Model{
 		$option->type_id = $fields['type_id'];
 		$option->height = $fields['height'];
 		$option->width = $fields['width'];
-		//dd($fields);
+		if ($fields['spec_vals'] == 'iblocks_list'){
+			$option->spec_vals = '$iblocks()';
+		}
+		if ($fields['spec_vals'] == 'iblock_items_list'){
+			$option->spec_vals = '$iblock_items('.$fields['spec_vals_args'].')';
+		}
+		if ($fields['spec_vals'] == 'iblock_props_list'){
+			$option->spec_vals = '$iblock_props('.$fields['spec_vals_args'].')';
+		}
+		//dd($option);
 
 		if ($option->save()){
 			return $option->id;

@@ -69,6 +69,7 @@
         {{-- Дополнительно показываем ещё несколько пустых строк --}}
         @for ($j = count($options); $j < count($options)+5; $j++)
             <div class="row option">
+                <input type="hidden" name="module_id[]" value="{{$module->id}}">
                 <div class="col-md-2">
                     <label class="sr-only" for="option_{{$j}}_code">Код</label>
                     <input type="text" class="form-control" name="option_code[]" id="option_{{$j}}_code"

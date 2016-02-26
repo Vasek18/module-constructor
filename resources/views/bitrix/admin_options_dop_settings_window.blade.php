@@ -7,7 +7,6 @@
                 <h4 class="modal-title">Дополнительные настройки</h4>
             </div>
             <div class="modal-body">
-                <input type="hidden" name="option_number">
                 <div class="form-group" data-for_type_ids="2">
                     <label for="option_{{$i}}_height">Высота</label>
                     <input class="form-control" type="text" name="option_height[]" id="option_{{$i}}_height"
@@ -75,18 +74,18 @@
                     <div>или</div>
                     <div class="item">
                         <label>
-                            <input type="radio" name="option_{{$i}}_vals_type" value="iblocks_items_list">
+                            <input type="radio" name="option_{{$i}}_vals_type" value="iblock_items_list">
                             <b>Список элементов инфоблока</b>
                         </label>
-                        <input type="text" name="iblock" class="form-control" placeholder="Инфоблок">
+                        <input type="text" name="iblock_{{$i}}" class="form-control" placeholder="Инфоблок">
                     </div>
                     <div>или</div>
                     <div class="item">
                         <label>
-                            <input type="radio" name="option_{{$i}}_vals_type" value="iblocks_props_list">
+                            <input type="radio" name="option_{{$i}}_vals_type" value="iblock_props_list">
                             <b>Список свойств инфоблока</b>
                         </label>
-                        <input type="text" name="iblock" class="form-control" placeholder="Инфоблок">
+                        <input type="text" name="iblock_{{$i}}" class="form-control" placeholder="Инфоблок">
                     </div>
                 </div>
             </div>
