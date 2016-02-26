@@ -30,12 +30,11 @@ class BitrixAdminOptions extends Model{
 		}
 		if ($fields['spec_vals'] == 'iblock_items_list'){
 			$option->spec_vals = '$iblock_items()';
-			$option->spec_vals_args = $fields["spec_vals_args"];
 		}
 		if ($fields['spec_vals'] == 'iblock_props_list'){
 			$option->spec_vals = '$iblock_props()';
-			$option->spec_vals_args = $fields["spec_vals_args"];
 		}
+		$option->spec_vals_args = $fields["spec_vals_args"];
 		//dd($option);
 
 		if ($option->save()){
@@ -72,7 +71,10 @@ class BitrixAdminOptions extends Model{
 					// параметры textarea - высота и ширина
 					$field_params_in_string = ', '.$option->height.', '.$option->width;
 				}
-				if ($option_type == "selectbox"){
+				if ($option_type == "checkbox"){
+					$field_params_in_string = ', "'.$option->spec_vals_args.'"';
+				}
+				if ($option_type == "selectbox" || $option_type == "multiselectbox"){
 					if (!$option->spec_vals || $option->spec_vals == 'array'){
 						$vals = BitrixAdminOptionsVals::where('option_id', $option->id)->get();
 						if (count($vals)){

@@ -90,7 +90,7 @@ class BitrixOptionsController extends Controller{
 			$options_id = BitrixAdminOptions::store($prop);
 
 			// сохранение опций
-			if ($prop["type_id"] == 3 || $prop["type_id"] == 4 || $prop["type_id"] == 5){ // todo хардкода
+			if ($prop["type_id"] == 3 || $prop["type_id"] == 4){ // todo хардкода
 				//dd($request["option_'.$i.'_vals_type"]);
 				if (count($request['option_'.$i.'_vals_key']) && $request['option_'.$i.'_vals_type'] == "array"){
 					//dd($prop);
