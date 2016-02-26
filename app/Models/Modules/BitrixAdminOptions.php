@@ -73,13 +73,18 @@ class BitrixAdminOptions extends Model{
 					$field_params_in_string = ', '.$option->height.', '.$option->width;
 				}
 				if ($option_type == "selectbox"){
-					$vals = BitrixAdminOptionsVals::where('option_id', $option->id)->get();
-					if (count($vals)){
-						$field_params_in_string = ', Array(';
-						foreach ($vals as $val){
-							$field_params_in_string .= "'".$val->key."' => '".$val->name."', ";
+					if (!$option->spec_vals || $option->spec_vals == 'array'){
+						$vals = BitrixAdminOptionsVals::where('option_id', $option->id)->get();
+						if (count($vals)){
+							$field_params_in_string = ', Array(';
+							foreach ($vals as $val){
+								$field_params_in_string .= "'".$val->key."' => '".$val->value."', ";
+							}
+							$field_params_in_string .= ')';
 						}
-						$field_params_in_string .= ')';
+					}
+					else{
+						$field_params_in_string = ', '.str_replace('()', '('.$option->spec_vals_args.')', $option->spec_vals);
 					}
 				}
 
