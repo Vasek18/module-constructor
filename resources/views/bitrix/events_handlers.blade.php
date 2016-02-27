@@ -52,11 +52,26 @@
                            placeholder="Метод для обработчика" value="{{$handler->method}}">
                 </div>
                 <div class="col-md-3">
-                    <label class="sr-only" for="php_code_{{$i}}">Код для обработчика</label>
+                    <a href="#" class="btn btn-default" data-toggle="modal"
+                       data-target="#php_code_{{$i}}">Редактировать</a>
+                    <div class="modal fade" tabindex="-1" role="dialog" id="php_code_{{$i}}">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                                aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title">Код для обработчика</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <label class="sr-only" for="php_code_{{$i}}">Код для обработчика</label>
                                             <textarea class="form-control" name="php_code_{{$i}}"
                                                       id="php_code_{{$i}}"
                                                       placeholder="Код для обработчика"
-                                                      rows="10">{{$handler->php_code}}</textarea>
+                                                      rows="100">{{$handler->php_code}}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-1">
                     <a href="{{ action('Modules\BitrixEventHandlersController@destroy', [$module->id, $handler->id]) }}"
@@ -98,11 +113,26 @@
                             >
                 </div>
                 <div class="col-md-3">
-                    <label class="sr-only" for="php_code_{{$j}}">Код для обработчика</label>
+                    <a href="#" class="btn btn-default" data-toggle="modal"
+                       data-target="#php_code_{{$j}}">Редактировать</a>
+                    <div class="modal fade" tabindex="-1" role="dialog" id="php_code_{{$j}}">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                                aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title">Код для обработчика</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <label class="sr-only" for="php_code_{{$j}}">Код для обработчика</label>
                                             <textarea class="form-control" name="php_code_{{$j}}"
                                                       id="php_code_{{$j}}"
-                                                      rows="10">
-                                                </textarea>
+                                                      placeholder="Код для обработчика"
+                                                      rows="100"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         @endfor
