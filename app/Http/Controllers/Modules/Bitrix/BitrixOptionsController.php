@@ -36,7 +36,7 @@ class BitrixOptionsController extends Controller{
 
 		//dd($data);
 
-		return view("bitrix.admin_options", $data);
+		return view("bitrix.admin_options.admin_options", $data);
 	}
 
 	public function store($module_id, Request $request){

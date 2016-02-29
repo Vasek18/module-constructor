@@ -22,7 +22,7 @@ class BitrixComponentsController extends Controller{
 			'components' => $components
 		];
 
-		return view("bitrix.components", $data);
+		return view("bitrix.components.components", $data);
 	}
 
 	// страница добавления компонента
@@ -31,7 +31,7 @@ class BitrixComponentsController extends Controller{
 			'module' => Bitrix::find($module_id),
 		];
 
-		return view("bitrix.components.new", $data);
+		return view("bitrix.components.components.new", $data);
 	}
 
 	// добавление компонента
