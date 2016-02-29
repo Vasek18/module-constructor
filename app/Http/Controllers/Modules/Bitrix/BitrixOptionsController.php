@@ -10,15 +10,21 @@ use App\Models\Modules\Bitrix\Bitrix;
 use App\Models\Modules\Bitrix\BitrixAdminOptions;
 use Illuminate\Support\Facades\DB;
 use App\Models\Modules\Bitrix\BitrixAdminOptionsVals;
+use App\Http\Controllers\Traits\UserOwnModule;
 
 class BitrixOptionsController extends Controller{
+	use UserOwnModule;
 
 	public function __construct(){
+		parent::__construct();
 		$this->middleware('auth');
 	}
 
 	// страница настроек для страницы настроек
-	public function show(Bitrix $module){
+	public function show(Bitrix $module, Request $request){
+		if (!$this->userCreatedModule($module->id)){
+			return $this->unauthorized($request);
+		}
 		$options = BitrixAdminOptions::where('module_id', $module->id)->get();
 		//$options = BitrixAdminOptions::where('module_id', $module->id)->with("vals")->get();
 		// вот такой сложный путь, потому что закомментирование сверху почему-то показывает null во вью в поле значений
@@ -40,6 +46,9 @@ class BitrixOptionsController extends Controller{
 	}
 
 	public function store($module_id, Request $request){
+		if (!$this->userCreatedModule($module_id)){
+			return $this->unauthorized($request);
+		}
 		//dd($request);
 
 		// удаляем старые свойства, чтобы при изменение уже заполненной строчки, старые данные с этой строчки не существовали
@@ -117,7 +126,10 @@ class BitrixOptionsController extends Controller{
 	}
 
 	// удаление поля для страницы настроек
-	public function destroy($module_id, $option_id){
+	public function destroy($module_id, $option_id, Request $request){
+		if (!$this->userCreatedModule($module_id)){
+			return $this->unauthorized($request);
+		}
 		if (!$option_id || !$module_id){
 			return false;
 		}

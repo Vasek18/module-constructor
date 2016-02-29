@@ -18,7 +18,7 @@
                             </div>
                         @endif
 
-                        <form class="form-horizontal" role="form" method="POST" action="{{ action('Modules\BitrixComponentsController@store', $module->id) }}">
+                        <form class="form-horizontal" role="form" method="POST" action="{{ action('Modules\Bitrix\BitrixComponentsController@store', $module->id) }}">
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
                             <div class="form-group">

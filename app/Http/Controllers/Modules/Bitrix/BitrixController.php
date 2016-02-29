@@ -43,9 +43,11 @@ class BitrixController extends Controller{
 	}
 
 	// детальная страница модуля
-	public function detail(Bitrix $module){
+	public function detail(Bitrix $module, Request $request){
+		if (!$this->userCreatedModule($module->id)){
+			return $this->unauthorized($request);
+		}
 		//dd($id);
-		// todo проверка на авторство модуля
 		$data = [
 			'module' => $module
 		];
@@ -56,6 +58,9 @@ class BitrixController extends Controller{
 
 	// редактирование параметра
 	public function edit_param($id, Request $request){
+		if (!$this->userCreatedModule($id)){
+			return $this->unauthorized($request);
+		}
 		if ($request->module_name){
 
 		}
@@ -80,9 +85,11 @@ class BitrixController extends Controller{
 	}
 
 	// удаление модуля
-	// todo проверка на владение модулем
 	// todo подтверждение удаления
-	public function destroy(Bitrix $module){
+	public function destroy(Bitrix $module, Request $request){
+		if (!$this->userCreatedModule($module->id)){
+			return $this->unauthorized($request);
+		}
 		// удаляем папку
 		$myModuleFolder = $module->PARTNER_CODE.".".$module->MODULE_CODE;
 		Storage::disk('user_modules')->deleteDirectory($myModuleFolder);

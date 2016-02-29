@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Traits;
 
 use Illuminate\Http\Request;
-use App\Models\Modules\Bitrix;
+use App\Models\Modules\Bitrix\Bitrix;
 
 trait UserOwnModule{
 	protected function userCreatedModule($id){

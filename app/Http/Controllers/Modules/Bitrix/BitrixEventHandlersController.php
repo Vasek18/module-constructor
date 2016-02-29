@@ -9,15 +9,21 @@ use App\Http\Controllers\Controller;
 use Auth;
 use App\Models\Modules\Bitrix\Bitrix;
 use App\Models\Modules\Bitrix\BitrixEventsHandlers;
+use App\Http\Controllers\Traits\UserOwnModule;
 
 class BitrixEventHandlersController extends Controller{
+	use UserOwnModule;
 
 	public function __construct(){
+		parent::__construct();
 		$this->middleware('auth');
 	}
 
 	// страница обработчиков событий
-	public function show($module_id){
+	public function show($module_id, Request $request){
+		if (!$this->userCreatedModule($module_id)){
+			return $this->unauthorized($request);
+		}
 		$handlers = BitrixEventsHandlers::where('module_id', $module_id)->get();
 		$data = [
 			'module'   => Bitrix::find($module_id),
@@ -29,6 +35,9 @@ class BitrixEventHandlersController extends Controller{
 
 	// сохранение обработчиков
 	public function store($module_id, Request $request){
+		if (!$this->userCreatedModule($module_id)){
+			return $this->unauthorized($request);
+		}
 		//dd($request);
 		// удаляем старые обработчики, чтобы при изменение уже заполненной строчки, старые данные с этой строчки не существовали
 		BitrixEventsHandlers::where('module_id', $module_id)->delete();
@@ -69,7 +78,10 @@ class BitrixEventHandlersController extends Controller{
 	}
 
 	// удаление обработчика
-	public function destroy($module_id, $handler_id){
+	public function destroy($module_id, $handler_id, Request $request){
+		if (!$this->userCreatedModule($module_id)){
+			return $this->unauthorized($request);
+		}
 		if (!$handler_id || !$module_id){
 			return false;
 		}
