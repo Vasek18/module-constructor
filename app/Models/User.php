@@ -38,6 +38,6 @@ class User extends Model implements AuthenticatableContract,
     protected $hidden = ['password', 'remember_token'];
 
     public function bitrixes(){
-        return $this->hasMany('App\Models\Modules\Bitrix');
+        return $this->hasMany('App\Models\Modules\Bitrix\Bitrix');
     }
 }

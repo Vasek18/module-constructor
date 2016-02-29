@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Modules;
+namespace App\Http\Controllers\Modules\Bitrix;
 
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Auth;
-use App\Models\Modules\Bitrix;
-use App\Models\Modules\BitrixAdminOptions;
+use App\Models\Modules\Bitrix\Bitrix;
+use App\Models\Modules\Bitrix\BitrixAdminOptions;
 use Illuminate\Support\Facades\DB;
-use App\Models\Modules\BitrixEventsHandlers;
+use App\Models\Modules\Bitrix\BitrixEventsHandlers;
 
 class BitrixEventHandlersController extends Controller{
 

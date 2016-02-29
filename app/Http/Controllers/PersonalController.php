@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Modules\Bitrix;
+use App\Models\Modules\Bitrix\Bitrix;
 use Auth;
 
 class PersonalController extends Controller{

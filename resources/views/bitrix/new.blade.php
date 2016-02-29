@@ -19,7 +19,7 @@
                         @endif
 
                         <form class="form-horizontal" role="form" method="POST"
-                              action="{{ action('Modules\BitrixController@store') }}">
+                              action="{{ action('Modules\Bitrix\BitrixController@store') }}">
                             {{ csrf_field() }}
 
                             <div class="form-group">

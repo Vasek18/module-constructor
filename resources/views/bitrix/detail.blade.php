@@ -9,7 +9,7 @@
     <div class="row">
         <div class="col-md-10">
             <form method="post"
-                  action="{{ action('Modules\BitrixController@edit_param', $module->id) }}"
+                  action="{{ action('Modules\Bitrix\BitrixController@edit_param', $module->id) }}"
                   class="readonly">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <div class="form-group">
@@ -39,9 +39,9 @@
         </div>
         <div class="col-md-2">
             <a class="btn btn-primary btn-block"
-               href="{{ action('Modules\BitrixController@download_zip', $module->id) }}">Скачать</a>
+               href="{{ action('Modules\Bitrix\BitrixController@download_zip', $module->id) }}">Скачать</a>
             <a class="btn btn-danger btn-block"
-               href="{{ action('Modules\BitrixController@destroy', $module->id) }}">Удалить</a>
+               href="{{ action('Modules\Bitrix\BitrixController@destroy', $module->id) }}">Удалить</a>
         </div>
     </div>
 @stop

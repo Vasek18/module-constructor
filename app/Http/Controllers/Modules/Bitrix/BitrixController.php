@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Modules;
+namespace App\Http\Controllers\Modules\Bitrix;
 
 
-use App\Models\Modules\Bitrix;
+use App\Models\Modules\Bitrix\Bitrix;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
@@ -39,7 +39,7 @@ class BitrixController extends Controller{
 		// создание записи в бд и шаблона
 		$id = Bitrix::store($request);
 
-		return redirect(action('Modules\BitrixController@detail', $id));
+		return redirect(action('Modules\Bitrix\BitrixController@detail', $id));
 	}
 
 	// детальная страница модуля
@@ -63,7 +63,7 @@ class BitrixController extends Controller{
 
 		}
 
-		return redirect(action('Modules\BitrixController@detail', $id));
+		return redirect(action('Modules\Bitrix\BitrixController@detail', $id));
 	}
 
 	// кнопка скачивания зип архива

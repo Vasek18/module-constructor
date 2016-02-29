@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Modules;
+namespace App\Models\Modules\Bitrix;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;

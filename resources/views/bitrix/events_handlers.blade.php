@@ -6,7 +6,7 @@
 
 @section('page')
     <form role="form" method="POST"
-          action="{{ action('Modules\BitrixEventHandlersController@store', $module->id) }}">
+          action="{{ action('Modules\Bitrix\BitrixEventHandlersController@store', $module->id) }}">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <div class="row option-headers">
             <div class="col-md-2">
@@ -74,7 +74,7 @@
                     </div>
                 </div>
                 <div class="col-md-1">
-                    <a href="{{ action('Modules\BitrixEventHandlersController@destroy', [$module->id, $handler->id]) }}"
+                    <a href="{{ action('Modules\Bitrix\BitrixEventHandlersController@destroy', [$module->id, $handler->id]) }}"
                        class="btn btn-danger">
                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                     </a>

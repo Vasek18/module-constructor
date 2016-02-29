@@ -8,7 +8,7 @@
     @push('scripts')
     <script src="/js/bitrix_module_admin_options.js"></script>
     @endpush
-    <form role="form" method="POST" action="{{ action('Modules\BitrixOptionsController@store', $module->id) }}">
+    <form role="form" method="POST" action="{{ action('Modules\Bitrix\BitrixOptionsController@store', $module->id) }}">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <div class="row option-headers">
             <div class="col-md-2">
@@ -58,7 +58,7 @@
                     @include('bitrix.admin_options_dop_settings_window', ['option' => $option, 'i' => $i])
                 </div>
                 <div class="col-md-2">
-                    <a href="{{ action('Modules\BitrixOptionsController@destroy', [$module->id, $option->id]) }}"
+                    <a href="{{ action('Modules\Bitrix\BitrixOptionsController@destroy', [$module->id, $option->id]) }}"
                        class="btn btn-danger">
                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                         Удалить

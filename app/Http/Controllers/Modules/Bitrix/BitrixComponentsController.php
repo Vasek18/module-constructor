@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Modules;
+namespace App\Http\Controllers\Modules\Bitrix;
 
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Modules\Bitrix;
-use App\Models\Modules\BitrixAdminOptions;
-use App\Models\Modules\BitrixComponent;
+use App\Models\Modules\Bitrix\Bitrix;
+use App\Models\Modules\Bitrix\BitrixAdminOptions;
+use App\Models\Modules\Bitrix\BitrixComponent;
 
 class BitrixComponentsController extends Controller{
 	public function __construct(){
