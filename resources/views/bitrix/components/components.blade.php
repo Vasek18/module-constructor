@@ -7,8 +7,9 @@
 @section('page')
     <a href="{{ route('bitrix_new_component', $module->id) }}" class="btn btn-primary">Добавить
         компонент</a>
-    <br>
-    <br>
+    @include('bitrix.components.upload_zip_window', ['module' => $module])
+    <hr>
+    <h2>Компоненты</h2>
     <div class="list-group">
         @foreach($components as $component)
             <a class="list-group-item" href="#">Компонент "{{$module->MODULE_NAME}}"</a>

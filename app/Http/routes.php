@@ -55,5 +55,6 @@ Route::get('my-modules/bitrix/{module_id}/events_handler_delete/{option_id}', 'M
 Route::get('my-modules/bitrix/{id}/components', ['as' => 'bitrix_module_components', 'uses' => 'Modules\Bitrix\BitrixComponentsController@show']);
 Route::get('my-modules/bitrix/{id}/new_components', ['as' => 'bitrix_new_component', 'uses' => 'Modules\Bitrix\BitrixComponentsController@create']);
 Route::post('my-modules/bitrix/{id}/component_create','Modules\Bitrix\BitrixComponentsController@store');
+Route::post('my-modules/bitrix/{id}/upload_component_zip', ['as' => 'upload_component_zip', 'uses' => 'Modules\Bitrix\BitrixComponentsController@upload_zip']);
 // .компоненты
 // .Битрикс

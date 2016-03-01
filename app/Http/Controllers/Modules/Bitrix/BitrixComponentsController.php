@@ -55,4 +55,10 @@ class BitrixComponentsController extends Controller{
 		//
 		return redirect(route('bitrix_module_detail', $module_id));
 	}
+
+	// загрузка архива с компонентом
+	public function upload_zip($module_id, Request $request){
+		//dd($request);
+		return back();
+	}
 }
