@@ -10,6 +10,7 @@ use App\Models\Modules\Bitrix\Bitrix;
 use App\Models\Modules\Bitrix\BitrixAdminOptions;
 use App\Models\Modules\Bitrix\BitrixComponent;
 use App\Http\Controllers\Traits\UserOwnModule;
+//use UploadedFile;
 
 class BitrixComponentsController extends Controller{
 	use UserOwnModule;
@@ -58,7 +59,16 @@ class BitrixComponentsController extends Controller{
 
 	// загрузка архива с компонентом
 	public function upload_zip($module_id, Request $request){
-		//dd($request);
-		return back();
+		if (!$this->userCreatedModule($module_id)){
+			return $this->unauthorized($request);
+		}
+		//dd($request->file('archive'));
+		//dd(Storage::disk('user_modules')->);
+
+		$archive = $request->file('archive');
+		$fileName = time().$archive->getClientOriginalName();
+		$archive->move('user_upload/', $fileName);
+
+		return redirect(route('bitrix_module_components', $module_id));
 	}
 }
