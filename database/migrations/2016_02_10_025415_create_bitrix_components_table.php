@@ -18,6 +18,7 @@ class CreateBitrixComponentsTable extends Migration{
 			$table->foreign('module_id')->references('id')->on('bitrixes')->onDelete('cascade');
 			$table->string('name');
 			$table->string('code');
+			$table->string('uploaded_path');
 			$table->text('desc');
 			$table->timestamps();
 		});

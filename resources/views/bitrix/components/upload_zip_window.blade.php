@@ -13,7 +13,7 @@
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <div class="form-group">
                         <label for="archive">Архив</label>
-                        <input class="form-control" type="file" name="archive" id="archive" required>
+                        <input class="form-control" type="file" name="archive" id="archive" required accept=".zip">
                     </div>
                     <button class="btn btn-primary">Загрузить</button>
                 </form>

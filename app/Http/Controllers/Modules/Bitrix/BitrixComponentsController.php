@@ -10,7 +10,8 @@ use App\Models\Modules\Bitrix\Bitrix;
 use App\Models\Modules\Bitrix\BitrixAdminOptions;
 use App\Models\Modules\Bitrix\BitrixComponent;
 use App\Http\Controllers\Traits\UserOwnModule;
-//use UploadedFile;
+use Chumper\Zipper\Zipper;
+use Illuminate\Support\Facades\Storage;
 
 class BitrixComponentsController extends Controller{
 	use UserOwnModule;
@@ -58,17 +59,34 @@ class BitrixComponentsController extends Controller{
 	}
 
 	// загрузка архива с компонентом
-	public function upload_zip($module_id, Request $request){
-		if (!$this->userCreatedModule($module_id)){
+	// todo сейчас работает только с зипом
+	public function upload_zip(Bitrix $module, Request $request){
+		if (!$this->userCreatedModule($module->id)){
 			return $this->unauthorized($request);
 		}
 		//dd($request->file('archive'));
 		//dd(Storage::disk('user_modules')->);
 
+		$fileName = $this->moveComponentToPublic($request);
+		$this->extractComponentToModuleFolder($module, $fileName);
+
+		return redirect(route('bitrix_module_components', $module->id));
+	}
+
+	public function moveComponentToPublic(Request $request){
 		$archive = $request->file('archive');
 		$fileName = time().$archive->getClientOriginalName();
 		$archive->move('user_upload/', $fileName);
+		return $fileName;
+	}
 
-		return redirect(route('bitrix_module_components', $module_id));
+	public function extractComponentToModuleFolder(Bitrix $module, $fileName){
+		$moduleFullID = $module->PARTNER_CODE.".".$module->MODULE_CODE; // todo вынести в вычисляемое поле
+		// если вдруг папки для компонентов нет => создаём её
+		Storage::disk('user_modules')->makeDirectory($moduleFullID."/install/components/".$moduleFullID);
+
+		$moduleFolder = $module::getFolder($module);
+		$zipper = new \Chumper\Zipper\Zipper;
+		$zipper->make('user_upload/'.$fileName)->extractTo($moduleFolder.'/install/components/'.$moduleFullID);
 	}
 }

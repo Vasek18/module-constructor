@@ -152,6 +152,13 @@ class Bitrix extends Model{
 		return $archiveName;
 	}
 
+	// получить папку модуля
+	public static function getFolder(Bitrix $module){
+		$modulesRootFolder = Storage::disk('user_modules')->getDriver()->getAdapter()->getPathPrefix();
+		$folder = $module->PARTNER_CODE.".".$module->MODULE_CODE;
+		return $modulesRootFolder.$folder;
+	}
+
 	// связи с другими моделями
 	public function creator(){
 		return $this->belongsTo('App\Models\User');
