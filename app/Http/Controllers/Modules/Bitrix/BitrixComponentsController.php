@@ -25,7 +25,7 @@ class BitrixComponentsController extends Controller{
 		if (!$this->userCreatedModule($module_id)){
 			return $this->unauthorized($request);
 		}
-		$components = BitrixAdminOptions::where('module_id', $module_id)->get();
+		$components = BitrixComponent::where('module_id', $module_id)->get();
 		$data = [
 			'module'     => Bitrix::find($module_id),
 			'components' => $components
@@ -69,6 +69,8 @@ class BitrixComponentsController extends Controller{
 
 		$fileName = $this->moveComponentToPublic($request);
 		$this->extractComponentToModuleFolder($module, $fileName);
+		unlink('user_upload/'.$fileName);
+		$this->createComponentsFromFiles($module);
 
 		return redirect(route('bitrix_module_components', $module->id));
 	}
@@ -86,7 +88,28 @@ class BitrixComponentsController extends Controller{
 		Storage::disk('user_modules')->makeDirectory($moduleFullID."/install/components/".$moduleFullID);
 
 		$moduleFolder = $module::getFolder($module);
-		$zipper = new \Chumper\Zipper\Zipper;
+		$zipper = new Zipper;
 		$zipper->make('user_upload/'.$fileName)->extractTo($moduleFolder.'/install/components/'.$moduleFullID);
+
+		return true;
+	}
+
+	public function createComponentsFromFiles($module){
+		BitrixComponent::where('module_id', $module->id)->delete();
+
+		$moduleFullID = $module->PARTNER_CODE.".".$module->MODULE_CODE; // todo вынести в вычисляемое поле
+		$directories = Storage::disk('user_modules')->directories($moduleFullID."/install/components/");
+		//dd($directories);
+		foreach ($directories as $componentFolder){
+			$dirs = explode("/", $componentFolder);
+			$componentCode = $dirs[count($dirs)-1];
+			//dd($component);
+
+			$component = new BitrixComponent;
+			$component->module_id = $module->id;
+			$component->code = $componentCode;
+			$component->save();
+		}
+
 	}
 }

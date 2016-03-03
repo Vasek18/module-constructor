@@ -12,7 +12,7 @@
     <h2>Компоненты</h2>
     <div class="list-group">
         @foreach($components as $component)
-            <a class="list-group-item" href="#">Компонент "{{$module->MODULE_NAME}}"</a>
+            <a class="list-group-item" href="#">Компонент {{$component->code}}</a>
         @endforeach
     </div>
 @stop

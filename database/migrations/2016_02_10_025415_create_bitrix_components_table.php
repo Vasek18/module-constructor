@@ -19,6 +19,8 @@ class CreateBitrixComponentsTable extends Migration{
 			$table->string('name');
 			$table->string('code');
 			$table->string('uploaded_path');
+			$table->integer('sort');
+			$table->string('icon_path');
 			$table->text('desc');
 			$table->timestamps();
 		});
