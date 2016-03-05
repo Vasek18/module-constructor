@@ -3,7 +3,7 @@
     <div class="col-md-2">
         <label class="sr-only" for="option_{{$i}}_id">ID</label>
         <input type="text" class="form-control" name="option_code[]" id="option_{{$i}}_id"
-               placeholder="ID" value="{{$option ? $option->code : ''}}">
+               placeholder="Код" value="{{$option ? $option->code : ''}}">
     </div>
     <div class="col-md-3">
         <label class="sr-only" for="option_{{$i}}_name">Название</label>

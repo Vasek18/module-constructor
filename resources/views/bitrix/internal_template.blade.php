@@ -2,12 +2,10 @@
 
 @section('content')
 
+    @include('bitrix.menu')
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-3">
-                @include('bitrix.menu')
-            </div>
-            <div class="col-md-9">
+            <div class="col-md-12">
                 <div class="panel panel-default">
                     @if ($module->id)
                         <div class="panel-heading">@yield('h1') | Модуль "{{$module->MODULE_NAME}}"

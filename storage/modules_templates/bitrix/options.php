@@ -17,6 +17,7 @@ if ($APPLICATION->GetGroupRight($module_id) < "S"){
 $request = \Bitrix\Main\HttpApplication::getInstance()->getContext()->getRequest();
 
 $iblocks = function (){
+	CModule::IncludeModule("iblock");
 	$select = Array();
 	$select[] = GetMessage("{LANG_KEY}_SELECT");
 	$rsIBlocks = CIBlock::GetList(array('IBLOCK_TYPE' => 'ASC', 'ID' => 'ASC'));
@@ -29,6 +30,7 @@ $iblocks = function (){
 
 // собираем свойства
 $iblock_props = function ($IBLOCK_ID){
+	CModule::IncludeModule("iblock");
 	$select = Array();
 	$select[] = GetMessage("{LANG_KEY}_SELECT");
 	$properties = CIBlockProperty::GetList(Array("SORT" => "ASC", "NAME" => "ASC"), Array("ACTIVE" => "Y", "IBLOCK_ID" => $IBLOCK_ID));
@@ -41,6 +43,7 @@ $iblock_props = function ($IBLOCK_ID){
 
 // собираем элементы
 $iblock_items = function ($IBLOCK_ID){
+	CModule::IncludeModule("iblock");
 	$select = Array();
 	$select[] = GetMessage("{LANG_KEY}_SELECT");
 	$rs = CIBlockElement::GetList(Array("SORT" => "ASC", "NAME" => "ASC"), Array("ACTIVE" => "Y", "IBLOCK_ID" => $IBLOCK_ID), false, false, Array("ID", "CODE", "NAME"));
