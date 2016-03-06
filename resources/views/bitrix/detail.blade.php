@@ -39,8 +39,7 @@
         </div>
         <div class="col-md-2">
             <a class="btn btn-primary btn-block" data-toggle="modal" data-target="#modal_download" href="#">Скачать</a>
-            <a class="btn btn-danger btn-block"
-               href="{{ action('Modules\Bitrix\BitrixController@destroy', $module->id) }}">Удалить</a>
+            <a class="btn btn-danger btn-block" data-toggle="modal" data-target="#modal_delete" href="#">Удалить</a>
         </div>
     </div>
     <a href="#" class="btn btn-primary" data-toggle="modal"
@@ -51,7 +50,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                 aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Загрузка архива компонента</h4>
+                    <h4 class="modal-title">Скачивание модуля</h4>
                 </div>
                 <div class="modal-body">
                     <form action="{{ action('Modules\Bitrix\BitrixController@download_zip', $module->id) }}"
@@ -64,6 +63,22 @@
                         </div>
                         <button class="btn btn-primary">Скачать</button>
                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal_delete">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Удаление модуля</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger" role="alert">Вы уверены?</div>
+                    <a class="btn btn-danger"
+                       href="{{ action('Modules\Bitrix\BitrixController@destroy', $module->id) }}">Удалить</a>
                 </div>
             </div>
         </div>
