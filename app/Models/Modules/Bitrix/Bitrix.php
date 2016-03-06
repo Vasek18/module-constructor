@@ -135,9 +135,9 @@ class Bitrix extends Model{
 	}
 
 	// форматирование вида даты
-	public function getUpdatedAtAttribute($date){
-		return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('Y-m-d');
-	}
+	//public function getUpdatedAtAttribute($date){
+	//	return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('Y-m-d');
+	//}
 
 	// создаёт архив модуля для скачивания
 	// todo проверки на успех

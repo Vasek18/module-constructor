@@ -12,6 +12,11 @@
                   action="{{ action('Modules\Bitrix\BitrixController@edit_param', $module->id) }}"
                   class="readonly">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                <div class="clearfix">
+                    <a href="#" class="btn btn-primary pull-right activate-form">
+                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                    </a>
+                </div>
                 <div class="form-group">
                     <label for="module_name">Название</label>
                     <input type="text" id="module_name" class="form-control" name="module_name"
@@ -19,8 +24,9 @@
                 </div>
                 <div class="form-group">
                     <label for="module_description">Описание</label>
-                                        <textarea id="module_description" class="form-control" name="module_description"
-                                                  rows="5" readonly>{{$module->MODULE_DESCRIPTION}}</textarea>
+                    <textarea id="module_description" class="form-control"
+                              name="module_description"
+                              rows="5" readonly>{{$module->MODULE_DESCRIPTION}}</textarea>
                 </div>
                 <div class="form-group">
                     <label for="module_description">Код</label>
@@ -42,8 +48,6 @@
             <a class="btn btn-danger btn-block" data-toggle="modal" data-target="#modal_delete" href="#">Удалить</a>
         </div>
     </div>
-    <a href="#" class="btn btn-primary" data-toggle="modal"
-       data-target="#upload_zip">Загрузить архивом</a>
     <div class="modal fade" tabindex="-1" role="dialog" id="modal_download">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -84,3 +88,7 @@
         </div>
     </div>
 @stop
+
+@push('scripts')
+<script src="/js/activate-form.js"></script>
+@endpush

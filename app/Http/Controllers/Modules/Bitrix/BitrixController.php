@@ -59,13 +59,22 @@ class BitrixController extends Controller{
 
 	// редактирование параметра
 	public function edit_param($id, Request $request){
+		$module = Bitrix::find($id);
+
 		if (!$this->userCreatedModule($id)){
 			return $this->unauthorized($request);
 		}
 		if ($request->module_name){
+			$module->MODULE_NAME = $request->module_name;
+			$module->save();
 
+			$module->changeVarsInModuleFileAndSave('bitrix/lang/ru/install/index.php', $module->id);
 		}
 		if ($request->module_description){
+			$module->MODULE_DESCRIPTION = $request->module_description;
+			$module->save();
+
+			$module->changeVarsInModuleFileAndSave('bitrix/lang/ru/install/index.php', $module->id);
 
 		}
 
@@ -73,6 +82,9 @@ class BitrixController extends Controller{
 	}
 
 	// кнопка скачивания зип архива
+	// todo нельзя скачать модуль, если он не оплачен
+	// todo нельзя указать версию ниже нынешней
+	// todo нельзя указать последнюю версию, если были произведены изменения
 	public function download_zip(Bitrix $module, Request $request){
 		if (!$this->userCreatedModule($module->id)){
 			return $this->unauthorized($request);
