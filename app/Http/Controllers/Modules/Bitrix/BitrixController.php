@@ -44,6 +44,7 @@ class BitrixController extends Controller{
 
 	// детальная страница модуля
 	public function detail(Bitrix $module, Request $request){
+		//upgradeVersionNumber("0.0.1");
 		if (!$this->userCreatedModule($module->id)){
 			return $this->unauthorized($request);
 		}
@@ -72,12 +73,16 @@ class BitrixController extends Controller{
 	}
 
 	// кнопка скачивания зип архива
-	public function download_zip($id, Request $request){
-		if (!$this->userCreatedModule($id)){
+	public function download_zip(Bitrix $module, Request $request){
+		if (!$this->userCreatedModule($module->id)){
 			return $this->unauthorized($request);
 		}
 
-		if ($pathToZip = Bitrix::generateZip($id)){
+		//dd($request->version);
+
+		Bitrix::upgradeVersion($module->id, $request->version);
+
+		if ($pathToZip = Bitrix::generateZip($module->id)){
 			return response()->download($pathToZip)->deleteFileAfterSend(true);
 		}
 

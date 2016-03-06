@@ -89,8 +89,9 @@ class Bitrix extends Model{
 	public static function changeVarsInModuleFileAndSave($path, $module_id, $dop_search = [], $dop_replace = []){
 		$module = Bitrix::find($module_id);
 		$LANG_KEY = strtoupper($module->PARTNER_CODE."_".$module->MODULE_CODE);
+
 		$template_search = ['{MODULE_CLASS_NAME}', '{MODULE_ID}', '{LANG_KEY}', '{VERSION}', '{DATE_TIME}', '{MODULE_NAME}', '{MODULE_DESCRIPTION}', '{PARTNER_NAME}', '{PARTNER_URI}'];
-		$template_replace = [$module->PARTNER_CODE."_".$module->MODULE_CODE, $module->PARTNER_CODE.".".$module->MODULE_CODE, $LANG_KEY, $module->MODULE_VERSION, date('Y-m-d H:i:s'), $module->MODULE_NAME, $module->MODULE_DESCRIPTION, $module->PARTNER_NAME, $module->PARTNER_URI];
+		$template_replace = [$module->PARTNER_CODE."_".$module->MODULE_CODE, $module->PARTNER_CODE.".".$module->MODULE_CODE, $LANG_KEY, $module->VERSION, date('Y-m-d H:i:s'), $module->MODULE_NAME, $module->MODULE_DESCRIPTION, $module->PARTNER_NAME, $module->PARTNER_URI];
 		if ($dop_search && is_array($dop_search)){
 			foreach ($dop_search as $item){
 				$template_search[] = $item; // не думаю, что array_push здесь подходит
@@ -150,6 +151,18 @@ class Bitrix extends Model{
 		$zipper->make($archiveName)->add($rootFolder.$folder);
 
 		return $archiveName;
+	}
+
+	// изменение номера версии у модуля
+	public static function upgradeVersion($id, $version){
+		$module = Bitrix::find($id);
+
+		$module->VERSION = $version;
+		$module->save();
+
+		$module->changeVarsInModuleFileAndSave('bitrix/install/version.php', $module->id);
+
+		return true;
 	}
 
 	// получить папку модуля

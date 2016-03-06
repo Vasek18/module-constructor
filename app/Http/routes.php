@@ -40,7 +40,7 @@ Route::post('construct/bitrix/create', 'Modules\Bitrix\BitrixController@store');
 Route::get('my-modules/bitrix/{module}',  ['as' => 'bitrix_module_detail', 'uses' => 'Modules\Bitrix\BitrixController@detail']); // детальная страница модуля
 Route::post('my-modules/bitrix/{id}/edit_param', 'Modules\Bitrix\BitrixController@edit_param'); // детальная страница модуля
 Route::get('my-modules/bitrix/{module}/delete', 'Modules\Bitrix\BitrixController@destroy'); // удалить модуль
-Route::get('my-modules/bitrix/{id}/download', 'Modules\Bitrix\BitrixController@download_zip'); // скачать архив
+Route::post('my-modules/bitrix/{module}/download', 'Modules\Bitrix\BitrixController@download_zip'); // скачать архив
 // настройки
 Route::get('my-modules/bitrix/{module}/admin_options', ['as' => 'bitrix_module_admin_options', 'uses' => 'Modules\Bitrix\BitrixOptionsController@show']);
 Route::post('my-modules/bitrix/{id}/admin_options_save', 'Modules\Bitrix\BitrixOptionsController@store');

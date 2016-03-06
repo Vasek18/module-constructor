@@ -38,10 +38,34 @@
             </form>
         </div>
         <div class="col-md-2">
-            <a class="btn btn-primary btn-block"
-               href="{{ action('Modules\Bitrix\BitrixController@download_zip', $module->id) }}">Скачать</a>
+            <a class="btn btn-primary btn-block" data-toggle="modal" data-target="#modal_download" href="#">Скачать</a>
             <a class="btn btn-danger btn-block"
                href="{{ action('Modules\Bitrix\BitrixController@destroy', $module->id) }}">Удалить</a>
+        </div>
+    </div>
+    <a href="#" class="btn btn-primary" data-toggle="modal"
+       data-target="#upload_zip">Загрузить архивом</a>
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal_download">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Загрузка архива компонента</h4>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ action('Modules\Bitrix\BitrixController@download_zip', $module->id) }}"
+                          method="POST">
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <div class="form-group">
+                            <label for="version">Версия</label>
+                            <input class="form-control" type="text" name="version" id="version" required
+                                   value="{{$module->VERSION}}">
+                        </div>
+                        <button class="btn btn-primary">Скачать</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 @stop
