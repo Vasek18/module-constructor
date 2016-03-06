@@ -165,10 +165,21 @@ class Bitrix extends Model{
 		return true;
 	}
 
+	// увеличиваем счётчик скачиваний
+	public static function updateDownloadCount($id){
+		$module = Bitrix::find($id);
+
+		$module->download_counter = intval($module->download_counter) + 1;
+		$module->save();
+
+		return true;
+	}
+
 	// получить папку модуля
 	public static function getFolder(Bitrix $module){
 		$modulesRootFolder = Storage::disk('user_modules')->getDriver()->getAdapter()->getPathPrefix();
 		$folder = $module->PARTNER_CODE.".".$module->MODULE_CODE;
+
 		return $modulesRootFolder.$folder;
 	}
 
@@ -176,6 +187,7 @@ class Bitrix extends Model{
 	public function creator(){
 		return $this->belongsTo('App\Models\User');
 	}
+
 	public function options(){
 		return $this->hasMany('App\Models\Modules\BitrixAdminOptions');
 	}
