@@ -15,6 +15,7 @@ class CreateBitrixModulesOptionsTable extends Migration{
 			$table->integer('module_id')->unsigned();
 			$table->foreign('module_id')->references('id')->on('bitrixes')->onDelete('cascade');
 			$table->integer('type_id')->unsigned();
+			$table->integer('sort')->unsigned()->nullable()->default(500);
 			$table->string('code');
 			$table->string('name');
 			$table->integer('height')->nullable()->default(3);

@@ -21,6 +21,7 @@ class BitrixAdminOptions extends Model{
 
 		// запись в БД
 		$option->module_id = $fields['module_id'];
+		$option->sort = $fields['sort'];
 		$option->name = $fields['name'];
 		$option->type_id = $fields['type_id'];
 		$option->height = $fields['height'];
@@ -48,7 +49,7 @@ class BitrixAdminOptions extends Model{
 			$module = Bitrix::find($module_id);
 			$LANG_KEY = strtoupper($module->PARTNER_CODE."_".$module->MODULE_CODE);
 
-			$options = BitrixAdminOptions::where('module_id', $module_id)->get();
+			$options = BitrixAdminOptions::where('module_id', $module_id)->orderBy('sort', 'asc')->get();
 			$optionsString = '';
 			$optionsLangString = '';
 

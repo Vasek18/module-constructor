@@ -11,13 +11,16 @@
     <form role="form" method="POST" action="{{ action('Modules\Bitrix\BitrixOptionsController@store', $module->id) }}">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <div class="row option-headers">
+            <div class="col-md-1">
+                <label>Сортировка</label>
+            </div>
             <div class="col-md-2">
                 <label>Код свойства</label>
             </div>
             <div class="col-md-3">
                 <label>Название свойства</label>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <label>Тип свойства</label>
             </div>
             <div class="col-md-2">

@@ -25,7 +25,7 @@ class BitrixOptionsController extends Controller{
 		if (!$this->userCreatedModule($module->id)){
 			return $this->unauthorized($request);
 		}
-		$options = BitrixAdminOptions::where('module_id', $module->id)->get();
+		$options = BitrixAdminOptions::where('module_id', $module->id)->orderBy('sort', 'asc')->get();
 		//$options = BitrixAdminOptions::where('module_id', $module->id)->with("vals")->get();
 		// вот такой сложный путь, потому что закомментирование сверху почему-то показывает null во вью в поле значений
 		foreach ($options as $i => $option){
@@ -72,6 +72,7 @@ class BitrixOptionsController extends Controller{
 			}
 
 			$prop["module_id"] = $request['module_id'][$i];
+			$prop["sort"] = $request['option_sort'][$i];
 			$prop["code"] = $option_code;
 			$prop["name"] = $request['option_name'][$i];
 			$prop["type_id"] = $request['option_type'][$i];

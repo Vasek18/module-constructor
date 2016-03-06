@@ -1,7 +1,12 @@
 <div class="row option">
     <input type="hidden" name="module_id[]" value="{{$module->id}}">
+    <div class="col-md-1">
+        <label class="sr-only" for="option_{{$i}}_sort">Сортировка</label>
+        <input type="text" class="form-control" name="option_sort[]" id="option_{{$i}}_sort"
+               placeholder="Сортировка" value="{{$option ? $option->sort : ''}}">
+    </div>
     <div class="col-md-2">
-        <label class="sr-only" for="option_{{$i}}_id">ID</label>
+        <label class="sr-only" for="option_{{$i}}_id">Код</label>
         <input type="text" class="form-control" name="option_code[]" id="option_{{$i}}_id"
                placeholder="Код" value="{{$option ? $option->code : ''}}">
     </div>
@@ -11,7 +16,7 @@
                id="option_{{$i}}_name"
                placeholder="Название" value="{{$option ? $option->name : ''}}">
     </div>
-    <div class="col-md-3">
+    <div class="col-md-2">
         <label class="sr-only" for="option_{{$i}}_type">Тип</label>
         <select class="form-control" name="option_type[]" id="option_{{$i}}_type">
             @foreach($options_types as $type)
