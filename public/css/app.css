@@ -34,3 +34,8 @@ footer {
   margin-top: 15px;
   margin-bottom: 15px;
 }
+
+.banner-on-main h2 {
+  font-size: 63px;
+  text-align: center;
+}

@@ -95,7 +95,7 @@ class BitrixController extends Controller{
 		Bitrix::upgradeVersion($module->id, $request->version);
 		Bitrix::updateDownloadCount($module->id);
 
-		if ($pathToZip = Bitrix::generateZip($module->id)){
+		if ($pathToZip = Bitrix::generateZip($module)){
 			return response()->download($pathToZip)->deleteFileAfterSend(true);
 		}
 

@@ -141,14 +141,14 @@ class Bitrix extends Model{
 
 	// создаёт архив модуля для скачивания
 	// todo проверки на успех
-	public static function generateZip($id){
-		$module = Bitrix::find($id);
+	public static function generateZip($module){
 		$folder = $module->PARTNER_CODE.".".$module->MODULE_CODE;
 		$archiveName = $module->PARTNER_CODE."_".$module->MODULE_CODE.".zip";
 		$rootFolder = Storage::disk('user_modules')->getDriver()->getAdapter()->getPathPrefix();
 
 		$zipper = new \Chumper\Zipper\Zipper;
-		$zipper->make($archiveName)->add($rootFolder.$folder);
+		//$zipper->make($archiveName)->folder("test")->add($rootFolder.$folder);
+		$zipper->make($archiveName)->folder($folder)->add($rootFolder.$folder)->close();
 
 		return $archiveName;
 	}
