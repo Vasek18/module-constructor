@@ -25,8 +25,8 @@
     </div>
     <div class="col-md-2">
         <a href="#" class="btn btn-default" data-toggle="modal"
-           data-target="#php_code_{{$i}}">Редактировать</a>
-        <div class="modal fade" tabindex="-1" role="dialog" id="php_code_{{$i}}">
+           data-target="#php_code_window_{{$i}}">Редактировать</a>
+        <div class="modal fade" tabindex="-1" role="dialog" id="php_code_window_{{$i}}">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -36,10 +36,21 @@
                     </div>
                     <div class="modal-body">
                         <label class="sr-only" for="php_code_{{$i}}">Код для обработчика</label>
-                        <textarea class="form-control" name="php_code[]"
-                                  id="php_code_{{$i}}"
-                                  placeholder="Код для обработчика"
-                                  rows="100">{{$handler?$handler->php_code:''}}</textarea>
+                        <div id="editor_{{$i}}" style="height: 500px">{{$handler?$handler->php_code:''}}</div>
+
+                        @push('scripts')
+                        <script>
+                            var editor_{{$i}} = ace.edit("editor_{{$i}}");
+                            editor_{{$i}}.getSession().setMode("ace/mode/php");
+                            {{--editor.setValue("{!!$handler?$handler->php_code:''!!}");--}}
+                            editor_{{$i}}.getSession().on('change', function(e){
+                                var text = editor_{{$i}}.getSession().getValue();
+                                console.log(text)
+                                $("#php_code_{{$i}}").val(text);
+                            });
+                        </script>
+                        @endpush
+                        <input type="hidden" name="php_code[]" id="php_code_{{$i}}" value="{{$handler?$handler->php_code:''}}">
                     </div>
                 </div>
             </div>

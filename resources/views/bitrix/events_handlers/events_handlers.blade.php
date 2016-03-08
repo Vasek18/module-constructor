@@ -6,7 +6,7 @@
 
 @section('page')
     @push('scripts')
-    {{--<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/ace.js"></script> как вариант --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/ace.js"></script>
     @endpush
     <form role="form" method="POST"
           action="{{ action('Modules\Bitrix\BitrixEventHandlersController@store', $module->id) }}">
