@@ -10,10 +10,6 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Requests;
 use App\Http\Controllers\Traits\UserOwnModule;
 
-// todo
-// вообще во всех методах надо проверять авторство
-// много копипаста, например, код отвечающий за настройки и обработчики практически одинаков
-
 class BitrixController extends Controller{
 	protected $rootFolder = '/construct/bitrix/'; // корневая папка модуля
 

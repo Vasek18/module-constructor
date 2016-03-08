@@ -30,7 +30,7 @@ class BitrixEventsHandlers extends Model{
 		if (BitrixEventsHandlers::where('module_id', $module_id)->count()){
 			$module = Bitrix::find($module_id);
 			$moduleIDForBitrix = $module->PARTNER_CODE.".".$module->MODULE_CODE;
-			$moduleNamespace = studly_case($module->PARTNER_CODE."_".$module->MODULE_CODE);
+			$moduleNamespace = studly_case($module->PARTNER_CODE)."\\".studly_case($module->MODULE_CODE);
 
 
 			$handlerTemplate = Storage::disk('modules_templates')->get('bitrix/lib/event.php');
@@ -40,13 +40,13 @@ class BitrixEventsHandlers extends Model{
 			$handlers = BitrixEventsHandlers::where('module_id', $module_id)->get();
 			foreach ($handlers as $handler){
 				$classNamespace = studly_case($handler->class);
-				$installHandlersCode .= "\t\t".'\Bitrix\Main\EventManager::getInstance()->registerEventHandler("'.$handler->from_module.'", "'.$handler->event.'", $this->MODULE_ID, \'\\'.$moduleNamespace.'\\'.$classNamespace.'\\'.$handler->class.'\', "'.$handler->method.'");'.PHP_EOL;
-				$uninstallHandlersCode .= "\t\t".'\Bitrix\Main\EventManager::getInstance()->unRegisterEventHandler("'.$handler->from_module.'", "'.$handler->event.'", $this->MODULE_ID, \'\\'.$moduleNamespace.'\\'.$classNamespace.'\\'.$handler->class.'\', "'.$handler->method.'");'.PHP_EOL;
+				$installHandlersCode .= "\t\t".'\Bitrix\Main\EventManager::getInstance()->registerEventHandler("'.$handler->from_module.'", "'.$handler->event.'", $this->MODULE_ID, \'\\'.$moduleNamespace.'\\EventHandlers\\'.$handler->class.'\', "'.$handler->method.'");'.PHP_EOL;
+				$uninstallHandlersCode .= "\t\t".'\Bitrix\Main\EventManager::getInstance()->unRegisterEventHandler("'.$handler->from_module.'", "'.$handler->event.'", $this->MODULE_ID, \'\\'.$moduleNamespace.'\\EventHandlers\\'.$handler->class.'\', "'.$handler->method.'");'.PHP_EOL;
 
 				$template_search = Array('{MODULE_NAMESPACE}', '{CLASS_NAMESPACE}', '{CLASS}', '{METHOD}', '{PHP_CODE}');
 				$template_replace = Array($moduleNamespace, $classNamespace, $handler->class, $handler->method, $handler->php_code);
 				$handlerFile = str_replace($template_search, $template_replace, $handlerTemplate);
-				Storage::disk('user_modules')->put($moduleIDForBitrix.'/lib/'.strtolower($handler->class).'.php', $handlerFile);
+				Storage::disk('user_modules')->put($moduleIDForBitrix.'/lib/eventhandlers/'.strtolower($handler->class).'.php', $handlerFile);
 			}
 			//dd($installHandlersCode);
 

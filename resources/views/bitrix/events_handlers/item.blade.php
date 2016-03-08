@@ -5,7 +5,7 @@
                id="from_module_{{$i}}"
                placeholder="Модуль" value="{{$handler?$handler->from_module:''}}">
     </div>
-    <div class="col-md-2">
+    <div class="col-md-3">
         <label class="sr-only" for="event_{{$i}}">Событие</label>
         <input type="text" class="form-control" name="event[]"
                id="event_{{$i}}"
@@ -23,7 +23,7 @@
                id="method_{{$i}}"
                placeholder="Метод для обработчика" value="{{$handler?$handler->method:''}}">
     </div>
-    <div class="col-md-3">
+    <div class="col-md-2">
         <a href="#" class="btn btn-default" data-toggle="modal"
            data-target="#php_code_{{$i}}">Редактировать</a>
         <div class="modal fade" tabindex="-1" role="dialog" id="php_code_{{$i}}">
@@ -36,10 +36,10 @@
                     </div>
                     <div class="modal-body">
                         <label class="sr-only" for="php_code_{{$i}}">Код для обработчика</label>
-                                            <textarea class="form-control" name="php_code[]"
-                                                      id="php_code_{{$i}}"
-                                                      placeholder="Код для обработчика"
-                                                      rows="100">{{$handler?$handler->php_code:''}}</textarea>
+                        <textarea class="form-control" name="php_code[]"
+                                  id="php_code_{{$i}}"
+                                  placeholder="Код для обработчика"
+                                  rows="100">{{$handler?$handler->php_code:''}}</textarea>
                     </div>
                 </div>
             </div>

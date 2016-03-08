@@ -1,5 +1,5 @@
 <?
-namespace {MODULE_NAMESPACE}\{CLASS_NAMESPACE};
+namespace {MODULE_NAMESPACE}\EventHandlers;
 
 class {CLASS}{
 	static public function {METHOD}(){

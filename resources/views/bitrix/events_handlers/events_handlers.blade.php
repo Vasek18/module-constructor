@@ -5,6 +5,9 @@
 @stop
 
 @section('page')
+    @push('scripts')
+    {{--<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/ace.js"></script> как вариант --}}
+    @endpush
     <form role="form" method="POST"
           action="{{ action('Modules\Bitrix\BitrixEventHandlersController@store', $module->id) }}">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -12,7 +15,7 @@
             <div class="col-md-2">
                 <label>Модуль генерирующий событие</label>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <label>Событие</label>
             </div>
             <div class="col-md-2">
@@ -21,7 +24,7 @@
             <div class="col-md-2">
                 <label>Метод для обработчика</label>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <label>Код обработчика</label>
             </div>
         </div>

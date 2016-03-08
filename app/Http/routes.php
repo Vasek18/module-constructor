@@ -48,7 +48,7 @@ Route::get('my-modules/bitrix/{module_id}/admin_option_delete/{option_id}', 'Mod
 // .настройки
 // обработчики событий
 Route::get('my-modules/bitrix/{id}/events_handlers', ['as' => 'bitrix_module_events_handlers', 'uses' => 'Modules\Bitrix\BitrixEventHandlersController@show']);
-Route::post('my-modules/bitrix/{id}/events_handlers_save', 'Modules\Bitrix\BitrixEventHandlersController@store');
+Route::post('my-modules/bitrix/{module}/events_handlers_save', 'Modules\Bitrix\BitrixEventHandlersController@store');
 Route::get('my-modules/bitrix/{module_id}/events_handler_delete/{option_id}', 'Modules\Bitrix\BitrixEventHandlersController@destroy');
 // .обработчики событий
 // компоненты

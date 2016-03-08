@@ -10,6 +10,7 @@ use Auth;
 use App\Models\Modules\Bitrix\Bitrix;
 use App\Models\Modules\Bitrix\BitrixEventsHandlers;
 use App\Http\Controllers\Traits\UserOwnModule;
+use Illuminate\Support\Facades\Storage;
 
 class BitrixEventHandlersController extends Controller{
 	use UserOwnModule;
@@ -34,13 +35,16 @@ class BitrixEventHandlersController extends Controller{
 	}
 
 	// сохранение обработчиков
-	public function store($module_id, Request $request){
-		if (!$this->userCreatedModule($module_id)){
+	public function store(Bitrix $module, Request $request){
+		if (!$this->userCreatedModule($module->id)){
 			return $this->unauthorized($request);
 		}
 		//dd($request);
 		// удаляем старые обработчики, чтобы при изменение уже заполненной строчки, старые данные с этой строчки не существовали
-		BitrixEventsHandlers::where('module_id', $module_id)->delete();
+		BitrixEventsHandlers::where('module_id', $module->id)->delete();
+		// удаляем удаляем их файлы
+		$myModuleFolder = $module->PARTNER_CODE.".".$module->MODULE_CODE;
+		Storage::disk('user_modules')->deleteDirectory($myModuleFolder."/lib/eventhandlers");
 
 		// перебираем все строки полей
 		foreach ($request->event as $i => $event){
@@ -59,7 +63,7 @@ class BitrixEventHandlersController extends Controller{
 				continue;
 			}
 
-			$handler["module_id"] = $module_id;
+			$handler["module_id"] = $module->id;
 			$handler["event"] = $event;
 			$handler["from_module"] = $request['from_module'][$i];
 			$handler["class"] = $request['class'][$i];
@@ -72,7 +76,7 @@ class BitrixEventHandlersController extends Controller{
 		}
 
 		// записываем в папку модуля
-		BitrixEventsHandlers::saveEventsInFolder($module_id);
+		BitrixEventsHandlers::saveEventsInFolder($module->id);
 
 		return back();
 	}
