@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests;
 use App\Http\Controllers\Traits\UserOwnModule;
+use Illuminate\Support\Facades\Response;
 
 class BitrixController extends Controller{
 	protected $rootFolder = '/construct/bitrix/'; // корневая папка модуля
@@ -92,7 +93,9 @@ class BitrixController extends Controller{
 		Bitrix::updateDownloadCount($module->id);
 
 		if ($pathToZip = Bitrix::generateZip($module)){
-			return response()->download($pathToZip)->deleteFileAfterSend(true);
+			$response = Response::download($pathToZip)->deleteFileAfterSend(true);
+			ob_end_clean(); // без этого архив скачивается поверждённым
+			return $response;
 		}
 
 		return back();
