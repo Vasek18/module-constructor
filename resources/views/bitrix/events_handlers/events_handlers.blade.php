@@ -8,6 +8,16 @@
     @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/ace.js"></script>
     @endpush
+    <datalist id="core_modules_list">
+        @foreach($core_modules as $core_module)
+            <option>{{$core_module->code}}</option>
+        @endforeach
+    </datalist>
+    <datalist id="core_events_list">
+        @foreach($core_events as $core_event)
+            <option>{{$core_event->code}}</option>
+        @endforeach
+    </datalist>
     <form role="form" method="POST"
           action="{{ action('Modules\Bitrix\BitrixEventHandlersController@store', $module->id) }}">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">

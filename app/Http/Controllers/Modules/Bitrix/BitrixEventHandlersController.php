@@ -11,6 +11,7 @@ use App\Models\Modules\Bitrix\Bitrix;
 use App\Models\Modules\Bitrix\BitrixEventsHandlers;
 use App\Http\Controllers\Traits\UserOwnModule;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class BitrixEventHandlersController extends Controller{
 	use UserOwnModule;
@@ -26,9 +27,13 @@ class BitrixEventHandlersController extends Controller{
 			return $this->unauthorized($request);
 		}
 		$handlers = BitrixEventsHandlers::where('module_id', $module_id)->get();
+		$core_modules = DB::table('bitrix_core_modules')->get();
+		$core_events = DB::table('bitrix_core_events')->get();
 		$data = [
 			'module'   => Bitrix::find($module_id),
-			'handlers' => $handlers
+			'handlers' => $handlers,
+			'core_modules' => $core_modules,
+			'core_events' => $core_events
 		];
 
 		return view("bitrix.events_handlers.events_handlers", $data); // передаём данные из таблицы пользователей, чтобы подставлять их в формы

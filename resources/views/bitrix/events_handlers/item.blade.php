@@ -1,15 +1,26 @@
 <div class="row option">
     <div class="col-md-2">
         <label class="sr-only" for="from_module_{{$i}}">Модуль</label>
-        <input type="text" class="form-control" name="from_module[]"
-               id="from_module_{{$i}}"
-               placeholder="Модуль" value="{{$handler?$handler->from_module:''}}">
+        <input
+                type="text"
+                class="form-control"
+                name="from_module[]"
+                id="from_module_{{$i}}"
+                placeholder="Модуль"
+                value="{{$handler?$handler->from_module:''}}"
+                list="core_modules_list"
+                >
     </div>
     <div class="col-md-3">
         <label class="sr-only" for="event_{{$i}}">Событие</label>
-        <input type="text" class="form-control" name="event[]"
+        <input type="text"
+               class="form-control"
+               name="event[]"
                id="event_{{$i}}"
-               placeholder="Событие" value="{{$handler?$handler->event:''}}">
+               placeholder="Событие"
+               value="{{$handler?$handler->event:''}}"
+               list="core_events_list"
+                >
     </div>
     <div class="col-md-2">
         <label class="sr-only" for="class_{{$i}}">Класс для обработчика</label>
@@ -19,9 +30,13 @@
     </div>
     <div class="col-md-2">
         <label class="sr-only" for="method_{{$i}}">Метод для обработчика</label>
-        <input type="text" class="form-control" name="method[]"
+        <input type="text"
+               class="form-control"
+               name="method[]"
                id="method_{{$i}}"
-               placeholder="Метод для обработчика" value="{{$handler?$handler->method:''}}">
+               placeholder="Метод для обработчика"
+               value="{{$handler?$handler->method:''}}"
+                >
     </div>
     <div class="col-md-2">
         <a href="#" class="btn btn-default" data-toggle="modal"
@@ -40,7 +55,7 @@
 
                         @push('scripts')
                         <script>
-                            var editor_{{$i}} = ace.edit("editor_{{$i}}");
+                            var editor_{{$i}}   = ace.edit("editor_{{$i}}");
                             editor_{{$i}}.getSession().setMode("ace/mode/php");
                             {{--editor.setValue("{!!$handler?$handler->php_code:''!!}");--}}
                             editor_{{$i}}.getSession().on('change', function(e){
@@ -50,7 +65,8 @@
                             });
                         </script>
                         @endpush
-                        <input type="hidden" name="php_code[]" id="php_code_{{$i}}" value="{{$handler?$handler->php_code:''}}">
+                        <input type="hidden" name="php_code[]" id="php_code_{{$i}}"
+                               value="{{$handler?$handler->php_code:''}}">
                     </div>
                 </div>
             </div>
