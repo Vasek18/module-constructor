@@ -1,7 +1,9 @@
-<?
+<?php
 function upgradeVersionNumber($version){
 	$versionArr = explode(".", $version);
-	//dd($versionArr);
+	$lastIndex = count($versionArr)-1;
+	$versionArr[$lastIndex]++;
+	$version = implode(".", $versionArr);
 	return $version;
 }
 ?>

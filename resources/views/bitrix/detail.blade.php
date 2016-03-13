@@ -30,8 +30,7 @@
                 </div>
                 <div class="form-group">
                     <label for="module_description">Код</label>
-                    <p class="form-control-static">{{$module->PARTNER_CODE}}
-                        .{{$module->MODULE_CODE}}</p>
+                    <p class="form-control-static">{{$module->PARTNER_CODE}}.{{$module->MODULE_CODE}}</p>
                 </div>
                 <div class="form-group">
                     <label for="module_description">Версия</label>
@@ -63,7 +62,7 @@
                         <div class="form-group">
                             <label for="version">Версия</label>
                             <input class="form-control" type="text" name="version" id="version" required
-                                   value="{{$module->VERSION}}">
+                                   value="{{upgradeVersionNumber($module->VERSION)}}">
                         </div>
                         <button class="btn btn-primary">Скачать</button>
                     </form>

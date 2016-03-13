@@ -41,7 +41,6 @@ class BitrixController extends Controller{
 
 	// детальная страница модуля
 	public function detail(Bitrix $module, Request $request){
-		//upgradeVersionNumber("0.0.1");
 		if (!$this->userCreatedModule($module->id)){
 			return $this->unauthorized($request);
 		}
