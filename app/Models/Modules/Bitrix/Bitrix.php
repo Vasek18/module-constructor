@@ -20,7 +20,7 @@ class Bitrix extends Model{
 	protected $table = 'bitrixes';
 
 	// на случай, если я где-то буду использовать create, эти поля можно будет записывать
-	protected $fillable = ['MODULE_NAME', 'MODULE_DESCRIPTION', 'MODULE_CODE', 'PARTNER_NAME', 'PARTNER_URI', 'PARTNER_CODE'];
+	protected $fillable = ['MODULE_NAME', 'MODULE_DESCRIPTION', 'MODULE_CODE', 'PARTNER_NAME', 'PARTNER_URI', 'PARTNER_CODE', 'VERSION'];
 
 	// создание модуля (записывание в бд)
 	// todo валидация данных
