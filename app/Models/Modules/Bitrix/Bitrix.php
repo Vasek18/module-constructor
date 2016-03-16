@@ -30,13 +30,10 @@ class Bitrix extends Model{
 		//	return false; // todo выброс ошибки
 		//}
 
-
-		$user_id = Auth::user()->id;
-
 		$bitrix = new Bitrix;
 
 		// на будущее сохраняем какие-то поля в таблицу пользователя, если они не были указаны, но были указаны сейчас
-		$bitrix::completeUserProfile($user_id, $request);
+		$bitrix::completeUserProfile(Auth::id(), $request);
 
 		// запись в БД
 		$bitrix->MODULE_NAME = $request->MODULE_NAME;
@@ -45,9 +42,11 @@ class Bitrix extends Model{
 		$bitrix->PARTNER_NAME = $request->PARTNER_NAME;
 		$bitrix->PARTNER_URI = $request->PARTNER_URI;
 		$bitrix->PARTNER_CODE = $request->PARTNER_CODE;
-		$bitrix->VERSION = $request->MODULE_VERSION;
-		$bitrix->user_id = $user_id;
-		$bitrix->save();
+		if ($request->MODULE_VERSION){
+			$bitrix->VERSION = $request->MODULE_VERSION;
+		}
+
+		Auth::user()->bitrixes()->save($bitrix);
 		$module_id = $bitrix->id;
 
 		if ($module_id){
@@ -122,10 +121,10 @@ class Bitrix extends Model{
 	// на будущее сохраняем какие-то поля в таблицу пользователя, если они не были указаны, но были указаны сейчас
 	static private function completeUserProfile($user_id, Request $request){
 		$user = User::find($user_id);
-		if (!$user->bitrix_partner_code){
+		if (!$user->bitrix_partner_code || $user->bitrix_partner_code == ''){
 			$user->bitrix_partner_code = $request->PARTNER_CODE;
 		}
-		if (!$user->bitrix_company_name){
+		if (!$user->bitrix_company_name || $user->bitrix_company_name == ''){
 			$user->bitrix_company_name = $request->PARTNER_NAME;
 		}
 		if (!$user->site){

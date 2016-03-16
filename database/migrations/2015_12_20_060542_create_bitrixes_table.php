@@ -22,7 +22,7 @@ class CreateBitrixesTable extends Migration{
 			$table->string('PARTNER_CODE')->nullable();
 			$table->integer('user_id')->unsigned();
 			$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-			$table->string('VERSION');
+			$table->string('VERSION')->default('0.0.1');
 			$table->integer('download_counter')->nullable()->unsigned()->default(0);
 			$table->timestamps();
 		});
