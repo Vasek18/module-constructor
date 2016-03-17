@@ -22,8 +22,7 @@ class BitrixTest extends TestCase{
 
 	/** @test */
 	function it_can_create_module(){
-		$user = factory(App\Models\User::class)->create();
-		$this->actingAs($user);
+		$this->signIn();
 
 		$request = new Request();
 		$request->MODULE_NAME = "Test";
@@ -43,7 +42,7 @@ class BitrixTest extends TestCase{
 		$this->assertEquals("Ololosha", $module->PARTNER_NAME);
 		$this->assertEquals("http://ololo.com", $module->PARTNER_URI);
 		$this->assertEquals("ololosha", $module->PARTNER_CODE);
-		$this->assertEquals($user->id, $module->user_id);
+		$this->assertEquals($this->user->id, $module->user_id);
 	}
 
 	/** @test */
