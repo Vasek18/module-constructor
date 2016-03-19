@@ -25,12 +25,18 @@ class Bitrix extends Model{
 	// создание модуля (записывание в бд)
 	// todo валидация данных
 	public static function store(Request $request){
-		// проверка на уникальность пары код партнёра / код модуля // todo не работает
-		//if (Bitrix::where('PARTNER_CODE', $request->PARTNER_CODE)->where('MODULE_CODE', $request->MODULE_CODE)->get()){
-		//	return false; // todo выброс ошибки
-		//}
-
 		$bitrix = new Bitrix;
+
+		if (!Auth::id()){
+			// todo выкидывать ошибку
+			return false;
+		}
+
+		if (Bitrix::existsModuleWithThisCodeAndPartnerCode($request->PARTNER_CODE, $request->MODULE_CODE)){
+			//dd($request);
+			// todo выкидывать ошибку
+			return false;
+		}
 
 		// на будущее сохраняем какие-то поля в таблицу пользователя, если они не были указаны, но были указаны сейчас
 		$bitrix::completeUserProfile(Auth::id(), $request);
@@ -140,7 +146,7 @@ class Bitrix extends Model{
 
 	// создаёт архив модуля для скачивания
 	// todo проверки на успех
-	public static function generateZip($module){
+	public static function generateZip(Bitrix $module){
 		$folder = $module->PARTNER_CODE.".".$module->MODULE_CODE;
 		$archiveName = $module->PARTNER_CODE."_".$module->MODULE_CODE.".zip";
 		$rootFolder = Storage::disk('user_modules')->getDriver()->getAdapter()->getPathPrefix();
@@ -180,6 +186,13 @@ class Bitrix extends Model{
 		$folder = $module->PARTNER_CODE.".".$module->MODULE_CODE;
 
 		return $modulesRootFolder.$folder;
+	}
+
+	public static function existsModuleWithThisCodeAndPartnerCode($partnerCode, $moduleCode){
+		if (Bitrix::where('PARTNER_CODE', $partnerCode)->where('MODULE_CODE', $moduleCode)->count()){
+			return true;
+		}
+		return false;
 	}
 
 	// связи с другими моделями
