@@ -40,9 +40,9 @@ class BitrixTest extends TestCase{
 
 		$module = Bitrix::find($bitrix->id);
 
-		$this->assertEquals("0.0.2", $module->VERSION);
-
 		Bitrix::deleteFolder($module);
+
+		$this->assertEquals("0.0.2", $module->VERSION);
 	}
 
 	/** @test */
@@ -51,6 +51,8 @@ class BitrixTest extends TestCase{
 
 		$module = $this->useStoreMethod();
 
+		Bitrix::deleteFolder($module);
+
 		$this->assertEquals("Test", $module->MODULE_NAME);
 		$this->assertEquals("Ololo trololo", $module->MODULE_DESCRIPTION);
 		$this->assertEquals("test", $module->MODULE_CODE);
@@ -58,8 +60,6 @@ class BitrixTest extends TestCase{
 		$this->assertEquals("http://ololo.com", $module->PARTNER_URI);
 		$this->assertEquals("ololosha", $module->PARTNER_CODE);
 		$this->assertEquals($this->user->id, $module->user_id);
-
-		Bitrix::deleteFolder($module);
 	}
 
 	/** @test */
@@ -71,11 +71,11 @@ class BitrixTest extends TestCase{
 
 		$creator = User::find($user->id);
 
+		Bitrix::deleteFolder($module);
+
 		$this->assertEquals("Ololosha", $creator->bitrix_company_name);
 		$this->assertEquals("ololosha", $creator->bitrix_partner_code);
 		$this->assertEquals("http://ololo.com", $creator->site);
-
-		Bitrix::deleteFolder($module);
 	}
 
 	/** @test */
@@ -87,9 +87,9 @@ class BitrixTest extends TestCase{
 
 		$updatedModule = Bitrix::find($module->id);
 
-		$this->assertEquals($oldCount + 1, $updatedModule->download_counter);
-
 		Bitrix::deleteFolder($module);
+
+		$this->assertEquals($oldCount + 1, $updatedModule->download_counter);
 	}
 
 	/** @test */
@@ -100,9 +100,9 @@ class BitrixTest extends TestCase{
 
 		$dirs = $this->disk()->directories();
 
-		$this->assertTrue(in_array("ololosha.test", $dirs));
-
 		Bitrix::deleteFolder($module);
+
+		$this->assertTrue(in_array("ololosha.test", $dirs));
 	}
 
 	/** @test */
@@ -113,9 +113,9 @@ class BitrixTest extends TestCase{
 
 		$folder = Bitrix::getFolder($module);
 
-		$this->assertEquals($rootFolder.$module->PARTNER_CODE.".".$module->MODULE_CODE, $folder);
-
 		Bitrix::deleteFolder($module);
+
+		$this->assertEquals($rootFolder.$module->PARTNER_CODE.".".$module->MODULE_CODE, $folder);
 	}
 
 	/** @test */
@@ -134,14 +134,14 @@ class BitrixTest extends TestCase{
 
 		$module = $this->useStoreMethod();
 
-		$dirName = Bitrix::getFolder($module, false);
+		$dirName = Bitrix::getFolder($module);
 
-		$this->assertTrue($this->disk()->exists($dirName.'/install/index.php'), 'There is no "/install/index.php" file');
-		$this->assertTrue($this->disk()->exists($dirName.'/install/step.php'), 'There is no "/install/step.php" file');
-		$this->assertTrue($this->disk()->exists($dirName.'/install/unstep.php'), 'There is no "/install/unstep.php" file');
-		$this->assertTrue($this->disk()->exists($dirName.'/install/version.php'), 'There is no "/install/version.php" file');
-		$this->assertTrue($this->disk()->exists($dirName.'/include.php'), 'There is no "/include.php" file');
-		$this->assertTrue($this->disk()->exists($dirName.'/lang/ru/install/index.php'), 'There is no "/lang/ru/install/index.php" file');
+		$this->assertFileExists($dirName.'/install/index.php');
+		$this->assertFileExists($dirName.'/install/step.php');
+		$this->assertFileExists($dirName.'/install/unstep.php');
+		$this->assertFileExists($dirName.'/install/version.php');
+		$this->assertFileExists($dirName.'/include.php');
+		$this->assertFileExists($dirName.'/lang/ru/install/index.php');
 
 		Bitrix::deleteFolder($module);
 	}
@@ -162,9 +162,9 @@ class BitrixTest extends TestCase{
 		$templateLangFile = Storage::disk('modules_templates')->get('bitrix/lang/ru/install/index.php');
 		$expectedContent = $file = str_replace($template_search, $template_replace, $templateLangFile);
 
-		$this->assertEquals($expectedContent, $langFileContent);
-
 		Bitrix::deleteFolder($module);
+
+		$this->assertEquals($expectedContent, $langFileContent);
 	}
 
 	/** @test */
@@ -177,14 +177,14 @@ class BitrixTest extends TestCase{
 
 		$template_search = ['{VERSION}', '{DATE_TIME}'];
 
-		$template_replace = [$module->VERSION, date('Y-m-d H:i:s')];
+		$template_replace = [$module->VERSION, $module->updated_at];
 
 		$templateLangFile = Storage::disk('modules_templates')->get('bitrix/install/version.php');
 		$expectedContent = $file = str_replace($template_search, $template_replace, $templateLangFile);
 
-		$this->assertEquals($expectedContent, $langFileContent);
-
 		Bitrix::deleteFolder($module);
+
+		$this->assertEquals($expectedContent, $langFileContent);
 	}
 
 	/** @test */
@@ -263,9 +263,9 @@ class BitrixTest extends TestCase{
 
 		$count = Bitrix::where('PARTNER_CODE', "ololosha")->where('MODULE_CODE', "test")->count();
 
-		$this->assertEquals(1, $count);
-
 		Bitrix::deleteFolder($module);
+
+		$this->assertEquals(1, $count);
 	}
 }
 

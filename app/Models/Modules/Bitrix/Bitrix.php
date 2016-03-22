@@ -19,6 +19,22 @@ class Bitrix extends Model{
 	 */
 	protected $table = 'bitrixes';
 
+	protected static function disk(){
+		return Storage::disk('user_modules');
+	}
+
+	protected $replaceArray = [
+		'{MODULE_CLASS_NAME}'  => 'class_name',
+		'{MODULE_ID}'          => 'module_full_id',
+		'{LANG_KEY}'           => 'lang_key',
+		'{VERSION}'            => 'VERSION',
+		'{DATE_TIME}'          => 'updated_at',
+		'{MODULE_NAME}'        => 'MODULE_NAME',
+		'{MODULE_DESCRIPTION}' => 'MODULE_DESCRIPTION',
+		'{PARTNER_NAME}'       => 'PARTNER_NAME',
+		'{PARTNER_URI}'        => 'PARTNER_URI'
+	];
+
 	// на случай, если я где-то буду использовать create, эти поля можно будет записывать
 	protected $fillable = ['MODULE_NAME', 'MODULE_DESCRIPTION', 'MODULE_CODE', 'PARTNER_NAME', 'PARTNER_URI', 'PARTNER_CODE', 'VERSION'];
 
@@ -57,7 +73,7 @@ class Bitrix extends Model{
 
 		if ($module_id){
 			// создание папки модуля пользователя на серваке
-			if (!$bitrix::createFolder($request, $module_id)){
+			if (!$bitrix->createFolder()){
 				// todo возврат ошибки
 				return false;
 			}
@@ -68,34 +84,35 @@ class Bitrix extends Model{
 
 	// создание папки с модулем на серваке
 	// todo проверка защиты
-	public
-	static function createFolder(Request $request, $module_id){ // todo мне нужен здесь $request по сути
-		$myModuleFolder = $request->PARTNER_CODE.".".$request->MODULE_CODE; // папка модуля // todo так можно скачать модуль, зная всего два эти параметра, а они открытые (Если вообще можно обращаться к этим папкам)
-
-		if (in_array($myModuleFolder, Storage::disk('user_modules')->directories())){
+	public function createFolder(){
+		$module_folder = $this->module_folder; // todo так можно скачать модуль, зная всего два эти параметра, а они открытые (Если вообще можно обращаться к этим папкам)
+		if (!$module_folder){
+			return false;
+		}
+		if ($this->theSameFolderAlreadyExists()){
 			// todo возврат ошибки
 			return false;
 		}
 
 		// воссоздаём начальную структуру
-		Storage::disk('user_modules')->makeDirectory($myModuleFolder."/install");
-		Storage::disk('user_modules')->makeDirectory($myModuleFolder."/lib");
+		$this->disk()->makeDirectory($module_folder."/install");
+		$this->disk()->makeDirectory($module_folder."/lib");
 
 		// подставляем значения в шаблон индексного файла и шагов установки
-		Bitrix::changeVarsInModuleFileAndSave('bitrix/install/index.php', $module_id);
-		Bitrix::changeVarsInModuleFileAndSave('bitrix/install/step.php', $module_id);
-		Bitrix::changeVarsInModuleFileAndSave('bitrix/install/unstep.php', $module_id);
+		Bitrix::changeVarsInModuleFileAndSave('bitrix/install/index.php', $this->id);
+		Bitrix::changeVarsInModuleFileAndSave('bitrix/install/step.php', $this->id);
+		Bitrix::changeVarsInModuleFileAndSave('bitrix/install/unstep.php', $this->id);
 
 		// подставляем значения в файл версии
-		Bitrix::changeVarsInModuleFileAndSave('bitrix/install/version.php', $module_id);
+		Bitrix::changeVarsInModuleFileAndSave('bitrix/install/version.php', $this->id);
 
 		// этот файл просто до сих пор обязательный
-		Bitrix::changeVarsInModuleFileAndSave('bitrix/include.php', $module_id);
+		Bitrix::changeVarsInModuleFileAndSave('bitrix/include.php', $this->id);
 
 		// воссоздаём начальную структуру для ланга
-		Storage::disk('user_modules')->makeDirectory($myModuleFolder."/lang/ru/install");
+		$this->disk()->makeDirectory($module_folder."/lang/ru/install");
 		// подставляем значения в шаблон индексного файла
-		Bitrix::changeVarsInModuleFileAndSave('bitrix/lang/ru/install/index.php', $module_id);
+		Bitrix::changeVarsInModuleFileAndSave('bitrix/lang/ru/install/index.php', $this->id);
 
 		return true;
 	}
@@ -103,10 +120,13 @@ class Bitrix extends Model{
 	// подставляем нужные значения в заготовку
 	public static function changeVarsInModuleFileAndSave($path, $module_id, $dop_search = [], $dop_replace = []){
 		$module = Bitrix::find($module_id);
-		$LANG_KEY = strtoupper($module->PARTNER_CODE."_".$module->MODULE_CODE);
 
-		$template_search = ['{MODULE_CLASS_NAME}', '{MODULE_ID}', '{LANG_KEY}', '{VERSION}', '{DATE_TIME}', '{MODULE_NAME}', '{MODULE_DESCRIPTION}', '{PARTNER_NAME}', '{PARTNER_URI}'];
-		$template_replace = [$module->PARTNER_CODE."_".$module->MODULE_CODE, $module->PARTNER_CODE.".".$module->MODULE_CODE, $LANG_KEY, $module->VERSION, date('Y-m-d H:i:s'), $module->MODULE_NAME, $module->MODULE_DESCRIPTION, $module->PARTNER_NAME, $module->PARTNER_URI];
+		$template_search = [];
+		$template_replace = [];
+		foreach ($module->replaceArray as $search => $replace){
+			$template_search[] = $search;
+			$template_replace[] = $module->$replace;
+		}
 		if ($dop_search && is_array($dop_search)){
 			foreach ($dop_search as $item){
 				$template_search[] = $item; // не думаю, что array_push здесь подходит
@@ -127,9 +147,8 @@ class Bitrix extends Model{
 		//dd($file);
 
 		// записываем в модуль
-		$myModuleFolder = $module->PARTNER_CODE.".".$module->MODULE_CODE; // папка модуля
 		$count = 1; // только первое вхождение
-		$outputFilePath = str_replace("bitrix", $myModuleFolder, $path, $count); // todo если изменить диск,то можно избавиться от такой замены
+		$outputFilePath = str_replace("bitrix", $module->module_folder, $path, $count); // todo если изменить диск,то можно избавиться от такой замены
 		Storage::disk('user_modules')->put($outputFilePath, $file);
 
 	}
@@ -212,6 +231,26 @@ class Bitrix extends Model{
 		}
 
 		return false;
+	}
+
+	public function theSameFolderAlreadyExists(){
+		return in_array($this->module_folder, Storage::disk('user_modules')->directories());
+	}
+
+	public function getModuleFolderAttribute(){
+		return $this->PARTNER_CODE.".".$this->MODULE_CODE;
+	}
+
+	public function getModuleFullIdAttribute(){
+		return $this->PARTNER_CODE.".".$this->MODULE_CODE;
+	}
+
+	public function getLangKeyAttribute(){
+		return strtoupper($this->PARTNER_CODE."_".$this->MODULE_CODE);
+	}
+
+	public function getClassNameAttribute(){
+		return $this->PARTNER_CODE."_".$this->MODULE_CODE;
 	}
 
 	// связи с другими моделями
