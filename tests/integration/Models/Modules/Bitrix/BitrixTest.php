@@ -9,6 +9,10 @@ class BitrixTest extends TestCase{
 
 	use DatabaseTransactions;
 
+	protected function disk(){
+		return Storage::disk('user_modules');
+	}
+
 	protected function useStoreMethod(){
 
 		$request = new Request();
@@ -19,7 +23,12 @@ class BitrixTest extends TestCase{
 		$request->PARTNER_URI = "http://ololo.com";
 		$request->PARTNER_CODE = "ololosha";
 
-		return Bitrix::store($request);
+		$id = Bitrix::store($request);
+		if (!$id){
+			return false;
+		}
+
+		return Bitrix::find($id);
 
 	}
 
@@ -32,15 +41,15 @@ class BitrixTest extends TestCase{
 		$module = Bitrix::find($bitrix->id);
 
 		$this->assertEquals("0.0.2", $module->VERSION);
+
+		Bitrix::deleteFolder($module);
 	}
 
 	/** @test */
 	function it_can_create_module(){
 		$this->signIn();
 
-		$module_id = $this->useStoreMethod();
-
-		$module = Bitrix::find($module_id);
+		$module = $this->useStoreMethod();
 
 		$this->assertEquals("Test", $module->MODULE_NAME);
 		$this->assertEquals("Ololo trololo", $module->MODULE_DESCRIPTION);
@@ -49,6 +58,8 @@ class BitrixTest extends TestCase{
 		$this->assertEquals("http://ololo.com", $module->PARTNER_URI);
 		$this->assertEquals("ololosha", $module->PARTNER_CODE);
 		$this->assertEquals($this->user->id, $module->user_id);
+
+		Bitrix::deleteFolder($module);
 	}
 
 	/** @test */
@@ -56,13 +67,15 @@ class BitrixTest extends TestCase{
 		$user = factory(App\Models\User::class)->create(['bitrix_company_name' => null, 'bitrix_partner_code' => null, 'site' => null]);
 		$this->actingAs($user);
 
-		$this->useStoreMethod();
+		$module = $this->useStoreMethod();
 
 		$creator = User::find($user->id);
 
 		$this->assertEquals("Ololosha", $creator->bitrix_company_name);
 		$this->assertEquals("ololosha", $creator->bitrix_partner_code);
 		$this->assertEquals("http://ololo.com", $creator->site);
+
+		Bitrix::deleteFolder($module);
 	}
 
 	/** @test */
@@ -74,29 +87,35 @@ class BitrixTest extends TestCase{
 
 		$updatedModule = Bitrix::find($module->id);
 
-		$this->assertEquals($oldCount+1, $updatedModule->download_counter);
+		$this->assertEquals($oldCount + 1, $updatedModule->download_counter);
+
+		Bitrix::deleteFolder($module);
 	}
 
 	/** @test */
 	function it_creates_folder_for_module(){
 		$this->signIn();
 
-		$this->useStoreMethod();
+		$module = $this->useStoreMethod();
 
-		$dirs = Storage::disk('user_modules')->directories();
+		$dirs = $this->disk()->directories();
 
 		$this->assertTrue(in_array("ololosha.test", $dirs));
+
+		Bitrix::deleteFolder($module);
 	}
 
 	/** @test */
 	function it_returns_its_fullpath_from_method_getFolder(){
-		$bitrix = factory(App\Models\Modules\Bitrix\Bitrix::class)->create();
+		$module = factory(App\Models\Modules\Bitrix\Bitrix::class)->create();
 
-		$rootFolder = Storage::disk('user_modules')->getDriver()->getAdapter()->getPathPrefix();
+		$rootFolder = $this->disk()->getDriver()->getAdapter()->getPathPrefix();
 
-		$folder = Bitrix::getFolder($bitrix);
+		$folder = Bitrix::getFolder($module);
 
-		$this->assertEquals($rootFolder.$bitrix->PARTNER_CODE.".".$bitrix->MODULE_CODE, $folder);
+		$this->assertEquals($rootFolder.$module->PARTNER_CODE.".".$module->MODULE_CODE, $folder);
+
+		Bitrix::deleteFolder($module);
 	}
 
 	/** @test */
@@ -104,62 +123,150 @@ class BitrixTest extends TestCase{
 		$this->useStoreMethod();
 
 		$this->dontSeeInDatabase('bitrixes', [
-			'MODULE_CODE' => "test",
+			'MODULE_CODE'  => "test",
 			'PARTNER_CODE' => "ololosha"
 		]);
 	}
-	//
-	///** @test */
-	//function it_fills_folder_right_at_creation(){
-	//
-	//}
+
+	/** @test */
+	function it_fills_folder_with_necessary_files_at_creation(){
+		$this->signIn();
+
+		$module = $this->useStoreMethod();
+
+		$dirName = Bitrix::getFolder($module, false);
+
+		$this->assertTrue($this->disk()->exists($dirName.'/install/index.php'), 'There is no "/install/index.php" file');
+		$this->assertTrue($this->disk()->exists($dirName.'/install/step.php'), 'There is no "/install/step.php" file');
+		$this->assertTrue($this->disk()->exists($dirName.'/install/unstep.php'), 'There is no "/install/unstep.php" file');
+		$this->assertTrue($this->disk()->exists($dirName.'/install/version.php'), 'There is no "/install/version.php" file');
+		$this->assertTrue($this->disk()->exists($dirName.'/include.php'), 'There is no "/include.php" file');
+		$this->assertTrue($this->disk()->exists($dirName.'/lang/ru/install/index.php'), 'There is no "/lang/ru/install/index.php" file');
+
+		Bitrix::deleteFolder($module);
+	}
+
+	/** @test */
+	function it_fills_right_lang_file_at_creation(){
+		$this->signIn();
+
+		$module = $this->useStoreMethod();
+		$dirName = Bitrix::getFolder($module, false);
+		$langFileContent = $this->disk()->get($dirName.'/lang/ru/install/index.php');
+
+		$template_search = ['{MODULE_CLASS_NAME}', '{MODULE_ID}', '{LANG_KEY}', '{VERSION}', '{DATE_TIME}', '{MODULE_NAME}', '{MODULE_DESCRIPTION}', '{PARTNER_NAME}', '{PARTNER_URI}'];
+
+		$LANG_KEY = strtoupper($module->PARTNER_CODE."_".$module->MODULE_CODE);
+		$template_replace = [$module->PARTNER_CODE."_".$module->MODULE_CODE, $module->PARTNER_CODE.".".$module->MODULE_CODE, $LANG_KEY, $module->VERSION, date('Y-m-d H:i:s'), $module->MODULE_NAME, $module->MODULE_DESCRIPTION, $module->PARTNER_NAME, $module->PARTNER_URI];
+
+		$templateLangFile = Storage::disk('modules_templates')->get('bitrix/lang/ru/install/index.php');
+		$expectedContent = $file = str_replace($template_search, $template_replace, $templateLangFile);
+
+		$this->assertEquals($expectedContent, $langFileContent);
+
+		Bitrix::deleteFolder($module);
+	}
+
+	/** @test */
+	function it_fills_right_version_file_at_creation(){
+		$this->signIn();
+
+		$module = $this->useStoreMethod();
+		$dirName = Bitrix::getFolder($module, false);
+		$langFileContent = $this->disk()->get($dirName.'/install/version.php');
+
+		$template_search = ['{VERSION}', '{DATE_TIME}'];
+
+		$template_replace = [$module->VERSION, date('Y-m-d H:i:s')];
+
+		$templateLangFile = Storage::disk('modules_templates')->get('bitrix/install/version.php');
+		$expectedContent = $file = str_replace($template_search, $template_replace, $templateLangFile);
+
+		$this->assertEquals($expectedContent, $langFileContent);
+
+		Bitrix::deleteFolder($module);
+	}
 
 	/** @test */
 	function it_returns_archive_name_for_download(){
 		$this->signIn();
-		$module_id = $this->useStoreMethod();
+		$module = $this->useStoreMethod();
 
-		$bitrix = Bitrix::find($module_id);
-		$archiveName = Bitrix::generateZip($bitrix);
+		$archiveName = Bitrix::generateZip($module);
 
-		$this->assertEquals($bitrix->PARTNER_CODE."_".$bitrix->MODULE_CODE.".zip", $archiveName);
+		Bitrix::deleteFolder($module);
+
+		$this->assertEquals($module->PARTNER_CODE."_".$module->MODULE_CODE.".zip", $archiveName);
 	}
 
-	///** @test */
-	//function it_generates_zip_archive(){
-	//
-	//}
+	/** @test */
+	function it_generates_zip_archive(){
+		$this->signIn();
+		$module = $this->useStoreMethod();
 
-	///** @test */
-	//function it_doesnt_rewrite_existing_folder_with_the_same_name(){
-	//
-	//}
+		$archiveName = Bitrix::generateZip($module);
 
-	///** @test */
-	//function it_can_change_name_in_db_and_files(){
-	//
-	//}
-	//
-	///** @test */
-	//function it_can_change_description_in_db_and_files(){
-	//
-	//}
+		Bitrix::deleteFolder($module);
+
+		$this->assertFileExists($module->PARTNER_CODE."_".$module->MODULE_CODE.".zip");
+	}
+
+	/** @test */
+	function it_doesnt_rewrite_existing_folder_with_the_same_name(){
+		$this->signIn();
+		$module = $this->useStoreMethod();
+		$this->assertFalse($this->useStoreMethod());
+
+		Bitrix::deleteFolder($module);
+
+	}
+
+	/** @test */
+	function it_can_change_name_in_files(){
+		$this->signIn();
+		$module = $this->useStoreMethod();
+		$dirName = Bitrix::getFolder($module, false);
+
+		$module->MODULE_NAME = "Ololo Trololo New";
+		$module->save();
+		$module->changeVarsInModuleFileAndSave('bitrix/lang/ru/install/index.php', $module->id);
+
+		$langFile = $this->disk()->get($dirName.'/lang/ru/install/index.php');
+
+		Bitrix::deleteFolder($module);
+		$this->assertTrue(!!strpos($langFile, '$MESS["OLOLOSHA_TEST_MODULE_NAME"] = "Ololo Trololo New";'));
+	}
+
+	/** @test */
+	function it_can_change_description_in_files(){
+		$this->signIn();
+		$module = $this->useStoreMethod();
+		$dirName = Bitrix::getFolder($module, false);
+
+		$module->MODULE_DESCRIPTION = "Lorem ipsum";
+		$module->save();
+		$module->changeVarsInModuleFileAndSave('bitrix/lang/ru/install/index.php', $module->id);
+
+		$langFile = $this->disk()->get($dirName.'/lang/ru/install/index.php');
+
+		Bitrix::deleteFolder($module);
+		$this->assertTrue(!!strpos($langFile, '$MESS["OLOLOSHA_TEST_MODULE_DESC"] = "Lorem ipsum";'));
+
+	}
 
 	/** @test */
 	function pair_of_partner_code_and_module_code_always_unique(){
 		$this->signIn();
 
-		$this->useStoreMethod();
+		$module = $this->useStoreMethod();
 		$this->useStoreMethod();
 
 		$count = Bitrix::where('PARTNER_CODE', "ololosha")->where('MODULE_CODE', "test")->count();
 
 		$this->assertEquals(1, $count);
+
+		Bitrix::deleteFolder($module);
 	}
-
-
-
-
 }
 
 ?>

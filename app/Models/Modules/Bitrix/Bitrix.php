@@ -57,7 +57,10 @@ class Bitrix extends Model{
 
 		if ($module_id){
 			// создание папки модуля пользователя на серваке
-			$bitrix::createFolder($request, $module_id); // todo проверка на успех
+			if (!$bitrix::createFolder($request, $module_id)){
+				// todo возврат ошибки
+				return false;
+			}
 
 			return $module_id;
 		}
@@ -68,6 +71,11 @@ class Bitrix extends Model{
 	public
 	static function createFolder(Request $request, $module_id){ // todo мне нужен здесь $request по сути
 		$myModuleFolder = $request->PARTNER_CODE.".".$request->MODULE_CODE; // папка модуля // todo так можно скачать модуль, зная всего два эти параметра, а они открытые (Если вообще можно обращаться к этим папкам)
+
+		if (in_array($myModuleFolder, Storage::disk('user_modules')->directories())){
+			// todo возврат ошибки
+			return false;
+		}
 
 		// воссоздаём начальную структуру
 		Storage::disk('user_modules')->makeDirectory($myModuleFolder."/install");
@@ -88,6 +96,8 @@ class Bitrix extends Model{
 		Storage::disk('user_modules')->makeDirectory($myModuleFolder."/lang/ru/install");
 		// подставляем значения в шаблон индексного файла
 		Bitrix::changeVarsInModuleFileAndSave('bitrix/lang/ru/install/index.php', $module_id);
+
+		return true;
 	}
 
 	// подставляем нужные значения в заготовку
@@ -181,17 +191,26 @@ class Bitrix extends Model{
 	}
 
 	// получить папку модуля
-	public static function getFolder(Bitrix $module){
-		$modulesRootFolder = Storage::disk('user_modules')->getDriver()->getAdapter()->getPathPrefix();
+	public static function getFolder(Bitrix $module, $fromRoot = true){
+		$modulesRootFolder = '';
+		if ($fromRoot){
+			$modulesRootFolder = Storage::disk('user_modules')->getDriver()->getAdapter()->getPathPrefix();
+		}
 		$folder = $module->PARTNER_CODE.".".$module->MODULE_CODE;
 
 		return $modulesRootFolder.$folder;
+	}
+
+	public static function deleteFolder(Bitrix $module){
+		$folder = $module->PARTNER_CODE.".".$module->MODULE_CODE;
+		Storage::disk('user_modules')->deleteDirectory($folder);
 	}
 
 	public static function existsModuleWithThisCodeAndPartnerCode($partnerCode, $moduleCode){
 		if (Bitrix::where('PARTNER_CODE', $partnerCode)->where('MODULE_CODE', $moduleCode)->count()){
 			return true;
 		}
+
 		return false;
 	}
 
