@@ -36,7 +36,7 @@
                                 <label class="col-md-4 control-label">Ссылка на ваш сайт</label>
                                 <div class="col-md-6">
                                     <input type="url" class="form-control" name="PARTNER_URI"
-                                           value="{{ $user["site"] }}" aria-describedby="PARTNER_URI_help">
+                                           required value="{{ $user["site"] }}" aria-describedby="PARTNER_URI_help">
                                     <span class="help-block" id="PARTNER_URI_help">Ссылка на ваш сайт или сайт вашей компании. Будет отображаться как ссылка на авторов модуля</span>
                                 </div>
                             </div>

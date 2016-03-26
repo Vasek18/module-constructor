@@ -23,6 +23,7 @@ class BitrixCreateRequest extends Request{
 		// todo
 		//уникальность пары код_партнёра.код_модуля
 		//коды только латинские символы и цифры (не с первого символа)
+		// человеческие сообщения об ошибках
 		return [
 			'PARTNER_NAME'   => 'required',
 			'PARTNER_URI'    => 'required',
