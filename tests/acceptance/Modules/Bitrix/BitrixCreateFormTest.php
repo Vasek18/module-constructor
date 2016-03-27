@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Models\User;
 
-class BitrixFormsTest extends TestCase{
+class BitrixCreateFormTest extends TestCase{
 
 	use DatabaseTransactions;
 
@@ -174,12 +174,12 @@ class BitrixFormsTest extends TestCase{
 		$this->see('Поле m o d u l e  c o d e обязательно.');
 	}
 
-	///** @test */
+	// todo /** @test */
 	//function it_returns_an_error_when_a_pair_of_user_code_and_module_code_are_not_unique(){
 	//
 	//}
 	//
-	///** @test */
+	// todo /** @test */
 	//function it_trims_fields(){
 	//
 	//}
