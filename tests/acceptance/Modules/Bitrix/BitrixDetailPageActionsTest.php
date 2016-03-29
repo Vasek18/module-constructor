@@ -3,11 +3,11 @@
 use App\Models\Modules\Bitrix\Bitrix;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Models\User;
-
-class BitrixDetailPageActionsTest extends TestCase{
-
-	use DatabaseTransactions;
+//use App\Models\User;
+//
+//class BitrixDetailPageActionsTest extends TestCase{
+//
+//	use DatabaseTransactions;
 
 	// todo /** @test */
 	//function you_can_change_module_name_on_detail_page(){
@@ -53,6 +53,6 @@ class BitrixDetailPageActionsTest extends TestCase{
 	//function you_cant_change_module_description_of_another_user(){
 	//
 	//}
-}
+//}
 
 ?>

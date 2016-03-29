@@ -1,9 +1,8 @@
 <?php
 
 use App\Models\Modules\Bitrix\Bitrix;
-use Illuminate\Http\Request;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class BitrixCreateFormTest extends TestCase{
 
@@ -28,14 +27,24 @@ class BitrixCreateFormTest extends TestCase{
 		if (!isset($params['MODULE_CODE'])){
 			$params['MODULE_CODE'] = 'ololo';
 		}
+		if (!isset($params['MODULE_VERSION'])){
+			$params['MODULE_VERSION'] = 'ololo';
+		}
 		$this->type($params['PARTNER_NAME'], 'PARTNER_NAME');
 		$this->type($params['PARTNER_URI'], 'PARTNER_URI');
 		$this->type($params['PARTNER_CODE'], 'PARTNER_CODE');
 		$this->type($params['MODULE_NAME'], 'MODULE_NAME');
 		$this->type($params['MODULE_DESCRIPTION'], 'MODULE_DESCRIPTION');
 		$this->type($params['MODULE_CODE'], 'MODULE_CODE');
-		$this->type("0.0.1", 'MODULE_VERSION');
+		$this->type($params['MODULE_VERSION'], 'MODULE_VERSION');
 		$this->press('module_create');
+	}
+
+	function deleteFolder(){
+		if (Bitrix::where('MODULE_CODE', 'ololo')->where('PARTNER_CODE', $this->user->bitrix_partner_code)->count()){
+			$module = Bitrix::where('MODULE_CODE', 'ololo')->where('PARTNER_CODE', $this->user->bitrix_partner_code)->first();
+			Bitrix::deleteFolder($module);
+		}
 	}
 
 	/** @test */
@@ -45,10 +54,7 @@ class BitrixCreateFormTest extends TestCase{
 		$this->visit('/construct/bitrix');
 		$this->fillNewBitrixForm();
 
-		if (Bitrix::where('MODULE_CODE', 'ololo')->where('PARTNER_CODE', $this->user->bitrix_partner_code)->count()){
-			$module = Bitrix::where('MODULE_CODE', 'ololo')->where('PARTNER_CODE', $this->user->bitrix_partner_code)->first();
-			Bitrix::deleteFolder($module);
-		}
+		$this->deleteFolder();
 
 		$this->seeInDatabase('bitrixes', [
 			'MODULE_CODE'  => "ololo",
@@ -81,10 +87,7 @@ class BitrixCreateFormTest extends TestCase{
 		$this->visit('/construct/bitrix');
 		$this->fillNewBitrixForm(['PARTNER_NAME' => '']);
 
-		if (Bitrix::where('MODULE_CODE', 'ololo')->where('PARTNER_CODE', $this->user->bitrix_partner_code)->count()){
-			$module = Bitrix::where('MODULE_CODE', 'ololo')->where('PARTNER_CODE', $this->user->bitrix_partner_code)->first();
-			Bitrix::deleteFolder($module);
-		}
+		$this->deleteFolder();
 
 		$this->dontSeeInDatabase('bitrixes', [
 			'MODULE_CODE'  => "ololo",
@@ -101,10 +104,7 @@ class BitrixCreateFormTest extends TestCase{
 		$this->visit('/construct/bitrix');
 		$this->fillNewBitrixForm(['PARTNER_URI' => '']);
 
-		if (Bitrix::where('MODULE_CODE', 'ololo')->where('PARTNER_CODE', $this->user->bitrix_partner_code)->count()){
-			$module = Bitrix::where('MODULE_CODE', 'ololo')->where('PARTNER_CODE', $this->user->bitrix_partner_code)->first();
-			Bitrix::deleteFolder($module);
-		}
+		$this->deleteFolder();
 
 		$this->dontSeeInDatabase('bitrixes', [
 			'MODULE_CODE'  => "ololo",
@@ -121,10 +121,7 @@ class BitrixCreateFormTest extends TestCase{
 		$this->visit('/construct/bitrix');
 		$this->fillNewBitrixForm(['PARTNER_CODE' => '']);
 
-		if (Bitrix::where('MODULE_CODE', 'ololo')->where('PARTNER_CODE', $this->user->bitrix_partner_code)->count()){
-			$module = Bitrix::where('MODULE_CODE', 'ololo')->where('PARTNER_CODE', $this->user->bitrix_partner_code)->first();
-			Bitrix::deleteFolder($module);
-		}
+		$this->deleteFolder();
 
 		$this->dontSeeInDatabase('bitrixes', [
 			'MODULE_CODE'  => "ololo",
@@ -141,10 +138,7 @@ class BitrixCreateFormTest extends TestCase{
 		$this->visit('/construct/bitrix');
 		$this->fillNewBitrixForm(['MODULE_NAME' => '']);
 
-		if (Bitrix::where('MODULE_CODE', 'ololo')->where('PARTNER_CODE', $this->user->bitrix_partner_code)->count()){
-			$module = Bitrix::where('MODULE_CODE', 'ololo')->where('PARTNER_CODE', $this->user->bitrix_partner_code)->first();
-			Bitrix::deleteFolder($module);
-		}
+		$this->deleteFolder();
 
 		$this->dontSeeInDatabase('bitrixes', [
 			'MODULE_CODE'  => "ololo",
@@ -161,10 +155,7 @@ class BitrixCreateFormTest extends TestCase{
 		$this->visit('/construct/bitrix');
 		$this->fillNewBitrixForm(['MODULE_CODE' => '']);
 
-		if (Bitrix::where('MODULE_CODE', 'ololo')->where('PARTNER_CODE', $this->user->bitrix_partner_code)->count()){
-			$module = Bitrix::where('MODULE_CODE', 'ololo')->where('PARTNER_CODE', $this->user->bitrix_partner_code)->first();
-			Bitrix::deleteFolder($module);
-		}
+		$this->deleteFolder();
 
 		$this->dontSeeInDatabase('bitrixes', [
 			'MODULE_CODE'  => "ololo",
@@ -174,15 +165,49 @@ class BitrixCreateFormTest extends TestCase{
 		$this->see('Поле m o d u l e  c o d e обязательно.');
 	}
 
-	// todo /** @test */
-	//function it_returns_an_error_when_a_pair_of_user_code_and_module_code_are_not_unique(){
-	//
-	//}
-	//
-	// todo /** @test */
-	//function it_trims_fields(){
-	//
-	//}
+	/** @test */
+	function it_returns_an_error_when_a_pair_of_user_code_and_module_code_are_not_unique(){
+		$this->signIn();
+
+		$this->visit('/construct/bitrix');
+		$this->fillNewBitrixForm();
+		$this->visit('/construct/bitrix');
+		$this->fillNewBitrixForm();
+
+		$this->deleteFolder();
+
+		$this->assertEquals(1, DB::table('bitrixes')->where('MODULE_CODE', 'ololo')->where('PARTNER_CODE', $this->user->bitrix_partner_code)->count());
+
+		$this->see('The m o d u l e  c o d e has already been taken.');
+	}
+
+	/** @test */
+	function it_trims_fields(){
+		$this->signIn();
+
+		$this->visit('/construct/bitrix');
+		$this->fillNewBitrixForm([
+			'MODULE_NAME'        => '  Test   ',
+			'MODULE_DESCRIPTION' => '  Test   ',
+			'MODULE_CODE'        => '  Test   ',
+			'PARTNER_NAME'       => '  Test   ',
+			'PARTNER_URI'        => '  Test   ',
+			'PARTNER_CODE'       => '  Test   ',
+			'MODULE_VERSION'     => '  Test   '
+		]);
+
+		$this->deleteFolder();
+
+		$this->seeInDatabase('bitrixes', [
+			'MODULE_NAME'        => 'Test',
+			'MODULE_DESCRIPTION' => 'Test',
+			'MODULE_CODE'        => 'Test',
+			'PARTNER_NAME'       => 'Test',
+			'PARTNER_URI'        => 'Test',
+			'PARTNER_CODE'       => 'Test',
+			'VERSION'            => 'Test'
+		]);
+	}
 }
 
 ?>

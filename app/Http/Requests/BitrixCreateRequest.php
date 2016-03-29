@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Http\Requests\Request;
+use Illuminate\Foundation\Http\FormRequest;
 
-class BitrixCreateRequest extends Request{
+class BitrixCreateRequest extends FormRequest{
 	/**
 	 * Determine if the user is authorized to make this request.
 	 *
@@ -21,7 +21,6 @@ class BitrixCreateRequest extends Request{
 	 */
 	public function rules(){
 		// todo
-		//уникальность пары код_партнёра.код_модуля
 		//коды только латинские символы и цифры (не с первого символа)
 		// человеческие сообщения об ошибках
 		return [
@@ -29,7 +28,7 @@ class BitrixCreateRequest extends Request{
 			'PARTNER_URI'    => 'required',
 			'PARTNER_CODE'   => 'required',
 			'MODULE_NAME'    => 'required',
-			'MODULE_CODE'    => 'required',
+			'MODULE_CODE'    => 'required|unique:bitrixes,MODULE_CODE,NULL,id,PARTNER_CODE,'.$this->PARTNER_CODE,
 			'MODULE_VERSION' => 'required'
 		];
 	}

@@ -58,14 +58,14 @@ class Bitrix extends Model{
 		$bitrix::completeUserProfile(Auth::id(), $request);
 
 		// запись в БД
-		$bitrix->MODULE_NAME = $request->MODULE_NAME;
-		$bitrix->MODULE_DESCRIPTION = $request->MODULE_DESCRIPTION;
-		$bitrix->MODULE_CODE = $request->MODULE_CODE;
-		$bitrix->PARTNER_NAME = $request->PARTNER_NAME;
-		$bitrix->PARTNER_URI = $request->PARTNER_URI;
-		$bitrix->PARTNER_CODE = $request->PARTNER_CODE;
+		$bitrix->MODULE_NAME = trim($request->MODULE_NAME);
+		$bitrix->MODULE_DESCRIPTION = trim($request->MODULE_DESCRIPTION);
+		$bitrix->MODULE_CODE = trim($request->MODULE_CODE);
+		$bitrix->PARTNER_NAME = trim($request->PARTNER_NAME);
+		$bitrix->PARTNER_URI = trim($request->PARTNER_URI);
+		$bitrix->PARTNER_CODE = trim($request->PARTNER_CODE);
 		if ($request->MODULE_VERSION){
-			$bitrix->VERSION = $request->MODULE_VERSION;
+			$bitrix->VERSION = trim($request->MODULE_VERSION);
 		}
 
 		Auth::user()->bitrixes()->save($bitrix);

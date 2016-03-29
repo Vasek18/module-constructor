@@ -35,8 +35,11 @@ class BitrixController extends Controller{
 	public function store(Requests\BitrixCreateRequest $request){
 		// создание записи в бд и шаблона
 		$id = Bitrix::store($request);
-
-		return redirect(action('Modules\Bitrix\BitrixController@detail', $id));
+		if ($id){
+			return redirect(action('Modules\Bitrix\BitrixController@detail', $id));
+		}else{
+			return back();
+		}
 	}
 
 	// детальная страница модуля
