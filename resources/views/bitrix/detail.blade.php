@@ -64,7 +64,7 @@
                             <input class="form-control" type="text" name="version" id="version" required
                                    value="{{upgradeVersionNumber($module->VERSION)}}">
                         </div>
-                        <button class="btn btn-primary">Скачать</button>
+                        <button type="submit" class="btn btn-primary" name="module_download">Скачать</button>
                     </form>
                 </div>
             </div>
