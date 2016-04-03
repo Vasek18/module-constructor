@@ -8,21 +8,31 @@ use Illuminate\Support\Facades\Storage;
 class BitrixEventsHandlers extends Model{
 	protected $table = 'bitrix_events_handlers';
 
-	public static function store($fields){
-		$handler = new BitrixEventsHandlers();
+	protected $fillable = ['from_module', 'event', 'class', 'method', 'php_code'];
 
-		// запись в БД
-		$handler->module_id = $fields['module_id'];
-		$handler->from_module = $fields['from_module'];
-		$handler->event = $fields['event'];
-		$handler->class = $fields['class'];
-		$handler->method = $fields['method'];
-		$handler->php_code = $fields['php_code'];
-		//dd($fields);
+	public static function store(Bitrix $module, $fields){
+		// todo почему я должен так явно всё это расписывать?
+		if (!isset($fields['from_module'])){
+			return false;
+		}
+		if (!isset($fields['event'])){
+			return false;
+		}
+		if (!isset($fields['class'])){
+			return false;
+		}
+		if (!isset($fields['method'])){
+			return false;
+		}
 
-		if ($handler->save()){
+
+		$handler = new BitrixEventsHandlers($fields);
+
+		if ($module->handlers()->save($handler)){
 			return $handler->id;
 		}
+
+		return false;
 	}
 
 	// сохраняем обработчики в папку модуля
@@ -59,5 +69,9 @@ class BitrixEventsHandlers extends Model{
 			// создаём обработчики
 
 		}
+	}
+
+	public function module(){
+		return $this->belongsTo('App\Models\Modules\Bitrix');
 	}
 }

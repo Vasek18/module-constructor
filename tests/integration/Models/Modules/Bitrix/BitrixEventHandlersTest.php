@@ -9,15 +9,13 @@ class BitrixEventHandlersTest extends TestCase{
 
 	use DatabaseTransactions;
 
-
 	/** @test */
-	function it_can_create_handler(){
+	function store_method_works(){
 		$this->signIn();
 
 		$module = factory(App\Models\Modules\Bitrix\Bitrix::class)->create(['user_id' => $this->user->id]);
 
-		$handler = BitrixEventsHandlers::store([
-				"module_id"   => $module->id,
+		$handler = BitrixEventsHandlers::store($module, [
 				"event"       => 'OnProlog',
 				"from_module" => 'main',
 				"class"       => 'Ololo',
@@ -37,8 +35,100 @@ class BitrixEventHandlersTest extends TestCase{
 
 	}
 
+	/** @test */
+	function it_doesnt_create_handler_without_event_field(){
+		$this->signIn();
+
+		$module = factory(App\Models\Modules\Bitrix\Bitrix::class)->create(['user_id' => $this->user->id]);
+
+		$handler = BitrixEventsHandlers::store($module, [
+				"from_module" => 'main',
+				"class"       => 'Ololo',
+				"method"      => 'Trololo',
+				"php_code"    => 'echo "Hello World";'
+			]
+		);
+
+		$this->dontSeeInDatabase('bitrix_events_handlers', [
+			"module_id"   => $module->id,
+			"from_module" => 'main',
+			"class"       => 'Ololo',
+			"method"      => 'Trololo',
+			"php_code"    => 'echo "Hello World";'
+		]);
+	}
+
+	/** @test */
+	function it_doesnt_create_handler_without_from_module_field(){
+		$this->signIn();
+
+		$module = factory(App\Models\Modules\Bitrix\Bitrix::class)->create(['user_id' => $this->user->id]);
+
+		$handler = BitrixEventsHandlers::store($module, [
+				"event"    => 'OnProlog',
+				"class"    => 'Ololo',
+				"method"   => 'Trololo',
+				"php_code" => 'echo "Hello World";'
+			]
+		);
+
+		$this->dontSeeInDatabase('bitrix_events_handlers', [
+			"module_id" => $module->id,
+			"event"     => 'OnProlog',
+			"class"     => 'Ololo',
+			"method"    => 'Trololo',
+			"php_code"  => 'echo "Hello World";'
+		]);
+	}
+
+	/** @test */
+	function it_doesnt_create_handler_without_class_field(){
+		$this->signIn();
+
+		$module = factory(App\Models\Modules\Bitrix\Bitrix::class)->create(['user_id' => $this->user->id]);
+
+		$handler = BitrixEventsHandlers::store($module, [
+				"event"       => 'OnProlog',
+				"from_module" => 'main',
+				"method"      => 'Trololo',
+				"php_code"    => 'echo "Hello World";'
+			]
+		);
+
+		$this->dontSeeInDatabase('bitrix_events_handlers', [
+			"module_id"   => $module->id,
+			"event"       => 'OnProlog',
+			"from_module" => 'main',
+			"method"      => 'Trololo',
+			"php_code"    => 'echo "Hello World";'
+		]);
+	}
+
+	/** @test */
+	function it_doesnt_create_handler_without_method_field(){
+		$this->signIn();
+
+		$module = factory(App\Models\Modules\Bitrix\Bitrix::class)->create(['user_id' => $this->user->id]);
+
+		$handler = BitrixEventsHandlers::store($module, [
+				"event"       => 'OnProlog',
+				"from_module" => 'main',
+				"class"       => 'Ololo',
+				"php_code"    => 'echo "Hello World";'
+			]
+		);
+
+		$this->dontSeeInDatabase('bitrix_events_handlers', [
+			"module_id"   => $module->id,
+			"event"       => 'OnProlog',
+			"from_module" => 'main',
+			"class"       => 'Ololo',
+			"php_code"    => 'echo "Hello World";'
+		]);
+	}
+
 	//todo /** @test */
-	//function it_doesnt_create_handler_with_the_lack_of_fields(){
+	//function hackers_cant_use_others_module_id(){
 	//
 	//}
 	//

@@ -68,7 +68,6 @@ class BitrixEventHandlersController extends Controller{
 				continue;
 			}
 
-			$handler["module_id"] = $module->id;
 			$handler["event"] = $event;
 			$handler["from_module"] = $request['from_module'][$i];
 			$handler["class"] = $request['class'][$i];
@@ -77,7 +76,7 @@ class BitrixEventHandlersController extends Controller{
 			//dd($handler);
 
 			// записываем в бд
-			BitrixEventsHandlers::store($handler);
+			BitrixEventsHandlers::store($module, $handler);
 		}
 
 		// записываем в папку модуля
