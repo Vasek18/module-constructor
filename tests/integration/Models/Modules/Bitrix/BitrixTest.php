@@ -267,6 +267,50 @@ class BitrixTest extends TestCase{
 
 		$this->assertEquals(1, $count);
 	}
+
+	/** @test */
+	function hackers_cant_use_other_user_id_at_creation(){
+
+		$this->signIn();
+
+		$user2 = factory(App\Models\User::class)->create();
+
+		$request = new Request();
+		$request->MODULE_NAME = "Test";
+		$request->MODULE_DESCRIPTION = "Ololo trololo";
+		$request->MODULE_CODE = "test";
+		$request->PARTNER_NAME = "Ololosha";
+		$request->PARTNER_URI = "http://ololo.com";
+		$request->PARTNER_CODE = "ololosha";
+		$request->user_id = 2;
+
+		$id = Bitrix::store($request);
+		if (!$id){
+			return false;
+		}
+
+		$module = Bitrix::find($id);
+
+		Bitrix::deleteFolder($module);
+
+	}
+
+	/** @test */
+	function hackers_cant_use_other_user_id_at_update(){
+		$this->signIn();
+
+		$user2 = factory(App\Models\User::class)->create();
+
+		$module = $this->useStoreMethod();
+
+		Bitrix::deleteFolder($module);
+
+		$module->update(['user_id', 2]);
+
+		$moduleTest = Bitrix::find($module->id);
+
+		$this->assertNotEquals(2, $moduleTest->user_id);
+	}
 }
 
 ?>

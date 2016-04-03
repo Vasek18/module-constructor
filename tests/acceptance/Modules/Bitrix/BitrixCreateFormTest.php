@@ -68,7 +68,6 @@ class BitrixCreateFormTest extends TestCase{
 		$this->seePageIs('/personal/auth');
 	}
 
-
 	/** @test */
 	function it_substitute_user_data(){
 		$this->signIn();
