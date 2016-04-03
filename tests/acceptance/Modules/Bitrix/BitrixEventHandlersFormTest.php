@@ -15,14 +15,14 @@
 //
 //	todo /** @test */
 //	function smn_can_create_module(){
-//		$this->visit('/construct/bitrix');
-//		$this->seePageIs('/personal/auth');
+//	}
+//
+//	todo /** @test */
+//	function smn_can_delete_module(){
 //	}
 //
 //	todo /** @test */
 //	function it_returns_errors_when_not_all_necessary_fileds_in_a_row_are_filled(){
-//		$this->visit('/construct/bitrix');
-//		$this->seePageIs('/personal/auth');
 //	}
 //
 //}

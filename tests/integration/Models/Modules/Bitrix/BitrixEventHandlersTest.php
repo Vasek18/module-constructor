@@ -127,35 +127,87 @@ class BitrixEventHandlersTest extends TestCase{
 		]);
 	}
 
-	//todo /** @test */
-	//function hackers_cant_use_others_module_id(){
+	/** @test */
+	function hackers_cant_use_other_user_module_id(){
+		$this->signIn();
+
+		$module = factory(App\Models\Modules\Bitrix\Bitrix::class)->create(['user_id' => $this->user->id]);
+
+		$module2 = factory(App\Models\Modules\Bitrix\Bitrix::class)->create();
+
+		$handler = BitrixEventsHandlers::store($module2, [
+				"event"       => 'OnProlog',
+				"from_module" => 'main',
+				"class"       => 'Ololo',
+				"method"      => 'Trololo',
+				"php_code"    => 'echo "Hello World";'
+			]
+		);
+
+		$this->dontSeeInDatabase('bitrix_events_handlers', [
+			"module_id"   => $module2->id,
+			"event"       => 'OnProlog',
+			"from_module" => 'main',
+			"class"       => 'Ololo',
+			"method"      => 'Trololo',
+			"php_code"    => 'echo "Hello World";'
+		]);
+	}
+
+	/** @test */
+	function it_creates_file_for_class(){
+		$this->signIn();
+
+		$module = $this->useBitrixStoreMethod();
+
+		$handler = BitrixEventsHandlers::store($module, [
+				"event"       => 'OnProlog',
+				"from_module" => 'main',
+				"class"       => 'Ololo',
+				"method"      => 'Trololo',
+				"php_code"    => 'echo "Hello World";'
+			]
+		);
+
+		$handler::saveEventsInFolder($module->id);
+
+		$dirName = Bitrix::getFolder($module);
+
+		$this->assertFileExists($dirName.'\\lib\\eventhandlers\\'.strtolower($handler->class).'.php');
+
+		Bitrix::deleteFolder($module);
+	}
+
+	// todo /** @test */
+	//function it_register_handlers(){
+	//	$this->signIn();
 	//
+	//	$module = $this->useBitrixStoreMethod();
+	//
+	//	$handler = BitrixEventsHandlers::store($module, [
+	//			"event"       => 'OnProlog',
+	//			"from_module" => 'main',
+	//			"class"       => 'Ololo',
+	//			"method"      => 'Trololo',
+	//			"php_code"    => 'echo "Hello World";'
+	//		]
+	//	);
+	//
+	//	$handler::saveEventsInFolder($module->id);
+	//
+	//	$dirName = Bitrix::getFolder($module);
+	//
+	//	$handlerFile = $this->disk()->get($dirName.'\\install\\index.php');
+	//
+	//	$registerCode = '\Bitrix\Main\EventManager::getInstance()->registerEventHandler("main", "OnProlog", $this->MODULE_ID, "\Ololosha\Test\EventHandlers\Ololo", "Trololo");';
+	//
+	//	$this->assertNotFalse(strpos($handlerFile, $registerCode));
+	//
+	//	Bitrix::deleteFolder($module);
 	//}
-	//
-	//todo /** @test */
-	//function it_can_update_handler(){
-	//
-	//}
-	//
-	//todo /** @test */
-	//function it_can_delete_handler(){
-	//
-	//}
-	//
-	//todo /** @test */
-	//function it_creates_file_for_every_class(){
-	//}
-	//
-	//todo /** @test */
-	//function it_register_every_handler(){
-	//}
-	//
+
 	//todo /** @test */
 	//function it_writes_different_handlers_of_one_class_at_one_file(){
-	//}
-	//
-	//todo /** @test */
-	//function smn_cant_create_handlers_with_others_user_id(){
 	//}
 	//
 	//todo /** @test */

@@ -9,29 +9,6 @@ class BitrixTest extends TestCase{
 
 	use DatabaseTransactions;
 
-	protected function disk(){
-		return Storage::disk('user_modules');
-	}
-
-	protected function useStoreMethod(){
-
-		$request = new Request();
-		$request->MODULE_NAME = "Test";
-		$request->MODULE_DESCRIPTION = "Ololo trololo";
-		$request->MODULE_CODE = "test";
-		$request->PARTNER_NAME = "Ololosha";
-		$request->PARTNER_URI = "http://ololo.com";
-		$request->PARTNER_CODE = "ololosha";
-
-		$id = Bitrix::store($request);
-		if (!$id){
-			return false;
-		}
-
-		return Bitrix::find($id);
-
-	}
-
 	/** @test */
 	function it_can_upgrade_version_of_module(){
 		$bitrix = factory(App\Models\Modules\Bitrix\Bitrix::class)->create();
@@ -49,7 +26,7 @@ class BitrixTest extends TestCase{
 	function it_can_create_module(){
 		$this->signIn();
 
-		$module = $this->useStoreMethod();
+		$module = $this->useBitrixStoreMethod();
 
 		Bitrix::deleteFolder($module);
 
@@ -67,7 +44,7 @@ class BitrixTest extends TestCase{
 		$user = factory(App\Models\User::class)->create(['bitrix_company_name' => null, 'bitrix_partner_code' => null, 'site' => null]);
 		$this->actingAs($user);
 
-		$module = $this->useStoreMethod();
+		$module = $this->useBitrixStoreMethod();
 
 		$creator = User::find($user->id);
 
@@ -96,7 +73,7 @@ class BitrixTest extends TestCase{
 	function it_creates_folder_for_module(){
 		$this->signIn();
 
-		$module = $this->useStoreMethod();
+		$module = $this->useBitrixStoreMethod();
 
 		$dirs = $this->disk()->directories();
 
@@ -120,7 +97,7 @@ class BitrixTest extends TestCase{
 
 	/** @test */
 	function unauthorized_user_cannot_create_module(){
-		$this->useStoreMethod();
+		$this->useBitrixStoreMethod();
 
 		$this->dontSeeInDatabase('bitrixes', [
 			'MODULE_CODE'  => "test",
@@ -132,7 +109,7 @@ class BitrixTest extends TestCase{
 	function it_fills_folder_with_necessary_files_at_creation(){
 		$this->signIn();
 
-		$module = $this->useStoreMethod();
+		$module = $this->useBitrixStoreMethod();
 
 		$dirName = Bitrix::getFolder($module);
 
@@ -150,7 +127,7 @@ class BitrixTest extends TestCase{
 	function it_fills_right_lang_file_at_creation(){
 		$this->signIn();
 
-		$module = $this->useStoreMethod();
+		$module = $this->useBitrixStoreMethod();
 		$dirName = Bitrix::getFolder($module, false);
 		$langFileContent = $this->disk()->get($dirName.'/lang/ru/install/index.php');
 
@@ -171,7 +148,7 @@ class BitrixTest extends TestCase{
 	function it_fills_right_version_file_at_creation(){
 		$this->signIn();
 
-		$module = $this->useStoreMethod();
+		$module = $this->useBitrixStoreMethod();
 		$dirName = Bitrix::getFolder($module, false);
 		$langFileContent = $this->disk()->get($dirName.'/install/version.php');
 
@@ -190,7 +167,7 @@ class BitrixTest extends TestCase{
 	/** @test */
 	function it_returns_archive_name_for_download(){
 		$this->signIn();
-		$module = $this->useStoreMethod();
+		$module = $this->useBitrixStoreMethod();
 
 		$archiveName = Bitrix::generateZip($module);
 
@@ -202,7 +179,7 @@ class BitrixTest extends TestCase{
 	/** @test */
 	function it_generates_zip_archive(){
 		$this->signIn();
-		$module = $this->useStoreMethod();
+		$module = $this->useBitrixStoreMethod();
 
 		$archiveName = Bitrix::generateZip($module);
 
@@ -214,8 +191,8 @@ class BitrixTest extends TestCase{
 	/** @test */
 	function it_doesnt_rewrite_existing_folder_with_the_same_name(){
 		$this->signIn();
-		$module = $this->useStoreMethod();
-		$this->assertFalse($this->useStoreMethod());
+		$module = $this->useBitrixStoreMethod();
+		$this->assertFalse($this->useBitrixStoreMethod());
 
 		Bitrix::deleteFolder($module);
 
@@ -224,7 +201,7 @@ class BitrixTest extends TestCase{
 	/** @test */
 	function it_can_change_name_in_files(){
 		$this->signIn();
-		$module = $this->useStoreMethod();
+		$module = $this->useBitrixStoreMethod();
 		$dirName = Bitrix::getFolder($module, false);
 
 		$module->MODULE_NAME = "Ololo Trololo New";
@@ -240,7 +217,7 @@ class BitrixTest extends TestCase{
 	/** @test */
 	function it_can_change_description_in_files(){
 		$this->signIn();
-		$module = $this->useStoreMethod();
+		$module = $this->useBitrixStoreMethod();
 		$dirName = Bitrix::getFolder($module, false);
 
 		$module->MODULE_DESCRIPTION = "Lorem ipsum";
@@ -258,8 +235,8 @@ class BitrixTest extends TestCase{
 	function pair_of_partner_code_and_module_code_always_unique(){
 		$this->signIn();
 
-		$module = $this->useStoreMethod();
-		$this->useStoreMethod();
+		$module = $this->useBitrixStoreMethod();
+		$this->useBitrixStoreMethod();
 
 		$count = Bitrix::where('PARTNER_CODE', "ololosha")->where('MODULE_CODE', "test")->count();
 
@@ -301,7 +278,7 @@ class BitrixTest extends TestCase{
 
 		$user2 = factory(App\Models\User::class)->create();
 
-		$module = $this->useStoreMethod();
+		$module = $this->useBitrixStoreMethod();
 
 		Bitrix::deleteFolder($module);
 

@@ -4,6 +4,7 @@ namespace App\Models\Modules\Bitrix;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use Auth;
 
 class BitrixEventsHandlers extends Model{
 	protected $table = 'bitrix_events_handlers';
@@ -24,12 +25,14 @@ class BitrixEventsHandlers extends Model{
 		if (!isset($fields['method'])){
 			return false;
 		}
-
+		if (!$module->ownedBy(Auth::user())){
+			return false;
+		}
 
 		$handler = new BitrixEventsHandlers($fields);
 
 		if ($module->handlers()->save($handler)){
-			return $handler->id;
+			return $handler;
 		}
 
 		return false;
