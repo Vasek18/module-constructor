@@ -42,36 +42,60 @@ class BitrixEventsHandlers extends Model{
 	static public function saveEventsInFolder($module_id){
 		if (BitrixEventsHandlers::where('module_id', $module_id)->count()){
 			$module = Bitrix::find($module_id);
-			$moduleIDForBitrix = $module->PARTNER_CODE.".".$module->MODULE_CODE;
-			$moduleNamespace = studly_case($module->PARTNER_CODE)."\\".studly_case($module->MODULE_CODE);
-
 
 			$handlerTemplate = Storage::disk('modules_templates')->get('bitrix/lib/event.php');
 			$installHandlersCode = '';
 			$uninstallHandlersCode = '';
 
+			$classes = [];
+
 			$handlers = BitrixEventsHandlers::where('module_id', $module_id)->get();
 			foreach ($handlers as $handler){
-				$classNamespace = studly_case($handler->class);
-				$installHandlersCode .= "\t\t".'\Bitrix\Main\EventManager::getInstance()->registerEventHandler("'.$handler->from_module.'", "'.$handler->event.'", $this->MODULE_ID, \'\\'.$moduleNamespace.'\\EventHandlers\\'.$handler->class.'\', "'.$handler->method.'");'.PHP_EOL;
-				$uninstallHandlersCode .= "\t\t".'\Bitrix\Main\EventManager::getInstance()->unRegisterEventHandler("'.$handler->from_module.'", "'.$handler->event.'", $this->MODULE_ID, \'\\'.$moduleNamespace.'\\EventHandlers\\'.$handler->class.'\', "'.$handler->method.'");'.PHP_EOL;
+				$installHandlersCode .= "\t\t".'\Bitrix\Main\EventManager::getInstance()->registerEventHandler("'.$handler->from_module.'", "'.$handler->event.'", $this->MODULE_ID, \'\\'.$module->namespace.'\\EventHandlers\\'.$handler->class.'\', "'.$handler->method.'");'.PHP_EOL;
+				$uninstallHandlersCode .= "\t\t".'\Bitrix\Main\EventManager::getInstance()->unRegisterEventHandler("'.$handler->from_module.'", "'.$handler->event.'", $this->MODULE_ID, \'\\'.$module->namespace.'\\EventHandlers\\'.$handler->class.'\', "'.$handler->method.'");'.PHP_EOL;
 
-				$template_search = Array('{MODULE_NAMESPACE}', '{CLASS_NAMESPACE}', '{CLASS}', '{METHOD}', '{PHP_CODE}');
-				$template_replace = Array($moduleNamespace, $classNamespace, $handler->class, $handler->method, $handler->php_code);
+				if (!isset($classes[$handler->class])){
+					$classes[$handler->class]['functionsCode'] = $handler->getHandlerCode();
+					$classes[$handler->class]['class_namespace'] = $handler->class_namespace;
+					$classes[$handler->class]['class'] = $handler->class;
+				}else{
+					$classes[$handler->class]['functionsCode'] .= $handler->getHandlerCode();
+				}
+			}
+
+			//dd($classes);
+
+			foreach ($classes as $class){
+				$template_search = Array('{MODULE_NAMESPACE}', '{CLASS_NAMESPACE}', '{CLASS}', '{FUNCTIONS}');
+				$template_replace = Array($module->namespace, $class['class_namespace'], $class['class'], $class['functionsCode']);
 				$handlerFile = str_replace($template_search, $template_replace, $handlerTemplate);
-				Storage::disk('user_modules')->put($moduleIDForBitrix.'/lib/eventhandlers/'.strtolower($handler->class).'.php', $handlerFile);
+				Storage::disk('user_modules')->put($module->module_folder.'/lib/eventhandlers/'.strtolower($class['class']).'.php', $handlerFile);
 			}
 			//dd($installHandlersCode);
 
-			// записываем код установки и удаления
-			$file = Storage::disk('user_modules')->get($moduleIDForBitrix.'/install/index.php');
-			$file = preg_replace('/function InstallEvents\(\)\{[^\}]+\}/i', 'function InstallEvents(){'.PHP_EOL.$installHandlersCode.PHP_EOL.'}', $file);
-			$file = preg_replace('/function UnInstallEvents\(\)\{[^\}]+\}/i', 'function UnInstallEvents(){'.PHP_EOL.$uninstallHandlersCode.PHP_EOL.'}', $file);
-			Storage::disk('user_modules')->put($moduleIDForBitrix.'/install/index.php', $file);
-
-			// создаём обработчики
-
+			BitrixEventsHandlers::writeHandlerRegisterAndUnregisterCodeInInstallFile($module, $installHandlersCode, $uninstallHandlersCode);
 		}
+	}
+
+	protected static function writeHandlerRegisterAndUnregisterCodeInInstallFile($module, $installHandlersCode, $uninstallHandlersCode){
+		$file = Storage::disk('user_modules')->get($module->module_folder.'/install/index.php');
+		$file = preg_replace('/function InstallEvents\(\)\{[^\}]+\}/i', 'function InstallEvents(){'.PHP_EOL.$installHandlersCode.PHP_EOL.'}', $file);
+		$file = preg_replace('/function UnInstallEvents\(\)\{[^\}]+\}/i', 'function UnInstallEvents(){'.PHP_EOL.$uninstallHandlersCode.PHP_EOL.'}', $file);
+		Storage::disk('user_modules')->put($module->module_folder.'/install/index.php', $file);
+	}
+
+	protected function getHandlerCode(){
+		$handlerFunctionTemplate = "\t".'static public function {METHOD}(){'."\n"."\t"."\t".'{PHP_CODE}'."\n"."\t".'}'."\n";
+
+		$template_search = Array('{METHOD}', '{PHP_CODE}');
+		$template_replace = Array($this->method, $this->php_code);
+		$handlerCode = str_replace($template_search, $template_replace, $handlerFunctionTemplate);
+
+		return $handlerCode;
+	}
+
+	public function getClassNamespaceAttribute(){
+		return studly_case($this->class);
 	}
 
 	public function module(){

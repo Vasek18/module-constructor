@@ -24,5 +24,7 @@
 //	todo /** @test */
 //	function it_returns_errors_when_not_all_necessary_fileds_in_a_row_are_filled(){
 //	}
-//
+//	todo /** @test */
+//function it_trims_fields(){
+//}
 //}

@@ -253,6 +253,10 @@ class Bitrix extends Model{
 		return $this->PARTNER_CODE."_".$this->MODULE_CODE;
 	}
 
+	public function getNamespaceAttribute(){
+		return studly_case($this->PARTNER_CODE)."\\".studly_case($this->MODULE_CODE);
+	}
+
 	// связи с другими моделями
 	public function creator(){
 		return $this->belongsTo('App\Models\User');
