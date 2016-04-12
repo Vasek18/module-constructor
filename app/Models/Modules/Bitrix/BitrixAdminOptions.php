@@ -4,6 +4,7 @@ namespace App\Models\Modules\Bitrix;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Auth;
 
 class BitrixAdminOptions extends Model{
 	protected $table = 'bitrix_modules_options';
@@ -19,6 +20,21 @@ class BitrixAdminOptions extends Model{
 		if ($fields['spec_vals'] == 'iblock_props_list'){
 			$fields['spec_vals'] = '$iblock_props()';
 		}
+		if (!isset($fields['type_id'])){
+			$fields['type_id'] = BitrixAdminOptions::getDefaultTypeId();
+		}
+		if (!DB::table('bitrix_modules_options_types')->where('id', $fields['type_id'])->first()){
+			$fields['type_id'] = BitrixAdminOptions::getDefaultTypeId();
+		}
+		if (!$module->ownedBy(Auth::user())){
+			return false;
+		}
+		if (!isset($fields['code'])){
+			return false;
+		}
+		if (!isset($fields['name'])){
+			return false;
+		}
 
 		$option = new BitrixAdminOptions($fields);
 
@@ -27,6 +43,14 @@ class BitrixAdminOptions extends Model{
 		}
 
 		return false;
+	}
+
+	public static function getDefaultTypeId(){
+		$stringType = DB::table('bitrix_modules_options_types')->where('FORM_TYPE', 'text')->first();
+		if ($stringType && $stringType->id){
+			return $stringType->id;
+		}
+		return 0;
 	}
 
 	// сохраняем настройки в папку модуля

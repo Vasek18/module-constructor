@@ -18,7 +18,7 @@ class BitrixAdminOptionsTest extends TestCase{
 				"sort"           => 10,
 				"name"           => 'Ололо',
 				"code"           => 'ololo',
-				"type_id"        => 0,
+				"type_id"        => 1,
 				"height"         => '10',
 				"width"          => '20',
 				"spec_vals"      => '',
@@ -31,28 +31,114 @@ class BitrixAdminOptionsTest extends TestCase{
 			"sort"      => 10,
 			"name"      => 'Ололо',
 			"code"      => 'ololo',
-			"type_id"   => 0,
+			"type_id"   => 1,
 			"height"    => '10',
 			"width"     => '20'
 		]);
-
 	}
 
-	// todo /** @test */
-	//function it_create_handler_without_type_id_field_with_string_type_id(){
-	//}
-	//
-	// todo /** @test */
-	//function it_doesnt_create_handler_with_nonexistent_type_id(){
-	//}
-	//
-	// todo /** @test */
-	//function it_doesnt_create_handler_without_code_field(){
-	//}
-	//
-	// todo /** @test */
-	//function it_doesnt_create_handler_without_name_field(){
-	//}
+	/** @test */
+	function it_create_handler_without_type_id_field_with_string_type_id(){
+		$this->signIn();
+
+		$module = factory(App\Models\Modules\Bitrix\Bitrix::class)->create(['user_id' => $this->user->id]);
+
+		$option = BitrixAdminOptions::store($module, [
+				"sort"           => 10,
+				"name"           => 'Ололо',
+				"code"           => 'ololo',
+				"spec_vals"      => '',
+				"spec_vals_args" => ''
+			]
+		);
+
+		$this->seeInDatabase('bitrix_modules_options', [
+			"module_id" => $module->id,
+			"sort"      => 10,
+			"name"      => 'Ололо',
+			"code"      => 'ololo',
+			"type_id"   => 1 // todo потенциально слабое место в тестах
+		]);
+	}
+
+	/** @test */
+	function it_doesnt_create_handler_with_nonexistent_type_id(){
+		$this->signIn();
+
+		$module = factory(App\Models\Modules\Bitrix\Bitrix::class)->create(['user_id' => $this->user->id]);
+
+		$option = BitrixAdminOptions::store($module, [
+				"sort"           => 10,
+				"name"           => 'Ололо',
+				"type_id"        => 1487,
+				"code"           => 'ololo',
+				"spec_vals"      => '',
+				"spec_vals_args" => ''
+			]
+		);
+
+		$this->seeInDatabase('bitrix_modules_options', [
+			"module_id" => $module->id,
+			"sort"      => 10,
+			"name"      => 'Ололо',
+			"code"      => 'ololo',
+			"type_id"   => 1 // todo потенциально слабое место в тестах
+		]);
+	}
+
+	/** @test */
+	function it_doesnt_create_handler_without_code_field(){
+		$this->signIn();
+
+		$module = factory(App\Models\Modules\Bitrix\Bitrix::class)->create(['user_id' => $this->user->id]);
+
+		$option = BitrixAdminOptions::store($module, [
+				"sort"           => 10,
+				"name"           => 'Ололо',
+				"type_id"        => 1,
+				"height"         => '10',
+				"width"          => '20',
+				"spec_vals"      => '',
+				"spec_vals_args" => ''
+			]
+		);
+
+		$this->dontSeeInDatabase('bitrix_modules_options', [
+			"module_id" => $module->id,
+			"sort"      => 10,
+			"name"      => 'Ололо',
+			"type_id"   => 1,
+			"height"    => '10',
+			"width"     => '20'
+		]);
+	}
+
+	/** @test */
+	function it_doesnt_create_handler_without_name_field(){
+		$this->signIn();
+
+		$module = factory(App\Models\Modules\Bitrix\Bitrix::class)->create(['user_id' => $this->user->id]);
+
+		$option = BitrixAdminOptions::store($module, [
+				"sort"           => 10,
+				"code"           => 'ololo',
+				"type_id"        => 1,
+				"height"         => '10',
+				"width"          => '20',
+				"spec_vals"      => '',
+				"spec_vals_args" => ''
+			]
+		);
+
+		$this->dontSeeInDatabase('bitrix_modules_options', [
+			"module_id" => $module->id,
+			"sort"      => 10,
+			"code"      => 'ololo',
+			"type_id"   => 1,
+			"height"    => '10',
+			"width"     => '20'
+		]);
+	}
 
 	/** @test */
 	function hackers_cant_use_other_user_module_id(){
@@ -66,7 +152,7 @@ class BitrixAdminOptionsTest extends TestCase{
 				"sort"           => 10,
 				"name"           => 'Ололо',
 				"code"           => 'ololo',
-				"type_id"        => 0,
+				"type_id"        => 1,
 				"height"         => '10',
 				"width"          => '20',
 				"spec_vals"      => '',
@@ -74,25 +160,75 @@ class BitrixAdminOptionsTest extends TestCase{
 			]
 		);
 
-		$this->seeInDatabase('bitrix_modules_options', [
+		$this->dontSeeInDatabase('bitrix_modules_options', [
 			"module_id" => $module2->id,
 			"sort"      => 10,
 			"name"      => 'Ололо',
 			"code"      => 'ololo',
-			"type_id"   => 0,
+			"type_id"   => 1,
 			"height"    => '10',
 			"width"     => '20'
 		]);
 	}
 
-	// todo /** @test */
-	//function it_creates_file_for_options(){
-	//}
-	//
-	// todo /** @test */
-	//function it_writes_option_in_file(){
-	//}
-	//
+	/** @test */
+	function it_creates_file_for_options(){
+		$this->signIn();
+
+		$module = $this->useBitrixStoreMethod();
+
+		$option = BitrixAdminOptions::store($module, [
+				"sort"           => 10,
+				"name"           => 'Ололо',
+				"code"           => 'ololo',
+				"type_id"        => 1,
+				"height"         => '10',
+				"width"          => '20',
+				"spec_vals"      => '',
+				"spec_vals_args" => ''
+			]
+		);
+
+		BitrixAdminOptions::saveOptionFile($module->id);
+
+		$dirName = Bitrix::getFolder($module);
+
+		$this->assertFileExists($dirName.'\\options.php');
+
+		Bitrix::deleteFolder($module);
+	}
+
+	/** @test */
+	function it_writes_option_in_file(){
+		$this->signIn();
+
+		$module = $this->useBitrixStoreMethod();
+
+		$option = BitrixAdminOptions::store($module, [
+				"sort"           => 10,
+				"name"           => 'Ололо',
+				"code"           => 'ololo',
+				"type_id"        => 1,
+				"spec_vals"      => '',
+				"spec_vals_args" => ''
+			]
+		);
+
+		BitrixAdminOptions::saveOptionFile($module->id);
+
+		$dirName = Bitrix::getFolder($module);
+
+		$content = file_get_contents($dirName.'/options.php');
+
+		//dd($content);
+
+		$optionCode = "array('ololo', Loc::getMessage('".$module->lang_key."_OLOLO_TITLE'), '', array('text', 20)),)"; // todo почему в тесте 20, а в продакшене 0?
+
+		$this->assertNotFalse(strpos($content, $optionCode));
+
+		Bitrix::deleteFolder($module);
+	}
+
 	// todo /** @test */
 	//function it_saves_select_vals_in_bd(){
 	//}
