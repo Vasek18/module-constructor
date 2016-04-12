@@ -18,9 +18,19 @@
             <option>{{$core_event->code}}</option>
         @endforeach
     </datalist>
+    @if (count($errors) > 0)
+        <div class="alert alert-danger">
+            <strong>Ошибка!</strong> При заполнение формы возникли ошибки<br><br>
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     <form role="form" method="POST"
           action="{{ action('Modules\Bitrix\BitrixEventHandlersController@store', $module->id) }}">
-        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+        {{ csrf_field() }}
         <div class="row option-headers">
             <div class="col-md-2">
                 <label>Модуль генерирующий событие</label>
@@ -47,7 +57,7 @@
         @endfor
         <div class="row">
             <div class="col-md-12">
-                <button class="btn btn-primary btn-block">Сохранить</button>
+                <button type="submit" class="btn btn-primary btn-block" name="save_handlers">Сохранить</button>
             </div>
         </div>
     </form>
