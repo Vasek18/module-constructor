@@ -263,7 +263,7 @@ class Bitrix extends Model{
 	}
 
 	public function options(){
-		return $this->hasMany('App\Models\Modules\BitrixAdminOptions');
+		return $this->hasMany('App\Models\Modules\Bitrix\BitrixAdminOptions', 'module_id');
 	}
 
 	public function handlers(){

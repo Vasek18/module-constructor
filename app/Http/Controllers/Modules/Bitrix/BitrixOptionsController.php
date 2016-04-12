@@ -53,6 +53,7 @@ class BitrixOptionsController extends Controller{
 
 		// удаляем старые свойства, чтобы при изменение уже заполненной строчки, старые данные с этой строчки не существовали
 		BitrixAdminOptions::where('module_id', $module_id)->delete();
+		$module = Bitrix::find($module_id);
 
 		// перебираем все строки полей
 		// todo я могу без цикла и перебирания полей обойтись
@@ -71,7 +72,6 @@ class BitrixOptionsController extends Controller{
 				continue;
 			}
 
-			$prop["module_id"] = $request['module_id'][$i];
 			$prop["sort"] = $request['option_sort'][$i];
 			$prop["code"] = $option_code;
 			$prop["name"] = $request['option_name'][$i];
@@ -97,7 +97,7 @@ class BitrixOptionsController extends Controller{
 
 			//dd($prop);
 			// записываем в бд
-			$options_id = BitrixAdminOptions::store($prop);
+			$option = BitrixAdminOptions::store($module, $prop);
 
 			// сохранение опций
 			if ($prop["type_id"] == 3 || $prop["type_id"] == 4){ // todo хардкода
@@ -110,7 +110,7 @@ class BitrixOptionsController extends Controller{
 							continue;
 						}
 						$val = new BitrixAdminOptionsVals;
-						$val->option_id = $options_id;
+						$val->option_id = $option->id;
 						$val->key = $option_val_key;
 						$val->value = $request['option_'.$i.'_vals_value'][$io];
 						//dd($val);

@@ -7,40 +7,26 @@ use Illuminate\Support\Facades\DB;
 
 class BitrixAdminOptions extends Model{
 	protected $table = 'bitrix_modules_options';
+	protected $fillable = ['type_id', 'sort', 'code', 'name', 'height', 'width', 'spec_vals', 'spec_vals_args'];
 
-	public static function store($fields){
-		//dd($fields);
-		// если есть поле с таким же кодом, обновляем старое, а не создаём новое // на самом деле в контроллере всё и так удаляется (нужно ли это?)
-		if (BitrixAdminOptions::where('module_id', $fields["module_id"])->where('code', $fields["code"])->count()){
-			$id = BitrixAdminOptions::where('module_id', $fields["module_id"])->where('code', $fields["code"])->first()->id;
-			$option = BitrixAdminOptions::find($id);
-		}else{
-			$option = new BitrixAdminOptions;
-			$option->code = $fields['code'];
-		}
-
-		// запись в БД
-		$option->module_id = $fields['module_id'];
-		$option->sort = $fields['sort'];
-		$option->name = $fields['name'];
-		$option->type_id = $fields['type_id'];
-		$option->height = $fields['height'];
-		$option->width = $fields['width'];
+	public static function store(Bitrix $module, $fields){
 		if ($fields['spec_vals'] == 'iblocks_list'){
-			$option->spec_vals = '$iblocks()';
+			$fields['spec_vals'] = '$iblocks()';
 		}
 		if ($fields['spec_vals'] == 'iblock_items_list'){
-			$option->spec_vals = '$iblock_items()';
+			$fields['spec_vals'] = '$iblock_items()';
 		}
 		if ($fields['spec_vals'] == 'iblock_props_list'){
-			$option->spec_vals = '$iblock_props()';
+			$fields['spec_vals'] = '$iblock_props()';
 		}
-		$option->spec_vals_args = $fields["spec_vals_args"];
-		//dd($option);
 
-		if ($option->save()){
-			return $option->id;
+		$option = new BitrixAdminOptions($fields);
+
+		if ($module->options()->save($option)){
+			return $option;
 		}
+
+		return false;
 	}
 
 	// сохраняем настройки в папку модуля
@@ -85,8 +71,7 @@ class BitrixAdminOptions extends Model{
 							}
 							$field_params_in_string .= ')';
 						}
-					}
-					else{
+					}else{
 						$field_params_in_string = ', '.str_replace('()', '('.$option->spec_vals_args.')', $option->spec_vals);
 					}
 				}
