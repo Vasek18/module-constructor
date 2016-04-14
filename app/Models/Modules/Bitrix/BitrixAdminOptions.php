@@ -11,14 +11,17 @@ class BitrixAdminOptions extends Model{
 	protected $fillable = ['type_id', 'sort', 'code', 'name', 'height', 'width', 'spec_vals', 'spec_vals_args'];
 
 	public static function store(Bitrix $module, $fields){
-		if ($fields['spec_vals'] == 'iblocks_list'){
-			$fields['spec_vals'] = '$iblocks()';
-		}
-		if ($fields['spec_vals'] == 'iblock_items_list'){
-			$fields['spec_vals'] = '$iblock_items()';
-		}
-		if ($fields['spec_vals'] == 'iblock_props_list'){
-			$fields['spec_vals'] = '$iblock_props()';
+		//dd($fields);
+		if (isset($fields['spec_vals'])){
+			if ($fields['spec_vals'] == 'iblocks_list'){
+				$fields['spec_vals'] = '$iblocks()';
+			}
+			if ($fields['spec_vals'] == 'iblock_items_list'){
+				$fields['spec_vals'] = '$iblock_items()';
+			}
+			if ($fields['spec_vals'] == 'iblock_props_list'){
+				$fields['spec_vals'] = '$iblock_props()';
+			}
 		}
 		if (!isset($fields['type_id'])){
 			$fields['type_id'] = BitrixAdminOptions::getDefaultTypeId();
@@ -50,6 +53,7 @@ class BitrixAdminOptions extends Model{
 		if ($stringType && $stringType->id){
 			return $stringType->id;
 		}
+
 		return 0;
 	}
 
