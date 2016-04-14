@@ -280,7 +280,7 @@ class BitrixAdminOptionsTest extends TestCase{
 	}
 
 	/** @test */
-	function it_writes_select_type_options_in_right_format_in_file(){
+	function it_writes_select_type_option_with_vals_in_right_format_in_file(){
 		$this->signIn();
 
 		$module = $this->useBitrixStoreMethod();
@@ -314,6 +314,35 @@ class BitrixAdminOptionsTest extends TestCase{
 		$content = file_get_contents($dirName.'/options.php');
 
 		$optionCode = "array('ololo', Loc::getMessage('".$module->lang_key."_OLOLO_TITLE'), '', array('selectbox', Array('a' => 'b', 'c' => 'd', )))";
+
+		$this->assertNotFalse(strpos($content, $optionCode));
+
+		Bitrix::deleteFolder($module);
+	}
+
+	/** @test */
+	function it_writes_select_type_option_without_vals_in_right_format_in_file(){
+		$this->signIn();
+
+		$module = $this->useBitrixStoreMethod();
+
+		$option = BitrixAdminOptions::store($module, [
+				"sort"           => 10,
+				"name"           => 'Ололо',
+				"code"           => 'ololo',
+				"type_id"        => $this->selectType(),
+				"spec_vals"      => '',
+				"spec_vals_args" => ''
+			]
+		);
+
+		BitrixAdminOptions::saveOptionFile($module->id);
+
+		$dirName = Bitrix::getFolder($module);
+
+		$content = file_get_contents($dirName.'/options.php');
+
+		$optionCode = "array('ololo', Loc::getMessage('".$module->lang_key."_OLOLO_TITLE'), '', array('selectbox', Array()))";
 
 		$this->assertNotFalse(strpos($content, $optionCode));
 

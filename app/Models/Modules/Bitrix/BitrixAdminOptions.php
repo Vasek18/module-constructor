@@ -61,9 +61,8 @@ class BitrixAdminOptions extends Model{
 	static public function saveOptionFile($module_id){
 		if (BitrixAdminOptions::where('module_id', $module_id)->count()){
 			$module = Bitrix::find($module_id);
-			$LANG_KEY = strtoupper($module->PARTNER_CODE."_".$module->MODULE_CODE);
 
-			$options = BitrixAdminOptions::where('module_id', $module_id)->orderBy('sort', 'asc')->get();
+			$options = $module->options()->orderBy('sort', 'asc')->get();
 			$optionsString = '';
 			$optionsLangString = '';
 
@@ -77,45 +76,56 @@ class BitrixAdminOptions extends Model{
 			foreach ($options as $option){
 				$option_type = $optionsTypes[$option->type_id]->FORM_TYPE;
 
-				$field_params_in_string = '';
-				if ($option_type == "text"){
-					// параметры text - ширина
-					$field_params_in_string = ', '.$option->width;
-				}
-				if ($option_type == "textarea"){
-					// параметры textarea - высота и ширина
-					$field_params_in_string = ', '.$option->height.', '.$option->width;
-				}
-				if ($option_type == "checkbox"){
-					$field_params_in_string = ', "'.$option->spec_vals_args.'"';
-				}
-				if ($option_type == "selectbox" || $option_type == "multiselectbox"){
-					if (!$option->spec_vals || $option->spec_vals == 'array'){
-						$vals = BitrixAdminOptionsVals::where('option_id', $option->id)->get();
-						if (count($vals)){
-							$field_params_in_string = ', Array(';
-							foreach ($vals as $val){
-								$field_params_in_string .= "'".$val->key."' => '".$val->value."', ";
-							}
-							$field_params_in_string .= ')';
-						}
-					}else{
-						$field_params_in_string = ', '.str_replace('()', '('.$option->spec_vals_args.')', $option->spec_vals);
-					}
-				}
+				$field_params_string = $option->getParamsStringForFile($option_type);
 
 				// код, название, значение по умолчанию, [тип поля, параметры]
-				$string = PHP_EOL."\t\t\tarray('".$option->code."', Loc::getMessage('".$LANG_KEY."_".strtoupper($option->code)."_TITLE'), '', array('".$option_type."'".$field_params_in_string.")),";
+				$string = PHP_EOL."\t\t\tarray('".$option->code."', Loc::getMessage('".$module->lang_key."_".strtoupper($option->code)."_TITLE'), '', array('".$option_type."'".$field_params_string.")),";
 				//echo $string;
 
 				$optionsString .= $string;
 
-				$optionsLangString .= '$MESS["'.$LANG_KEY.'_'.strtoupper($option->code).'_TITLE"] = "'.$option->name.'";'.PHP_EOL;
+				$optionsLangString .= '$MESS["'.$module->lang_key.'_'.strtoupper($option->code).'_TITLE"] = "'.$option->name.'";'.PHP_EOL;
 			}
 
 			Bitrix::changeVarsInModuleFileAndSave('bitrix/options.php', $module_id, Array("{OPTIONS}"), Array($optionsString));
 			Bitrix::changeVarsInModuleFileAndSave('bitrix/lang/ru/options.php', $module_id, Array("{OPTIONS_LANG}"), Array($optionsLangString));
 		}
+	}
+
+	public function getParamsStringForFile($option_type){
+		$params_string = ', ';
+		if ($option_type == "text"){
+			// параметры text - ширина
+			$params_string .= $this->width;
+		}
+		if ($option_type == "textarea"){
+			// параметры textarea - высота и ширина
+			$params_string .= $this->height.', '.$this->width;
+		}
+		if ($option_type == "checkbox"){
+			$params_string .= '"'.$this->spec_vals_args.'"';
+		}
+		if ($option_type == "selectbox" || $option_type == "multiselectbox"){
+			if (!$this->spec_vals || $this->spec_vals == 'array'){
+				$params_string .= $this->getValsArrayStringForFile();
+			}else{
+				$params_string .= str_replace('()', '('.$this->spec_vals_args.')', $this->spec_vals);
+			}
+		}
+
+		return $params_string;
+	}
+
+	public function getValsArrayStringForFile(){
+		$vals = $this->vals()->get();
+
+		$string = 'Array(';
+		foreach ($vals as $val){
+			$string .= "'".$val->key."' => '".$val->value."', ";
+		}
+		$string .= ')';
+
+		return $string;
 	}
 
 	// связи с другими моделями
@@ -124,6 +134,6 @@ class BitrixAdminOptions extends Model{
 	}
 
 	public function vals(){
-		return $this->hasMany('App\Models\Modules\BitrixAdminOptionsVals', "option_id");
+		return $this->hasMany('App\Models\Modules\Bitrix\BitrixAdminOptionsVals', "option_id");
 	}
 }

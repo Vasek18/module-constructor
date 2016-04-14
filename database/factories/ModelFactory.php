@@ -18,7 +18,7 @@ $factory->define(App\Models\User::class, function (Faker\Generator $faker){
 		'email'               => $faker->email,
 		'site'                => $faker->url,
 		'company_name'        => $faker->company,
-		'bitrix_partner_code' => $faker->word,
+		'bitrix_partner_code' => $faker->unique()->word,
 		'bitrix_company_name' => $faker->company,
 		'password'            => bcrypt("12345678"),
 		'remember_token'      => str_random(10),
