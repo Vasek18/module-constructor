@@ -84,6 +84,11 @@ class BitrixDetailPageActionsTest extends TestCase{
 	//}
 	//
 	// todo /** @test */
+	//function you_cant_get_another_user_module_detail_page(){
+	//
+	//}
+	//
+	// todo /** @test */
 	//function you_can_change_module_description_on_detail_page(){
 	//
 	//}

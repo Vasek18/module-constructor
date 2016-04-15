@@ -12,7 +12,8 @@
     <h2>Компоненты</h2>
     <div class="list-group">
         @foreach($components as $component)
-            <a class="list-group-item" href="#">Компонент {{$component->code}}</a>
+            <a class="list-group-item"
+               href="{{action('Modules\Bitrix\BitrixComponentsController@show', [$module->id, $component->id])}}">Компонент "{{$component->name}}" ({{$component->code}})</a>
         @endforeach
     </div>
 @stop

@@ -13,7 +13,7 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li><a href="{{ route('bitrix_module_detail', $module->id) }}">Основное</a></li>
-                <li><a href="{{ route('bitrix_module_components', $module->id) }}">Добавление компонентов</a></li>
+                <li><a href="{{ route('bitrix_module_components', $module->id) }}">Компоненты</a></li>
                 <li><a href="{{ route('bitrix_module_events_handlers', $module->id) }}">Обработчики событий</a></li>
                 <li><a href="{{ route('bitrix_module_admin_options', $module->id) }}">Страница настроек</a></li>
             </ul>

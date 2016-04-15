@@ -45,16 +45,42 @@ class BitrixCreateComponentFormTest extends TestCase{
 		Bitrix::deleteFolder($module);
 
 		$this->seeInDatabase('bitrix_components', [
-			'module_id'  => $module->id,
-			'name' => 'Ololo',
-			'code' => 'ololo',
-			'sort' => '100'
+			'module_id' => $module->id,
+			'name'      => 'Ololo',
+			'code'      => 'ololo',
+			'sort'      => '100'
 		]);
 
 		$component = BitrixComponent::where('code', 'ololo')->first();
 
-$this->seePageIs('my-modules/bitrix/'.$module->id.'/components/'.$component->id.'');
+		$this->seePageIs('my-modules/bitrix/'.$module->id.'/components/'.$component->id.'');
 	}
+
+	/** @test */
+	function unauthorized_cannot_get_to_this_page(){
+		$module = factory(App\Models\Modules\Bitrix\Bitrix::class)->create();
+
+		$this->visit('/my-modules/bitrix/'.$module->id.'/new_components');
+		$this->seePageIs('/personal/auth');
+	}
+
+	/** @test */
+	function another_user_cannot_get_here_if_doesnt_own_the_module(){
+		$module = factory(App\Models\Modules\Bitrix\Bitrix::class)->create();
+
+		$this->signIn();
+
+		$this->visit('/my-modules/bitrix/'.$module->id.'/new_components');
+		$this->seePageIs('/');
+	}
+
+	//todo /** @test */
+	//function it_doesnt_create_component_without_name(){
+	//}
+
+	//todo /** @test */
+	//	function it_doesnt_create_component_without_code(){
+	//	}
 }
 
 ?>

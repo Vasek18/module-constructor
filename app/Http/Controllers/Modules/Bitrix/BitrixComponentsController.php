@@ -34,20 +34,6 @@ class BitrixComponentsController extends Controller{
 		return view("bitrix.components.components", $data);
 	}
 
-	public function show(Bitrix $module, BitrixComponent $component, Request $request){
-		//dd($component);
-		//if (!$this->userCreatedModule($module_id)){
-		//	return $this->unauthorized($request);
-		//}
-		//$components = BitrixComponent::where('module_id', $module_id)->get();
-		//$data = [
-		//	'module'     => Bitrix::find($module_id),
-		//	'components' => $components
-		//];
-		//
-		//return view("bitrix.components.components", $data);
-	}
-
 	// страница добавления компонента
 	public function create($module_id, Request $request){
 		if (!$this->userCreatedModule($module_id)){
@@ -72,6 +58,15 @@ class BitrixComponentsController extends Controller{
 		return redirect(action('Modules\Bitrix\BitrixComponentsController@show', [$module->id, $component->id]));
 	}
 
+	public function show(Bitrix $module, BitrixComponent $component, Request $request){
+		$data = [
+			'module'    => $module,
+			'component' => $component
+		];
+
+		return view("bitrix.components.detail", $data);
+	}
+
 	// загрузка архива с компонентом
 	// todo сейчас работает только с зипом
 	public function upload_zip(Bitrix $module, Request $request){
@@ -93,6 +88,7 @@ class BitrixComponentsController extends Controller{
 		$archive = $request->file('archive');
 		$fileName = time().$archive->getClientOriginalName();
 		$archive->move('user_upload/', $fileName);
+
 		return $fileName;
 	}
 
@@ -116,7 +112,7 @@ class BitrixComponentsController extends Controller{
 		//dd($directories);
 		foreach ($directories as $componentFolder){
 			$dirs = explode("/", $componentFolder);
-			$componentCode = $dirs[count($dirs)-1];
+			$componentCode = $dirs[count($dirs) - 1];
 			//dd($component);
 
 			$component = new BitrixComponent;
