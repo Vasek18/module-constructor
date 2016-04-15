@@ -270,6 +270,10 @@ class Bitrix extends Model{
 		return $this->hasMany('App\Models\Modules\Bitrix\BitrixEventsHandlers', 'module_id');
 	}
 
+	public function components(){
+		return $this->hasMany('App\Models\Modules\Bitrix\BitrixComponent', 'module_id');
+	}
+
 	public function ownedBy(User $user){
 		return $this->user_id == $user->id;
 	}

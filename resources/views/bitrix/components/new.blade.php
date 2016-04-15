@@ -47,9 +47,26 @@
                                 </div>
                             </div>
 
+                            {{--todo--}}
+                            {{--<div class="form-group">
+                                <label class="col-md-4 control-label">Иконка компонента</label>
+                                <div class="col-md-6">
+                                    <input type="file" name="COMPONENT_ICON" class="form-control" aria-describedby="COMPONENT_ICON_help">
+                                    <span class="help-block" id="COMPONENT_ICON_help"></span>
+                                </div>
+                            </div>--}}
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Вес сортировки компонента</label>
+                                <div class="col-md-6">
+                                    <input type="text" name="COMPONENT_SORT" class="form-control" aria-describedby="COMPONENT_SORT_help">
+                                    <span class="help-block" id="COMPONENT_SORT_help"></span>
+                                </div>
+                            </div>
+
                             <div class="form-group">
                                 <div class="col-md-6 col-md-offset-4">
-                                    <button type="submit" class="btn btn-primary">
+                                    <button type="submit" class="btn btn-primary" name="create_component">
                                         Создать компонент
                                     </button>
                                 </div>

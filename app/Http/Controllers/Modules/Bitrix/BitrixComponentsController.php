@@ -21,7 +21,7 @@ class BitrixComponentsController extends Controller{
 		$this->middleware('auth');
 	}
 
-	public function show($module_id, Request $request){
+	public function index($module_id, Request $request){
 		if (!$this->userCreatedModule($module_id)){
 			return $this->unauthorized($request);
 		}
@@ -32,6 +32,20 @@ class BitrixComponentsController extends Controller{
 		];
 
 		return view("bitrix.components.components", $data);
+	}
+
+	public function show(Bitrix $module, BitrixComponent $component, Request $request){
+		//dd($component);
+		//if (!$this->userCreatedModule($module_id)){
+		//	return $this->unauthorized($request);
+		//}
+		//$components = BitrixComponent::where('module_id', $module_id)->get();
+		//$data = [
+		//	'module'     => Bitrix::find($module_id),
+		//	'components' => $components
+		//];
+		//
+		//return view("bitrix.components.components", $data);
 	}
 
 	// страница добавления компонента
@@ -47,15 +61,15 @@ class BitrixComponentsController extends Controller{
 	}
 
 	// добавление компонента
-	public function store($module_id, Request $request){
-		if (!$this->userCreatedModule($module_id)){
+	public function store(Bitrix $module, Request $request){
+		if (!$this->userCreatedModule($module->id)){
 			return $this->unauthorized($request);
 		}
-		//dd($request->all());
-		$id = BitrixComponent::store($module_id, $request);
+
+		$component = BitrixComponent::store($module, $request);
 
 		//
-		return redirect(route('bitrix_module_detail', $module_id));
+		return redirect(action('Modules\Bitrix\BitrixComponentsController@show', [$module->id, $component->id]));
 	}
 
 	// загрузка архива с компонентом
