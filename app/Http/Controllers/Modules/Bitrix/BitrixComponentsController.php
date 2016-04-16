@@ -67,6 +67,10 @@ class BitrixComponentsController extends Controller{
 		return view("bitrix.components.detail", $data);
 	}
 
+	public function store_path(Bitrix $module, BitrixComponent $component, Request $request){
+		return back();
+	}
+
 	// загрузка архива с компонентом
 	// todo сейчас работает только с зипом
 	public function upload_zip(Bitrix $module, Request $request){

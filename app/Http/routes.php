@@ -56,6 +56,7 @@ Route::get('my-modules/bitrix/{id}/components', ['as' => 'bitrix_module_componen
 Route::get('my-modules/bitrix/{id}/new_components', ['as' => 'bitrix_new_component', 'uses' => 'Modules\Bitrix\BitrixComponentsController@create']);
 Route::post('my-modules/bitrix/{module}/component_create','Modules\Bitrix\BitrixComponentsController@store');
 Route::get('my-modules/bitrix/{module}/components/{component}', 'Modules\Bitrix\BitrixComponentsController@show');
+Route::post('my-modules/bitrix/{module}/components/{component}/store_path', 'Modules\Bitrix\BitrixComponentsController@store_path');
 Route::post('my-modules/bitrix/{module}/upload_component_zip', ['as' => 'upload_component_zip', 'uses' => 'Modules\Bitrix\BitrixComponentsController@upload_zip']);
 // .компоненты
 // .Битрикс
