@@ -29,4 +29,8 @@ class BitrixComponent extends Model{
 	public function module(){
 		return $this->belongsTo('App\Models\Modules\Bitrix');
 	}
+
+	public function path_items(){
+		return $this->hasMany('App\Models\Modules\Bitrix\BitrixComponentPathItem', "component_id");
+	}
 }

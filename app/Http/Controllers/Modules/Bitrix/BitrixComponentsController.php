@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Modules\Bitrix\Bitrix;
-use App\Models\Modules\Bitrix\BitrixAdminOptions;
+use App\Models\Modules\Bitrix\BitrixComponentPathItem;
 use App\Models\Modules\Bitrix\BitrixComponent;
 use App\Http\Controllers\Traits\UserOwnModule;
 use Chumper\Zipper\Zipper;
@@ -60,14 +60,72 @@ class BitrixComponentsController extends Controller{
 
 	public function show(Bitrix $module, BitrixComponent $component, Request $request){
 		$data = [
-			'module'    => $module,
-			'component' => $component
+			'module'     => $module,
+			'component'  => $component,
+			'path_items' => $component->path_items()->get()
 		];
 
 		return view("bitrix.components.detail", $data);
 	}
 
 	public function store_path(Bitrix $module, BitrixComponent $component, Request $request){
+		//dd($request);
+		if ($request->path_id_1 && $request->path_name_1){ // если нет первых - нет других (хотя можно же сдвигать?)
+			BitrixComponentPathItem::updateOrCreate(
+				[
+					'level'        => 1,
+					'component_id' => $component->id
+				],
+				[
+					'component_id' => $component->id,
+					'level'        => 1,
+					'code'         => $request->path_id_1,
+					'name'         => $request->path_name_1,
+					'sort'         => $request->path_sort_1
+				]
+			);
+			if ($request->path_id_2 && $request->path_name_2){
+				BitrixComponentPathItem::updateOrCreate(
+					[
+						'level'        => 2,
+						'component_id' => $component->id
+					],
+					[
+						'component_id' => $component->id,
+						'level'        => 2,
+						'code'         => $request->path_id_2,
+						'name'         => $request->path_name_2,
+						'sort'         => $request->path_sort_2
+					]
+				);
+			}else{
+				BitrixComponentPathItem::where([
+					'level'        => 2,
+					'component_id' => $component->id
+				])->delete();
+			}
+			if ($request->path_id_3 && $request->path_name_3){
+				BitrixComponentPathItem::updateOrCreate(
+					[
+						'level'        => 3,
+						'component_id' => $component->id
+					],
+					[
+						'component_id' => $component->id,
+						'level'        => 3,
+						'code'         => $request->path_id_3,
+						'name'         => $request->path_name_3,
+						'sort'         => $request->path_sort_3
+					]
+				);
+			}else{
+				BitrixComponentPathItem::where([
+					'level'        => 3,
+					'component_id' => $component->id
+				])->delete();
+			}
+		}
+
 		return back();
 	}
 
