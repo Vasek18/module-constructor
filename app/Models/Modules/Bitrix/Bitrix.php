@@ -118,7 +118,8 @@ class Bitrix extends Model{
 	}
 
 	// подставляем нужные значения в заготовку
-	public static function changeVarsInModuleFileAndSave($path, $module_id, $dop_search = [], $dop_replace = []){
+	// todo избавиться от 'bitrix/..' в $path
+	public static function changeVarsInModuleFileAndSave($path, $module_id, $dop_search = [], $dop_replace = [], $outputPath){
 		$module = Bitrix::find($module_id);
 
 		$template_search = [];
@@ -148,7 +149,7 @@ class Bitrix extends Model{
 
 		// записываем в модуль
 		$count = 1; // только первое вхождение
-		$outputFilePath = str_replace("bitrix", $module->module_folder, $path, $count); // todo если изменить диск,то можно избавиться от такой замены
+		$outputFilePath = str_replace("bitrix", $module->module_folder, $outputPath?$outputPath:$path, $count); // todo если изменить диск,то можно избавиться от такой замены
 		Storage::disk('user_modules')->put($outputFilePath, $file);
 
 	}
@@ -210,6 +211,7 @@ class Bitrix extends Model{
 	}
 
 	// получить папку модуля
+	// todo не статик
 	public static function getFolder(Bitrix $module, $fromRoot = true){
 		$modulesRootFolder = '';
 		if ($fromRoot){

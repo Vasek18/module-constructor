@@ -104,7 +104,7 @@ class BitrixComponentsController extends Controller{
 					'component_id' => $component->id
 				])->delete();
 			}
-			if ($request->path_id_3 && $request->path_name_3){
+			if ($request->path_id_3 && $request->path_name_3){ // todo я ж не использую это по сути
 				BitrixComponentPathItem::updateOrCreate(
 					[
 						'level'        => 3,
@@ -125,6 +125,8 @@ class BitrixComponentsController extends Controller{
 				])->delete();
 			}
 		}
+
+		$component->saveInFolder();
 
 		return back();
 	}
