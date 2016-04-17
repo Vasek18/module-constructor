@@ -9,11 +9,11 @@ $arComponentDescription = array(
 	"PATH" => array(
 		"ID" => "{MODULE_COMPONENTS_FOLDER_ID}",
 		"SORT" => {MODULE_COMPONENTS_FOLDER_SORT},
-		"NAME" => GetMessage("{LANG_KEY}_COMPONENTS"),
+		"NAME" => GetMessage("{LANG_KEY}_COMPONENTS_FOLDER_NAME"),
 		"CHILD" => array(
-			"ID" => "{COMPONENT_CODE}",
-			"NAME" => GetMessage("{COMPONENT_LANG_KEY}_COMPONENT_NAME"),
-			"SORT" => {COMPONENT_SORT},
+			"ID" => "{MODULE_COMPONENTS_SUBFOLDER_ID}",
+			"NAME" => GetMessage("{COMPONENT_LANG_KEY}_COMPONENTS_SUBFOLDER_NAME"),
+			"SORT" => {MODULE_COMPONENTS_SUBFOLDER_SORT},
 		)
 	),
 );

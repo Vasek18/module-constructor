@@ -31,8 +31,8 @@ class BitrixComponent extends Model{
 		$this->saveDescriptionLangFileInFolder();
 	}
 
-	// todo второй уровень
-	protected function saveDescriptionFileInFolder(){
+	// todo третий уровень
+	public function saveDescriptionFileInFolder(){
 		$module = $this->module()->first();
 		$module_folder = $module->module_folder;
 
@@ -47,6 +47,10 @@ class BitrixComponent extends Model{
 			'{COMPONENT_SORT}',
 			'{MODULE_COMPONENTS_FOLDER_ID}',
 			'{MODULE_COMPONENTS_FOLDER_SORT}',
+			'{MODULE_COMPONENTS_FOLDER_NAME}',
+			'{MODULE_COMPONENTS_SUBFOLDER_ID}',
+			'{MODULE_COMPONENTS_SUBFOLDER_SORT}',
+			'{MODULE_COMPONENTS_SUBFOLDER_NAME}',
 		);
 
 		$replace = Array(
@@ -55,7 +59,11 @@ class BitrixComponent extends Model{
 			$this->name,
 			$this->sort,
 			$path_items[0]->code,
-			$path_items[0]->sort
+			$path_items[0]->sort,
+			$path_items[0]->name,
+			$path_items[1]->code,
+			$path_items[1]->sort,
+			$path_items[1]->name,
 		);
 
 		//dd($replace);
@@ -63,7 +71,7 @@ class BitrixComponent extends Model{
 		Bitrix::changeVarsInModuleFileAndSave('bitrix\install\components\component_name\.description.php', $module->id, $search, $replace, 'bitrix\install\components\\'.$this->name.'\.description.php');
 	}
 
-	protected function saveDescriptionLangFileInFolder(){
+	public function saveDescriptionLangFileInFolder(){
 		$module = $this->module()->first();
 		$module_folder = $module->module_folder;
 
@@ -75,18 +83,18 @@ class BitrixComponent extends Model{
 			'{COMPONENT_LANG_KEY}',
 			'{COMPONENT_CODE}',
 			'{COMPONENT_NAME}',
-			'{COMPONENT_SORT}',
 			'{COMPONENT_DESCRIPTION}',
-			'{MODULE_COMPONENTS_FOLDER_NAME}'
+			'{MODULE_COMPONENTS_FOLDER_NAME}',
+			'{MODULE_COMPONENTS_SUBFOLDER_NAME}'
 		);
 
 		$replace = Array(
 			$this->lang_key,
 			$this->code,
 			$this->name,
-			$this->sort,
 			$this->desc,
-			$path_items[0]->name
+			$path_items[0]->name,
+			$path_items[1]->name
 		);
 
 		//dd($replace);

@@ -81,7 +81,7 @@ class BitrixComponentsController extends Controller{
 					'level'        => 1,
 					'code'         => $request->path_id_1,
 					'name'         => $request->path_name_1,
-					'sort'         => $request->path_sort_1
+					'sort'         => $request->path_sort_1 ? $request->path_sort_1 : 500
 				]
 			);
 			if ($request->path_id_2 && $request->path_name_2){
@@ -95,7 +95,7 @@ class BitrixComponentsController extends Controller{
 						'level'        => 2,
 						'code'         => $request->path_id_2,
 						'name'         => $request->path_name_2,
-						'sort'         => $request->path_sort_2
+						'sort'         => $request->path_sort_2 ? $request->path_sort_2 : 500
 					]
 				);
 			}else{
@@ -104,7 +104,7 @@ class BitrixComponentsController extends Controller{
 					'component_id' => $component->id
 				])->delete();
 			}
-			if ($request->path_id_3 && $request->path_name_3){ // todo я ж не использую это по сути
+			if ($request->path_id_3 && $request->path_name_3){ // todo я ж не использую это пока
 				BitrixComponentPathItem::updateOrCreate(
 					[
 						'level'        => 3,
@@ -115,7 +115,7 @@ class BitrixComponentsController extends Controller{
 						'level'        => 3,
 						'code'         => $request->path_id_3,
 						'name'         => $request->path_name_3,
-						'sort'         => $request->path_sort_3
+						'sort'         => $request->path_sort_3 ? $request->path_sort_3 : 500
 					]
 				);
 			}else{
@@ -126,7 +126,8 @@ class BitrixComponentsController extends Controller{
 			}
 		}
 
-		$component->saveInFolder();
+		$component->saveDescriptionFileInFolder();
+		$component->saveDescriptionLangFileInFolder();
 
 		return back();
 	}
