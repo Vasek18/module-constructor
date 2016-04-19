@@ -57,7 +57,7 @@ Route::get('my-modules/bitrix/{id}/new_components', ['as' => 'bitrix_new_compone
 Route::post('my-modules/bitrix/{module}/component_create', 'Modules\Bitrix\BitrixComponentsController@store');
 Route::get('my-modules/bitrix/{module}/components/{component}', 'Modules\Bitrix\BitrixComponentsController@show');
 Route::get('my-modules/bitrix/{module}/components/{component}/visual_path', 'Modules\Bitrix\BitrixComponentsController@show_visual_path');
-Route::post('my-modules/bitrix/{module}/components/{component}/store_visual_path', 'Modules\Bitrix\BitrixComponentsController@store_path');
+Route::post('my-modules/bitrix/{module}/components/{component}/store_visual_path', 'Modules\Bitrix\BitrixComponentsController@store_visual_path');
 Route::get('my-modules/bitrix/{module}/components/{component}/params', 'Modules\Bitrix\BitrixComponentsController@show_params');
 Route::get('my-modules/bitrix/{module}/components/{component}/component_php', 'Modules\Bitrix\BitrixComponentsController@show_component_php');
 Route::get('my-modules/bitrix/{module}/components/{component}/other_files', 'Modules\Bitrix\BitrixComponentsController@show_other_files');

@@ -138,6 +138,8 @@ class BitrixComponentsController extends Controller{
 		$component->saveDescriptionFileInFolder();
 		$component->saveDescriptionLangFileInFolder();
 
+		$component->addStep(2);
+
 		return back();
 	}
 

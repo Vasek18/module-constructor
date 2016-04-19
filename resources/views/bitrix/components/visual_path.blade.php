@@ -10,7 +10,7 @@
 
     <div id="path_items">
         <div class="path">
-            <form action="{{action('Modules\Bitrix\BitrixComponentsController@store_path', [$module->id, $component->id])}}"
+            <form action="{{action('Modules\Bitrix\BitrixComponentsController@store_visual_path', [$module->id, $component->id])}}"
                   method="post">
                 {{ csrf_field() }}
                 <div class="row">

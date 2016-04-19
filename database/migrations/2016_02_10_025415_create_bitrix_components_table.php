@@ -22,6 +22,7 @@ class CreateBitrixComponentsTable extends Migration{
 			$table->integer('sort');
 			$table->string('icon_path');
 			$table->text('desc');
+			$table->string('steps')->nullable();
 			$table->timestamps();
 		});
 	}

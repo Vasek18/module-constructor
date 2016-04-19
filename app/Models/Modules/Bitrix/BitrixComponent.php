@@ -102,6 +102,39 @@ class BitrixComponent extends Model{
 		Bitrix::changeVarsInModuleFileAndSave('bitrix\install\components\component_name\lang\ru\.description.php', $module->id, $search, $replace, 'bitrix\install\components\\'.$this->name.'\lang\ru\.description.php');
 	}
 
+	public function addStep($step){
+		$steps = array_filter(explode(",", $this->steps));
+
+		$steps[] = $step;
+		$steps = array_unique($steps);
+
+		$this->steps = implode(",", $steps);
+		$this->save();
+
+		return $steps;
+	}
+
+	public function deleteStep($step){
+		$steps = array_filter(explode(",", $this->steps));
+
+		foreach ($steps as $c => $curstep){
+			if ($curstep == $step){
+				unset($steps[$c]);
+			}
+		}
+
+		$this->steps = implode(",", $steps);
+		$this->save();
+
+		return $steps;
+	}
+
+	public function getSteps(){
+		$steps = array_filter(explode(",", $this->steps));
+
+		return $steps;
+	}
+
 	public function getLangKeyAttribute(){
 		return strtoupper($this->module()->first()->PARTNER_CODE."_".$this->code);
 	}
