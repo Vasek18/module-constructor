@@ -2,7 +2,7 @@
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    data-target="#bitrix_menu" aria-expanded="false">
                 <span class="sr-only">Меню</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -10,7 +10,7 @@
             </button>
             <a class="navbar-brand" href="{{ route('bitrix_module_detail', $module->id) }}">Битрикс</a>
         </div>
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <div class="collapse navbar-collapse" id="bitrix_menu">
             <ul class="nav navbar-nav">
                 <li><a href="{{ route('bitrix_module_detail', $module->id) }}">Основное</a></li>
                 <li><a href="{{ route('bitrix_module_components', $module->id) }}">Компоненты</a></li>

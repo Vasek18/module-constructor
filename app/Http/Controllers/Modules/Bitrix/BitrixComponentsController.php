@@ -68,7 +68,16 @@ class BitrixComponentsController extends Controller{
 		return view("bitrix.components.detail", $data);
 	}
 
-	public function store_path(Bitrix $module, BitrixComponent $component, Request $request){
+	public function show_visual_path(Bitrix $module, BitrixComponent $component, Request $request){
+		$data = [
+			'module'     => $module,
+			'component'  => $component,
+			'path_items' => $component->path_items()->get()
+		];
+
+		return view("bitrix.components.visual_path", $data);
+	}
+	public function store_visual_path(Bitrix $module, BitrixComponent $component, Request $request){
 		//dd($request);
 		if ($request->path_id_1 && $request->path_name_1){ // если нет первых - нет других (хотя можно же сдвигать?)
 			BitrixComponentPathItem::updateOrCreate(
@@ -130,6 +139,46 @@ class BitrixComponentsController extends Controller{
 		$component->saveDescriptionLangFileInFolder();
 
 		return back();
+	}
+
+	public function show_params(Bitrix $module, BitrixComponent $component, Request $request){
+		$data = [
+			'module'     => $module,
+			'component'  => $component,
+			'path_items' => $component->path_items()->get()
+		];
+
+		return view("bitrix.components.params", $data);
+	}
+
+	public function show_component_php(Bitrix $module, BitrixComponent $component, Request $request){
+		$data = [
+			'module'     => $module,
+			'component'  => $component,
+			'path_items' => $component->path_items()->get()
+		];
+
+		return view("bitrix.components.component_php", $data);
+	}
+
+	public function show_other_files(Bitrix $module, BitrixComponent $component, Request $request){
+		$data = [
+			'module'     => $module,
+			'component'  => $component,
+			'path_items' => $component->path_items()->get()
+		];
+
+		return view("bitrix.components.other_files", $data);
+	}
+
+	public function show_templates(Bitrix $module, BitrixComponent $component, Request $request){
+		$data = [
+			'module'     => $module,
+			'component'  => $component,
+			'path_items' => $component->path_items()->get()
+		];
+
+		return view("bitrix.components.templates", $data);
 	}
 
 	// загрузка архива с компонентом

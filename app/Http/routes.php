@@ -37,7 +37,7 @@ Route::get('/personal', ['as' => 'personal', 'uses' => 'PersonalController@index
 // Битрикс
 Route::get('construct/bitrix', 'Modules\Bitrix\BitrixController@index'); // показ страницы создания
 Route::post('construct/bitrix/create', 'Modules\Bitrix\BitrixController@store'); // сабмит формы создания // создание модуля
-Route::get('my-modules/bitrix/{module}',  ['as' => 'bitrix_module_detail', 'uses' => 'Modules\Bitrix\BitrixController@detail']); // детальная страница модуля
+Route::get('my-modules/bitrix/{module}', ['as' => 'bitrix_module_detail', 'uses' => 'Modules\Bitrix\BitrixController@detail']); // детальная страница модуля
 Route::post('my-modules/bitrix/{id}/edit_param', 'Modules\Bitrix\BitrixController@edit_param'); // детальная страница модуля
 Route::get('my-modules/bitrix/{module}/delete', 'Modules\Bitrix\BitrixController@destroy'); // удалить модуль
 Route::post('my-modules/bitrix/{module}/download', 'Modules\Bitrix\BitrixController@download_zip'); // скачать архив
@@ -54,9 +54,14 @@ Route::get('my-modules/bitrix/{module_id}/events_handler_delete/{option_id}', 'M
 // компоненты
 Route::get('my-modules/bitrix/{id}/components', ['as' => 'bitrix_module_components', 'uses' => 'Modules\Bitrix\BitrixComponentsController@index']);
 Route::get('my-modules/bitrix/{id}/new_components', ['as' => 'bitrix_new_component', 'uses' => 'Modules\Bitrix\BitrixComponentsController@create']);
-Route::post('my-modules/bitrix/{module}/component_create','Modules\Bitrix\BitrixComponentsController@store');
+Route::post('my-modules/bitrix/{module}/component_create', 'Modules\Bitrix\BitrixComponentsController@store');
 Route::get('my-modules/bitrix/{module}/components/{component}', 'Modules\Bitrix\BitrixComponentsController@show');
-Route::post('my-modules/bitrix/{module}/components/{component}/store_path', 'Modules\Bitrix\BitrixComponentsController@store_path');
+Route::get('my-modules/bitrix/{module}/components/{component}/visual_path', 'Modules\Bitrix\BitrixComponentsController@show_visual_path');
+Route::post('my-modules/bitrix/{module}/components/{component}/store_visual_path', 'Modules\Bitrix\BitrixComponentsController@store_path');
+Route::get('my-modules/bitrix/{module}/components/{component}/params', 'Modules\Bitrix\BitrixComponentsController@show_params');
+Route::get('my-modules/bitrix/{module}/components/{component}/component_php', 'Modules\Bitrix\BitrixComponentsController@show_component_php');
+Route::get('my-modules/bitrix/{module}/components/{component}/other_files', 'Modules\Bitrix\BitrixComponentsController@show_other_files');
+Route::get('my-modules/bitrix/{module}/components/{component}/templates', 'Modules\Bitrix\BitrixComponentsController@show_templates');
 Route::post('my-modules/bitrix/{module}/upload_component_zip', ['as' => 'upload_component_zip', 'uses' => 'Modules\Bitrix\BitrixComponentsController@upload_zip']);
 // .компоненты
 // .Битрикс

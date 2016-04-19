@@ -1,10 +1,12 @@
 @extends('bitrix.internal_template')
 
 @section('h1')
-    Компонент
+    Компонент {{ $component->name }} ({{ $component->code }})
 @stop
 
 @section('page')
+
+    @include('bitrix.components.progress_way_menu')
     <h2>Информация</h2>
     <dl>
         <dt>Название</dt>
@@ -16,6 +18,5 @@
         <dt>Сортировка</dt>
         <dd>{{$component->sort}}</dd>
     </dl>
-    @include('bitrix.components.path_items', ['module' => $module, 'component' => $component, 'path_items' => $path_items])
     @include('bitrix.components.files', ['module' => $module, 'component' => $component])
 @stop
