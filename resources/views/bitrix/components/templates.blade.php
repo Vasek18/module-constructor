@@ -8,4 +8,17 @@
 
     @include('bitrix.components.progress_way_menu')
 
+    @include('bitrix.components.create_template')
+
+
+    <h2>Шаблоны</h2>
+
+    @if ($templates)
+        <ul>
+            @foreach($templates as $template)
+                <li>{{$template->name}} ({{$template->code}})</li>
+            @endforeach
+        </ul>
+    @endif
+
 @stop

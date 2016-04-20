@@ -155,4 +155,8 @@ class BitrixComponent extends Model{
 	public function path_items(){
 		return $this->hasMany('App\Models\Modules\Bitrix\BitrixComponentPathItem', "component_id");
 	}
+
+	public function templates(){
+		return $this->hasMany('App\Models\Modules\Bitrix\BitrixComponentTemplates', "component_id");
+	}
 }

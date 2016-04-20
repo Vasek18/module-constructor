@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Modules\Bitrix\Bitrix;
 use App\Models\Modules\Bitrix\BitrixComponentPathItem;
+use App\Models\Modules\Bitrix\BitrixComponentTemplates;
 use App\Models\Modules\Bitrix\BitrixComponent;
 use App\Http\Controllers\Traits\UserOwnModule;
 use Chumper\Zipper\Zipper;
@@ -165,6 +166,7 @@ class BitrixComponentsController extends Controller{
 
 		return view("bitrix.components.component_php", $data);
 	}
+
 	public function store_component_php(Bitrix $module, BitrixComponent $component, Request $request){
 		$component_php = $request->component_php;
 		$component->component_php = $component_php;
@@ -191,10 +193,28 @@ class BitrixComponentsController extends Controller{
 		$data = [
 			'module'     => $module,
 			'component'  => $component,
-			'path_items' => $component->path_items()->get()
+			'templates' => $component->templates()->get()
 		];
 
 		return view("bitrix.components.templates", $data);
+	}
+
+	public function store_template(Bitrix $module, BitrixComponent $component, Request $request){
+		BitrixComponentTemplates::updateOrCreate(
+			[
+				'code'         => $request->template_code,
+				'component_id' => $component->id
+			],
+			[
+				'component_id' => $component->id,
+				'code'         => $request->template_code,
+				'name'         => $request->template_name
+			]
+		);
+
+		$component->saveStep(6);
+
+		return back();
 	}
 
 	// загрузка архива с компонентом
