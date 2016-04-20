@@ -25,10 +25,10 @@
                         подключения{!! in_array(3, $component->steps)?' <span class="badge"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></span>':''!!}</a>
                 </li>
                 <li class="{{Route::is('bitrix_component_component_php') ? 'active':''}}">
-                    <a href="{{route('bitrix_component_component_php', [$module->id, $component->id])}}">Component.php{!! in_array(4, $component->steps)?' <span class="badge"><span class="glyphicon glyphicon-searchok aria-hidden="true"></span></span>':''!!}</a>
+                    <a href="{{route('bitrix_component_component_php', [$module->id, $component->id])}}">Component.php{!! in_array(4, $component->steps)?' <span class="badge"><span class="glyphicon glyphicon-ok aria-hidden="true"></span></span>':''!!}</a>
                 </li>
                 <li class="{{Route::is('bitrix_component_other_files') ? 'active':''}}">
-                    <a href="{{route('bitrix_component_other_files', [$module->id, $component->id])}}">Прочие файлы{!! in_array(5, $component->steps)?' <span class="badge"><span class="glyphicon glyphicon-searchok aria-hidden="true"></span></span>':''!!}</a>
+                    <a href="{{route('bitrix_component_other_files', [$module->id, $component->id])}}">Прочие файлы{!! in_array(5, $component->steps)?' <span class="badge"><span class="glyphicon glyphicon-ok aria-hidden="true"></span></span>':''!!}</a>
                 </li>
                 <li class="{{Route::is('bitrix_component_templates') ? 'active':''}}">
                     <a href="{{route('bitrix_component_templates', [$module->id, $component->id])}}">Шаблоны{!! in_array(6, $component->steps)?' <span class="badge"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></span>':''!!}</a>

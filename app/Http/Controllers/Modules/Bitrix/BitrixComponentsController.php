@@ -54,6 +54,8 @@ class BitrixComponentsController extends Controller{
 
 		$component = BitrixComponent::store($module, $request);
 
+		$component->saveStep(1);
+
 		//
 		return redirect(action('Modules\Bitrix\BitrixComponentsController@show', [$module->id, $component->id]));
 	}
@@ -77,6 +79,7 @@ class BitrixComponentsController extends Controller{
 
 		return view("bitrix.components.visual_path", $data);
 	}
+
 	public function store_visual_path(Bitrix $module, BitrixComponent $component, Request $request){
 		//dd($request);
 		if ($request->path_id_1 && $request->path_name_1){ // если нет первых - нет других (хотя можно же сдвигать?)
@@ -138,7 +141,7 @@ class BitrixComponentsController extends Controller{
 		$component->saveDescriptionFileInFolder();
 		$component->saveDescriptionLangFileInFolder();
 
-		$component->addStep(2);
+		$component->saveStep(2);
 
 		return back();
 	}
@@ -161,6 +164,14 @@ class BitrixComponentsController extends Controller{
 		];
 
 		return view("bitrix.components.component_php", $data);
+	}
+	public function store_component_php(Bitrix $module, BitrixComponent $component, Request $request){
+		$component->component_php = $request->component_php;
+		$component->save();
+
+		$component->saveStep(4);
+
+		return back();
 	}
 
 	public function show_other_files(Bitrix $module, BitrixComponent $component, Request $request){

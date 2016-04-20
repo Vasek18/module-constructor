@@ -102,8 +102,8 @@ class BitrixComponent extends Model{
 		Bitrix::changeVarsInModuleFileAndSave('bitrix\install\components\component_name\lang\ru\.description.php', $module->id, $search, $replace, 'bitrix\install\components\\'.$this->name.'\lang\ru\.description.php');
 	}
 
-	public function addStep($step){
-		$steps = array_filter(explode(",", $this->steps));
+	public function saveStep($step){
+		$steps = $this->steps;
 
 		$steps[] = $step;
 		$steps = array_unique($steps);
@@ -115,7 +115,7 @@ class BitrixComponent extends Model{
 	}
 
 	public function deleteStep($step){
-		$steps = array_filter(explode(",", $this->steps));
+		$steps = $this->steps;
 
 		foreach ($steps as $c => $curstep){
 			if ($curstep == $step){
@@ -130,9 +130,7 @@ class BitrixComponent extends Model{
 	}
 
 	public function getSteps(){
-		$steps = array_filter(explode(",", $this->steps));
-
-		return $steps;
+		return array_filter(explode(",", $this->steps));
 	}
 
 	public function getStepsAttribute($value){
