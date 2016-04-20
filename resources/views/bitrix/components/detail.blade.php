@@ -5,7 +5,6 @@
 @stop
 
 @section('page')
-
     @include('bitrix.components.progress_way_menu')
     <h2>Информация</h2>
     <dl>

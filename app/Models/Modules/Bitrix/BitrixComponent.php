@@ -135,6 +135,12 @@ class BitrixComponent extends Model{
 		return $steps;
 	}
 
+	public function getStepsAttribute($value){
+		$steps = array_filter(explode(",", $value));
+
+		return $steps;
+	}
+
 	public function getLangKeyAttribute(){
 		return strtoupper($this->module()->first()->PARTNER_CODE."_".$this->code);
 	}
