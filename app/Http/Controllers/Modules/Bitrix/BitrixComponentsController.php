@@ -166,8 +166,11 @@ class BitrixComponentsController extends Controller{
 		return view("bitrix.components.component_php", $data);
 	}
 	public function store_component_php(Bitrix $module, BitrixComponent $component, Request $request){
-		$component->component_php = $request->component_php;
+		$component_php = $request->component_php;
+		$component->component_php = $component_php;
 		$component->save();
+
+		Storage::disk('user_modules')->put($component->getFolder().'\component.php', $component_php);
 
 		$component->saveStep(4);
 

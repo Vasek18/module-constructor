@@ -133,6 +133,11 @@ class BitrixComponent extends Model{
 		return array_filter(explode(",", $this->steps));
 	}
 
+	public function getFolder(){
+		$module_folder = Bitrix::getFolder($this->module()->first(), false);
+		return $module_folder.'\install\components\\'.$this->code;
+	}
+
 	public function getStepsAttribute($value){
 		$steps = array_filter(explode(",", $value));
 
