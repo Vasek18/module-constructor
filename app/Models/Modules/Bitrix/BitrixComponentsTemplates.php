@@ -5,7 +5,7 @@ namespace App\Models\Modules\Bitrix;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
-class BitrixComponentTemplates extends Model{
+class BitrixComponentsTemplates extends Model{
 	protected $table = 'bitrix_components_templates';
 	protected $fillable = ['component_id', 'code', 'name'];
 

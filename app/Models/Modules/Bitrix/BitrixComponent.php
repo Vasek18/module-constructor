@@ -30,7 +30,7 @@ class BitrixComponent extends Model{
 
 	public function createDefaultPath(){
 		$module = $this->module()->first();
-		BitrixComponentPathItem::create(
+		BitrixComponentsPathItem::create(
 			[
 				'component_id' => $this->id,
 				'level'        => 1,
@@ -54,7 +54,7 @@ class BitrixComponent extends Model{
 	}
 
 	public function createDefaultTemplate(){
-		$template = BitrixComponentTemplates::create(
+		$template = BitrixComponentsTemplates::create(
 			[
 				'component_id' => $this->id,
 				'code'         => '.default',
@@ -197,10 +197,14 @@ class BitrixComponent extends Model{
 	}
 
 	public function path_items(){
-		return $this->hasMany('App\Models\Modules\Bitrix\BitrixComponentPathItem', "component_id");
+		return $this->hasMany('App\Models\Modules\Bitrix\BitrixComponentsPathItem', "component_id");
+	}
+
+	public function params(){
+		return $this->hasMany('App\Models\Modules\Bitrix\BitrixComponentsParams', "component_id");
 	}
 
 	public function templates(){
-		return $this->hasMany('App\Models\Modules\Bitrix\BitrixComponentTemplates', "component_id");
+		return $this->hasMany('App\Models\Modules\Bitrix\BitrixComponentsTemplates', "component_id");
 	}
 }

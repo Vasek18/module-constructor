@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddBitrixComponentPathItemsTable extends Migration
+class AddBitrixComponentsPathItemsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class AddBitrixComponentPathItemsTable extends Migration
      */
     public function up()
     {
-        Schema::create('bitrix_component_path_items', function (Blueprint $table) {
+        Schema::create('bitrix_components_path_items', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('component_id')->unsigned();
             $table->foreign('component_id')->references('id')->on('bitrix_components')->onDelete('cascade');
@@ -31,6 +31,6 @@ class AddBitrixComponentPathItemsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('bitrix_component_path_items');
+        Schema::drop('bitrix_components_path_items');
     }
 }

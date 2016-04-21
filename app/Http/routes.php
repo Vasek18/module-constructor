@@ -58,7 +58,8 @@ Route::post('my-modules/bitrix/{module}/component_create', 'Modules\Bitrix\Bitri
 Route::get('my-modules/bitrix/{module}/components/{component}', ['as' => 'bitrix_component_detail', 'uses' => 'Modules\Bitrix\BitrixComponentsController@show']);
 Route::get('my-modules/bitrix/{module}/components/{component}/visual_path', ['as' => 'bitrix_component_visual_path', 'uses' => 'Modules\Bitrix\BitrixComponentsController@show_visual_path']);
 Route::post('my-modules/bitrix/{module}/components/{component}/store_visual_path', 'Modules\Bitrix\BitrixComponentsController@store_visual_path');
-Route::get('my-modules/bitrix/{module}/components/{component}/params', ['as' => 'bitrix_component_params', 'uses' => 'Modules\Bitrix\BitrixComponentsController@show_params']);
+Route::get('my-modules/bitrix/{module}/components/{component}/params', ['as' => 'bitrix_component_params', 'uses' => 'Modules\Bitrix\BitrixComponentsController@show_params']);;
+Route::post('my-modules/bitrix/{module}/components/{component}/store_params', 'Modules\Bitrix\BitrixComponentsController@store_params');
 Route::get('my-modules/bitrix/{module}/components/{component}/component_php', ['as' => 'bitrix_component_component_php', 'uses' => 'Modules\Bitrix\BitrixComponentsController@show_component_php']);
 Route::post('my-modules/bitrix/{module}/components/{component}/store_component_php', 'Modules\Bitrix\BitrixComponentsController@store_component_php');
 Route::get('my-modules/bitrix/{module}/components/{component}/other_files', ['as' => 'bitrix_component_other_files', 'uses' => 'Modules\Bitrix\BitrixComponentsController@show_other_files']);

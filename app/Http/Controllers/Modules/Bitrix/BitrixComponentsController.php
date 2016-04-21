@@ -153,9 +153,9 @@ class BitrixComponentsController extends Controller{
 
 	public function show_params(Bitrix $module, BitrixComponent $component, Request $request){
 		$data = [
-			'module'     => $module,
-			'component'  => $component,
-			'path_items' => $component->path_items()->get()
+			'module'    => $module,
+			'component' => $component,
+			'params'    => $component->params()->get()
 		];
 
 		return view("bitrix.components.params", $data);
@@ -195,8 +195,8 @@ class BitrixComponentsController extends Controller{
 
 	public function show_templates(Bitrix $module, BitrixComponent $component, Request $request){
 		$data = [
-			'module'     => $module,
-			'component'  => $component,
+			'module'    => $module,
+			'component' => $component,
 			'templates' => $component->templates()->get()
 		];
 

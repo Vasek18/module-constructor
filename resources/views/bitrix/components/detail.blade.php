@@ -17,5 +17,4 @@
         <dt>Сортировка</dt>
         <dd>{{$component->sort}}</dd>
     </dl>
-    @include('bitrix.components.files', ['module' => $module, 'component' => $component])
 @stop

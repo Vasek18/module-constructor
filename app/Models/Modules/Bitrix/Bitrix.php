@@ -119,7 +119,7 @@ class Bitrix extends Model{
 
 	// подставляем нужные значения в заготовку
 	// todo избавиться от 'bitrix/..' в $path
-	public static function changeVarsInModuleFileAndSave($path, $module_id, $dop_search = [], $dop_replace = [], $outputPath){
+	public static function changeVarsInModuleFileAndSave($path, $module_id, $dop_search = [], $dop_replace = [], $outputPath = null){
 		$module = Bitrix::find($module_id);
 
 		$template_search = [];
