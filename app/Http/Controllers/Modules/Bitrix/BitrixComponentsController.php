@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Modules\Bitrix;
 
+use App\Models\Modules\Bitrix\BitrixComponentsParams;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -159,6 +160,35 @@ class BitrixComponentsController extends Controller{
 		];
 
 		return view("bitrix.components.params", $data);
+	}
+
+	public function store_params(Bitrix $module, BitrixComponent $component, Request $request){
+
+		foreach ($request->param_code as $i => $code){
+			// обязательные поля
+			if (!$code){
+				continue;
+			}
+			if (!$request['param_name'][$i]){
+				continue;
+			}
+
+			$param = BitrixComponentsParams::updateOrCreate(
+				[
+					'code'         => $code,
+					'component_id' => $component->id
+				],
+				[
+					'component_id' => $component->id,
+					'code'         => $code,
+					'name'         => $request['param_name'][$i],
+					'sort'         => $request['param_sort'][$i],
+					'type_id'      => 1 // todo
+				]
+			);
+		}
+
+		return back();
 	}
 
 	public function show_component_php(Bitrix $module, BitrixComponent $component, Request $request){
