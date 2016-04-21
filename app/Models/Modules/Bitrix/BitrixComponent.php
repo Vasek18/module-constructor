@@ -4,7 +4,9 @@ namespace App\Models\Modules\Bitrix;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
+// todo магические числа у шагов
 class BitrixComponent extends Model{
 	protected $table = 'bitrix_components';
 	protected $fillable = ['name', 'sort', 'code', 'icon_path', 'desc'];
@@ -24,6 +26,47 @@ class BitrixComponent extends Model{
 		if ($component->save()){
 			return $component;
 		}
+	}
+
+	public function createDefaultPath(){
+		$module = $this->module()->first();
+		BitrixComponentPathItem::create(
+			[
+				'component_id' => $this->id,
+				'level'        => 1,
+				'code'         => $module->PARTNER_CODE."_".$module->MODULE_CODE."_components",
+				'name'         => $module->MODULE_NAME,
+				'sort'         => 500
+			]
+		);
+
+		$this->saveStep(2);
+	}
+
+	public function createDefaultComponentPhp(){
+		$component_php = '<? $this->IncludeComponentTemplate(); ?>';
+		$this->component_php = $component_php;
+		$this->save();
+
+		Storage::disk('user_modules')->put($this->getFolder().'\component.php', $component_php);
+
+		$this->saveStep(4);
+	}
+
+	public function createDefaultTemplate(){
+		$template = BitrixComponentTemplates::create(
+			[
+				'component_id' => $this->id,
+				'code'         => '.default',
+				'name'         => 'Дефолтный'
+			]
+		);
+
+		$template_php = 'Hello World';
+
+		Storage::disk('user_modules')->put($template->getFolder().'\template.php', $template_php);
+
+		$this->saveStep(6);
 	}
 
 	public function saveInFolder(){
@@ -135,6 +178,7 @@ class BitrixComponent extends Model{
 
 	public function getFolder(){
 		$module_folder = Bitrix::getFolder($this->module()->first(), false);
+
 		return $module_folder.'\install\components\\'.$this->code;
 	}
 

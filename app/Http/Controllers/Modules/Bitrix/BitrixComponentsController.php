@@ -55,6 +55,10 @@ class BitrixComponentsController extends Controller{
 
 		$component = BitrixComponent::store($module, $request);
 
+		$component->createDefaultPath();
+		$component->createDefaultComponentPhp();
+		$component->createDefaultTemplate();
+
 		$component->saveStep(1);
 
 		//
@@ -200,7 +204,7 @@ class BitrixComponentsController extends Controller{
 	}
 
 	public function store_template(Bitrix $module, BitrixComponent $component, Request $request){
-		BitrixComponentTemplates::updateOrCreate(
+		$template = BitrixComponentTemplates::updateOrCreate(
 			[
 				'code'         => $request->template_code,
 				'component_id' => $component->id
@@ -211,6 +215,10 @@ class BitrixComponentsController extends Controller{
 				'name'         => $request->template_name
 			]
 		);
+
+		$template_php = ''; // todo
+
+		Storage::disk('user_modules')->put($template->getFolder().'\template.php', $template_php);
 
 		$component->saveStep(6);
 
