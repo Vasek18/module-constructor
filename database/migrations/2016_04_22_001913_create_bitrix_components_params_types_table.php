@@ -15,7 +15,6 @@ class CreateBitrixComponentsParamsTypesTable extends Migration{
 			$table->string('name_ru');
 			$table->string('name_en');
 			$table->string('form_type');
-			$table->timestamps();
 		});
 	}
 
