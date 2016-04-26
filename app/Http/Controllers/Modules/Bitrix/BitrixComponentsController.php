@@ -8,8 +8,9 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Modules\Bitrix\Bitrix;
-use App\Models\Modules\Bitrix\BitrixComponentPathItem;
-use App\Models\Modules\Bitrix\BitrixComponentTemplates;
+use App\Models\Modules\Bitrix\BitrixComponentsPathItem;
+use App\Models\Modules\Bitrix\BitrixComponentsTemplates;
+use App\Models\Modules\Bitrix\BitrixComponentsParamsTypes;
 use App\Models\Modules\Bitrix\BitrixComponent;
 use App\Http\Controllers\Traits\UserOwnModule;
 use Chumper\Zipper\Zipper;
@@ -154,16 +155,16 @@ class BitrixComponentsController extends Controller{
 
 	public function show_params(Bitrix $module, BitrixComponent $component, Request $request){
 		$data = [
-			'module'    => $module,
-			'component' => $component,
-			'params'    => $component->params()->get()
+			'module'       => $module,
+			'component'    => $component,
+			'params'       => $component->params()->get(),
+			'params_types' => BitrixComponentsParamsTypes::all()
 		];
 
 		return view("bitrix.components.params", $data);
 	}
 
 	public function store_params(Bitrix $module, BitrixComponent $component, Request $request){
-
 		foreach ($request->param_code as $i => $code){
 			// обязательные поля
 			if (!$code){
@@ -183,10 +184,28 @@ class BitrixComponentsController extends Controller{
 					'code'         => $code,
 					'name'         => $request['param_name'][$i],
 					'sort'         => $request['param_sort'][$i],
-					'type_id'      => 1 // todo
+					'type_id'      => $request['param_type'][$i]
 				]
 			);
+
+			if ($param->id){
+				$component->saveStep(3);
+			}
 		}
+
+		return back();
+	}
+
+	public function delete_param(Bitrix $module, BitrixComponent $component, BitrixComponentsParams $param, Request $request){
+
+		if (!$this->userCreatedModule($module->id)){
+			return $this->unauthorized($request);
+		}
+		if (!$param->id){
+			return false;
+		}
+		// удаляем запись из БД
+		BitrixComponentsParams::destroy($param->id);
 
 		return back();
 	}

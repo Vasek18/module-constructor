@@ -7,8 +7,8 @@
 @section('page')
 
     @include('bitrix.components.progress_way_menu')
-
-    <form role="form" method="POST" action="{{ action('Modules\Bitrix\BitrixComponentsController@store_params', [$module->id, $component->id]) }}">
+    <form role="form" method="POST"
+          action="{{ action('Modules\Bitrix\BitrixComponentsController@store_params', [$module->id, $component->id]) }}">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <div class="row option-headers">
             <div class="col-md-1">
@@ -31,11 +31,11 @@
         {{--@each('bitrix.admin_options.item', $params, 'option')--}}
         @foreach($params as $i => $param)
             {{--{{dd($param)}}--}}
-            @include('bitrix.components.params_item', ['param' => $param, 'i' => $i, 'module' => $module])
+            @include('bitrix.components.params_item', ['param' => $param, 'i' => $i, 'module' => $module, 'component' => $component])
         @endforeach
         {{-- Дополнительно показываем ещё несколько пустых строк --}}
         @for ($j = count($params); $j < count($params)+5; $j++)
-            @include('bitrix.components.params_item', ['param' => null, 'i' => $j, 'module' => $module])
+            @include('bitrix.components.params_item', ['param' => null, 'i' => $j, 'module' => $module, 'component' => $component])
         @endfor
         <div class="row">
             <div class="col-md-12">
