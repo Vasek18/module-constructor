@@ -90,7 +90,7 @@ class BitrixComponentsController extends Controller{
 	public function store_visual_path(Bitrix $module, BitrixComponent $component, Request $request){
 		//dd($request);
 		if ($request->path_id_1 && $request->path_name_1){ // если нет первых - нет других (хотя можно же сдвигать?)
-			BitrixComponentPathItem::updateOrCreate(
+			BitrixComponentsPathItem::updateOrCreate(
 				[
 					'level'        => 1,
 					'component_id' => $component->id
@@ -118,7 +118,7 @@ class BitrixComponentsController extends Controller{
 					]
 				);
 			}else{
-				BitrixComponentPathItem::where([
+				BitrixComponentsPathItem::where([
 					'level'        => 2,
 					'component_id' => $component->id
 				])->delete();
@@ -138,7 +138,7 @@ class BitrixComponentsController extends Controller{
 					]
 				);
 			}else{
-				BitrixComponentPathItem::where([
+				BitrixComponentsPathItem::where([
 					'level'        => 3,
 					'component_id' => $component->id
 				])->delete();
@@ -193,6 +193,8 @@ class BitrixComponentsController extends Controller{
 			}
 		}
 
+		$component->saveParamsInFile();
+
 		return back();
 	}
 
@@ -206,7 +208,7 @@ class BitrixComponentsController extends Controller{
 		BitrixComponentsParams::parsePreparedFiles($params_file, $params_lang_file);
 
 		$component->saveStep(3);
-dd();
+
 		return back();
 	}
 

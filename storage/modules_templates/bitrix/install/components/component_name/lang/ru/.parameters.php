@@ -1,0 +1,3 @@
+<?
+{PARAMS_LANG}
+?>

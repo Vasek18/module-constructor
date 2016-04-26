@@ -14,7 +14,7 @@ class CreateBitrixComponentsParamsTypesTable extends Migration{
 			$table->increments('id');
 			$table->string('name_ru');
 			$table->string('name_en');
-			$table->string('form_type');
+			$table->string('form_type'); // эт не тип формы, а скорее внутренний код в компонентах Битрикса
 		});
 	}
 

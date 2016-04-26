@@ -5,6 +5,7 @@ namespace App\Models\Modules\Bitrix;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Modules\Bitrix\BitrixComponentsParamsTypes;
 
 // todo магические числа у шагов
 class BitrixComponent extends Model{
@@ -78,7 +79,6 @@ class BitrixComponent extends Model{
 	public function saveDescriptionFileInFolder(){
 		$module = $this->module()->first();
 		$module_folder = $module->module_folder;
-
 		Bitrix::disk()->makeDirectory($module_folder."/install/components/".$this->code);
 
 		$path_items = $this->path_items()->get();
@@ -91,9 +91,6 @@ class BitrixComponent extends Model{
 			'{MODULE_COMPONENTS_FOLDER_ID}',
 			'{MODULE_COMPONENTS_FOLDER_SORT}',
 			'{MODULE_COMPONENTS_FOLDER_NAME}',
-			'{MODULE_COMPONENTS_SUBFOLDER_ID}',
-			'{MODULE_COMPONENTS_SUBFOLDER_SORT}',
-			'{MODULE_COMPONENTS_SUBFOLDER_NAME}',
 		);
 
 		$replace = Array(
@@ -104,14 +101,11 @@ class BitrixComponent extends Model{
 			$path_items[0]->code,
 			$path_items[0]->sort,
 			$path_items[0]->name,
-			$path_items[1]->code,
-			$path_items[1]->sort,
-			$path_items[1]->name,
 		);
 
 		//dd($replace);
 
-		Bitrix::changeVarsInModuleFileAndSave('bitrix\install\components\component_name\.description.php', $module->id, $search, $replace, 'bitrix\install\components\\'.$this->name.'\.description.php');
+		Bitrix::changeVarsInModuleFileAndSave('bitrix\install\components\component_name\.description.php', $module->id, $search, $replace, 'bitrix\install\components\\'.$this->code.'\.description.php');
 	}
 
 	public function saveDescriptionLangFileInFolder(){
@@ -128,7 +122,6 @@ class BitrixComponent extends Model{
 			'{COMPONENT_NAME}',
 			'{COMPONENT_DESCRIPTION}',
 			'{MODULE_COMPONENTS_FOLDER_NAME}',
-			'{MODULE_COMPONENTS_SUBFOLDER_NAME}'
 		);
 
 		$replace = Array(
@@ -137,12 +130,16 @@ class BitrixComponent extends Model{
 			$this->name,
 			$this->desc,
 			$path_items[0]->name,
-			$path_items[1]->name
 		);
+
+		if (isset($path_items[1])){
+			$search[] = '{MODULE_COMPONENTS_SUBFOLDER_NAME}';
+			$replace[] = $path_items[1]->name;
+		}
 
 		//dd($replace);
 
-		Bitrix::changeVarsInModuleFileAndSave('bitrix\install\components\component_name\lang\ru\.description.php', $module->id, $search, $replace, 'bitrix\install\components\\'.$this->name.'\lang\ru\.description.php');
+		Bitrix::changeVarsInModuleFileAndSave('bitrix\install\components\component_name\lang\ru\.description.php', $module->id, $search, $replace, 'bitrix\install\components\\'.$this->code.'\lang\ru\.description.php');
 	}
 
 	public function saveStep($step){
@@ -180,6 +177,44 @@ class BitrixComponent extends Model{
 		$module_folder = Bitrix::getFolder($this->module()->first(), $full);
 
 		return $module_folder.'\install\components\\'.$this->code;
+	}
+
+	public function saveParamsInFile(){
+		$module = $this->module()->first();
+		$params = $this->params()->get();
+
+		$groupsText = ''; // todo
+		$groupsLangText = ''; // todo
+
+		$paramsText = '';
+		$paramsLangText = '';
+		foreach ($params as $param){
+			$typeCode = BitrixComponentsParamsTypes::find($param->type_id)->form_type;
+			$langKeyAttr = $this->getLangKeyAttribute()."_PARAMS_".strtoupper($param->code);
+
+			$paramText = '"'.strtoupper($param->code).'"  =>  Array(
+			"PARENT" => "DATA_SOURCE",
+			"NAME" => GetMessage("'.$langKeyAttr.'"),
+			"TYPE" => "'.$typeCode.'"
+		),'.PHP_EOL."\t\t";
+
+			$paramsText .= $paramText;
+
+
+			$paramsLangText .= '$MESS["'.$langKeyAttr.'"] = "'.$param->name.'";'.PHP_EOL;
+		}
+
+		$search = Array('{GROUPS}', '{PARAMS}');
+		$replace = Array($groupsText, $paramsText);
+
+		$searchLang = Array('{GROUPS_LANG}', '{PARAMS_LANG}');
+		$replaceLang = Array($groupsLangText, $paramsLangText);
+
+		Bitrix::changeVarsInModuleFileAndSave('bitrix\install\components\component_name\.parameters.php', $module->id, $search, $replace, 'bitrix\install\components\\'.$this->code.'\.parameters.php');
+		Bitrix::changeVarsInModuleFileAndSave('bitrix\install\components\component_name\lang\ru\.parameters.php', $module->id, $searchLang, $replaceLang, 'bitrix\install\components\\'.$this->code.'\lang\ru\.parameters.php');
+
+		return true;
+
 	}
 
 	public function getStepsAttribute($value){
