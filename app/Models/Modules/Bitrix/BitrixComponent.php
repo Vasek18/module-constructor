@@ -176,8 +176,8 @@ class BitrixComponent extends Model{
 		return array_filter(explode(",", $this->steps));
 	}
 
-	public function getFolder(){
-		$module_folder = Bitrix::getFolder($this->module()->first(), false);
+	public function getFolder($full = false){
+		$module_folder = Bitrix::getFolder($this->module()->first(), $full);
 
 		return $module_folder.'\install\components\\'.$this->code;
 	}
