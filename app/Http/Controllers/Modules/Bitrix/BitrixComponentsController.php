@@ -16,6 +16,7 @@ use App\Http\Controllers\Traits\UserOwnModule;
 use Chumper\Zipper\Zipper;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Modules\Bitrix\BitrixComponentsParamsGroups;
+use App\Models\Modules\Bitrix\BitrixComponentsParamsVals;
 
 class BitrixComponentsController extends Controller{
 	use UserOwnModule;
@@ -178,25 +179,65 @@ class BitrixComponentsController extends Controller{
 
 			//dd($request);
 
+			$paramArr = [
+				'component_id'      => $component->id,
+				'code'              => $code,
+				'name'              => $request['param_name'][$i],
+				'sort'              => $request['param_sort'][$i],
+				'type_id'           => $request['param_type'][$i],
+				'group_id'          => $request['param_group_id'][$i],
+				'refresh'           => $request['param_refresh'][$i],
+				'multiple'          => $request['param_multiple'][$i],
+				'cols'              => $request['param_cols'][$i],
+				'size'              => $request['param_size'][$i],
+				'default'           => $request['param_default'][$i],
+				'additional_values' => $request['param_additional_values'][$i],
+				'spec_vals'         => $request['param_'.$i.'_vals_type']
+			];
+			if ($request['param_'.$i.'_spec_args'] && is_array($request['param_'.$i.'_spec_args'])){
+				$paramArr["spec_vals_args"] = '';
+				foreach ($request['param_'.$i.'_spec_args'] as $arg){
+					if ($arg){
+						if (!$paramArr["spec_vals_args"]){
+							$paramArr["spec_vals_args"] .= $arg;
+						}else{
+							$paramArr["spec_vals_args"] .= ', '.$arg;
+						}
+					}
+				}
+			}
+			if ($request['param_'.$i.'_spec_args'] && !is_array($request['param_'.$i.'_spec_args'])){
+				$paramArr["spec_vals_args"] = $request['param_'.$i.'_spec_args'];
+			}
+			//
+			//dd($paramArr);
+			//dd($request);
+
 			$param = BitrixComponentsParams::updateOrCreate(
 				[
 					'code'         => $code,
 					'component_id' => $component->id
 				],
-				[
-					'component_id' => $component->id,
-					'code'         => $code,
-					'name'         => $request['param_name'][$i],
-					'sort'         => $request['param_sort'][$i],
-					'type_id'      => $request['param_type'][$i],
-					'group_id'     => $request['param_group_id'][$i],
-					'refresh'      => $request['param_refresh'][$i],
-					'multiple'     => $request['param_multiple'][$i],
-					'cols'         => $request['param_cols'][$i],
-					'size'         => $request['param_size'][$i],
-					'default'      => $request['param_default'][$i]
-				]
+				$paramArr
 			);
+
+
+			// сохранение опций
+				if (count($request['param_'.$i.'_vals_key']) && $request['param_'.$i.'_vals_type'] == "array"){
+					//dd($prop);
+					//dd($request['param_'.$i.'_vals_key']);
+					foreach ($request['param_'.$i.'_vals_key'] as $io => $param_val_key){
+						if (!$param_val_key || !$request['param_'.$i.'_vals_value'][$io]){
+							continue;
+						}
+						$val = new BitrixComponentsParamsVals;
+						$val->param_id = $param->id;
+						$val->key = $param_val_key;
+						$val->value = $request['param_'.$i.'_vals_value'][$io];
+						//dd($val);
+						$val->save();
+					}
+				}
 
 			if ($param->id){
 				$component->saveStep(3);

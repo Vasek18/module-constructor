@@ -51,14 +51,14 @@ class BitrixStuff extends Seeder{
 
 		// типы опций для arParams компоненты
 		DB::table('bitrix_components_params_types')->insert([
-			'NAME_RU'   => 'Селект',
-			'NAME_EN'   => 'Select',
-			'FORM_TYPE' => 'LIST',
-		]);
-		DB::table('bitrix_components_params_types')->insert([
 			'NAME_RU'   => 'Строка',
 			'NAME_EN'   => 'String',
 			'FORM_TYPE' => 'STRING',
+		]);
+		DB::table('bitrix_components_params_types')->insert([
+			'NAME_RU'   => 'Селект',
+			'NAME_EN'   => 'Select',
+			'FORM_TYPE' => 'LIST',
 		]);
 		DB::table('bitrix_components_params_types')->insert([
 			'NAME_RU'   => 'Чекбокс',

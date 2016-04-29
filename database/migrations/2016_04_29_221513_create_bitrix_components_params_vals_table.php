@@ -3,17 +3,17 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateBitrixModulesOptionsValsForSelectTable extends Migration{
+class CreateBitrixComponentsParamsValsTable extends Migration{
 	/**
 	 * Run the migrations.
 	 *
 	 * @return void
 	 */
 	public function up(){
-		Schema::create('bitrix_modules_options_vals_for_select', function (Blueprint $table){
+		Schema::create('bitrix_components_params_vals', function (Blueprint $table){
 			$table->increments('id');
-			$table->integer('option_id')->unsigned();
-			$table->foreign('option_id')->references('id')->on('bitrix_modules_options')->onDelete('cascade');
+			$table->integer('param_id')->unsigned();
+			$table->foreign('param_id')->references('id')->on('bitrix_components_params')->onDelete('cascade');
 			$table->integer('sort');
 			$table->string('key');
 			$table->string('value');
@@ -26,6 +26,6 @@ class CreateBitrixModulesOptionsValsForSelectTable extends Migration{
 	 * @return void
 	 */
 	public function down(){
-		Schema::drop('bitrix_modules_options_vals_for_select');
+		Schema::drop('bitrix_components_params_vals');
 	}
 }

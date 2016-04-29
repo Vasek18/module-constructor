@@ -24,11 +24,12 @@ class CreateBitrixComponentsParamsTable extends Migration{
 			$table->boolean('refresh')->nullable();
 			$table->boolean('multiple')->nullable();
 			$table->string('values')->nullable();
-			$table->string('additional_values')->nullable();
+			$table->boolean('additional_values')->nullable();
 			$table->integer('size')->nullable();
 			$table->string('default')->nullable();
 			$table->integer('cols')->nullable();
-			$table->timestamps();
+			$table->string('spec_vals')->nullable();
+			$table->string('spec_vals_args')->nullable();
 		});
 	}
 
