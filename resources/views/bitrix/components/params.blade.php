@@ -51,13 +51,18 @@
             <div class="col-md-2">
                 <label>Код свойства</label>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <label>Название свойства</label>
             </div>
             <div class="col-md-2">
                 <label>Тип свойства</label>
             </div>
             <div class="col-md-2">
+                <label>Группа свойства</label>
+            </div>
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-1">
                 <label>Удалить</label>
             </div>
         </div>

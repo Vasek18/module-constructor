@@ -55,17 +55,17 @@ class BitrixStuff extends Seeder{
 			'NAME_EN'   => 'Select',
 			'FORM_TYPE' => 'LIST',
 		]);
-		DB::table('bitrix_modules_options_types')->insert([
+		DB::table('bitrix_components_params_types')->insert([
 			'NAME_RU'   => 'Строка',
 			'NAME_EN'   => 'String',
 			'FORM_TYPE' => 'STRING',
 		]);
-		DB::table('bitrix_modules_options_types')->insert([
+		DB::table('bitrix_components_params_types')->insert([
 			'NAME_RU'   => 'Чекбокс',
 			'NAME_EN'   => 'Checkbox',
 			'FORM_TYPE' => 'CHECKBOX',
 		]);
-		DB::table('bitrix_modules_options_types')->insert([
+		DB::table('bitrix_components_params_types')->insert([
 			'NAME_RU'   => 'Файл',
 			'NAME_EN'   => 'File',
 			'FORM_TYPE' => 'FILE',

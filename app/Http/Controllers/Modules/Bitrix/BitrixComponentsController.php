@@ -15,6 +15,7 @@ use App\Models\Modules\Bitrix\BitrixComponent;
 use App\Http\Controllers\Traits\UserOwnModule;
 use Chumper\Zipper\Zipper;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Modules\Bitrix\BitrixComponentsParamsGroups;
 
 class BitrixComponentsController extends Controller{
 	use UserOwnModule;
@@ -155,10 +156,11 @@ class BitrixComponentsController extends Controller{
 
 	public function show_params(Bitrix $module, BitrixComponent $component, Request $request){
 		$data = [
-			'module'       => $module,
-			'component'    => $component,
-			'params'       => $component->params()->get(),
-			'params_types' => BitrixComponentsParamsTypes::all()
+			'module'        => $module,
+			'component'     => $component,
+			'params'        => $component->params()->get(),
+			'params_types'  => BitrixComponentsParamsTypes::all(),
+			'params_groups' => BitrixComponentsParamsGroups::all()
 		];
 
 		return view("bitrix.components.params", $data);
@@ -174,6 +176,8 @@ class BitrixComponentsController extends Controller{
 				continue;
 			}
 
+			//dd($request);
+
 			$param = BitrixComponentsParams::updateOrCreate(
 				[
 					'code'         => $code,
@@ -184,7 +188,13 @@ class BitrixComponentsController extends Controller{
 					'code'         => $code,
 					'name'         => $request['param_name'][$i],
 					'sort'         => $request['param_sort'][$i],
-					'type_id'      => $request['param_type'][$i]
+					'type_id'      => $request['param_type'][$i],
+					'group_id'     => $request['param_group_id'][$i],
+					'refresh'      => $request['param_refresh'][$i],
+					'multiple'     => $request['param_multiple'][$i],
+					'cols'         => $request['param_cols'][$i],
+					'size'         => $request['param_size'][$i],
+					'default'      => $request['param_default'][$i]
 				]
 			);
 

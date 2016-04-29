@@ -15,13 +15,14 @@ class CreateBitrixComponentsParamsTable extends Migration{
 			$table->integer('component_id')->unsigned();
 			$table->foreign('component_id')->references('id')->on('bitrix_components')->onDelete('cascade');
 			$table->integer('type_id')->unsigned();
-			$table->foreign('type_id')->references('id')->on('bitrix_components_params_types');
+			//$table->foreign('type_id')->references('id')->on('bitrix_components_params_types'); // todo
 			$table->integer('sort')->unsigned()->nullable()->default(500);
 			$table->string('code');
 			$table->string('name');
-			$table->integer('parent'); // решил не указывать это как внешний ключ, хотя он им и является
-			$table->string('refresh')->nullable();
-			$table->string('multiple')->nullable();
+			$table->integer('group_id')->nullable();
+			//$table->foreign('group_id')->references('id')->on('bitrix_components_params_groups'); // todo
+			$table->boolean('refresh')->nullable();
+			$table->boolean('multiple')->nullable();
 			$table->string('values')->nullable();
 			$table->string('additional_values')->nullable();
 			$table->integer('size')->nullable();
