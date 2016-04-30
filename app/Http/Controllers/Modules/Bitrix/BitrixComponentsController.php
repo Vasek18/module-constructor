@@ -180,20 +180,42 @@ class BitrixComponentsController extends Controller{
 			//dd($request);
 
 			$paramArr = [
-				'component_id'      => $component->id,
-				'code'              => $code,
-				'name'              => $request['param_name'][$i],
-				'sort'              => $request['param_sort'][$i],
-				'type_id'           => $request['param_type'][$i],
-				'group_id'          => $request['param_group_id'][$i],
-				'refresh'           => $request['param_refresh'][$i],
-				'multiple'          => $request['param_multiple'][$i],
-				'cols'              => $request['param_cols'][$i],
-				'size'              => $request['param_size'][$i],
-				'default'           => $request['param_default'][$i],
-				'additional_values' => $request['param_additional_values'][$i],
-				'spec_vals'         => $request['param_'.$i.'_vals_type']
+				'component_id' => $component->id,
+				'code'         => $code,
 			];
+			if (isset($request['param_name'][$i])){
+				$paramArr['name'] = $request['param_name'][$i];
+			}
+			if (isset($request['param_sort'][$i])){
+				$paramArr['sort'] = $request['param_sort'][$i];
+			}
+			if (isset($request['param_type'][$i])){
+				$paramArr['type_id'] = $request['param_type'][$i];
+			}
+			if (isset($request['param_group_id'][$i])){
+				$paramArr['group_id'] = $request['param_group_id'][$i];
+			}
+			if (isset($request['param_refresh'][$i])){
+				$paramArr['refresh'] = $request['param_refresh'][$i];
+			}
+			if (isset($request['param_multiple'][$i])){
+				$paramArr['multiple'] = $request['param_multiple'][$i];
+			}
+			if (isset($request['param_cols'][$i])){
+				$paramArr['cols'] = $request['param_cols'][$i];
+			}
+			if (isset($request['param_size'][$i])){
+				$paramArr['size'] = $request['param_size'][$i];
+			}
+			if (isset($request['param_default'][$i])){
+				$paramArr['default'] = $request['param_default'][$i];
+			}
+			if (isset($request['param_additional_values'][$i])){
+				$paramArr['additional_values'] = $request['param_additional_values'][$i];
+			}
+			if (isset($request['param_'.$i.'_vals_type'])){
+				$paramArr['spec_vals'] = $request['param_'.$i.'_vals_type'];
+			}
 			if ($request['param_'.$i.'_spec_args'] && is_array($request['param_'.$i.'_spec_args'])){
 				$paramArr["spec_vals_args"] = '';
 				foreach ($request['param_'.$i.'_spec_args'] as $arg){

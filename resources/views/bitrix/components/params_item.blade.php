@@ -35,11 +35,9 @@
         </select>
     </div>
     <div class="col-md-2">
-        @if ($param)
-            <a href="#" class="btn btn-default" data-toggle="modal"
-               data-target="#component_params_dop_settings_window_{{$i}}">Доп. параметры</a>
-            @include('bitrix.components.params_item_dop_settings_window', ['param' => $param, 'i' => $i])
-        @endif
+        <a href="#" class="btn btn-default" data-toggle="modal"
+           data-target="#component_params_dop_settings_window_{{$i}}">Доп. параметры</a>
+        @include('bitrix.components.params_item_dop_settings_window', ['param' => $param, 'i' => $i])
     </div>
     <div class="col-md-1">
         @if ($param)

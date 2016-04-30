@@ -1,11 +1,27 @@
 <?
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 
-$iblocks = function (){
+$iblocks_types_list = function (){
 	CModule::IncludeModule("iblock");
 	$select = Array();
 	$select[] = GetMessage("{LANG_KEY}_SELECT");
-	$rsIBlocks = CIBlock::GetList(array('IBLOCK_TYPE' => 'ASC', 'ID' => 'ASC'));
+	$rsIBlocks = CIBlockType::GetList(array('IBLOCK_TYPE' => 'ASC', 'ID' => 'ASC'));
+	while ($arIBlock = $rsIBlocks->Fetch()){
+		if ($arIBType = CIBlockType::GetByIDLang($arIBlock["ID"], LANG)){
+			$select[$arIBlock["ID"]] = htmlspecialcharsEx($arIBType["NAME"]);
+		}
+	}
+
+	return $select;
+};
+
+$iblocks_list = function ($IBLOCK_TYPE){
+	CModule::IncludeModule("iblock");
+	$select = Array();
+	$select[] = GetMessage("{LANG_KEY}_SELECT");
+	$filter = Array();
+	$filter["TYPE"] = $IBLOCK_TYPE != "-" ? $IBLOCK_TYPE : "";
+	$rsIBlocks = CIBlock::GetList(array('NAME' => 'ASC'), $filter);
 	while ($arIBlock = $rsIBlocks->Fetch()){
 		$select[$arIBlock["ID"]] = $arIBlock["NAME"];
 	}
@@ -14,7 +30,7 @@ $iblocks = function (){
 };
 
 // собираем свойства
-$iblock_props = function ($IBLOCK_ID){
+$iblock_props_list = function ($IBLOCK_ID){
 	CModule::IncludeModule("iblock");
 	$select = Array();
 	$select[] = GetMessage("{LANG_KEY}_SELECT");
@@ -27,7 +43,7 @@ $iblock_props = function ($IBLOCK_ID){
 };
 
 // собираем элементы
-$iblock_items = function ($IBLOCK_ID){
+$iblock_items_list = function ($IBLOCK_ID){
 	CModule::IncludeModule("iblock");
 	$select = Array();
 	$select[] = GetMessage("{LANG_KEY}_SELECT");

@@ -190,8 +190,13 @@ class BitrixComponent extends Model{
 		$paramsText = '';
 		$paramsLangText = '';
 		foreach ($params as $param){
-			$typeCode = BitrixComponentsParamsTypes::find($param->type_id)->form_type;
-			$parentCode = BitrixComponentsParamsGroups::find($param->group_id)->code;
+			//dd($param);
+			if ($param->type_id){
+				$typeCode = BitrixComponentsParamsTypes::find($param->type_id)->form_type;
+			}
+			if ($param->group_id){
+				$parentCode = BitrixComponentsParamsGroups::find($param->group_id)->code;
+			}
 			$langKeyAttr = $this->getLangKeyAttribute()."_PARAMS_".strtoupper($param->code);
 
 			$paramText = '"'.strtoupper($param->code).'"  =>  Array(

@@ -98,11 +98,22 @@
                     <div>или</div>
                     <div class="item">
                         <label>
+                            <input type="radio" name="param_{{$i}}_vals_type" value="iblocks_types_list"
+                                   @if ($param && $param->spec_vals == 'iblocks_types_list') checked
+                                    @endif>
+                            <b>Список типов инфоблоков</b>
+                        </label>
+                    </div>
+                    <div>или</div>
+                    <div class="item">
+                        <label>
                             <input type="radio" name="param_{{$i}}_vals_type" value="iblocks_list"
                                    @if ($param && $param->spec_vals == 'iblocks_list') checked
                                     @endif>
                             <b>Список инфоблоков</b>
                         </label>
+                        <input type="text" name="param_{{$i}}_spec_args[]" class="form-control" placeholder="Тип инфоблоков"
+                               @if ($param && $param->spec_vals == 'iblocks_list') value="{{$param->spec_vals_args}}" @endif>
                     </div>
                     <div>или</div>
                     <div class="item">
