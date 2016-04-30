@@ -14,7 +14,7 @@ class CreateBitrixComponentsParamsValsTable extends Migration{
 			$table->increments('id');
 			$table->integer('param_id')->unsigned();
 			$table->foreign('param_id')->references('id')->on('bitrix_components_params')->onDelete('cascade');
-			$table->integer('sort');
+			$table->integer('sort')->nullable();
 			$table->string('key');
 			$table->string('value');
 		});

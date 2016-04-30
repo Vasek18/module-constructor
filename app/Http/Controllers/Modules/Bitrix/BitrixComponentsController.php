@@ -223,21 +223,26 @@ class BitrixComponentsController extends Controller{
 
 
 			// сохранение опций
-				if (count($request['param_'.$i.'_vals_key']) && $request['param_'.$i.'_vals_type'] == "array"){
-					//dd($prop);
-					//dd($request['param_'.$i.'_vals_key']);
-					foreach ($request['param_'.$i.'_vals_key'] as $io => $param_val_key){
-						if (!$param_val_key || !$request['param_'.$i.'_vals_value'][$io]){
-							continue;
-						}
-						$val = new BitrixComponentsParamsVals;
-						$val->param_id = $param->id;
-						$val->key = $param_val_key;
-						$val->value = $request['param_'.$i.'_vals_value'][$io];
-						//dd($val);
-						$val->save();
+			if (count($request['param_'.$i.'_vals_key']) && $request['param_'.$i.'_vals_type'] == "array"){
+				//dd($prop);
+				//dd($request['param_'.$i.'_vals_key']);
+				foreach ($request['param_'.$i.'_vals_key'] as $io => $param_val_key){
+					if (!$param_val_key || !$request['param_'.$i.'_vals_value'][$io]){
+						continue;
 					}
+					$val = BitrixComponentsParamsVals::updateOrCreate(
+						[
+							'param_id' => $param->id,
+							'key'      => $param_val_key
+						],
+						[
+							'param_id' => $param->id,
+							'key'      => $param_val_key,
+							'value'    => $request['param_'.$i.'_vals_value'][$io]
+						]
+					);
 				}
+			}
 
 			if ($param->id){
 				$component->saveStep(3);

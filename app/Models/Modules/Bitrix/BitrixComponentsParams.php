@@ -14,6 +14,10 @@ class BitrixComponentsParams extends Model{
 
 	}
 
+	public function getSpecValsFunctionCallAttribute(){
+		return "$".$this->spec_vals."(".$this->spec_vals_args.")";
+	}
+
 	public function component(){
 		return $this->belongsTo('App\Models\Modules\Bitrix\BitrixComponent');
 	}

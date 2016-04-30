@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Modules\Bitrix\BitrixComponentsParamsTypes;
+use App\Models\Modules\Bitrix\BitrixComponentsParamsGroups;
 
 // todo магические числа у шагов
 class BitrixComponent extends Model{
@@ -190,13 +191,47 @@ class BitrixComponent extends Model{
 		$paramsLangText = '';
 		foreach ($params as $param){
 			$typeCode = BitrixComponentsParamsTypes::find($param->type_id)->form_type;
+			$parentCode = BitrixComponentsParamsGroups::find($param->group_id)->code;
 			$langKeyAttr = $this->getLangKeyAttribute()."_PARAMS_".strtoupper($param->code);
 
 			$paramText = '"'.strtoupper($param->code).'"  =>  Array(
-			"PARENT" => "DATA_SOURCE",
+			"PARENT" => "'.$parentCode.'",
 			"NAME" => GetMessage("'.$langKeyAttr.'"),
-			"TYPE" => "'.$typeCode.'"
-		),'.PHP_EOL."\t\t";
+			"TYPE" => "'.$typeCode.'",'.PHP_EOL;
+			if ($param->refresh){
+				$paramText .= "\t\t\t".'"REFRESH" => "Y",'.PHP_EOL;
+			}
+			if ($param->multiple){
+				$paramText .= "\t\t\t".'"MULTIPLE" => "Y",'.PHP_EOL;
+			}
+			if ($param->additional_values){
+				$paramText .= "\t\t\t".'"ADDITIONAL_VALUES" => "Y",'.PHP_EOL;
+			}
+			if ($param->size){
+				$paramText .= "\t\t\t".'"SIZE" => "'.$param->size.'",'.PHP_EOL;
+			}
+			if ($param->default){
+				$paramText .= "\t\t\t".'"DEFAULT" => "'.$param->default.'",'.PHP_EOL;
+			}
+			if ($param->cols){
+				$paramText .= "\t\t\t".'"COLS" => "'.$param->cols.'",'.PHP_EOL;
+			}
+
+			if ($typeCode == 'LIST'){
+				if ($param->spec_vals == 'array'){
+					$paramText .= "\t\t\t".'"VALUES" => Array('.PHP_EOL;
+					if (count($param->vals)){
+						foreach ($param->vals as $val){
+							$paramText .= "\t\t\t\t".'"'.$val->key.'" => "'.$val->value.'",'.PHP_EOL;
+						}
+					}
+					$paramText .= "\t\t\t".'),'.PHP_EOL;
+				}else{
+					$paramText .= "\t\t\t".'"VALUES" => '.$param->spec_vals_function_call.''.PHP_EOL;
+				}
+			}
+
+			$paramText .= "\t\t".'),'.PHP_EOL."\t\t";
 
 			$paramsText .= $paramText;
 

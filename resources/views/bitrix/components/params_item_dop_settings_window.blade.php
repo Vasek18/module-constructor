@@ -8,7 +8,7 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="param_{{$i}}_refresh">Обновляемо?</label>
+                    <label for="param_{{$i}}_refresh">Обновляет ли остальные настройки?</label>
                     <div class="checkbox">
                         <label>
                             <input type="checkbox" name="param_refresh[]" id="param_{{$i}}_refresh"
