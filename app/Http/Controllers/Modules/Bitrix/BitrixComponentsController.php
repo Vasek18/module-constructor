@@ -277,7 +277,6 @@ class BitrixComponentsController extends Controller{
 	}
 
 	public function upload_params_files(Bitrix $module, BitrixComponent $component, Request $request){
-
 		$params_file = $request->file('params_file');
 		$params_lang_file = $request->file('params_lang_file');
 		$params_file->move($component->getFolder(true), $params_file->getClientOriginalName());
@@ -334,6 +333,17 @@ class BitrixComponentsController extends Controller{
 		];
 
 		return view("bitrix.components.other_files", $data);
+	}
+
+	public function store_other_files(Bitrix $module, BitrixComponent $component, Request $request){
+		$file = $request->file('new_file');
+		$addPath = $request->path;
+		//dd($request);
+		$file->move($component->getFolder(true).$addPath, $file->getClientOriginalName());
+
+		$component->saveStep(5);
+
+		return back();
 	}
 
 	public function show_templates(Bitrix $module, BitrixComponent $component, Request $request){

@@ -65,6 +65,7 @@ Route::post('my-modules/bitrix/{module}/components/{component}/upload_params_fil
 Route::get('my-modules/bitrix/{module}/components/{component}/component_php', ['as' => 'bitrix_component_component_php', 'uses' => 'Modules\Bitrix\BitrixComponentsController@show_component_php']);
 Route::post('my-modules/bitrix/{module}/components/{component}/store_component_php', 'Modules\Bitrix\BitrixComponentsController@store_component_php');
 Route::get('my-modules/bitrix/{module}/components/{component}/other_files', ['as' => 'bitrix_component_other_files', 'uses' => 'Modules\Bitrix\BitrixComponentsController@show_other_files']);
+Route::post('my-modules/bitrix/{module}/components/{component}/store_other_files', 'Modules\Bitrix\BitrixComponentsController@store_other_files');
 Route::get('my-modules/bitrix/{module}/components/{component}/templates', ['as' => 'bitrix_component_templates', 'uses' => 'Modules\Bitrix\BitrixComponentsController@show_templates']);
 Route::post('my-modules/bitrix/{module}/components/{component}/store_template', 'Modules\Bitrix\BitrixComponentsController@store_template');
 Route::post('my-modules/bitrix/{module}/upload_component_zip', ['as' => 'upload_component_zip', 'uses' => 'Modules\Bitrix\BitrixComponentsController@upload_zip']);
