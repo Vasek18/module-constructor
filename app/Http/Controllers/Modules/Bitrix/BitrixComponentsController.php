@@ -357,23 +357,53 @@ class BitrixComponentsController extends Controller{
 	}
 
 	public function store_template(Bitrix $module, BitrixComponent $component, Request $request){
-		$template = BitrixComponentTemplates::updateOrCreate(
+		$templateCode = strtolower($request->template_code);
+		$template = BitrixComponentsTemplates::updateOrCreate(
 			[
-				'code'         => $request->template_code,
+				'code'         => $templateCode,
 				'component_id' => $component->id
 			],
 			[
 				'component_id' => $component->id,
-				'code'         => $request->template_code,
+				'code'         => $templateCode,
 				'name'         => $request->template_name
 			]
 		);
 
-		$template_php = ''; // todo
+		$archive = $request->file('files');
+		if (!$archive){
+			$template_php = ''; // todo
+			Storage::disk('user_modules')->put($template->getFolder().'\template.php', $template_php);
+		}else{
+			$fileName = time().$archive->getClientOriginalName();
+			$archive->move('user_upload/', $fileName);
 
-		Storage::disk('user_modules')->put($template->getFolder().'\template.php', $template_php);
+			Storage::disk('user_modules')->makeDirectory($component->getFolder().'/templates/'.$templateCode);
 
+			$zipper = new Zipper;
+			$zipper->make('user_upload/'.$fileName)->extractTo($component->getFolder(true).'/templates/'.$templateCode);
+			$zipper->close();
+
+			unlink('user_upload/'.$fileName);
+		}
 		$component->saveStep(6);
+
+		return back();
+	}
+
+	public function delete_template(Bitrix $module, BitrixComponent $component, BitrixComponentsTemplates $template, Request $request){
+
+		if (!$this->userCreatedModule($module->id)){
+			return $this->unauthorized($request);
+		}
+		if (!$template->id){
+			return false;
+		}
+
+		Storage::disk('user_modules')->deleteDirectory($template->getFolder());
+
+		// удаляем запись из БД
+		BitrixComponentsTemplates::destroy($template->id);
 
 		return back();
 	}

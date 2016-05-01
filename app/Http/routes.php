@@ -68,6 +68,7 @@ Route::get('my-modules/bitrix/{module}/components/{component}/other_files', ['as
 Route::post('my-modules/bitrix/{module}/components/{component}/store_other_files', 'Modules\Bitrix\BitrixComponentsController@store_other_files');
 Route::get('my-modules/bitrix/{module}/components/{component}/templates', ['as' => 'bitrix_component_templates', 'uses' => 'Modules\Bitrix\BitrixComponentsController@show_templates']);
 Route::post('my-modules/bitrix/{module}/components/{component}/store_template', 'Modules\Bitrix\BitrixComponentsController@store_template');
+Route::get('my-modules/bitrix/{module}/components/{component}/delete_template/{template}', 'Modules\Bitrix\BitrixComponentsController@delete_template');
 Route::post('my-modules/bitrix/{module}/upload_component_zip', ['as' => 'upload_component_zip', 'uses' => 'Modules\Bitrix\BitrixComponentsController@upload_zip']);
 // .компоненты
 // .Битрикс

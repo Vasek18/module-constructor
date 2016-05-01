@@ -16,7 +16,10 @@
     @if ($templates)
         <ul>
             @foreach($templates as $template)
-                <li>{{$template->name}} ({{$template->code}})</li>
+                <li>
+                    <p>{{$template->name}} ({{$template->code}})</p>
+                    <a href="{{ action('Modules\Bitrix\BitrixComponentsController@delete_template', [$module->id, $component->id, $template->id]) }}" class="btn btn-danger">Удалить</a>
+                </li>
             @endforeach
         </ul>
     @endif
