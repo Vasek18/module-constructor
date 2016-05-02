@@ -71,4 +71,8 @@ Route::post('my-modules/bitrix/{module}/components/{component}/store_template', 
 Route::get('my-modules/bitrix/{module}/components/{component}/delete_template/{template}', 'Modules\Bitrix\BitrixComponentsController@delete_template');
 Route::post('my-modules/bitrix/{module}/upload_component_zip', ['as' => 'upload_component_zip', 'uses' => 'Modules\Bitrix\BitrixComponentsController@upload_zip']);
 // .компоненты
+
+//хранение данных
+Route::get('my-modules/bitrix/{module}/data_storage', ['as' => 'bitrix_module_data_storage', 'uses' => 'Modules\Bitrix\BitrixDataStorageController@show']);
+Route::get('my-modules/bitrix/{module}/data_storage/add_ib', 'Modules\Bitrix\BitrixDataStorageController@add_ib');
 // .Битрикс

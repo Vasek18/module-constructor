@@ -16,6 +16,7 @@
                 <li><a href="{{ route('bitrix_module_components', $module->id) }}">Компоненты</a></li>
                 <li><a href="{{ route('bitrix_module_events_handlers', $module->id) }}">Обработчики событий</a></li>
                 <li><a href="{{ route('bitrix_module_admin_options', $module->id) }}">Страница настроек</a></li>
+                <li><a href="{{ route('bitrix_module_data_storage', $module->id) }}">Хранение данных</a></li>
             </ul>
         </div>
     </div>
