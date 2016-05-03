@@ -44,28 +44,28 @@
                 @include('bitrix.data_storage.iblock_tabs.infoblok')
             </div>
             <div role="tabpanel" class="tab-pane" id="seo">
-                @include('bitrix.data_storage.iblock_tabs.seo')
+{{--                @include('bitrix.data_storage.iblock_tabs.seo')--}}
             </div>
             <div role="tabpanel" class="tab-pane" id="fields">
-                @include('bitrix.data_storage.iblock_tabs.fields')
+{{--                @include('bitrix.data_storage.iblock_tabs.fields')--}}
             </div>
             <div role="tabpanel" class="tab-pane" id="properties">
-                @include('bitrix.data_storage.iblock_tabs.properties')
+{{--                @include('bitrix.data_storage.iblock_tabs.properties')--}}
             </div>
             <div role="tabpanel" class="tab-pane" id="sections_fields">
-                @include('bitrix.data_storage.iblock_tabs.sections_fields')
+{{--                @include('bitrix.data_storage.iblock_tabs.sections_fields')--}}
             </div>
             <div role="tabpanel" class="tab-pane" id="shop_catalog">
-                @include('bitrix.data_storage.iblock_tabs.shop_catalog')
+{{--                @include('bitrix.data_storage.iblock_tabs.shop_catalog')--}}
             </div>
             <div role="tabpanel" class="tab-pane" id="permissions">
-                @include('bitrix.data_storage.iblock_tabs.permissions')
+{{--                @include('bitrix.data_storage.iblock_tabs.permissions')--}}
             </div>
             <div role="tabpanel" class="tab-pane" id="captions">
-                @include('bitrix.data_storage.iblock_tabs.captions')
+                {{--@include('bitrix.data_storage.iblock_tabs.captions')--}}
             </div>
             <div role="tabpanel" class="tab-pane" id="event_log">
-                @include('bitrix.data_storage.iblock_tabs.event_log')
+{{--                @include('bitrix.data_storage.iblock_tabs.event_log')--}}
             </div>
         </div>
         <button class="btn btn-primary">Сохранить</button>

@@ -11,6 +11,7 @@ use App\Models\Modules\Bitrix\BitrixAdminOptions;
 use Illuminate\Support\Facades\DB;
 use App\Models\Modules\Bitrix\BitrixAdminOptionsVals;
 use App\Http\Controllers\Traits\UserOwnModule;
+use App\Models\Modules\Bitrix\BitrixInfoblocks;
 
 class BitrixDataStorageController extends Controller{
 	use UserOwnModule;
@@ -54,13 +55,11 @@ class BitrixDataStorageController extends Controller{
 			return $this->unauthorized($request);
 		}
 
-		$data = [
-			'module' => $module,
-		];
+		$params = $request->all();
+		unset($params['_token']);
 
-		dd($request);
+		BitrixInfoblocks::create(['module_id' => $module->id, 'params' => json_encode($params)]);
 
 		return back();
 	}
-
 }
