@@ -7,15 +7,8 @@
             <label for="RIGHTS_MODE">Расширенное управление правами:</label>
         </td>
         <td>
-            
             <input type="checkbox" id="RIGHTS_MODE" name="RIGHTS_MODE" value="E">
             <label for="RIGHTS_MODE" title=""></label>
-            <div>
-                <div>
-                    После того как вы отметите этот чекбокс, необходимо нажать кнопку "Применить". При этом текущие
-                    настройки будут сконвертированы в расширенные.
-                </div>
-            </div>
         </td>
     </tr>
     <tr>

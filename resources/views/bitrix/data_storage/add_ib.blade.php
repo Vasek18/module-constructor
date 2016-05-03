@@ -6,7 +6,8 @@
 
 @section('page')
 
-    <form action="">
+    <form method="post" action="{{ action('Modules\Bitrix\BitrixDataStorageController@store_ib', $module->id) }}">
+        {{ csrf_field() }}
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active">
                 <a href="#infoblok" aria-controls="infoblok" role="tab"

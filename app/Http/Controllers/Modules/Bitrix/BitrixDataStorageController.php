@@ -27,7 +27,7 @@ class BitrixDataStorageController extends Controller{
 		}
 
 		$data = [
-			'module'        => $module,
+			'module' => $module,
 		];
 
 		//dd($data);
@@ -41,12 +41,26 @@ class BitrixDataStorageController extends Controller{
 		}
 
 		$data = [
-			'module'        => $module,
+			'module' => $module,
 		];
 
 		//dd($data);
 
 		return view("bitrix.data_storage.add_ib", $data);
+	}
+
+	public function store_ib(Bitrix $module, Request $request){
+		if (!$this->userCreatedModule($module->id)){
+			return $this->unauthorized($request);
+		}
+
+		$data = [
+			'module' => $module,
+		];
+
+		dd($request);
+
+		return back();
 	}
 
 }

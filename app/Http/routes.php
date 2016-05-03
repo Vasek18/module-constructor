@@ -75,4 +75,5 @@ Route::post('my-modules/bitrix/{module}/upload_component_zip', ['as' => 'upload_
 //хранение данных
 Route::get('my-modules/bitrix/{module}/data_storage', ['as' => 'bitrix_module_data_storage', 'uses' => 'Modules\Bitrix\BitrixDataStorageController@show']);
 Route::get('my-modules/bitrix/{module}/data_storage/add_ib', 'Modules\Bitrix\BitrixDataStorageController@add_ib');
+Route::post('my-modules/bitrix/{module}/data_storage/store_ib', 'Modules\Bitrix\BitrixDataStorageController@store_ib');
 // .Битрикс
