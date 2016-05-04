@@ -32,12 +32,12 @@ Class {MODULE_CLASS_NAME} extends CModule{
 	}
 
 	function InstallDB($arParams = array()){
-		return true;
+		$this->createNecessaryIblocks();
 	}
 
 	function UnInstallDB($arParams = array()){
 		\Bitrix\Main\Config\Option::delete($this->MODULE_ID);
-		return true;
+		$this->deleteNecessaryIblocks();
 	}
 
 	function InstallEvents(){
@@ -87,6 +87,80 @@ Class {MODULE_CLASS_NAME} extends CModule{
 		}
 
 		return true;
+	}
+
+	public function createNecessaryIblocks(){
+		return true;
+	}
+
+	public function deleteNecessaryIblocks(){
+		return true;
+	}
+
+	public function createIblockType(){
+		global $DB, $APPLICATION;
+		CModule::IncludeModule("iblock");
+
+		$iblockType = "{MODULE_CLASS_NAME}_iblock_type";
+		$db_iblock_type = CIBlockType::GetList(Array("SORT" => "ASC"), Array("ID" => $iblockType));
+		if (!$ar_iblock_type = $db_iblock_type->Fetch()){
+			$arFieldsIBT = Array(
+				'ID'       => $iblockType,
+				'SECTIONS' => 'Y',
+				'IN_RSS'   => 'N',
+				'SORT'     => 500,
+				'LANG'     => Array(
+					'en' => Array(
+						'NAME' => Loc::getMessage("{LANG_KEY}_IBLOCK_TYPE_NAME_EN"),
+					),
+					'ru' => Array(
+						'NAME' => Loc::getMessage("{LANG_KEY}_IBLOCK_TYPE_NAME_RU"),
+					)
+				)
+			);
+
+			$obBlocktype = new CIBlockType;
+			$DB->StartTransaction();
+			$resIBT = $obBlocktype->Add($arFieldsIBT);
+			if (!$resIBT){
+				$DB->Rollback();
+				$APPLICATION->ThrowException(Loc::getMessage("{LANG_KEY}_IBLOCK_TYPE_ALREADY_EXISTS"));
+			}else{
+				$DB->Commit();
+			}
+		}
+	}
+
+	function removeIblockType($iblockType){
+		global $APPLICATION, $DB;
+		CModule::IncludeModule("iblock");
+
+		$DB->StartTransaction();
+		if (!CIBlockType::Delete($iblockType)){
+			$DB->Rollback();
+			$APPLICATION->ThrowException(Loc::getMessage("{LANG_KEY}_IBLOCK_TYPE_DELETION_ERROR"));
+		}
+		$DB->Commit();
+	}
+
+	public function createIblock($params){
+		global $APPLICATION;
+		CModule::IncludeModule("iblock");
+
+		$ib = new CIBlock;
+
+		$resIBE = CIBlock::GetList(Array(), Array('TYPE' => $params["IBLOCK_TYPE_ID"], 'SITE_ID' => $params["SITE_ID"], "CODE" => $params["CODE"]));
+		if ($ar_resIBE = $resIBE->Fetch()){
+			$APPLICATION->ThrowException(Loc::getMessage("{LANG_KEY}_IBLOCK_ALREADY_EXISTS"));
+
+			return false;
+		}else{
+			$ID = $ib->Add($params);
+
+			return $ID;
+		}
+
+		return false;
 	}
 
 	public function isVersionD7(){

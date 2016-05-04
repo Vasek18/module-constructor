@@ -59,12 +59,14 @@ class BitrixDataStorageController extends Controller{
 		$params = $request->all();
 		unset($params['_token']);
 
-		BitrixInfoblocks::create([
+		$iblock = BitrixInfoblocks::create([
 			'module_id' => $module->id,
 			'name'      => $params['NAME'],
 			'code'      => $params['CODE'],
 			'params'    => json_encode($params)
 		]);
+
+		$iblock->writeInFile();
 
 		return back();
 	}

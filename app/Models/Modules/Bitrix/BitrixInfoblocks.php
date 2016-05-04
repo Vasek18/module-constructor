@@ -11,6 +11,10 @@ class BitrixInfoblocks extends Model{
 	protected $fillable = ['module_id', 'name', 'code', 'params'];
 	public $timestamps = false;
 
+	public function writeInFile(){
+		
+	}
+
 	public function module(){
 		return $this->belongsTo('App\Models\Modules\Bitrix');
 	}
