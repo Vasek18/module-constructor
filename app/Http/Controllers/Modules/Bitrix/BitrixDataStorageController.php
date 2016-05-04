@@ -29,6 +29,7 @@ class BitrixDataStorageController extends Controller{
 
 		$data = [
 			'module' => $module,
+			'infoblocks' => $module->infoblocks()->get(),
 		];
 
 		//dd($data);
@@ -58,7 +59,12 @@ class BitrixDataStorageController extends Controller{
 		$params = $request->all();
 		unset($params['_token']);
 
-		BitrixInfoblocks::create(['module_id' => $module->id, 'params' => json_encode($params)]);
+		BitrixInfoblocks::create([
+			'module_id' => $module->id,
+			'name'      => $params['NAME'],
+			'code'      => $params['CODE'],
+			'params'    => json_encode($params)
+		]);
 
 		return back();
 	}

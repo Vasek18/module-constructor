@@ -14,6 +14,8 @@ class CreateBitrixInfoblocksTable extends Migration{
 			$table->increments('id');
 			$table->integer('module_id')->unsigned();
 			$table->foreign('module_id')->references('id')->on('bitrixes')->onDelete('cascade');
+			$table->string('code');
+			$table->string('name');
 			$table->text('params')->nullable(); // на самом деле json
 		});
 	}

@@ -8,7 +8,7 @@ use Auth;
 
 class BitrixInfoblocks extends Model{
 	protected $table = 'bitrix_infoblocks';
-	protected $fillable = ['module_id', 'params'];
+	protected $fillable = ['module_id', 'name', 'code', 'params'];
 	public $timestamps = false;
 
 	public function module(){

@@ -33,7 +33,7 @@
     <tr>
         <th>Символьный код:</th>
         <td>
-            <input type="text" class="form-control" name="CODE" size="50" maxlength="50" value="">
+            <input type="text" class="form-control" name="CODE" size="50" maxlength="50" value="" required>
         </td>
     </tr>
     <tr>
@@ -45,7 +45,7 @@
     <tr>
         <th>Название:</th>
         <td>
-            <input type="text" class="form-control" name="NAME" size="55" maxlength="255" value="">
+            <input type="text" class="form-control" name="NAME" size="55" maxlength="255" value="" required>
         </td>
     </tr>
     <tr>
