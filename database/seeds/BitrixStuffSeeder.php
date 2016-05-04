@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 
-class BitrixStuff extends Seeder{
+class BitrixStuffSeeder extends Seeder{
 	/**
 	 * Run the database seeds.
 	 *
@@ -11,16 +11,6 @@ class BitrixStuff extends Seeder{
 	 */
 	public function run(){
 		Model::unguard();
-
-		// я // todo del
-		DB::table('users')->insert([
-			'first_name'     => 'Вася',
-			'last_name'      => 'Аристов',
-			'email'          => 'aristov-92@mail.ru',
-			'password'       => bcrypt("12345678"),
-			'remember_token' => str_random(10),
-		]);
-
 
 		// типы опций для страницы настройки модулей
 		DB::table('bitrix_modules_options_types')->insert([
