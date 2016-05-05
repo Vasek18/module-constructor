@@ -150,7 +150,7 @@ class Bitrix extends Model{
 
 		// записываем в модуль
 		$count = 1; // только первое вхождение
-		$outputFilePath = str_replace("bitrix", $module->module_folder, $outputPath?$outputPath:$path, $count); // todo если изменить диск,то можно избавиться от такой замены
+		$outputFilePath = str_replace("bitrix", $module->module_folder, $outputPath ? $outputPath : $path, $count); // todo если изменить диск,то можно избавиться от такой замены
 		Storage::disk('user_modules')->put($outputFilePath, $file);
 
 	}
@@ -238,6 +238,32 @@ class Bitrix extends Model{
 
 	public function theSameFolderAlreadyExists(){
 		return in_array($this->module_folder, Storage::disk('user_modules')->directories());
+	}
+
+	public function generateInfoblocksCreationFunctionCode(){
+		$code = "\t".'public function createNecessaryIblocks(){'.PHP_EOL;
+		$code .= "\t\t".'$this->createIblockType();'.PHP_EOL;
+
+		$iblocks = $this->infoblocks()->get();
+		foreach ($iblocks as $iblock){
+			$code .= "\t\t".'$this->createIblock('.PHP_EOL;
+			$code .= "\t\t\t".'Array('.PHP_EOL;
+			foreach ($iblock->params as $paramCode => $paramVal){
+				$code .= "\t\t\t\t\t".'"'.$paramCode.'"'." => ".'"'.$paramVal.'",'.PHP_EOL;
+			}
+			$code .= "\t\t\t".')'.PHP_EOL;
+			$code .= "\t\t".');'.PHP_EOL;
+		}
+
+		$code .= "\t".'} // createNecessaryIblocks'.PHP_EOL;
+
+		return $code;
+	}
+
+	public function generateInfoblocksDeletionFunctionCode(){
+		return "\t".'public function deleteNecessaryIblocks(){'.PHP_EOL.
+		"\t"."\t".'$this->removeIblockType();'.PHP_EOL.
+		"\t".'} // createNecessaryIblocks';
 	}
 
 	public function getModuleFolderAttribute(){

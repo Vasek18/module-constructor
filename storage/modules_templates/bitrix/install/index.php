@@ -165,6 +165,12 @@ Class {MODULE_CLASS_NAME} extends CModule{
 		return false;
 	}
 
+	function createIblockProp($arFieldsProp){
+		CModule::IncludeModule("iblock");
+		$ibp = new CIBlockProperty;
+		return $ibp->Add($arFieldsProp);
+	}
+
 	public function isVersionD7(){
 		return CheckVersion(\Bitrix\Main\ModuleManager::getVersion('main'), '14.00.00');
 	}
