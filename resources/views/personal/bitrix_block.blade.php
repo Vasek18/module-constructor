@@ -26,11 +26,26 @@
                             <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                             Редактировать
                         </a>
-                        <a href="{{ action('Modules\Bitrix\BitrixController@destroy', $module->id) }}"
-                           class="btn btn-sm btn-block btn-danger">
+                        <a class="btn btn-sm btn-danger btn-block" data-toggle="modal" data-target="#modal_delete_{{$module->id}}" href="#">
                             <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                             Удалить
                         </a>
+                        <div class="modal fade" tabindex="-1" role="dialog" id="modal_delete_{{$module->id}}">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                                    aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title">Удаление модуля</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="alert alert-danger" role="alert">Вы уверены?</div>
+                                        <a class="btn btn-danger"
+                                           href="{{ action('Modules\Bitrix\BitrixController@destroy', $module->id) }}">Удалить</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <hr>
