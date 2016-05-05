@@ -22,12 +22,8 @@
             <label for="ACTIVE">Информационный блок активен:</label>
         </th>
         <td>
-            <input type="hidden" name="ACTIVE" value="N">
             <input type="checkbox" id="ACTIVE" name="ACTIVE" value="Y" checked="">
-            <label for="ACTIVE"
-                   title=""></label>
-<span style="display:none;"><input type="submit" name="save" value="Y"
-                                   style="width:0px;height:0px"></span>
+            <label for="ACTIVE" title=""></label>
         </td>
     </tr>
     <tr>
@@ -95,7 +91,6 @@
             </label>
         </th>
         <td>
-            <input type="hidden" name="INDEX_SECTION" value="N">
             <input type="checkbox" id="INDEX_SECTION" name="INDEX_SECTION" value="Y" checked=""
                     >
             <label
@@ -109,7 +104,6 @@
             </label>
         </th>
         <td>
-            <input type="hidden" name="INDEX_ELEMENT" value="N">
             <input type="checkbox" id="INDEX_ELEMENT" name="INDEX_ELEMENT" value="Y" checked=""
                     >
             <label

@@ -63,12 +63,12 @@ class BitrixDataStorageController extends Controller{
 			'module_id' => $module->id,
 			'name'      => $params['NAME'],
 			'code'      => $params['CODE'],
-			'params'    => json_encode($params)
+			'params'    => json_encode($params) // предыдущие пару параметров дублируются здесь, чтобы можно было создавать массив по одному лишь params
 		]);
 
-		$iblock->writeInFile();
+		BitrixInfoblocks::writeInFile($module);
 
-		return back();
+		return redirect(action('Modules\Bitrix\BitrixDataStorageController@detail_ib', [$module->id, $iblock->id]));
 	}
 
 	public function save_ib(Bitrix $module, BitrixInfoblocks $iblock, Request $request){
@@ -82,18 +82,20 @@ class BitrixDataStorageController extends Controller{
 		//dd($request->all());
 
 		$iblock->update([
-			'name'      => $params['NAME'],
-			'code'      => $params['CODE'],
-			'params'    => json_encode($params)
+			'name'   => $params['NAME'],
+			'code'   => $params['CODE'],
+			'params' => json_encode($params) // предыдущие пару параметров дублируются здесь, чтобы можно было создавать массив по одному лишь params
 		]);
 
-		$iblock->writeInFile();
+		BitrixInfoblocks::writeInFile($module);
 
 		return back();
 	}
 
 	public function delete_ib(Bitrix $module, BitrixInfoblocks $iblock, Request $request){
 		BitrixInfoblocks::destroy($iblock->id);
+
+		BitrixInfoblocks::writeInFile($module);
 
 		return redirect(action('Modules\Bitrix\BitrixDataStorageController@show', [$module->id]));
 	}
