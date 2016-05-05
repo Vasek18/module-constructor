@@ -12,7 +12,11 @@ class BitrixInfoblocks extends Model{
 	public $timestamps = false;
 
 	public function writeInFile(){
-		
+
+	}
+
+	public function getParamsAttribute($value){
+		return json_decode($value);
 	}
 
 	public function module(){

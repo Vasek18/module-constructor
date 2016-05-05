@@ -33,19 +33,21 @@
     <tr>
         <th>Символьный код:</th>
         <td>
-            <input type="text" class="form-control" name="CODE" size="50" maxlength="50" value="" required>
+            <input type="text" class="form-control" name="CODE" size="50" maxlength="50"
+                   value="{{isset($iblock)?$iblock->params->CODE:''}}" required>
         </td>
     </tr>
     <tr>
         <th>Сайты:</th>
         <td>
-            <input type="text" class="form-control" name="LID" value="s1">
+            <input type="text" class="form-control" name="LID" value="{{isset($iblock)?$iblock->params->LID:'s1'}}">
         </td>
     </tr>
     <tr>
         <th>Название:</th>
         <td>
-            <input type="text" class="form-control" name="NAME" size="55" maxlength="255" value="" required>
+            <input type="text" class="form-control" name="NAME" size="55" maxlength="255"
+                   value="{{isset($iblock)?$iblock->params->NAME:''}}" required>
         </td>
     </tr>
     <tr>

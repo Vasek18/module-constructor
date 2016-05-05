@@ -28,7 +28,7 @@ class BitrixDataStorageController extends Controller{
 		}
 
 		$data = [
-			'module' => $module,
+			'module'     => $module,
 			'infoblocks' => $module->infoblocks()->get(),
 		];
 
@@ -69,5 +69,45 @@ class BitrixDataStorageController extends Controller{
 		$iblock->writeInFile();
 
 		return back();
+	}
+
+	public function save_ib(Bitrix $module, BitrixInfoblocks $iblock, Request $request){
+		if (!$this->userCreatedModule($module->id)){
+			return $this->unauthorized($request);
+		}
+
+		$params = $request->all();
+		unset($params['_token']);
+
+		//dd($request->all());
+
+		$iblock->update([
+			'name'      => $params['NAME'],
+			'code'      => $params['CODE'],
+			'params'    => json_encode($params)
+		]);
+
+		$iblock->writeInFile();
+
+		return back();
+	}
+
+	public function delete_ib(Bitrix $module, BitrixInfoblocks $iblock, Request $request){
+		BitrixInfoblocks::destroy($iblock->id);
+
+		return redirect(action('Modules\Bitrix\BitrixDataStorageController@show', [$module->id]));
+	}
+
+	public function detail_ib(Bitrix $module, BitrixInfoblocks $iblock, Request $request){
+		if (!$this->userCreatedModule($module->id)){
+			return $this->unauthorized($request);
+		}
+
+		$data = [
+			'module' => $module,
+			'iblock' => $iblock
+		];
+
+		return view("bitrix.data_storage.detail_ib", $data);
 	}
 }
