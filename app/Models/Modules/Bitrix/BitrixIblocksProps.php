@@ -4,7 +4,6 @@ namespace App\Models\Modules\Bitrix;
 
 use Illuminate\Database\Eloquent\Model;
 use Auth;
-use Illuminate\Support\Facades\Storage;
 
 class BitrixIblocksProps extends Model{
 	protected $table = 'bitrix_infoblocks_props';
@@ -19,7 +18,7 @@ class BitrixIblocksProps extends Model{
 		$code .= "\t\t\t\t\t".'"ACTIVE"'." => ".'"Y",'.PHP_EOL;
 		$code .= "\t\t\t\t\t".'"SORT"'." => ".'"'.$this->sort.'",'.PHP_EOL;
 		$code .= "\t\t\t\t\t".'"CODE"'." => ".'"'.$this->code.'",'.PHP_EOL;
-		$code .= "\t\t\t\t\t".'"NAME"'." => ".'"'.$this->name.'",'.PHP_EOL;
+		$code .= "\t\t\t\t\t".'"NAME"'." => ".'Loc::getMessage("'.$this->lang_key.'_NAME"),'.PHP_EOL;
 		$code .= "\t\t\t\t\t".'"PROPERTY_TYPE"'." => ".'"'.$this->type.'",'.PHP_EOL;
 		$code .= "\t\t\t\t\t".'"MULTIPLE"'." => ".'"'.($this->multiple ? 'Y' : 'N').'",'.PHP_EOL;
 		$code .= "\t\t\t\t\t".'"IS_REQUIRED"'." => ".'"'.($this->is_required ? 'Y' : 'N').'",'.PHP_EOL;
@@ -29,4 +28,11 @@ class BitrixIblocksProps extends Model{
 		return $code;
 	}
 
+	public function getLangKeyAttribute(){
+		return strtoupper($this->iblock()->first()->lang_key.'_PARAM_'.strtoupper($this->code));
+	}
+
+	public function iblock(){
+		return $this->belongsTo('App\Models\Modules\Bitrix\BitrixInfoblocks');
+	}
 }

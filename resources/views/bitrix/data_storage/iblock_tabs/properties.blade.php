@@ -9,12 +9,18 @@
         <th>Изм.</th>
         <th>Удал.</th>
     </tr>
-    @foreach($iblock->properties as $i => $property)
-        {{--{{dd($property)}}--}}
-        @include('bitrix.data_storage.iblock_tabs.properties_item', ['property' => $property, 'i' => $i, 'iblock' => $iblock])
-    @endforeach
-    {{-- Дополнительно показываем ещё несколько пустых строк --}}
-    @for ($j = count($iblock->properties); $j < count($iblock->properties)+5; $j++)
-        @include('bitrix.data_storage.iblock_tabs.properties_item', ['property' => null, 'i' => $j, 'iblock' => $iblock])
-    @endfor
+    @if ($iblock)
+        @foreach($iblock->properties as $i => $property)
+            {{--{{dd($property)}}--}}
+            @include('bitrix.data_storage.iblock_tabs.properties_item', ['property' => $property, 'i' => $i, 'iblock' => $iblock])
+        @endforeach
+        {{-- Дополнительно показываем ещё несколько пустых строк --}}
+        @for ($j = count($iblock->properties); $j < count($iblock->properties)+5; $j++)
+            @include('bitrix.data_storage.iblock_tabs.properties_item', ['property' => null, 'i' => $j, 'iblock' => $iblock])
+        @endfor
+    @else
+        @for ($j = 0; $j < 5; $j++)
+            @include('bitrix.data_storage.iblock_tabs.properties_item', ['property' => null, 'i' => $j, 'iblock' => $iblock])
+        @endfor
+    @endif
 </table>

@@ -48,7 +48,12 @@ class BitrixInfoblocks extends Model{
 		$code .= "\t\t\t".'Array('.PHP_EOL;
 		$code .= "\t\t\t\t\t".'"IBLOCK_TYPE_ID" => $iblockType,'.PHP_EOL;
 		foreach ($this->params as $paramCode => $paramVal){
-			$code .= "\t\t\t\t\t".'"'.$paramCode.'"'." => ".'"'.$paramVal.'",'.PHP_EOL;
+			if ($paramCode == "NAME"){
+				$paramVal = 'Loc::getMessage("'.$this->lang_key.'_NAME")';
+			}else{
+				$paramVal = '"'.$paramVal.'"';
+			}
+			$code .= "\t\t\t\t\t".'"'.$paramCode.'"'." => ".''.$paramVal.','.PHP_EOL;
 		}
 		$code .= "\t\t\t".')'.PHP_EOL;
 		$code .= "\t\t".');'.PHP_EOL;
@@ -61,12 +66,16 @@ class BitrixInfoblocks extends Model{
 		return $code;
 	}
 
+	public function getLangKeyAttribute(){
+		return strtoupper($this->module()->first()->lang_key.'_IBLOCK_'.strtoupper($this->code));
+	}
+
 	public function getParamsAttribute($value){
 		return json_decode($value);
 	}
 
 	public function module(){
-		return $this->belongsTo('App\Models\Modules\Bitrix');
+		return $this->belongsTo('App\Models\Modules\Bitrix\Bitrix');
 	}
 
 	public function properties(){

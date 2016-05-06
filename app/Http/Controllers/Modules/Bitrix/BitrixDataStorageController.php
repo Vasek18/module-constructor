@@ -42,6 +42,7 @@ class BitrixDataStorageController extends Controller{
 
 		$data = [
 			'module' => $module,
+			'iblock' => null
 		];
 
 		//dd($data);
