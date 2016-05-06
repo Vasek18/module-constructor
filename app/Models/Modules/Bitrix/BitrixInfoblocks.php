@@ -49,4 +49,8 @@ class BitrixInfoblocks extends Model{
 	public function module(){
 		return $this->belongsTo('App\Models\Modules\Bitrix');
 	}
+
+	public function properties(){
+		return $this->hasMany('App\Models\Modules\Bitrix\BitrixIblocksProps', 'iblock_id');
+	}
 }

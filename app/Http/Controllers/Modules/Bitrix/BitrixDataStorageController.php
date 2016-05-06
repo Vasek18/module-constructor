@@ -7,11 +7,9 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Modules\Bitrix\Bitrix;
-use App\Models\Modules\Bitrix\BitrixAdminOptions;
-use Illuminate\Support\Facades\DB;
-use App\Models\Modules\Bitrix\BitrixAdminOptionsVals;
 use App\Http\Controllers\Traits\UserOwnModule;
 use App\Models\Modules\Bitrix\BitrixInfoblocks;
+use App\Models\Modules\Bitrix\BitrixIblocksProps;
 
 class BitrixDataStorageController extends Controller{
 	use UserOwnModule;
@@ -59,6 +57,9 @@ class BitrixDataStorageController extends Controller{
 		$params = $request->all();
 		unset($params['_token']);
 
+		$properties = $params["properties"];
+		unset($params["properties"]);
+
 		$iblock = BitrixInfoblocks::create([
 			'module_id' => $module->id,
 			'name'      => $params['NAME'],
@@ -79,13 +80,42 @@ class BitrixDataStorageController extends Controller{
 		$params = $request->all();
 		unset($params['_token']);
 
-		//dd($request->all());
+		$properties = $params["properties"];
+		unset($params["properties"]);
 
 		$iblock->update([
 			'name'   => $params['NAME'],
 			'code'   => $params['CODE'],
 			'params' => json_encode($params) // предыдущие пару параметров дублируются здесь, чтобы можно было создавать массив по одному лишь params
 		]);
+
+		//dd($properties);
+
+		foreach ($properties["NAME"] as $c => $name){
+			if (!$name){
+				continue;
+			}
+			if (!$properties["CODE"][$c]){
+				continue;
+			}
+
+			BitrixIblocksProps::updateOrCreate(
+				[
+					'iblock_id' => $iblock->id,
+					'code'      => $properties["CODE"][$c]
+				],
+				[
+					'iblock_id'   => $iblock->id,
+					'code'        => $properties["CODE"][$c],
+					'name'        => $name,
+					'sort'        => $properties["SORT"][$c],
+					'type'        => $properties["TYPE"][$c],
+					'multiple'    => isset($properties["MULTIPLE"][$c]) && $properties["MULTIPLE"][$c] == "Y" ? true : false,
+					'is_required' => isset($properties["IS_REQUIRED"][$c]) && $properties["IS_REQUIRED"][$c] == "Y" ? true : false
+				]
+			);
+		}
+
 
 		BitrixInfoblocks::writeInFile($module);
 

@@ -50,7 +50,7 @@
 {{--                @include('bitrix.data_storage.iblock_tabs.fields')--}}
             </div>
             <div role="tabpanel" class="tab-pane" id="properties">
-{{--                @include('bitrix.data_storage.iblock_tabs.properties')--}}
+                @include('bitrix.data_storage.iblock_tabs.properties')
             </div>
             <div role="tabpanel" class="tab-pane" id="sections_fields">
 {{--                @include('bitrix.data_storage.iblock_tabs.sections_fields')--}}
