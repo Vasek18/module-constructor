@@ -242,20 +242,16 @@ class Bitrix extends Model{
 
 	public function generateInfoblocksCreationFunctionCode(){
 		$code = "\t".'public function createNecessaryIblocks(){'.PHP_EOL;
-		$code .= "\t\t".'$this->createIblockType();'.PHP_EOL;
+		$code .= "\t\t".'$iblockType = $this->createIblockType();'.PHP_EOL;
 
 		$iblocks = $this->infoblocks()->get();
 		foreach ($iblocks as $iblock){
-			$code .= "\t\t".'$this->createIblock('.PHP_EOL;
-			$code .= "\t\t\t".'Array('.PHP_EOL;
-			foreach ($iblock->params as $paramCode => $paramVal){
-				$code .= "\t\t\t\t\t".'"'.$paramCode.'"'." => ".'"'.$paramVal.'",'.PHP_EOL;
-			}
-			$code .= "\t\t\t".')'.PHP_EOL;
-			$code .= "\t\t".');'.PHP_EOL;
+			$code .= $iblock->generateCreationCode();
 		}
 
 		$code .= "\t".'} // createNecessaryIblocks'.PHP_EOL;
+
+
 
 		return $code;
 	}

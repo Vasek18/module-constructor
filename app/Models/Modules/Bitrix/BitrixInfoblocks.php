@@ -42,6 +42,25 @@ class BitrixInfoblocks extends Model{
 		return substr($file, $beginningPosition, $codeLength);
 	}
 
+	public function generateCreationCode(){
+		$code = '';
+		$code .= "\t\t".'$iblockID = $this->createIblock('.PHP_EOL;
+		$code .= "\t\t\t".'Array('.PHP_EOL;
+		$code .= "\t\t\t\t\t".'"IBLOCK_TYPE_ID" => $iblockType,'.PHP_EOL;
+		foreach ($this->params as $paramCode => $paramVal){
+			$code .= "\t\t\t\t\t".'"'.$paramCode.'"'." => ".'"'.$paramVal.'",'.PHP_EOL;
+		}
+		$code .= "\t\t\t".')'.PHP_EOL;
+		$code .= "\t\t".');'.PHP_EOL;
+
+		$properties = $this->properties()->get();
+		foreach ($properties as $property){
+			$code .= $property->generateCreationCode();
+		}
+
+		return $code;
+	}
+
 	public function getParamsAttribute($value){
 		return json_decode($value);
 	}

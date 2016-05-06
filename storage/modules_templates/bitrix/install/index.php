@@ -127,6 +127,8 @@ Class {MODULE_CLASS_NAME} extends CModule{
 				$APPLICATION->ThrowException(Loc::getMessage("{LANG_KEY}_IBLOCK_TYPE_ALREADY_EXISTS"));
 			}else{
 				$DB->Commit();
+
+				return $iblockType;
 			}
 		}
 	}
