@@ -10,8 +10,6 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 
 class Bitrix extends Model{
-	//
-
 	/**
 	 * The database table used by the model.
 	 *
@@ -251,8 +249,6 @@ class Bitrix extends Model{
 
 		$code .= "\t".'} // createNecessaryIblocks'.PHP_EOL;
 
-
-
 		return $code;
 	}
 
@@ -260,6 +256,47 @@ class Bitrix extends Model{
 		return "\t".'public function deleteNecessaryIblocks(){'.PHP_EOL.
 		"\t"."\t".'$this->removeIblockType();'.PHP_EOL.
 		"\t".'} // createNecessaryIblocks';
+	}
+
+	public function writeInfoblocksLangInfoInFile(){
+		$module_folder = $this->module_folder;
+		$path = $module_folder.'/lang/ru/install/index.php';
+		$file = Storage::disk('user_modules')->get($path);
+
+		$iblocks = $this->infoblocks()->get();
+		foreach ($iblocks as $iblock){
+			$search = static::findTemplateToReplaceInLangFile($file, $iblock->lang_key."_NAME");
+			$replace = '$MESS["'.$iblock->lang_key."_NAME".'"] = "'.$iblock->name.'";'.PHP_EOL;
+			if ($search == '?>'){
+				$replace .= '?>';
+			}
+			$file = str_replace($search, $replace, $file);
+
+			foreach ($iblock->properties as $property){
+				$search = static::findTemplateToReplaceInLangFile($file, $property->lang_key."_NAME");
+				$replace = '$MESS["'.$property->lang_key."_NAME".'"] = "'.$property->name.'";'.PHP_EOL;
+				if ($search == '?>'){
+					$replace .= '?>';
+				}
+				$file = str_replace($search, $replace, $file);
+			}
+
+		}
+
+		Storage::disk('user_modules')->put($path, $file);
+
+		return true;
+	}
+
+	// todo это наверное какой-то глобальный хелпер должен быть, хоть и актуальный только для Битрикса
+	public static function findTemplateToReplaceInLangFile($file, $key){
+		$pattern = '/\$MESS\[\"'.$key.'\"\]\s*\=\s*\"[^\"]*\"\;\s*/';
+		if (preg_match($pattern, $file, $matches)){
+			return $matches[0];
+		}
+		else{
+			return '?>'; // тип конец файла
+		}
 	}
 
 	public function getModuleFolderAttribute(){

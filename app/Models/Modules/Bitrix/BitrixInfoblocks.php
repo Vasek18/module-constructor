@@ -11,7 +11,6 @@ class BitrixInfoblocks extends Model{
 	protected $fillable = ['module_id', 'name', 'code', 'params'];
 	public $timestamps = false;
 
-	// todo рефакторинг
 	public static function writeInFile(Bitrix $module){
 		$module_folder = $module->module_folder;
 		$path = $module_folder.'/install/index.php';
@@ -29,7 +28,13 @@ class BitrixInfoblocks extends Model{
 
 		Storage::disk('user_modules')->put($path, $file);
 
+		static::writeInLangFile($module);
+
 		return true;
+	}
+
+	public static function writeInLangFile(Bitrix $module){
+		return $module->writeInfoblocksLangInfoInFile();
 	}
 
 	protected static function findInfoblockCreationAndDeletionCodeInInstallFile($file, $functionName){
