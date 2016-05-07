@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
+use App\Models\Modules\Bitrix\Bitrix;
 
 class HomeController extends Controller{
 	/**
@@ -14,7 +14,20 @@ class HomeController extends Controller{
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index(){
-		return view("index");
+		$countModules = Bitrix::count();
+		$modulesEnding = 'ей';
+		if (substr($countModules, -1, 1) == '1'){
+			$modulesEnding = 'ь';
+		}
+		if (in_array(substr($countModules, -1, 1), ['2', '3', '4'])){
+			$modulesEnding = 'я';
+		}
+		$data = [
+			'countModules' => $countModules,
+			'modulesEnding' => $modulesEnding,
+		];
+
+		return view("index", $data);
 	}
 
 	/**
