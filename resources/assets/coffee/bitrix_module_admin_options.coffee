@@ -181,12 +181,10 @@ $(document).on "click", ".add-dop-row", () ->
 
 $(document).on "change", "[name=option_name\\[\\]]", () ->
     name = $(this).val()
-    console.log(name)
+    row = $(this).parents('.option')
+    codeInput = row.find('[name=option_code\\[\\]]')
 
-    return
-
-$(document).on "keydown", "[name=option_name\\[\\]]", () ->
-    name = $(this).val()
-    console.log(name)
+    if not codeInput.val()
+        codeInput.val(translit(name))
 
     return

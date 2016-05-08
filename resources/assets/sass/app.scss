@@ -2,6 +2,7 @@
 
 $footerHeight : 50px;
 $footerHeightReverse : -50px;
+$hoverBackgroundColor : #ccc;
 
 html, body{
   height : 100%;
@@ -50,9 +51,17 @@ footer{
 a.you-can-change{
   border-bottom : 1px dashed;
   padding       : 3px;
-  border-radius   : 5px;
+  border-radius : 5px;
   &:hover{
     text-decoration : none;
-    background      : #ccc;
+    background      : $hoverBackgroundColor;
   }
 }
+//.draggable{
+//  cursor         : pointer;
+//  padding-top    : 2px;
+//  padding-bottom : 2px;
+//  &:hover, &:focus{
+//    background : $hoverBackgroundColor;
+//  }
+//}

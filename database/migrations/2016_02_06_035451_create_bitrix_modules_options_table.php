@@ -23,6 +23,7 @@ class CreateBitrixModulesOptionsTable extends Migration{
 			$table->integer('width')->nullable()->default(20);
 			$table->string('spec_vals')->nullable();
 			$table->string('spec_vals_args')->nullable();
+			$table->string('default_value')->nullable();
 		});
 	}
 

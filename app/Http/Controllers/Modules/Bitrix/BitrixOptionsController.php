@@ -94,6 +94,7 @@ class BitrixOptionsController extends Controller{
 			if ($request['option_'.$i.'_spec_args'] && !is_array($request['option_'.$i.'_spec_args'])){
 				$prop["spec_vals_args"] = $request['option_'.$i.'_spec_args'];
 			}
+			$prop["default_value"] = $request['default_value'][$i];
 
 			//dd($prop);
 			// записываем в бд

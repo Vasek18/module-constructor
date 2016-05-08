@@ -36,15 +36,13 @@
   });
 
   $(document).on("change", "[name=option_name\\[\\]]", function() {
-    var name;
+    var codeInput, name, row;
     name = $(this).val();
-    console.log(name);
-  });
-
-  $(document).on("keydown", "[name=option_name\\[\\]]", function() {
-    var name;
-    name = $(this).val();
-    console.log(name);
+    row = $(this).parents('.option');
+    codeInput = row.find('[name=option_code\\[\\]]');
+    if (!codeInput.val()) {
+      codeInput.val(translit(name));
+    }
   });
 
 }).call(this);

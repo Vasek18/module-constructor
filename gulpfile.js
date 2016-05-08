@@ -15,5 +15,6 @@ elixir(function(mix){
 	mix.sass('app.scss')
 		.coffee('app.coffee')
 		.coffee('a.you-can-change.coffee')
-		.coffee('bitrix_module_admin_options.coffee');
+		.coffee('bitrix_module_admin_options.coffee')
+		.coffee('translit.coffee');
 });

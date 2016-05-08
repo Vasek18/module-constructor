@@ -55,6 +55,7 @@
         crossorigin="anonymous"></script>
 <script src="/js/a.you-can-change.js"></script>
 <script src="/js/draggable.js"></script>
+<script src="/js/translit.js"></script>
 <script src="/js/app.js"></script>
 @stack('scripts')
 </body>

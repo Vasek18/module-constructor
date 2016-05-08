@@ -19,10 +19,14 @@
                 </div>
                 <div class="form-group" data-for_type_ids="5">
                     <label for="option_{{$i}}_spec_args">Значение</label>
-                    <input class="form-control" type="text" name="option_{{$i}}_spec_args[]" id="option_{{$i}}_spec_args"
-                           @if ($option && $option->type_id == 5) value="{{$option->spec_vals_args}}" @endif>
+                    <input class="form-control" type="text" name="option_{{$i}}_spec_args[]"
+                           id="option_{{$i}}_spec_args"
+                           @if ($option && $option->type_id == 5) value="{{$option->spec_vals_args ? $option->spec_vals_args : 'Y'}}"
+                           @else
+                           value="Y"
+                            @endif
+                            >
                 </div>
-
                 {{--                {{dd($option->vals)}}--}}
                 <div class="form-group only-one" data-for_type_ids="3,4">
                     <div class="item">
@@ -35,37 +39,61 @@
                         @if ($option && $option->vals)
                             @foreach($option->vals as $val)
                                 <div class="row">
-                                    <div class="col-md-5">
+                                    <div class="col-md-4">
                                         <input class="form-control" type="text" name="option_{{$i}}_vals_key[]"
                                                value="{{$val->key}}">
                                     </div>
                                     <div class="col-md-1">=&gt;</div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-5">
                                         <input class="form-control" type="text" name="option_{{$i}}_vals_value[]"
                                                value="{{$val->value}}">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox">
+                                                <small>По умол.</small>
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
                             @endforeach
                             @for($j = count($option->vals); $j<=count($option->vals)+5;$j++)
                                 <div class="row">
-                                    <div class="col-md-5">
+                                    <div class="col-md-4">
                                         <input class="form-control" type="text" name="option_{{$i}}_vals_key[]">
                                     </div>
                                     <div class="col-md-1">=&gt;</div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-5">
                                         <input class="form-control" type="text" name="option_{{$i}}_vals_value[]">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox">
+                                                <small>По умол.</small>
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
                             @endfor
                         @else
                             @for($j = 0; $j<=5;$j++)
                                 <div class="row">
-                                    <div class="col-md-5">
+                                    <div class="col-md-4">
                                         <input class="form-control" type="text" name="option_{{$j}}_vals_key[]">
                                     </div>
                                     <div class="col-md-1">=&gt;</div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-5">
                                         <input class="form-control" type="text" name="option_{{$j}}_vals_value[]">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox">
+                                                <small>По умол.</small>
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
                             @endfor
@@ -102,6 +130,11 @@
                         <input type="text" name="option_{{$i}}_spec_args[]" class="form-control" placeholder="Инфоблок"
                                @if ($option && $option->spec_vals == '$iblock_props()') value="{{$option->spec_vals_args}}" @endif>
                     </div>
+                </div>
+                <div class="form-group" data-for_type_ids="1, 2, 3, 4">
+                    <label for="option_{{$i}}_default_value">Значение по умолчанию</label>
+                    <input class="form-control" type="text" name="default_value[]" id="option_{{$i}}_default_value"
+                           @if ($option) value="{{$option->default_value}}" @endif>
                 </div>
             </div>
         </div>

@@ -11,11 +11,11 @@
     <form role="form" method="POST" action="{{ action('Modules\Bitrix\BitrixOptionsController@store', $module->id) }}">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <div class="row option-headers">
-            <div class="col-md-3">
-                <label>Код свойства</label>
+            <div class="col-md-4">
+                <label>Название свойства</label>
             </div>
             <div class="col-md-3">
-                <label>Название свойства</label>
+                <label>Код свойства</label>
             </div>
             <div class="col-md-2">
                 <label>Тип свойства</label>
@@ -23,8 +23,7 @@
             <div class="col-md-2">
                 <label>Доп. поля</label>
             </div>
-            <div class="col-md-2">
-                <label>Удалить</label>
+            <div class="col-md-1">
             </div>
         </div>
         <div class="draggable-container">
@@ -58,5 +57,12 @@
         (Настройки -> Настройки модулей -> Название модуля).
         <br>
         Также вместе с указанными вами настройками создастся вкладка со стандартными настройками прав модуля.
+    </p>
+    <hr>
+    <p>
+        Чтобы подставит значение одного свойства в другое, впишите в значение последнего:
+    <pre>
+        COption::GetOptionString($module_id, "{Код вашего свойства}")
+    </pre>
     </p>
 @stop
