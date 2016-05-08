@@ -63,14 +63,14 @@ class BitrixController extends Controller{
 		if (!$this->userCreatedModule($id)){
 			return $this->unauthorized($request);
 		}
-		if ($request->module_name){
-			$module->MODULE_NAME = $request->module_name;
+		if ($request->name){
+			$module->MODULE_NAME = $request->name;
 			$module->save();
 
 			$module->changeVarsInModuleFileAndSave('bitrix/lang/ru/install/index.php', $module->id);
 		}
-		if ($request->module_description){
-			$module->MODULE_DESCRIPTION = $request->module_description;
+		if ($request->description){
+			$module->MODULE_DESCRIPTION = $request->description;
 			$module->save();
 
 			$module->changeVarsInModuleFileAndSave('bitrix/lang/ru/install/index.php', $module->id);

@@ -50,3 +50,14 @@ footer {
 .modules-created strong {
   font-size: 55px;
 }
+
+a.you-can-change {
+  border-bottom: 1px dashed;
+  padding: 3px;
+  border-radius: 5px;
+}
+
+a.you-can-change:hover {
+  text-decoration: none;
+  background: #ccc;
+}

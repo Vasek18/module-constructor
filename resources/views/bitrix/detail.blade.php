@@ -12,34 +12,33 @@
                   action="{{ action('Modules\Bitrix\BitrixController@edit_param', $module->id) }}"
                   class="readonly">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                <div class="clearfix">
-                    <a href="#" class="btn btn-primary pull-right activate-form">
-                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                    </a>
-                </div>
                 <div class="form-group">
-                    <label for="module_name">Название</label>
-                    <input type="text" id="module_name" class="form-control" name="module_name"
-                           value="{{$module->MODULE_NAME}}" readonly>
-                </div>
-                <div class="form-group">
-                    <label for="module_description">Описание</label>
-                    <textarea id="module_description" class="form-control"
-                              name="module_description"
-                              rows="5" readonly>{{$module->MODULE_DESCRIPTION}}</textarea>
-                </div>
-                <div class="form-group">
-                    <label for="module_description">Код</label>
+                    <label>Код</label>
                     <p class="form-control-static">{{$module->PARTNER_CODE}}.{{$module->MODULE_CODE}}</p>
                 </div>
                 <div class="form-group">
-                    <label for="module_description">Версия</label>
-                    <p class="form-control-static">{{$module->VERSION}}</p>
+                    <label for="name">Название</label>
+                    <p class="form-control-static">
+                        <a href="#" class="you-can-change ajax" data-name="name" data-pattern="[a-zA-Zа-яА-Я0-9]*">{{$module->MODULE_NAME}}</a>
+                    </p>
                 </div>
                 <div class="form-group">
-                    <label for="module_description">Изменён</label>
+                    <label for="description">Описание</label>
+                    <p class="form-control-static">
+                        <a href="#" class="you-can-change ajax" data-name="description" data-formtype="textarea">{{$module->MODULE_DESCRIPTION}}</a>
+                    </p>
+                </div>
+                <div class="form-group">
+                    <label for="version">Версия</label>
+                    <p class="form-control-static">
+                        <a href="#" class="you-can-change ajax" dataname="version">{{$module->VERSION}}</a>
+                    </p>
+                </div>
+                <div class="form-group">
+                    <label>Изменён</label>
                     <p class="form-control-static">{{$module->updated_at}}</p>
                 </div>
+                <button type="submit" class="hidden">Сохранить</button>
             </form>
         </div>
         <div class="col-md-2">
@@ -87,7 +86,3 @@
         </div>
     </div>
 @stop
-
-@push('scripts')
-<script src="/js/activate-form.js"></script>
-@endpush

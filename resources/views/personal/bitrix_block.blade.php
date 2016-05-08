@@ -59,12 +59,6 @@
                 <div class="collapse" id="module_dop_indo_{{$module->id}}">
                     <div class="row">
                         <div class="sections-links col-md-10">
-                            <p>
-                                <a class="btn btn-primary"
-                                   href="{{ route('bitrix_module_detail', $module->id) }}">Перейти
-                                    в раздел "Основное"</a>
-                            </p>
-                            <hr>
                             <h3>Компоненты</h3>
                             <ul>
                                 @foreach($module->components as $component)
