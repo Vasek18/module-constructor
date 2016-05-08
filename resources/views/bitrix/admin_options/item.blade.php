@@ -1,7 +1,7 @@
-<div class="row option draggable">
+<div class="row option {{$option ? 'draggable' : ''}}">
     <input type="hidden" name="module_id[]" value="{{$module->id}}">
     <input type="hidden" class="sort-val" name="option_sort[]" value="{{$i}}">
-    <div class="col-md-2">
+    <div class="col-md-3">
         <label class="sr-only" for="option_{{$i}}_id">Код</label>
         <input type="text" class="form-control" name="option_code[]" id="option_{{$i}}_id"
                placeholder="Код" value="{{$option ? $option->code : ''}}">

@@ -1,6 +1,7 @@
+//https://habrahabr.ru/post/193004/
 $.fn.draggable = function(){
 	function disableSelection(){
-		return false;
+		//return false;
 	}
 
 	$(this).mousedown(function(e){

@@ -11,7 +11,7 @@
     <form role="form" method="POST" action="{{ action('Modules\Bitrix\BitrixOptionsController@store', $module->id) }}">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <div class="row option-headers">
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <label>Код свойства</label>
             </div>
             <div class="col-md-3">
@@ -39,6 +39,13 @@
         @for ($j = count($options); $j < count($options)+5; $j++)
             @include('bitrix.admin_options.item', ['option' => null, 'i' => $j, 'module' => $module])
         @endfor
+        <div class="row overlast-row">
+            <div class="col-md-12">
+                <p>
+                    <a href="#" class="btn btn-default btn-block add-dop-row">Добавить строчку</a>
+                </p>
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-12">
                 <button class="btn btn-primary btn-block">Сохранить</button>

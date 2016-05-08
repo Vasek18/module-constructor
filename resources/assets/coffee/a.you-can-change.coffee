@@ -45,5 +45,3 @@ $(document).on "blur", "input.you-can-change, textarea.you-can-change", ->
 		form.submit()
 
 	return false
-
-$('.draggable').draggable()
