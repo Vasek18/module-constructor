@@ -19,13 +19,15 @@
                 <div class="form-group">
                     <label for="name">Название</label>
                     <p class="form-control-static">
-                        <a href="#" class="you-can-change ajax" data-name="name" data-pattern="[a-zA-Zа-яА-Я0-9]*">{{$module->MODULE_NAME}}</a>
+                        <a href="#" class="you-can-change ajax" data-name="name"
+                           data-pattern="[a-zA-Zа-яА-Я0-9]*">{{$module->MODULE_NAME}}</a>
                     </p>
                 </div>
                 <div class="form-group">
                     <label for="description">Описание</label>
                     <p class="form-control-static">
-                        <a href="#" class="you-can-change ajax" data-name="description" data-formtype="textarea">{{$module->MODULE_DESCRIPTION}}</a>
+                        <a href="#" class="you-can-change ajax" data-name="description"
+                           data-formtype="textarea">{{$module->MODULE_DESCRIPTION}}</a>
                     </p>
                 </div>
                 <div class="form-group">
@@ -85,4 +87,23 @@
             </div>
         </div>
     </div>
+    <h2>Модуль содержит</h2>
+    <dl>
+        <dt>Компонентов:</dt>
+        <dd>
+            <a href="{{ route('bitrix_module_components', $module->id) }}">{{$module->components()->count()}}</a>
+        </dd>
+        <dt>Обработчиков событий:</dt>
+        <dd>
+            <a href="{{ route('bitrix_module_events_handlers', $module->id) }}">{{$module->handlers()->count()}}</a>
+        </dd>
+        <dt>Инфоблоков:</dt>
+        <dd>
+            <a href="{{ route('bitrix_module_data_storage', $module->id) }}">{{$module->infoblocks()->count()}}</a>
+        </dd>
+        <dt>Настроек:</dt>
+        <dd>
+            <a href="{{ route('bitrix_module_admin_options', $module->id) }}">{{$module->options()->count()}}</a>
+        </dd>
+    </dl>
 @stop

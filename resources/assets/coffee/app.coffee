@@ -37,7 +37,7 @@ $(document).on "blur", "input.you-can-change, textarea.you-can-change", ->
 			data: form.serializeArray(),
 			type: method,
 			success: () ->
-				input.replaceWith("<a class='you-can-change' data-name='#{name}'' data-pattern='#{pattern}'>#{val}</a>")
+				input.replaceWith("<a class='you-can-change #{if ajax then "ajax"}' data-name='#{name}'' data-pattern='#{pattern}'>#{val}</a>")
 
 				return false
 		)

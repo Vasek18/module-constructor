@@ -36,7 +36,7 @@
         data: form.serializeArray(),
         type: method,
         success: function() {
-          input.replaceWith("<a class='you-can-change' data-name='" + name + "'' data-pattern='" + pattern + "'>" + val + "</a>");
+          input.replaceWith("<a class='you-can-change " + (ajax ? "ajax" : void 0) + "' data-name='" + name + "'' data-pattern='" + pattern + "'>" + val + "</a>");
           return false;
         }
       });
