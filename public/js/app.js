@@ -1,4 +1,18 @@
 (function() {
+  $('.draggable').draggable();
+
+  $(document).on("mouseup", ".draggable", function() {
+    var i;
+    i = 0;
+    $('.draggable .sort-val').each(function() {
+      $(this).val(i);
+      return i++;
+    });
+  });
+
+}).call(this);
+
+(function() {
   $(document).on("click", "a.you-can-change", function() {
     var a, ajax, form, formtype, input, name, pattern, val;
     a = $(this);
@@ -45,6 +59,8 @@
     }
     return false;
   });
+
+  $('.draggable').draggable();
 
 }).call(this);
 

@@ -9,6 +9,7 @@ use Auth;
 class BitrixAdminOptions extends Model{
 	protected $table = 'bitrix_modules_options';
 	protected $fillable = ['type_id', 'sort', 'code', 'name', 'height', 'width', 'spec_vals', 'spec_vals_args'];
+	public $timestamps = false;
 
 	public static function store(Bitrix $module, $fields){
 		//dd($fields);

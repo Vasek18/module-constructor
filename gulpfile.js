@@ -12,5 +12,5 @@ var elixir = require('laravel-elixir');
  */
 
 elixir(function(mix){
-	mix.sass('app.scss').coffee('app.coffee');
+	mix.sass('app.scss').coffee(['app.coffee', 'a.you-can-change.coffee']);
 });

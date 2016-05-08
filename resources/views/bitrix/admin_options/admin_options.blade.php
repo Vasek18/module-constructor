@@ -11,9 +11,6 @@
     <form role="form" method="POST" action="{{ action('Modules\Bitrix\BitrixOptionsController@store', $module->id) }}">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <div class="row option-headers">
-            <div class="col-md-1">
-                <label>Сортировка</label>
-            </div>
             <div class="col-md-2">
                 <label>Код свойства</label>
             </div>
@@ -30,12 +27,14 @@
                 <label>Удалить</label>
             </div>
         </div>
-        {{--todo вынести row--}}
-        {{--@each('bitrix.admin_options.item', $options, 'option')--}}
-        @foreach($options as $i => $option)
-            {{--{{dd($option)}}--}}
-            @include('bitrix.admin_options.item', ['option' => $option, 'i' => $i, 'module' => $module])
-        @endforeach
+        <div class="draggable-container">
+            {{--todo вынести row--}}
+            {{--@each('bitrix.admin_options.item', $options, 'option')--}}
+            @foreach($options as $i => $option)
+                {{--{{dd($option)}}--}}
+                @include('bitrix.admin_options.item', ['option' => $option, 'i' => $i, 'module' => $module])
+            @endforeach
+        </div>
         {{-- Дополнительно показываем ещё несколько пустых строк --}}
         @for ($j = count($options); $j < count($options)+5; $j++)
             @include('bitrix.admin_options.item', ['option' => null, 'i' => $j, 'module' => $module])
@@ -47,8 +46,10 @@
         </div>
     </form>
     <hr>
-    <p class="description">Здесь задаются настройки, которые можно будет получить на сайте через COption::GetOptionString("{код модуля}", "{код опции}");. Сами значения задаются на странице настроек модуля (Настройки -> Настройки модулей -> Название модуля).
+    <p class="description">Здесь задаются настройки, которые можно будет получить на сайте через
+        COption::GetOptionString("{код модуля}", "{код опции}");. Сами значения задаются на странице настроек модуля
+        (Настройки -> Настройки модулей -> Название модуля).
         <br>
-    Также вместе с указанными вами настройками создастся вкладка со стандартными настройками прав модуля.
+        Также вместе с указанными вами настройками создастся вкладка со стандартными настройками прав модуля.
     </p>
 @stop
