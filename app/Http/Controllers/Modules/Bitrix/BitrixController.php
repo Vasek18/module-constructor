@@ -74,7 +74,12 @@ class BitrixController extends Controller{
 			$module->save();
 
 			$module->changeVarsInModuleFileAndSave('bitrix/lang/ru/install/index.php', $module->id);
+		}
+		if ($request->version){
+			$module->VERSION = $request->version;
+			$module->save();
 
+			$module->changeVarsInModuleFileAndSave('bitrix/lang/ru/install/index.php', $module->id);
 		}
 
 		return redirect(action('Modules\Bitrix\BitrixController@detail', $id));

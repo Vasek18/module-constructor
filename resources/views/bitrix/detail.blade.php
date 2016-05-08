@@ -33,7 +33,7 @@
                 <div class="form-group">
                     <label for="version">Версия</label>
                     <p class="form-control-static">
-                        <a href="#" class="you-can-change ajax" dataname="version">{{$module->VERSION}}</a>
+                        <a href="#" class="you-can-change ajax" data-name="version">{{$module->VERSION}}</a>
                     </p>
                 </div>
                 <div class="form-group">
