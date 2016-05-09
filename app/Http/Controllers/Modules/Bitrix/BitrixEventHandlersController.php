@@ -22,15 +22,15 @@ class BitrixEventHandlersController extends Controller{
 	}
 
 	// страница обработчиков событий
-	public function show($module_id, Request $request){
-		if (!$this->userCreatedModule($module_id)){
+	public function index(Bitrix $module, Request $request){
+		if (!$this->userCreatedModule($module->id)){
 			return $this->unauthorized($request);
 		}
-		$handlers = BitrixEventsHandlers::where('module_id', $module_id)->get();
+		$handlers = $module->handlers()->get();
 		$core_modules = DB::table('bitrix_core_modules')->get();
 		$core_events = DB::table('bitrix_core_events')->get();
 		$data = [
-			'module'   => Bitrix::find($module_id),
+			'module'   => $module,
 			'handlers' => $handlers,
 			'core_modules' => $core_modules,
 			'core_events' => $core_events

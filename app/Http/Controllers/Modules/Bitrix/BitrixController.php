@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Modules\Bitrix;
 
-
 use App\Models\Modules\Bitrix\Bitrix;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -82,7 +81,9 @@ class BitrixController extends Controller{
 			$module->changeVarsInModuleFileAndSave('bitrix/lang/ru/install/index.php', $module->id);
 		}
 
-		return redirect(action('Modules\Bitrix\BitrixController@show', $id));
+		if (!$request->ajax()){
+			return redirect(action('Modules\Bitrix\BitrixController@show', $id));
+		}
 	}
 
 	// кнопка скачивания зип архива

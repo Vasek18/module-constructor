@@ -12,6 +12,7 @@
                   action="{{ action('Modules\Bitrix\BitrixController@update', $module->id) }}"
                   class="readonly">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                {{ method_field('PUT') }}
                 <div class="form-group">
                     <label>Код</label>
                     <p class="form-control-static">{{$module->PARTNER_CODE}}.{{$module->MODULE_CODE}}</p>

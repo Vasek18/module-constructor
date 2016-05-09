@@ -26,13 +26,13 @@ class BitrixComponentsController extends Controller{
 		$this->middleware('auth');
 	}
 
-	public function index($module_id, Request $request){
-		if (!$this->userCreatedModule($module_id)){
+	public function index(Bitrix $module, Request $request){
+		if (!$this->userCreatedModule($module->id)){
 			return $this->unauthorized($request);
 		}
-		$components = BitrixComponent::where('module_id', $module_id)->get();
+		$components = $module->components()->get();
 		$data = [
-			'module'     => Bitrix::find($module_id),
+			'module'     => $module,
 			'components' => $components
 		];
 
@@ -40,12 +40,12 @@ class BitrixComponentsController extends Controller{
 	}
 
 	// страница добавления компонента
-	public function create($module_id, Request $request){
-		if (!$this->userCreatedModule($module_id)){
+	public function create(Bitrix $module, Request $request){
+		if (!$this->userCreatedModule($module->id)){
 			return $this->unauthorized($request);
 		}
 		$data = [
-			'module' => Bitrix::find($module_id),
+			'module' => $module,
 		];
 
 		return view("bitrix.components.new", $data);

@@ -20,7 +20,7 @@ class BitrixDataStorageController extends Controller{
 	}
 
 	// страница настроек для страницы настроек
-	public function show(Bitrix $module, Request $request){
+	public function index(Bitrix $module, Request $request){
 		if (!$this->userCreatedModule($module->id)){
 			return $this->unauthorized($request);
 		}
@@ -128,7 +128,7 @@ class BitrixDataStorageController extends Controller{
 
 		BitrixInfoblocks::writeInFile($module);
 
-		return redirect(action('Modules\Bitrix\BitrixDataStorageController@show', [$module->id]));
+		return redirect(action('Modules\Bitrix\BitrixDataStorageController@index', [$module->id]));
 	}
 
 	public function detail_ib(Bitrix $module, BitrixInfoblocks $iblock, Request $request){

@@ -21,7 +21,7 @@ class BitrixOptionsController extends Controller{
 	}
 
 	// страница настроек для страницы настроек
-	public function show(Bitrix $module, Request $request){
+	public function index(Bitrix $module, Request $request){
 		if (!$this->userCreatedModule($module->id)){
 			return $this->unauthorized($request);
 		}

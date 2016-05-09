@@ -31,14 +31,17 @@ $(document).on "blur", "input.you-can-change, textarea.you-can-change", ->
 
 	action = form.attr('action')
 	method = form.attr('method')
+	if form.find('[name="_method"]').length
+		method = form.find('[name="_method"]').val()
+
 	if ajax
 		$.ajax(
 			url: action,
 			data: form.serializeArray(),
 			type: method,
-			success: () ->
+			success: (answer) ->
 				input.replaceWith("<a class='you-can-change #{if ajax then "ajax"}' data-name='#{name}'' data-pattern='#{pattern}'>#{val}</a>")
-
+#				console.log(answer);
 				return false
 		)
 	else

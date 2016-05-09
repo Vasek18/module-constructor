@@ -30,12 +30,15 @@
     ajax = input.hasClass('ajax') ? true : false;
     action = form.attr('action');
     method = form.attr('method');
+    if (form.find('[name="_method"]').length) {
+      method = form.find('[name="_method"]').val();
+    }
     if (ajax) {
       $.ajax({
         url: action,
         data: form.serializeArray(),
         type: method,
-        success: function() {
+        success: function(answer) {
           input.replaceWith("<a class='you-can-change " + (ajax ? "ajax" : void 0) + "' data-name='" + name + "'' data-pattern='" + pattern + "'>" + val + "</a>");
           return false;
         }
