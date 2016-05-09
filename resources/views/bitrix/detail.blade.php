@@ -9,7 +9,7 @@
     <div class="row">
         <div class="col-md-10">
             <form method="post"
-                  action="{{ action('Modules\Bitrix\BitrixController@edit_param', $module->id) }}"
+                  action="{{ action('Modules\Bitrix\BitrixController@update', $module->id) }}"
                   class="readonly">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <div class="form-group">
@@ -81,8 +81,13 @@
                 </div>
                 <div class="modal-body">
                     <div class="alert alert-danger" role="alert">Вы уверены?</div>
-                    <a class="btn btn-danger"
-                       href="{{ action('Modules\Bitrix\BitrixController@destroy', $module->id) }}">Удалить</a>
+                    <form method="post"
+                          action="{{ action('Modules\Bitrix\BitrixController@destroy', $module->id) }}"
+                          class="readonly">
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        {{ method_field('DELETE') }}
+                        <button class="btn btn-danger">Удалить</button>
+                    </form>
                 </div>
             </div>
         </div>

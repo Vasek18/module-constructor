@@ -21,7 +21,7 @@
                         <p> {{$module->MODULE_DESCRIPTION}} </p>
                     </div>
                     <div class="actions col-md-2">
-                        <a href="{{ action('Modules\Bitrix\BitrixController@detail', $module->id) }}"
+                        <a href="{{ action('Modules\Bitrix\BitrixController@show', $module->id) }}"
                            class="btn btn-sm btn-block btn-primary">
                             <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                             Редактировать

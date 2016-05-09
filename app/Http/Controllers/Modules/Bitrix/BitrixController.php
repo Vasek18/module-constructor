@@ -36,14 +36,14 @@ class BitrixController extends Controller{
 		// создание записи в бд и шаблона
 		$id = Bitrix::store($request);
 		if ($id){
-			return redirect(action('Modules\Bitrix\BitrixController@detail', $id));
+			return redirect(action('Modules\Bitrix\BitrixController@show', $id));
 		}else{
 			return back();
 		}
 	}
 
 	// детальная страница модуля
-	public function detail(Bitrix $module, Request $request){
+	public function show(Bitrix $module, Request $request){
 		if (!$this->userCreatedModule($module->id)){
 			return $this->unauthorized($request);
 		}
@@ -57,7 +57,7 @@ class BitrixController extends Controller{
 	}
 
 	// редактирование параметра
-	public function edit_param($id, Request $request){
+	public function update($id, Request $request){
 		$module = Bitrix::find($id);
 
 		if (!$this->userCreatedModule($id)){
@@ -82,7 +82,7 @@ class BitrixController extends Controller{
 			$module->changeVarsInModuleFileAndSave('bitrix/lang/ru/install/index.php', $module->id);
 		}
 
-		return redirect(action('Modules\Bitrix\BitrixController@detail', $id));
+		return redirect(action('Modules\Bitrix\BitrixController@show', $id));
 	}
 
 	// кнопка скачивания зип архива
