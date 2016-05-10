@@ -45,15 +45,11 @@ class BitrixOptionsController extends Controller{
 		return view("bitrix.admin_options.admin_options", $data);
 	}
 
-	public function store($module_id, Request $request){
-		if (!$this->userCreatedModule($module_id)){
+	public function store(Bitrix $module, Request $request){
+		if (!$this->userCreatedModule($module->id)){
 			return $this->unauthorized($request);
 		}
 		//dd($request);
-
-		// удаляем старые свойства, чтобы при изменение уже заполненной строчки, старые данные с этой строчки не существовали
-		BitrixAdminOptions::where('module_id', $module_id)->delete();
-		$module = Bitrix::find($module_id);
 
 		// перебираем все строки полей
 		// todo я могу без цикла и перебирания полей обойтись
@@ -68,17 +64,31 @@ class BitrixOptionsController extends Controller{
 			if (!$request['option_type'][$i]){ // если у поля нет типа
 				continue;
 			}
-			if ($request['module_id'][$i] != $module_id){ // от хитрых хуесосов
+			if ($request['module_id'][$i] != $module->id){ // от хитрых хуесосов
 				continue;
 			}
 
 			$prop["sort"] = $request['option_sort'][$i];
 			$prop["code"] = $option_code;
 			$prop["name"] = $request['option_name'][$i];
-			$prop["type_id"] = $request['option_type'][$i];
+			$prop["module_id"] = $request['module_id'][$i];
+			$prop["type_id"] = BitrixAdminOptions::checkTypeId($request['option_type'][$i]);
 			$prop["height"] = $request['option_height'][$i];
 			$prop["width"] = $request['option_width'][$i];
 			$prop["spec_vals"] = $request['option_'.$i.'_vals_type'];
+
+			// todo это нужно мне только при записи в файл
+			//if (isset($prop['spec_vals'])){
+			//	if ($prop['spec_vals'] == 'iblocks_list'){
+			//		$prop['spec_vals'] = '$iblocks()';
+			//	}
+			//	if ($prop['spec_vals'] == 'iblock_items_list'){
+			//		$prop['spec_vals'] = '$iblock_items()';
+			//	}
+			//	if ($prop['spec_vals'] == 'iblock_props_list'){
+			//		$prop['spec_vals'] = '$iblock_props()';
+			//	}
+			//}
 			if ($request['option_'.$i.'_spec_args'] && is_array($request['option_'.$i.'_spec_args'])){
 				$prop["spec_vals_args"] = '';
 				foreach ($request['option_'.$i.'_spec_args'] as $arg){
@@ -94,11 +104,22 @@ class BitrixOptionsController extends Controller{
 			if ($request['option_'.$i.'_spec_args'] && !is_array($request['option_'.$i.'_spec_args'])){
 				$prop["spec_vals_args"] = $request['option_'.$i.'_spec_args'];
 			}
+
+			if ($prop["type_id"] == 5){ // todo хардкод
+				$prop["spec_vals_args"] = 'Y'; // если спросят, почему нет выбора, мы ответим "зачем?"
+			}
+
 			$prop["default_value"] = $request['default_value'][$i];
 
 			//dd($prop);
 			// записываем в бд
-			$option = BitrixAdminOptions::store($module, $prop);
+			$option = BitrixAdminOptions::updateOrCreate(
+				[
+					'module_id' => $prop['module_id'],
+					'code'      => $prop['code']
+				],
+				$prop
+			);
 
 			// сохранение опций
 			if ($prop["type_id"] == 3 || $prop["type_id"] == 4){ // todo хардкода
@@ -110,19 +131,24 @@ class BitrixOptionsController extends Controller{
 						if (!$option_val_key || !$request['option_'.$i.'_vals_value'][$io]){
 							continue;
 						}
-						$val = new BitrixAdminOptionsVals;
-						$val->option_id = $option->id;
-						$val->key = $option_val_key;
-						$val->value = $request['option_'.$i.'_vals_value'][$io];
-						//dd($val);
-						$val->save();
+						$val = BitrixAdminOptionsVals::updateOrCreate(
+							[
+								'option_id' => $option->id,
+								'key'       => $option_val_key
+							],
+							[
+								'option_id' => $option->id,
+								'key'       => $option_val_key,
+								'value'     => $request['option_'.$i.'_vals_value'][$io]
+							]
+						);
 					}
 				}
 			}
 		}
 
 		// записываем в папку модуля
-		BitrixAdminOptions::saveOptionFile($module_id);
+		BitrixAdminOptions::saveOptionFile($module->id);
 
 		return back();
 	}

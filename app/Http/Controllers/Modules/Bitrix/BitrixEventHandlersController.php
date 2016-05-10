@@ -46,10 +46,9 @@ class BitrixEventHandlersController extends Controller{
 		}
 		//dd($request);
 		// удаляем старые обработчики, чтобы при изменение уже заполненной строчки, старые данные с этой строчки не существовали
-		BitrixEventsHandlers::where('module_id', $module->id)->delete();
+		$module->handlers()->delete();
 		// удаляем удаляем их файлы
-		$myModuleFolder = $module->PARTNER_CODE.".".$module->MODULE_CODE;
-		Storage::disk('user_modules')->deleteDirectory($myModuleFolder."/lib/eventhandlers");
+		Storage::disk('user_modules')->deleteDirectory($module->module_folder."/lib/eventhandlers");
 
 		// перебираем все строки полей
 		foreach ($request->event as $i => $event){

@@ -8,46 +8,8 @@ use Auth;
 
 class BitrixAdminOptions extends Model{
 	protected $table = 'bitrix_modules_options';
-	protected $fillable = ['type_id', 'sort', 'code', 'name', 'height', 'width', 'spec_vals', 'spec_vals_args', 'default_value'];
+	protected $fillable = ['type_id', 'module_id', 'sort', 'code', 'name', 'height', 'width', 'spec_vals', 'spec_vals_args', 'default_value'];
 	public $timestamps = false;
-
-	public static function store(Bitrix $module, $fields){
-		//dd($fields);
-		if (isset($fields['spec_vals'])){
-			if ($fields['spec_vals'] == 'iblocks_list'){
-				$fields['spec_vals'] = '$iblocks()';
-			}
-			if ($fields['spec_vals'] == 'iblock_items_list'){
-				$fields['spec_vals'] = '$iblock_items()';
-			}
-			if ($fields['spec_vals'] == 'iblock_props_list'){
-				$fields['spec_vals'] = '$iblock_props()';
-			}
-		}
-		if (!isset($fields['type_id'])){
-			$fields['type_id'] = BitrixAdminOptions::getDefaultTypeId();
-		}
-		if (!DB::table('bitrix_modules_options_types')->where('id', $fields['type_id'])->first()){
-			$fields['type_id'] = BitrixAdminOptions::getDefaultTypeId();
-		}
-		if (!$module->ownedBy(Auth::user())){
-			return false;
-		}
-		if (!isset($fields['code'])){
-			return false;
-		}
-		if (!isset($fields['name'])){
-			return false;
-		}
-
-		$option = new BitrixAdminOptions($fields);
-
-		if ($module->options()->save($option)){
-			return $option;
-		}
-
-		return false;
-	}
 
 	public static function getDefaultTypeId(){
 		$stringType = DB::table('bitrix_modules_options_types')->where('FORM_TYPE', 'text')->first();
@@ -56,6 +18,17 @@ class BitrixAdminOptions extends Model{
 		}
 
 		return 0;
+	}
+
+	public static function checkTypeId($type_id){
+		if (!$type_id){
+			return BitrixAdminOptions::getDefaultTypeId();
+		}
+		if (!DB::table('bitrix_modules_options_types')->where('id', $type_id)->first()){
+			return BitrixAdminOptions::getDefaultTypeId();
+		}
+
+		return $type_id;
 	}
 
 	// сохраняем настройки в папку модуля
