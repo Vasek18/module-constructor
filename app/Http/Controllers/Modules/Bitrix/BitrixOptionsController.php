@@ -76,19 +76,7 @@ class BitrixOptionsController extends Controller{
 			$prop["height"] = $request['option_height'][$i];
 			$prop["width"] = $request['option_width'][$i];
 			$prop["spec_vals"] = $request['option_'.$i.'_vals_type'];
-
-			// todo это нужно мне только при записи в файл
-			//if (isset($prop['spec_vals'])){
-			//	if ($prop['spec_vals'] == 'iblocks_list'){
-			//		$prop['spec_vals'] = '$iblocks()';
-			//	}
-			//	if ($prop['spec_vals'] == 'iblock_items_list'){
-			//		$prop['spec_vals'] = '$iblock_items()';
-			//	}
-			//	if ($prop['spec_vals'] == 'iblock_props_list'){
-			//		$prop['spec_vals'] = '$iblock_props()';
-			//	}
-			//}
+			
 			if ($request['option_'.$i.'_spec_args'] && is_array($request['option_'.$i.'_spec_args'])){
 				$prop["spec_vals_args"] = '';
 				foreach ($request['option_'.$i.'_spec_args'] as $arg){
@@ -148,7 +136,7 @@ class BitrixOptionsController extends Controller{
 		}
 
 		// записываем в папку модуля
-		BitrixAdminOptions::saveOptionFile($module->id);
+		BitrixAdminOptions::saveOptionFile($module);
 
 		return back();
 	}

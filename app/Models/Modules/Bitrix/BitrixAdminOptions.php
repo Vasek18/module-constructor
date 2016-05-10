@@ -32,9 +32,8 @@ class BitrixAdminOptions extends Model{
 	}
 
 	// сохраняем настройки в папку модуля
-	static public function saveOptionFile($module_id){
-		if (BitrixAdminOptions::where('module_id', $module_id)->count()){
-			$module = Bitrix::find($module_id);
+	static public function saveOptionFile(Bitrix $module){
+		if ($module->options()->count()){
 
 			$options = $module->options()->orderBy('sort', 'asc')->get();
 			$optionsString = '';
@@ -51,7 +50,7 @@ class BitrixAdminOptions extends Model{
 				$option_type = $optionsTypes[$option->type_id]->FORM_TYPE;
 
 				$field_params_string = $option->getParamsStringForFile($option_type);
-
+				//dd($field_params_string);
 				// код, название, значение по умолчанию, [тип поля, параметры]
 				$string = PHP_EOL."\t\t\tarray('".$option->code."', Loc::getMessage('".$module->lang_key."_".strtoupper($option->code)."_TITLE'), '', array('".$option_type."'".$field_params_string.")),";
 				//echo $string;
@@ -61,8 +60,8 @@ class BitrixAdminOptions extends Model{
 				$optionsLangString .= '$MESS["'.$module->lang_key.'_'.strtoupper($option->code).'_TITLE"] = "'.$option->name.'";'.PHP_EOL;
 			}
 
-			Bitrix::changeVarsInModuleFileAndSave('bitrix/options.php', $module_id, Array("{OPTIONS}"), Array($optionsString));
-			Bitrix::changeVarsInModuleFileAndSave('bitrix/lang/ru/options.php', $module_id, Array("{OPTIONS_LANG}"), Array($optionsLangString));
+			Bitrix::changeVarsInModuleFileAndSave('bitrix/options.php', $module->id, Array("{OPTIONS}"), Array($optionsString));
+			Bitrix::changeVarsInModuleFileAndSave('bitrix/lang/ru/options.php', $module->id, Array("{OPTIONS_LANG}"), Array($optionsLangString));
 		}
 	}
 
@@ -83,7 +82,16 @@ class BitrixAdminOptions extends Model{
 			if (!$this->spec_vals || $this->spec_vals == 'array'){
 				$params_string .= $this->getValsArrayStringForFile();
 			}else{
-				$params_string .= str_replace('()', '('.$this->spec_vals_args.')', $this->spec_vals);
+				//dd($this->spec_vals);
+				if ($this->spec_vals == 'iblocks_list'){
+					$params_string .= '$iblocks('.$this->spec_vals_args.')';
+				}
+				if ($this->spec_vals == 'iblock_items_list'){
+					$params_string .= '$iblock_items('.$this->spec_vals_args.')';
+				}
+				if ($this->spec_vals == 'iblock_props_list'){
+					$params_string .= '$iblock_props('.$this->spec_vals_args.')';
+				}
 			}
 		}
 

@@ -112,7 +112,7 @@ $tabControl = new CAdminTabControl('tabControl', $aTabs);
 
 	$tabControl->Buttons(); ?>
 
-	<input type="submit" name="Update" value="<? echo GetMessage('MAIN_SAVE') ?>">
+	<input type="submit" name="Apply" value="<? echo GetMessage('MAIN_SAVE') ?>">
 	<input type="reset" name="reset" value="<? echo GetMessage('MAIN_RESET') ?>">
 	<?=bitrix_sessid_post();?>
 </form>
