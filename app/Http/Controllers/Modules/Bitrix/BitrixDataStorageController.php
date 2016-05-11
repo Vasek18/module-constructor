@@ -66,8 +66,33 @@ class BitrixDataStorageController extends Controller{
 			'module_id' => $module->id,
 			'name'      => $params['NAME'],
 			'code'      => $params['CODE'],
-			'params'    => json_encode($params) // предыдущие пару параметров дублируются здесь, чтобы можно было создавать массив по одному лишь params
+			'params'    => json_encode($params) // предыдущие пару параметров дублируются здесь специально, чтобы можно было создавать массив по одному лишь params
 		]);
+		
+		foreach ($properties["NAME"] as $c => $name){
+			if (!$name){
+				continue;
+			}
+			if (!$properties["CODE"][$c]){
+				continue;
+			}
+
+			BitrixIblocksProps::updateOrCreate(
+				[
+					'iblock_id' => $iblock->id,
+					'code'      => $properties["CODE"][$c]
+				],
+				[
+					'iblock_id'   => $iblock->id,
+					'code'        => $properties["CODE"][$c],
+					'name'        => $name,
+					'sort'        => $properties["SORT"][$c],
+					'type'        => $properties["TYPE"][$c],
+					'multiple'    => isset($properties["MULTIPLE"][$c]) && $properties["MULTIPLE"][$c] == "Y" ? true : false,
+					'is_required' => isset($properties["IS_REQUIRED"][$c]) && $properties["IS_REQUIRED"][$c] == "Y" ? true : false
+				]
+			);
+		}
 
 		BitrixInfoblocks::writeInFile($module);
 
@@ -78,17 +103,18 @@ class BitrixDataStorageController extends Controller{
 		if (!$this->userCreatedModule($module->id)){
 			return $this->unauthorized($request);
 		}
-
 		$params = $request->all();
 		unset($params['_token']);
 
 		$properties = $params["properties"];
 		unset($params["properties"]);
 
+		//dd($params);
+
 		$iblock->update([
 			'name'   => $params['NAME'],
 			'code'   => $params['CODE'],
-			'params' => json_encode($params) // предыдущие пару параметров дублируются здесь, чтобы можно было создавать массив по одному лишь params
+			'params' => json_encode($params, JSON_FORCE_OBJECT) // предыдущие пару параметров дублируются здесь специально, чтобы можно было создавать массив по одному лишь params
 		]);
 
 		//dd($properties);
@@ -119,6 +145,7 @@ class BitrixDataStorageController extends Controller{
 		}
 
 		BitrixInfoblocks::writeInFile($module);
+		//dd();
 
 		return back();
 	}

@@ -56,7 +56,21 @@ class BitrixInfoblocks extends Model{
 			if ($paramCode == "NAME"){
 				$paramVal = 'Loc::getMessage("'.$this->lang_key.'_NAME")';
 			}else{
-				$paramVal = '"'.$paramVal.'"';
+				if (is_string($paramVal)){
+					if (strpos($paramVal, 'Array(') === false){ // todo суперкостыль из-за вложенных массивов
+						$paramVal = '"'.$paramVal.'"';
+					}
+				}else{
+					// todo здесь рекурсия должна быть на вложенности
+					$paramVal = (array) $paramVal;
+					//dd($paramVal);
+					$paramValTemp = 'Array(';
+					foreach ($paramVal as $paramValCode => $paramValVal){
+						$paramValTemp .= '"'.$paramValCode.'"=>"'.$paramValVal.'",';
+					}
+					$paramValTemp .= ')';
+					$paramVal = $paramValTemp;
+				}
 			}
 			$code .= "\t\t\t\t\t".'"'.$paramCode.'"'." => ".''.$paramVal.','.PHP_EOL;
 		}

@@ -59,7 +59,7 @@
 {{--                @include('bitrix.data_storage.iblock_tabs.shop_catalog')--}}
             </div>
             <div role="tabpanel" class="tab-pane" id="permissions">
-{{--                @include('bitrix.data_storage.iblock_tabs.permissions')--}}
+                @include('bitrix.data_storage.iblock_tabs.permissions')
             </div>
             <div role="tabpanel" class="tab-pane" id="captions">
                 {{--@include('bitrix.data_storage.iblock_tabs.captions')--}}

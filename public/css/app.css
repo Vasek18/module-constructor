@@ -61,3 +61,7 @@ a.you-can-change:hover {
   text-decoration: none;
   background: #ccc;
 }
+
+.text-center {
+  text-align: center;
+}
