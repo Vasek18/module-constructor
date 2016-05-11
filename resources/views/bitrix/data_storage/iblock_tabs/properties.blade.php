@@ -10,12 +10,12 @@
         <th>Удал.</th>
     </tr>
     @if ($iblock)
-        @foreach($iblock->properties as $i => $property)
+        @foreach($properties as $i => $property)
             {{--{{dd($property)}}--}}
             @include('bitrix.data_storage.iblock_tabs.properties_item', ['property' => $property, 'i' => $i, 'iblock' => $iblock])
         @endforeach
         {{-- Дополнительно показываем ещё несколько пустых строк --}}
-        @for ($j = count($iblock->properties); $j < count($iblock->properties)+5; $j++)
+        @for ($j = count($properties); $j < count($properties)+5; $j++)
             @include('bitrix.data_storage.iblock_tabs.properties_item', ['property' => null, 'i' => $j, 'iblock' => $iblock])
         @endfor
     @else

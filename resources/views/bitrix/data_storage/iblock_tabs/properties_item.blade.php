@@ -5,32 +5,13 @@
     </td>
     <td>
         <select class="form-control" name="properties[TYPE][{{$i}}]" id="IB_PROPERTY_n{{$i}}_PROPERTY_TYPE">
-            <optgroup label="Базовые типы">
-                <option value="S" selected="">Строка</option>
-                <option value="N">Число</option>
-                <option value="L">Список</option>
-                <option value="F">Файл</option>
-                <option value="G">Привязка к разделам</option>
-                <option value="E">Привязка к элементам</option>
-            </optgroup>
-            <optgroup label="Пользовательские типы">
-                <option value="S:HTML">HTML/текст</option>
-                <option value="S:video">Видео</option>
-                <option value="S:Date">Дата</option>
-                <option value="S:DateTime">Дата/Время</option>
-                <option value="S:map_yandex">Привязка к Яндекс.Карте</option>
-                <option value="S:map_google">Привязка к карте Google Maps</option>
-                <option value="S:UserID">Привязка к пользователю</option>
-                <option value="G:SectionAuto">Привязка к разделам с автозаполнением</option>
-                <option value="S:TopicID">Привязка к теме форума</option>
-                <option value="E:SKU">Привязка к товарам (SKU)</option>
-                <option value="S:FileMan">Привязка к файлу (на сервере)</option>
-                <option value="E:EList">Привязка к элементам в виде списка</option>
-                <option value="S:ElementXmlID">Привязка к элементам по XML_ID</option>
-                <option value="E:EAutocomplete">Привязка к элементам с автозаполнением</option>
-                <option value="S:directory">Справочник</option>
-                <option value="N:Sequence">Счетчик</option>
-            </optgroup>
+            @foreach($properties_types as $properties_type_group)
+                <optgroup label="{{$properties_type_group['label']}}">
+                    @foreach($properties_type_group['props'] as $properties_type)
+                        <option value="{{$properties_type['code']}}" {{$property && $property->type == $properties_type['code'] ? 'selected' : ''}}>{{$properties_type['name']}}</option>
+                    @endforeach
+                </optgroup>
+            @endforeach
         </select>
     </td>
     <td>
