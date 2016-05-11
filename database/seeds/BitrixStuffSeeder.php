@@ -39,6 +39,17 @@ class BitrixStuffSeeder extends Seeder{
 			'FORM_TYPE' => 'checkbox',
 		]);
 
+		// модули ядра (используется как минимум для подстановки при создании обработчиков событий)
+		DB::table('bitrix_core_modules')->insert([
+			'code' => 'main',
+			'name' => 'Главный',
+		]);
+
+		DB::table('bitrix_core_modules')->insert([
+			'code' => 'iblock',
+			'name' => 'Инфоблоки',
+		]);
+
 		// типы опций для arParams компоненты
 		DB::table('bitrix_components_params_types')->insert([
 			'NAME_RU'   => 'Строка',
