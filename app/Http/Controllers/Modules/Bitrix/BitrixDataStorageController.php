@@ -68,7 +68,7 @@ class BitrixDataStorageController extends Controller{
 			'code'      => $params['CODE'],
 			'params'    => json_encode($params) // предыдущие пару параметров дублируются здесь специально, чтобы можно было создавать массив по одному лишь params
 		]);
-		
+
 		foreach ($properties["NAME"] as $c => $name){
 			if (!$name){
 				continue;
@@ -145,6 +145,7 @@ class BitrixDataStorageController extends Controller{
 		}
 
 		BitrixInfoblocks::writeInFile($module);
+
 		//dd();
 
 		return back();
@@ -171,5 +172,14 @@ class BitrixDataStorageController extends Controller{
 		];
 
 		return view("bitrix.data_storage.detail_ib", $data);
+	}
+
+	public function delete_prop(Bitrix $module, BitrixIblocksProps $prop, Request $request){
+		$iblock = $prop->iblock()->first();
+		$prop->delete();
+
+		BitrixInfoblocks::writeInFile($module);
+
+		return back();
 	}
 }

@@ -109,6 +109,7 @@ Route::group(['prefix' => 'my-bitrix'], function (){
 			Route::get('{iblock}', 'Modules\Bitrix\BitrixDataStorageController@detail_ib');
 			Route::get('{iblock}/delete', 'Modules\Bitrix\BitrixDataStorageController@delete_ib');
 			Route::post('{iblock}/save', 'Modules\Bitrix\BitrixDataStorageController@save_ib');
+			Route::get('{prop}/delete_prop', 'Modules\Bitrix\BitrixDataStorageController@delete_prop'); // todo скорее всего ещё подгруппа
 		});
 	});
 });

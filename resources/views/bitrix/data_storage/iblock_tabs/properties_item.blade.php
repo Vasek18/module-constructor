@@ -34,5 +34,12 @@
     </td>
     <td>
     </td>
-    <td>&nbsp;</td>
+    <td>
+        @if($property)
+            <a href="{{ action('Modules\Bitrix\BitrixDataStorageController@delete_prop', [$module->id, $property]) }}"
+               class="btn btn-danger">
+                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+            </a>
+        @endif
+    </td>
 </tr>
