@@ -10,21 +10,27 @@ use App\Http\Requests;
 use App\Http\Controllers\Traits\UserOwnModule;
 use Illuminate\Support\Facades\Response;
 
+/*
+|--------------------------------------------------------------------------
+| Контролер для создания модулей на Битриксе
+|--------------------------------------------------------------------------
+|
+|
+*/
+
 class BitrixController extends Controller{
 	protected $rootFolder = '/construct/bitrix/'; // корневая папка модуля
 
 	use UserOwnModule;
 
-	/*
-	|--------------------------------------------------------------------------
-	| Контролер для создания модулей на Битриксе
-	|--------------------------------------------------------------------------
-	|
-	|
-	*/
-	public function __construct(){
+	protected $request;
+
+	public function __construct(Request $request){
 		parent::__construct();
 		$this->middleware('auth');
+
+		$this->request = $request;
+		// todo почему-то не получило вынести также и модуль
 	}
 
 	public function create(){
@@ -42,9 +48,9 @@ class BitrixController extends Controller{
 	}
 
 	// детальная страница модуля
-	public function show(Bitrix $module, Request $request){
+	public function show(Bitrix $module){
 		if (!$this->userCreatedModule($module->id)){
-			return $this->unauthorized($request);
+			return $this->unauthorized($this->request);
 		}
 		//dd($id);
 		$data = [
@@ -56,33 +62,31 @@ class BitrixController extends Controller{
 	}
 
 	// редактирование параметра
-	public function update($id, Request $request){
-		$module = Bitrix::find($id);
-
-		if (!$this->userCreatedModule($id)){
-			return $this->unauthorized($request);
+	public function update(Bitrix $module){
+		if (!$this->userCreatedModule($module->id)){
+			return $this->unauthorized($this->request);
 		}
-		if ($request->name){
-			$module->MODULE_NAME = $request->name;
+		if ($this->request->name){
+			$module->MODULE_NAME = $this->request->name;
 			$module->save();
 
 			$module->changeVarsInModuleFileAndSave('bitrix/lang/ru/install/index.php', $module->id);
 		}
-		if ($request->description){
-			$module->MODULE_DESCRIPTION = $request->description;
+		if ($this->request->description){
+			$module->MODULE_DESCRIPTION = $this->request->description;
 			$module->save();
 
 			$module->changeVarsInModuleFileAndSave('bitrix/lang/ru/install/index.php', $module->id);
 		}
-		if ($request->version){
-			$module->VERSION = $request->version;
+		if ($this->request->version){
+			$module->VERSION = $this->request->version;
 			$module->save();
 
 			$module->changeVarsInModuleFileAndSave('bitrix/lang/ru/install/index.php', $module->id);
 		}
 
-		if (!$request->ajax()){
-			return redirect(action('Modules\Bitrix\BitrixController@show', $id));
+		if (!$this->request->ajax()){
+			return redirect(action('Modules\Bitrix\BitrixController@show', $module->id));
 		}
 	}
 
@@ -90,14 +94,14 @@ class BitrixController extends Controller{
 	// todo нельзя скачать модуль, если он не оплачен
 	// todo нельзя указать версию ниже нынешней
 	// todo нельзя указать последнюю версию, если были произведены изменения
-	public function download_zip(Bitrix $module, Request $request){
+	public function download_zip(Bitrix $module){
 		if (!$this->userCreatedModule($module->id)){
-			return $this->unauthorized($request);
+			return $this->unauthorized($this->request);
 		}
 
-		//dd($request->version);
+		//dd($this->request->version);
 
-		Bitrix::upgradeVersion($module->id, $request->version);
+		Bitrix::upgradeVersion($module->id, $this->request->version);
 		Bitrix::updateDownloadCount($module->id);
 
 		if ($pathToZip = Bitrix::generateZip($module)){
@@ -111,9 +115,9 @@ class BitrixController extends Controller{
 
 	// удаление модуля
 	// todo подтверждение удаления
-	public function destroy(Bitrix $module, Request $request){
+	public function destroy(Bitrix $module){
 		if (!$this->userCreatedModule($module->id)){
-			return $this->unauthorized($request);
+			return $this->unauthorized($this->request);
 		}
 		// удаляем папку
 		$myModuleFolder = $module->PARTNER_CODE.".".$module->MODULE_CODE;

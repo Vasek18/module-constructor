@@ -39,7 +39,7 @@ Route::group(['prefix' => 'my-bitrix'], function (){
 	Route::get('create', 'Modules\Bitrix\BitrixController@create');
 	Route::post('', 'Modules\Bitrix\BitrixController@store');
 	Route::get('{module}', ['as' => 'bitrix_module_detail', 'uses' => 'Modules\Bitrix\BitrixController@show']);
-	Route::put('{id}', 'Modules\Bitrix\BitrixController@update');
+	Route::put('{module}', 'Modules\Bitrix\BitrixController@update');
 	Route::delete('{module}', 'Modules\Bitrix\BitrixController@destroy');
 	Route::post('{module}/download', 'Modules\Bitrix\BitrixController@download_zip');
 
