@@ -34,13 +34,15 @@ Route::group(['prefix' => 'password'], function (){
 });
 
 // Битрикс
+//Route::group(['prefix' => 'my/bitrix'], function (){
 Route::group(['prefix' => 'my-bitrix'], function (){
-	Route::get('create', 'Modules\Bitrix\BitrixController@index');
+	Route::get('create', 'Modules\Bitrix\BitrixController@create');
 	Route::post('', 'Modules\Bitrix\BitrixController@store');
 	Route::get('{module}', ['as' => 'bitrix_module_detail', 'uses' => 'Modules\Bitrix\BitrixController@show']);
 	Route::put('{id}', 'Modules\Bitrix\BitrixController@update');
 	Route::delete('{module}', 'Modules\Bitrix\BitrixController@destroy');
 	Route::post('{module}/download', 'Modules\Bitrix\BitrixController@download_zip');
+
 
 	// настройки
 	Route::group(['prefix' => '{module}/admin_options'], function (){
@@ -113,3 +115,10 @@ Route::group(['prefix' => 'my-bitrix'], function (){
 		});
 	});
 });
+//Route::post('my/bitrix/{bitrix}/download', 'Modules\Bitrix\BitrixController@download_zip');
+//Route::resource('my/bitrix', 'Modules\Bitrix\BitrixController', [
+//	'names' => [
+//		'show' => 'bitrix_module_detail'
+//	],
+//	'only'  => ['create', 'show', 'store', 'update', 'destroy']
+//]);

@@ -27,7 +27,7 @@ class BitrixController extends Controller{
 		$this->middleware('auth');
 	}
 
-	public function index(){
+	public function create(){
 		return view("bitrix.new", compact('user')); // передаём данные из таблицы пользователей, чтобы подставлять их в формы
 	}
 

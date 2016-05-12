@@ -3,7 +3,7 @@
         <h2>Список модулей</h2>
     </div>
     <div class="col-md-4">
-        <a href="{{ action('Modules\Bitrix\BitrixController@index') }}" class="btn btn-primary btn-lg">Создать модуль на
+        <a href="{{ action('Modules\Bitrix\BitrixController@create') }}" class="btn btn-primary btn-lg">Создать модуль на
             Битриксе</a>
     </div>
 </div>
