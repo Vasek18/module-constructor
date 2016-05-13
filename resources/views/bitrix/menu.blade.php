@@ -16,11 +16,11 @@
                 <li><a href="{{ route('bitrix_module_events_handlers', $module->id) }}">Обработчики событий</a></li>
                 <li><a href="{{ route('bitrix_module_admin_options', $module->id) }}">Страница настроек</a></li>
                 <li><a href="{{ route('bitrix_module_data_storage', $module->id) }}">Хранение данных</a></li>
+                <li><a href="{{ route('bitrix_module_arbitrary_files', $module->id) }}">Произвольные файлы</a></li>
             </ul>
         </div>
     </div>
 </nav>
-
 {{--
 <div class="list-group">
     <a href="{{ route('bitrix_module_detail', $module->id) }}" class="list-group-item">Основное</a>
