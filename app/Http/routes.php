@@ -63,6 +63,7 @@ Route::group(['prefix' => 'my-bitrix'], function (){
 		Route::get('', ['as' => 'bitrix_module_components', 'uses' => 'Modules\Bitrix\BitrixComponentsController@index']);
 		Route::get('create', ['as' => 'bitrix_new_component', 'uses' => 'Modules\Bitrix\BitrixComponentsController@create']);
 		Route::post('', 'Modules\Bitrix\BitrixComponentsController@store');
+		Route::get('{component}/delete', 'Modules\Bitrix\BitrixComponentsController@destroy');
 		Route::get('{component}', ['as' => 'bitrix_component_detail', 'uses' => 'Modules\Bitrix\BitrixComponentsController@show']);
 		Route::post('upload_component_zip', ['as' => 'upload_component_zip', 'uses' => 'Modules\Bitrix\BitrixComponentsController@upload_zip']);
 

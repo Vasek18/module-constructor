@@ -12,8 +12,14 @@
     <h2>Компоненты</h2>
     <div class="list-group">
         @foreach($components as $component)
-            <a class="list-group-item"
-               href="{{action('Modules\Bitrix\BitrixComponentsController@show', [$module->id, $component->id])}}">Компонент "{{$component->name}}" ({{$component->code}})</a>
+            <div class="list-group-item clearfix component">
+                <a href="{{action('Modules\Bitrix\BitrixComponentsController@show', [$module->id, $component->id])}}">Компонент
+                    "{{$component->name}}" ({{$component->code}})</a>
+                <a href="{{ action('Modules\Bitrix\BitrixComponentsController@destroy', [$module->id, $component->id]) }}"
+                   class="btn btn-danger pull-right">
+                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                </a>
+            </div>
         @endforeach
     </div>
 @stop

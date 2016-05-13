@@ -243,7 +243,6 @@ class BitrixComponentsController extends Controller{
 				$paramArr
 			);
 
-
 			// сохранение опций
 			if (count($request['param_'.$i.'_vals_key']) && $request['param_'.$i.'_vals_type'] == "array"){
 				//dd($prop);
@@ -462,5 +461,17 @@ class BitrixComponentsController extends Controller{
 			$component->save();
 		}
 
+	}
+
+	public function destroy(Bitrix $module, BitrixComponent $component, Request $request){
+		if (!$this->userCreatedModule($module->id)){
+			return $this->unauthorized($request);
+		}
+
+		$component->delete();
+
+		$component->deleteFolder();
+
+		return redirect(route('bitrix_module_components', $module->id));
 	}
 }

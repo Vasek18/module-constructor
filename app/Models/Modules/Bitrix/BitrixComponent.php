@@ -143,6 +143,10 @@ class BitrixComponent extends Model{
 		Bitrix::changeVarsInModuleFileAndSave('bitrix\install\components\component_name\lang\ru\.description.php', $module->id, $search, $replace, 'bitrix\install\components\\'.$this->code.'\lang\ru\.description.php');
 	}
 
+	public function deleteFolder(){
+		Storage::disk('user_modules')->deleteDirectory($this->getFolder());
+	}
+
 	public function saveStep($step){
 		$steps = $this->steps;
 
