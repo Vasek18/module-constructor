@@ -179,9 +179,10 @@ class BitrixComponent extends Model{
 	}
 
 	public function getFolder($full = false){
-		$module_folder = Bitrix::getFolder($this->module()->first(), $full);
+		$module = $this->module()->first();
+		$module_folder = Bitrix::getFolder($module, $full);
 
-		return $module_folder.'\install\components\\'.$this->code;
+		return $module_folder.'\install\components\\'.$module->module_full_id.'\\'.$this->code;
 	}
 
 	public function saveParamsInFile(){

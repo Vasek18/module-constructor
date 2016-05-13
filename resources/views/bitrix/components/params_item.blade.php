@@ -27,7 +27,6 @@
     <div class="col-md-2">
         <label class="sr-only" for="param_{{$i}}_group_id">Группа</label>
         <select class="form-control" name="param_group_id[]" id="param_{{$i}}_group_id">
-            <option value="">Выберите</option>
             @foreach($params_groups as $group)
                 <option @if ($param && $param->group_id == $group->id) selected
                         @endif value="{{$group->id}}">{{$group->name?$group->name:$group->code}}</option>
