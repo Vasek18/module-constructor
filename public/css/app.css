@@ -65,3 +65,7 @@ a.you-can-change:hover {
 .text-center {
   text-align: center;
 }
+
+.no-margin {
+  margin: 0;
+}

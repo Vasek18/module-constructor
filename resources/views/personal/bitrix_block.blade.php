@@ -1,9 +1,9 @@
 <div class="row">
-    <div class="col-md-8">
-        <h2>Список модулей</h2>
+    <div class="col-md-9">
+        <h2 class="no-margin">Список модулей</h2>
     </div>
-    <div class="col-md-4">
-        <a href="{{ action('Modules\Bitrix\BitrixController@create') }}" class="btn btn-primary btn-lg">Создать модуль на
+    <div class="col-md-3">
+        <a href="{{ action('Modules\Bitrix\BitrixController@create') }}" class="btn btn-success pull-right">Создать модуль на
             Битриксе</a>
     </div>
 </div>
@@ -18,7 +18,10 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="sections-links col-md-10">
-                        <p> {{$module->MODULE_DESCRIPTION}} </p>
+                        <dl>
+                            <dt>Описание</dt>
+                            <dd>{{$module->MODULE_DESCRIPTION}}</dd>
+                        </dl>
                     </div>
                     <div class="actions col-md-2">
                         <a href="{{ action('Modules\Bitrix\BitrixController@show', $module->id) }}"
