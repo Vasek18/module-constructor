@@ -18,7 +18,7 @@ class BitrixArbitraryFilesController extends Controller{
 	public function index(Bitrix $module, Request $request){
 		$data = [
 			'module' => $module,
-			'files' => $module->arbitraryFiles()->get()
+			'files'  => $module->arbitraryFiles()->get()
 		];
 
 		return view("bitrix.arbitrary_files.index", $data);
@@ -39,8 +39,23 @@ class BitrixArbitraryFilesController extends Controller{
 	 * @param  \Illuminate\Http\Request $request
 	 * @return \Illuminate\Http\Response
 	 */
-	public function store(Request $request){
-		//
+	public function store(Bitrix $module, Request $request){
+		$file = $request->file('file');
+
+		BitrixArbitraryFiles::updateOrCreate( // todo мб другой метод, ведь если файл есть, то мы ничего не обновляем
+			[
+				'module_id' => $module->id,
+				'path'      => $request->path,
+				'filename'  => $file->getClientOriginalName()
+			],
+			[
+				'module_id' => $module->id,
+				'path'      => $request->path,
+				'filename'  => $file->getClientOriginalName()
+			]
+		);
+
+		return back();
 	}
 
 	/**

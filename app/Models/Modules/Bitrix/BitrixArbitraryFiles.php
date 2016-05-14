@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 
 class BitrixArbitraryFiles extends Model{
 	protected $table = 'bitrix_arbitrary_files';
-	protected $fillable = ['module_id', 'filename', 'path'];
+	protected $fillable = ['module_id', 'path', 'filename'];
 	public $timestamps = false;
 
 	public function module(){

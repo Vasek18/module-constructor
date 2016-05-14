@@ -43,7 +43,6 @@ Route::group(['prefix' => 'my-bitrix'], function (){
 	Route::delete('{module}', 'Modules\Bitrix\BitrixController@destroy');
 	Route::post('{module}/download', 'Modules\Bitrix\BitrixController@download_zip');
 
-
 	// настройки
 	Route::group(['prefix' => '{module}/admin_options'], function (){
 		Route::get('', ['as' => 'bitrix_module_admin_options', 'uses' => 'Modules\Bitrix\BitrixOptionsController@index']);
@@ -118,6 +117,7 @@ Route::group(['prefix' => 'my-bitrix'], function (){
 
 	Route::group(['prefix' => '{module}/arbitrary_files'], function (){
 		Route::get('', ['as' => 'bitrix_module_arbitrary_files', 'uses' => 'Modules\Bitrix\BitrixArbitraryFilesController@index']);
+		Route::post('', 'Modules\Bitrix\BitrixArbitraryFilesController@store');
 
 	});
 });
