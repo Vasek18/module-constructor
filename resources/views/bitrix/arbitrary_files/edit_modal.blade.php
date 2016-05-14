@@ -10,6 +10,10 @@
                 <form action="{{ action('Modules\Bitrix\BitrixArbitraryFilesController@update', [$module->id, $file->id]) }}" method="POST">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <div class="form-group">
+                        <label for="filename">Название</label>
+                        <input class="form-control" type="text" name="filename" id="filename" value="{{$file->filename}}" required>
+                    </div>
+                    <div class="form-group">
                         <label for="path">Путь</label>
                         <input class="form-control" type="text" name="path" id="path" value="{{$file->path}}" required>
                     </div>

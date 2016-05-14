@@ -34,6 +34,9 @@ class BitrixArbitraryFilesController extends Controller{
 		if (!in_array(substr($path, -1), ['/', '\\'])){
 			$path .= '/';
 		}
+		$path = preg_replace('/\.+/i', '', $path); // защита от ../
+		$path = preg_replace('/\\\+/i', '/', $path);
+		$path = preg_replace('/\/\/+/i', '/', $path);
 
 		return $path;
 	}
@@ -70,10 +73,18 @@ class BitrixArbitraryFilesController extends Controller{
 
 	public function update(Bitrix $module, BitrixArbitraryFiles $file, Request $request){
 		$path = $this->validatePath($request->path);
+		if (!$request->filename){
+			$filename = $file->filename;
+		}
+		else{
+			$filename = $request->filename;
+		}
+
 		$file->deleteFileFromModuleFolder();
-		Storage::disk('user_modules')->put($file->getFullPath(false, $path).$file->filename, $request->code);
+		Storage::disk('user_modules')->put($file->getFullPath(false, $path).$filename, $request->code);
 
 		$file->update([
+			'filename' => $filename,
 			'path' => $path
 		]);
 
