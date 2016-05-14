@@ -68,6 +68,10 @@ Class {MODULE_CLASS_NAME} extends CModule{
 			}
 		}
 
+		if (\Bitrix\Main\IO\Directory::isDirectoryExists($path = $this->GetPath().'/install/files')){
+			$this->copyArbitraryFiles();
+		}
+
 		return true;
 	}
 
@@ -86,7 +90,39 @@ Class {MODULE_CLASS_NAME} extends CModule{
 			}
 		}
 
+		if (\Bitrix\Main\IO\Directory::isDirectoryExists($path = $this->GetPath().'/install/files')){
+			$this->deleteArbitraryFiles();
+		}
+
 		return true;
+	}
+
+	function copyArbitraryFiles(){
+		$rootPath = $_SERVER["DOCUMENT_ROOT"];
+		$localPath = $this->GetPath().'/install/files';
+
+		$dirIterator = new RecursiveDirectoryIterator($localPath, RecursiveDirectoryIterator::SKIP_DOTS);
+		$iterator = new RecursiveIteratorIterator($dirIterator, RecursiveIteratorIterator::SELF_FIRST);
+
+		foreach ($iterator as $object){
+			$destPath = $rootPath.DIRECTORY_SEPARATOR.$iterator->getSubPathName();
+			($object->isDir()) ? mkdir($destPath) : copy($object, $destPath);
+		}
+	}
+
+	function deleteArbitraryFiles(){
+		$rootPath = $_SERVER["DOCUMENT_ROOT"];
+		$localPath = $this->GetPath().'/install/files';
+
+		$dirIterator = new RecursiveDirectoryIterator($localPath, RecursiveDirectoryIterator::SKIP_DOTS);
+		$iterator = new RecursiveIteratorIterator($dirIterator, RecursiveIteratorIterator::SELF_FIRST);
+
+		foreach ($iterator as $object){
+			if (!$object->isDir()){
+				$file = str_replace($localPath, $rootPath, $object->getPathName());
+				\Bitrix\Main\IO\File::deleteFile($file);
+			}
+		}
 	}
 
 	public function createNecessaryIblocks(){
