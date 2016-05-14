@@ -119,6 +119,7 @@ Route::group(['prefix' => 'my-bitrix'], function (){
 		Route::get('', ['as' => 'bitrix_module_arbitrary_files', 'uses' => 'Modules\Bitrix\BitrixArbitraryFilesController@index']);
 		Route::post('', 'Modules\Bitrix\BitrixArbitraryFilesController@store');
 		Route::get('{file}/delete', 'Modules\Bitrix\BitrixArbitraryFilesController@destroy');
+		Route::post('{file}/update', 'Modules\Bitrix\BitrixArbitraryFilesController@update');
 
 	});
 });

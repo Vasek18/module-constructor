@@ -9,15 +9,18 @@ use App\Http\Controllers\Controller;
 use App\Models\Modules\Bitrix\Bitrix;
 use App\Models\Modules\Bitrix\BitrixArbitraryFiles;
 use App\Http\Controllers\Traits\UserOwnModule;
+use Illuminate\Support\Facades\Storage;
 
 class BitrixArbitraryFilesController extends Controller{
 
 	use UserOwnModule;
 
 	public function index(Bitrix $module, Request $request){
+		$files = $module->arbitraryFiles()->get();
+
 		$data = [
 			'module' => $module,
-			'files'  => $module->arbitraryFiles()->get()
+			'files'  => $files
 		];
 
 		return view("bitrix.arbitrary_files.index", $data);
@@ -27,23 +30,32 @@ class BitrixArbitraryFilesController extends Controller{
 		//
 	}
 
+	protected function validatePath($path){
+		if (!in_array(substr($path, -1), ['/', '\\'])){
+			$path .= '/';
+		}
+
+		return $path;
+	}
+
 	public function store(Bitrix $module, Request $request){
 		$file = $request->file('file');
+		$path = $this->validatePath($request->path);
 
 		$aFile = BitrixArbitraryFiles::updateOrCreate( // todo мб другой метод, ведь если файл есть, то мы ничего не обновляем
 			[
 				'module_id' => $module->id,
-				'path'      => $request->path,
+				'path'      => $path,
 				'filename'  => $file->getClientOriginalName()
 			],
 			[
 				'module_id' => $module->id,
-				'path'      => $request->path,
+				'path'      => $path,
 				'filename'  => $file->getClientOriginalName()
 			]
 		);
 
-		$aFile->putFileInModuleFolder($request->path, $file);
+		$aFile->putFileInModuleFolder($path, $file);
 
 		return back();
 	}
@@ -56,8 +68,16 @@ class BitrixArbitraryFilesController extends Controller{
 		//
 	}
 
-	public function update(Request $request, $id){
-		//
+	public function update(Bitrix $module, BitrixArbitraryFiles $file, Request $request){
+		$path = $this->validatePath($request->path);
+		$file->deleteFileFromModuleFolder();
+		Storage::disk('user_modules')->put($file->getFullPath(false, $path).$file->filename, $request->code);
+
+		$file->update([
+			'path' => $path
+		]);
+
+		return back();
 	}
 
 	public function destroy(Bitrix $module, BitrixArbitraryFiles $file, Request $request){

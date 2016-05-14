@@ -12,23 +12,29 @@ class BitrixArbitraryFiles extends Model{
 	public $timestamps = false;
 
 	public function putFileInModuleFolder($path, $file){
-		$file->move($this->getFullPath($path), $file->getClientOriginalName());
+		$file->move($this->getFullPath(true, $path), $file->getClientOriginalName());
 	}
 
 	public function deleteFileFromModuleFolder(){
-		$file = $this->getFullPath().$this->filename;
+		$file = $this->getFullPath(true).$this->filename;
 		if (file_exists($file)){
 			unlink($file);
 		}
 	}
 
-	public function getFullPath($path = null){
+	public function getFullPath($full = false, $path = null){
 		if (!$path){
 			$path = $this->path;
 		}
-		$moduleFolder = $this->module->getFolderD(true);
+		$moduleFolder = $this->module->getFolderD($full);
 
 		return $moduleFolder.'/install/files'.$path;
+	}
+
+	public function getCodeAttribute(){
+		$code = Storage::disk('user_modules')->get($this->getFullPath().$this->filename);
+
+		return $code;
 	}
 
 	public function module(){
