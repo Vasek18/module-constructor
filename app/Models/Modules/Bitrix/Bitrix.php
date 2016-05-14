@@ -293,8 +293,7 @@ class Bitrix extends Model{
 		$pattern = '/\$MESS\[\"'.$key.'\"\]\s*\=\s*\"[^\"]*\"\;\s*/';
 		if (preg_match($pattern, $file, $matches)){
 			return $matches[0];
-		}
-		else{
+		}else{
 			return '?>'; // тип конец файла
 		}
 	}
@@ -338,6 +337,10 @@ class Bitrix extends Model{
 
 	public function infoblocks(){
 		return $this->hasMany('App\Models\Modules\Bitrix\BitrixInfoblocks', 'module_id');
+	}
+
+	public function arbitraryFiles(){
+		return $this->hasMany('App\Models\Modules\Bitrix\BitrixArbitraryFiles', 'module_id');
 	}
 
 	public function ownedBy(User $user){

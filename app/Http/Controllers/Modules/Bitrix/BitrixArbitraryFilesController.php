@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Modules\Bitrix\Bitrix;
+use App\Models\Modules\Bitrix\BitrixArbitraryFiles;
 
 class BitrixArbitraryFilesController extends Controller{
 	/**
@@ -16,7 +17,8 @@ class BitrixArbitraryFilesController extends Controller{
 	 */
 	public function index(Bitrix $module, Request $request){
 		$data = [
-			'module' => $module
+			'module' => $module,
+			'files' => $module->arbitraryFiles()->get()
 		];
 
 		return view("bitrix.arbitrary_files.index", $data);
