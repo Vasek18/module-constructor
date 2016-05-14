@@ -10,12 +10,25 @@ class BitrixArbitraryFiles extends Model{
 	protected $table = 'bitrix_arbitrary_files';
 	protected $fillable = ['module_id', 'path', 'filename'];
 	public $timestamps = false;
-	public static $filesFolderInModule = '/install/files';
 
-	public function saveFile($path, $file){
+	public function putFileInModuleFolder($path, $file){
+		$file->move($this->getFullPath($path), $file->getClientOriginalName());
+	}
+
+	public function deleteFileFromModuleFolder(){
+		$file = $this->getFullPath().$this->filename;
+		if (file_exists($file)){
+			unlink($file);
+		}
+	}
+
+	public function getFullPath($path = null){
+		if (!$path){
+			$path = $this->path;
+		}
 		$moduleFolder = $this->module->getFolderD(true);
 
-		$file->move($moduleFolder.$this->filesFolderInModule.$path, $file->getClientOriginalName());
+		return $moduleFolder.'/install/files'.$path;
 	}
 
 	public function module(){

@@ -14,7 +14,7 @@
         @foreach($files as $file)
             <div class="list-group-item clearfix file">
                 <a href="#">{{$file->path}}{{$file->filename}}</a>
-                <a href="#"
+                <a href="{{ action('Modules\Bitrix\BitrixArbitraryFilesController@destroy', [$module->id, $file->id]) }}"
                    class="btn btn-danger pull-right">
                     <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                 </a>
