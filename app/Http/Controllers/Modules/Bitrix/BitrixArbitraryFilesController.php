@@ -42,7 +42,7 @@ class BitrixArbitraryFilesController extends Controller{
 	public function store(Bitrix $module, Request $request){
 		$file = $request->file('file');
 
-		BitrixArbitraryFiles::updateOrCreate( // todo мб другой метод, ведь если файл есть, то мы ничего не обновляем
+		$aFile = BitrixArbitraryFiles::updateOrCreate( // todo мб другой метод, ведь если файл есть, то мы ничего не обновляем
 			[
 				'module_id' => $module->id,
 				'path'      => $request->path,
@@ -55,6 +55,8 @@ class BitrixArbitraryFilesController extends Controller{
 			]
 		);
 
+		$aFile->saveFile($request->path, $file);
+		
 		return back();
 	}
 

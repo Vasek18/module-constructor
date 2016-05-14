@@ -221,6 +221,17 @@ class Bitrix extends Model{
 		return $modulesRootFolder.$folder;
 	}
 
+	// todo должно заменить getFolder, а потом убрать D в конце
+	public function getFolderD($fromRoot = true){
+		$modulesRootFolder = '';
+		if ($fromRoot){
+			$modulesRootFolder = Storage::disk('user_modules')->getDriver()->getAdapter()->getPathPrefix();
+		}
+		$folder = $this->PARTNER_CODE.".".$this->MODULE_CODE;
+
+		return $modulesRootFolder.$folder;
+	}
+
 	public static function deleteFolder(Bitrix $module){
 		$folder = $module->PARTNER_CODE.".".$module->MODULE_CODE;
 		Storage::disk('user_modules')->deleteDirectory($folder);
