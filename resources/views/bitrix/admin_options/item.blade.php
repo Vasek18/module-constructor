@@ -16,14 +16,17 @@
         <label class="sr-only" for="option_{{$i}}_type">Тип</label>
         <select class="form-control" name="option_type[]" id="option_{{$i}}_type">
             @foreach($options_types as $type)
-                <option @if ($option && $option->type_id == $type->id) selected
-                        @endif value="{{$type->id}}">{{$type->NAME_RU}}</option>
+                <option
+                        @if ($option && $option->type == $type->FORM_TYPE) selected @endif
+                @if ((!$option || !$option->type) && $type->FORM_TYPE == 'text') selected @endif
+                        value="{{$type->FORM_TYPE}}">{{$type->NAME_RU}}</option>
             @endforeach
         </select>
     </div>
     <div class="col-md-2">
         <a href="#" class="btn btn-default btn-block" data-toggle="modal"
-           data-target="#admin_options_dop_settings_window_{{$i}}">Редактировать</a>
+           data-target="#admin_options_dop_settings_window_{{$i}}">Редактировать
+        </a>
         @include('bitrix.admin_options.dop_settings_window', ['option' => $option, 'i' => $i])
     </div>
     <div class="col-md-1">

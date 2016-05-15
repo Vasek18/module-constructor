@@ -8,27 +8,27 @@ use Auth;
 
 class BitrixAdminOptions extends Model{
 	protected $table = 'bitrix_modules_options';
-	protected $fillable = ['type_id', 'module_id', 'sort', 'code', 'name', 'height', 'width', 'spec_vals', 'spec_vals_args', 'default_value'];
+	protected $fillable = ['type', 'module_id', 'sort', 'code', 'name', 'height', 'width', 'spec_vals', 'spec_vals_args', 'default_value'];
 	public $timestamps = false;
 
-	public static function getDefaultTypeId(){
+	public static function getDefaultType(){
 		$stringType = DB::table('bitrix_modules_options_types')->where('FORM_TYPE', 'text')->first();
-		if ($stringType && $stringType->id){
-			return $stringType->id;
+		if ($stringType && $stringType->FORM_TYPE){
+			return $stringType->FORM_TYPE;
 		}
 
 		return 0;
 	}
 
-	public static function checkTypeId($type_id){
-		if (!$type_id){
-			return BitrixAdminOptions::getDefaultTypeId();
+	public static function checkType($type){
+		if (!$type){
+			return BitrixAdminOptions::getDefaultType();
 		}
-		if (!DB::table('bitrix_modules_options_types')->where('id', $type_id)->first()){
-			return BitrixAdminOptions::getDefaultTypeId();
+		if (!DB::table('bitrix_modules_options_types')->where('FORM_TYPE', $type)->first()){
+			return BitrixAdminOptions::getDefaultType();
 		}
 
-		return $type_id;
+		return $type;
 	}
 
 	// сохраняем настройки в папку модуля
@@ -39,20 +39,11 @@ class BitrixAdminOptions extends Model{
 			$optionsString = '';
 			$optionsLangString = '';
 
-			// получаем типы полей
-			$dboptionsTypes = DB::table('bitrix_modules_options_types')->get(); // приводим к типу, где ключом выступает id, чтобы получать инфу по идентификатору типа // todo скорее всего есть способ легче всё это получать
-			$optionsTypes = [];
-			foreach ($dboptionsTypes as $option){
-				$optionsTypes[$option->id] = $option;
-			}
-
 			foreach ($options as $option){
-				$option_type = $optionsTypes[$option->type_id]->FORM_TYPE;
-
-				$field_params_string = $option->getParamsStringForFile($option_type);
+				$field_params_string = $option->getParamsStringForFile($option->type);
 				//dd($field_params_string);
 				// код, название, значение по умолчанию, [тип поля, параметры]
-				$string = PHP_EOL."\t\t\tarray('".$option->code."', Loc::getMessage('".$module->lang_key."_".strtoupper($option->code)."_TITLE'), '', array('".$option_type."'".$field_params_string.")),";
+				$string = PHP_EOL."\t\t\tarray('".$option->code."', Loc::getMessage('".$module->lang_key."_".strtoupper($option->code)."_TITLE'), '', array('".$option->type."'".$field_params_string.")),";
 				//echo $string;
 
 				$optionsString .= $string;

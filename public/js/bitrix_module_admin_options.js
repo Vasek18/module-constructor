@@ -6,7 +6,7 @@
     type_id = row.find("[name *= _type]").val();
     modal_form = row.find('.modal');
     modal_form.find('.form-group').hide();
-    modal_form.find('[data-for_type_ids *= "' + type_id + '"]').show();
+    modal_form.find('[data-for_type_ids ~= "' + type_id + '"]').show();
     modal_form.find(".only-one input:not([type=radio])").prop("disabled", true);
     if (!modal_form.find(".only-one input[type=radio]:checked")) {
       modal_form.find(".only-one input[type=radio]:first").change();

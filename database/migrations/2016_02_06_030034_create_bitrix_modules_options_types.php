@@ -13,10 +13,9 @@ class CreateBitrixModulesOptionsTypes extends Migration{
 	 */
 	public function up(){
 		Schema::create('bitrix_modules_options_types', function (Blueprint $table){
-			$table->increments('id');
 			$table->string('NAME_RU');
 			$table->string('NAME_EN');
-			$table->string('FORM_TYPE');
+			$table->string('FORM_TYPE')->unique();
 		});
 	}
 

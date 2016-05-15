@@ -72,7 +72,7 @@ class BitrixOptionsController extends Controller{
 			$prop["code"] = $option_code;
 			$prop["name"] = $request['option_name'][$i];
 			$prop["module_id"] = $request['module_id'][$i];
-			$prop["type_id"] = BitrixAdminOptions::checkTypeId($request['option_type'][$i]);
+			$prop["type"] = BitrixAdminOptions::checkType($request['option_type'][$i]);
 			$prop["height"] = $request['option_height'][$i];
 			$prop["width"] = $request['option_width'][$i];
 			$prop["spec_vals"] = $request['option_'.$i.'_vals_type'];
@@ -93,7 +93,7 @@ class BitrixOptionsController extends Controller{
 				$prop["spec_vals_args"] = $request['option_'.$i.'_spec_args'];
 			}
 
-			if ($prop["type_id"] == 5){ // todo хардкод
+			if ($prop["type"] == 'checkbox'){ // todo хардкод
 				$prop["spec_vals_args"] = 'Y'; // если спросят, почему нет выбора, мы ответим "зачем?"
 			}
 
@@ -110,7 +110,7 @@ class BitrixOptionsController extends Controller{
 			);
 
 			// сохранение опций
-			if ($prop["type_id"] == 3 || $prop["type_id"] == 4){ // todo хардкода
+			if ($prop["type"] == 'selectbox' || $prop["type"] == 'multiselectbox'){ // todo хардкода
 				//dd($request["option_'.$i.'_vals_type"]);
 				if (count($request['option_'.$i.'_vals_key']) && $request['option_'.$i.'_vals_type'] == "array"){
 					//dd($prop);

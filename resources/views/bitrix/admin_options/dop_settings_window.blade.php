@@ -7,18 +7,18 @@
                 <h4 class="modal-title">Дополнительные настройки</h4>
             </div>
             <div class="modal-body">
-                <div class="form-group" data-for_type_ids="2">
+                <div class="form-group" data-for_type_ids="textarea">
                     <label for="option_{{$i}}_height">Высота</label>
                     <input class="form-control" type="text" name="option_height[]" id="option_{{$i}}_height"
                            @if ($option) value="{{$option->height}}" @endif>
                 </div>
-                <div class="form-group" data-for_type_ids="1,2">
+                <div class="form-group" data-for_type_ids="text textarea">
                     <label for="option_{{$i}}_width">Ширина</label>
                     <input class="form-control" type="text" name="option_width[]" id="option_{{$i}}_width"
                            @if ($option) value="{{$option->width}}" @endif>
                 </div>
                 {{--                {{dd($option->vals)}}--}}
-                <div class="form-group only-one" data-for_type_ids="3,4">
+                <div class="form-group only-one" data-for_type_ids="selectbox multiselectbox">
                     <div class="item">
                         <label>
                             <input type="radio" name="option_{{$i}}_vals_type" value="array"
@@ -121,7 +121,7 @@
                                @if ($option && $option->spec_vals == 'iblock_props_list') value="{{$option->spec_vals_args}}" @endif>
                     </div>
                 </div>
-                <div class="form-group" data-for_type_ids="1, 2, 3, 4">
+                <div class="form-group" data-for_type_ids="text textarea selectbox multiselectbox">
                     <label for="option_{{$i}}_default_value">Значение по умолчанию</label>
                     <input class="form-control" type="text" name="default_value[]" id="option_{{$i}}_default_value"
                            @if ($option) value="{{$option->default_value}}" @endif>
