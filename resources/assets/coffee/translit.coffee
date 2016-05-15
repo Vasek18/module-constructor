@@ -85,3 +85,20 @@ window.translit = (str, saveCase) ->
 		newStr = newStr.toLowerCase()
 
 	return newStr
+
+
+# привязываемся к событию изменения поля с которого будем брать транслитерацию
+$(document).ready( ->
+	$("[data-translit_from]").each( (index, element) ->
+		elToListenID = $(element).attr('data-translit_from')
+		$("##{elToListenID}").attr('data-translit_to', $(element).attr('id'))
+
+		$(document).on "change", "##{elToListenID}", () ->
+			val = $(this).val()
+			elToChangeID = $(this).attr('data-translit_to')
+			$("##{elToChangeID}").val(translit(val))
+
+		return
+	)
+	return
+)

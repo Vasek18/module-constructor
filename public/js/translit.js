@@ -91,6 +91,20 @@
     return newStr;
   };
 
+  $(document).ready(function() {
+    $("[data-translit_from]").each(function(index, element) {
+      var elToListenID;
+      elToListenID = $(element).attr('data-translit_from');
+      $("#" + elToListenID).attr('data-translit_to', $(element).attr('id'));
+      $(document).on("change", "#" + elToListenID, function() {
+        var elToChangeID, val;
+        val = $(this).val();
+        elToChangeID = $(this).attr('data-translit_to');
+        return $("#" + elToChangeID).val(translit(val));
+      });
+    });
+  });
+
 }).call(this);
 
 //# sourceMappingURL=translit.js.map

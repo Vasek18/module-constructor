@@ -55,7 +55,7 @@
                                 <label class="col-md-4 control-label">Название модуля</label>
                                 <div class="col-md-6">
                                     <input type="text" class="form-control" name="MODULE_NAME"
-                                           value="{{ old('MODULE_NAME') }}" required aria-describedby="MODULE_NAME_help">
+                                           value="{{ old('MODULE_NAME') }}" required aria-describedby="MODULE_NAME_help" id="module_name">
                                     <span class="help-block" id="MODULE_NAME_help">Под этим названием модуль будет показываться на сайте Маркетплейса, а также в админке у покупателей, в том числе и в списке модулей с настройками</span>
                                 </div>
                             </div>
@@ -74,7 +74,7 @@
                                 <div class="col-md-6">
                                     <input type="text" class="form-control" name="MODULE_CODE"
                                            value="{{ old('MODULE_CODE') }}" required pattern="[a-z]+[a-z0-9]*"
-                                           aria-describedby="MODULE_CODE_help">
+                                           aria-describedby="MODULE_CODE_help" data-translit_from="module_name" id="module_code">
                                     <span class="help-block" id="MODULE_CODE_help">Идентификатор модуля на сайте Битрикса и в админках покупателей. Учавствует в названии модуля {Код партнёра}.{Код модуля}.<br>Только маленькие латинские буквы</span>
                                 </div>
                             </div>
