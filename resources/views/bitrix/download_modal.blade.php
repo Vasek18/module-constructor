@@ -1,4 +1,4 @@
-<div class="modal fade" tabindex="-1" role="dialog" id="modal_download">
+<div class="modal fade" tabindex="-1" role="dialog" id="modal_download_{{$module->id}}">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

@@ -1,10 +1,10 @@
+<h3>Битрикс
+    <a href="{{ action('Modules\Bitrix\BitrixController@create') }}" class="btn btn-success pull-right">Создать
+        модуль на
+        Битриксе
+    </a>
+</h3>
 @if ( !$bitrix_modules->isEmpty())
-    <h3>Битрикс
-        <a href="{{ action('Modules\Bitrix\BitrixController@create') }}" class="btn btn-success pull-right">Создать
-            модуль на
-            Битриксе
-        </a>
-    </h3>
     @foreach($bitrix_modules as $module)
         <div class="panel panel-default">
             <div class="panel-heading">Модуль "{{$module->MODULE_NAME}}" ({{$module->PARTNER_CODE}}
@@ -24,8 +24,8 @@
                     </div>
                     <div class="actions col-md-2">
                         @if ($module->can_download)
-                            <a data-toggle="modal" data-target="#modal_download" href="#"
-                               class="btn btn-sm btn-block btn-primary">
+                            <a data-toggle="modal" data-target="#modal_download_{{$module->id}}" href="#"
+                               class="btn btn-sm btn-block btn-success">
                                 <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
                                 Скачать
                             </a>
@@ -41,28 +41,7 @@
                             Удалить
                         </a>
                         @include('bitrix.download_modal', [ 'module' => $module])
-                        <div class="modal fade" tabindex="-1" role="dialog" id="modal_delete_{{$module->id}}">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal"
-                                                aria-label="Close"><span
-                                                    aria-hidden="true">&times;</span></button>
-                                        <h4 class="modal-title">Удаление модуля</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="alert alert-danger" role="alert">Вы уверены?</div>
-                                        <form method="post"
-                                              action="{{ action('Modules\Bitrix\BitrixController@destroy', $module->id) }}"
-                                              class="readonly">
-                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                            {{ method_field('DELETE') }}
-                                            <button class="btn btn-danger">Удалить</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        @include('bitrix.delete_modal', [ 'module' => $module])
                     </div>
                 </div>
                 <hr>
