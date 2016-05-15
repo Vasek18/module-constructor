@@ -17,7 +17,6 @@ class CreateBitrixComponentsTemplatesTable extends Migration{
 			$table->string('code');
 			$table->string('name');
 			$table->text('template_php'); // todo я не уверен, что здесь его место
-			$table->timestamps();
 		});
 	}
 

@@ -19,7 +19,6 @@ class CreateBitrixEventsHandlersTable extends Migration{
 			$table->string('class');
 			$table->string('method');
 			$table->longText('php_code')->nullable();
-			$table->timestamps();
 		});
 	}
 
