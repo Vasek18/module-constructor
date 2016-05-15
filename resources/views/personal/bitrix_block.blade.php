@@ -1,17 +1,10 @@
-<div class="row">
-    <div class="col-md-9">
-        <h2 class="no-margin">Список модулей</h2>
-    </div>
-    <div class="col-md-3">
+@if ( !$bitrix_modules->isEmpty())
+    <h3>Битрикс
         <a href="{{ action('Modules\Bitrix\BitrixController@create') }}" class="btn btn-success pull-right">Создать
             модуль на
             Битриксе
         </a>
-    </div>
-</div>
-
-@if ( !$bitrix_modules->isEmpty())
-    <h3>Битрикс</h3>
+    </h3>
     @foreach($bitrix_modules as $module)
         <div class="panel panel-default">
             <div class="panel-heading">Модуль "{{$module->MODULE_NAME}}" ({{$module->PARTNER_CODE}}
@@ -22,7 +15,11 @@
                     <div class="sections-links col-md-10">
                         <dl>
                             <dt>Описание</dt>
-                            <dd>{{$module->MODULE_DESCRIPTION}}</dd>
+                            @if($module->MODULE_DESCRIPTION)
+                                <dd>{{$module->MODULE_DESCRIPTION}}</dd>
+                            @else
+                                <dd><span class="not-exist">Отсутствует</span></dd>
+                            @endif
                         </dl>
                     </div>
                     <div class="actions col-md-2">
@@ -70,23 +67,27 @@
                 </div>
                 <hr>
                 <p>
-                    <a class="btn btn-primary" role="button" data-toggle="collapse"
+                    <a class="btn btn-info" role="button" data-toggle="collapse"
                        href="#module_dop_indo_{{$module->id}}"
                        aria-expanded="false" aria-controls="module_dop_indo_{{$module->id}}">
-                        Раскрыть дополнительную информацию
+                        Дополнительная информация
                     </a>
                 </p>
                 <div class="collapse" id="module_dop_indo_{{$module->id}}">
                     <div class="row">
                         <div class="sections-links col-md-10">
                             <h3>Компоненты</h3>
-                            <ul>
-                                @foreach($module->components as $component)
-                                    <li>
-                                        <a href="{{action('Modules\Bitrix\BitrixComponentsController@show', [$module->id, $component->id])}}">{{$component->name}}</a>
-                                    </li>
-                                @endforeach
-                            </ul>
+                            @if (count($module->components))
+                                <ul>
+                                    @foreach($module->components as $component)
+                                        <li>
+                                            <a href="{{action('Modules\Bitrix\BitrixComponentsController@show', [$module->id, $component->id])}}">{{$component->name}}</a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @else
+                                <p>Нет собственных компонент</p>
+                            @endif
                             <p>
                                 <a class="btn btn-primary"
                                    href="{{ route('bitrix_module_components', $module->id) }}">Перейти в раздел
@@ -95,13 +96,17 @@
                             </p>
                             <hr>
                             <h3>Обработчики событий</h3>
-                            <ul>
-                                @foreach($module->handlers as $handlers)
-                                    <li>
-                                        {{$handlers->class}}::{{$handlers->method}}
-                                    </li>
-                                @endforeach
-                            </ul>
+                            @if (count($module->handlers))
+                                <ul>
+                                    @foreach($module->handlers as $handlers)
+                                        <li>
+                                            {{$handlers->class}}::{{$handlers->method}}
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @else
+                                <p>Ни одного</p>
+                            @endif
                             <p>
                                 <a class="btn btn-primary"
                                    href="{{ route('bitrix_module_events_handlers', $module->id) }}">Перейти
@@ -127,6 +132,8 @@
                                         </li>
                                     @endforeach
                                 </ul>
+                            @else
+                                <p>Никакие данные не хранятся</p>
                             @endif
                             <p>
                                 <a class="btn btn-primary"
