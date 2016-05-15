@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder{
 			'email'          => 'aristov-92@mail.ru',
 			'password'       => bcrypt("12345678"),
 			'remember_token' => str_random(10),
+			'money'          => 1487
 		]);
 
 		$this->call(BitrixStuffSeeder::class);

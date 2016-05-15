@@ -101,13 +101,18 @@ class BitrixController extends Controller{
 
 		//dd($this->request->version);
 
-		Bitrix::upgradeVersion($module->id, $this->request->version);
-		Bitrix::updateDownloadCount($module->id);
+		if ($module->can_download){
+			Bitrix::upgradeVersion($module->id, $this->request->version);
+			Bitrix::updateDownloadCount($module->id);
 
-		if ($pathToZip = Bitrix::generateZip($module)){
-			$response = Response::download($pathToZip)->deleteFileAfterSend(true);
-			ob_end_clean(); // без этого архив скачивается поверждённым
-			return $response;
+			if ($pathToZip = Bitrix::generateZip($module)){
+				$response = Response::download($pathToZip)->deleteFileAfterSend(true);
+				ob_end_clean(); // без этого архив скачивается поверждённым
+
+				$this->user->makeBuy($module->priceForDownload);
+
+				return $response;
+			}
 		}
 
 		return back();

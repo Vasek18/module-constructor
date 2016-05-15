@@ -26,11 +26,13 @@
                         </dl>
                     </div>
                     <div class="actions col-md-2">
-                        <a data-toggle="modal" data-target="#modal_download" href="#"
-                           class="btn btn-sm btn-block btn-primary">
-                            <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
-                            Скачать
-                        </a>
+                        @if ($module->can_download)
+                            <a data-toggle="modal" data-target="#modal_download" href="#"
+                               class="btn btn-sm btn-block btn-primary">
+                                <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+                                Скачать
+                            </a>
+                        @endif
                         <a href="{{ action('Modules\Bitrix\BitrixController@show', $module->id) }}"
                            class="btn btn-sm btn-block btn-primary">
                             <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>

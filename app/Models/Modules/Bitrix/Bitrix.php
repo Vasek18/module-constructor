@@ -33,6 +33,8 @@ class Bitrix extends Model{
 		'{PARTNER_URI}'        => 'PARTNER_URI'
 	];
 
+	public $priceForDownload = 500;
+
 	// на случай, если я где-то буду использовать create, эти поля можно будет записывать
 	protected $fillable = ['MODULE_NAME', 'MODULE_DESCRIPTION', 'MODULE_CODE', 'PARTNER_NAME', 'PARTNER_URI', 'PARTNER_CODE', 'VERSION'];
 
@@ -307,6 +309,16 @@ class Bitrix extends Model{
 		}else{
 			return '?>'; // тип конец файла
 		}
+	}
+
+	public function getCanDownloadAttribute(){
+		$user = User::find(Auth::id());
+
+		if ($user->money >= $this->priceForDownload){
+			return true;
+		}
+
+		return false;
 	}
 
 	public function getModuleFolderAttribute(){

@@ -45,7 +45,11 @@
             </form>
         </div>
         <div class="col-md-2">
-            <a class="btn btn-primary btn-block" data-toggle="modal" data-target="#modal_download" href="#">Скачать</a>
+            @if ($module->can_download)
+                <a class="btn btn-primary btn-block" data-toggle="modal" data-target="#modal_download" href="#">
+                    Скачать
+                </a>
+            @endif
             <a class="btn btn-danger btn-block" data-toggle="modal" data-target="#modal_delete" href="#">Удалить</a>
         </div>
     </div>
