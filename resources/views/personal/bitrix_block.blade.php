@@ -3,8 +3,10 @@
         <h2 class="no-margin">Список модулей</h2>
     </div>
     <div class="col-md-3">
-        <a href="{{ action('Modules\Bitrix\BitrixController@create') }}" class="btn btn-success pull-right">Создать модуль на
-            Битриксе</a>
+        <a href="{{ action('Modules\Bitrix\BitrixController@create') }}" class="btn btn-success pull-right">Создать
+            модуль на
+            Битриксе
+        </a>
     </div>
 </div>
 
@@ -24,6 +26,11 @@
                         </dl>
                     </div>
                     <div class="actions col-md-2">
+                        <a data-toggle="modal" data-target="#modal_download" href="#"
+                           class="btn btn-sm btn-block btn-primary">
+                            <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+                            Скачать
+                        </a>
                         <a href="{{ action('Modules\Bitrix\BitrixController@show', $module->id) }}"
                            class="btn btn-sm btn-block btn-primary">
                             <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
@@ -34,6 +41,7 @@
                             <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                             Удалить
                         </a>
+                        @include('bitrix.download_modal', [ 'module' => $module])
                         <div class="modal fade" tabindex="-1" role="dialog" id="modal_delete_{{$module->id}}">
                             <div class="modal-dialog">
                                 <div class="modal-content">
@@ -80,7 +88,8 @@
                             <p>
                                 <a class="btn btn-primary"
                                    href="{{ route('bitrix_module_components', $module->id) }}">Перейти в раздел
-                                    "Компоненты"</a>
+                                    "Компоненты"
+                                </a>
                             </p>
                             <hr>
                             <h3>Обработчики событий</h3>
@@ -94,7 +103,8 @@
                             <p>
                                 <a class="btn btn-primary"
                                    href="{{ route('bitrix_module_events_handlers', $module->id) }}">Перейти
-                                    в раздел "Обработчики событий"</a>
+                                    в раздел "Обработчики событий"
+                                </a>
                             </p>
                             <hr>
                             <h3>Настройки модуля</h3>
@@ -102,7 +112,8 @@
                             <p>
                                 <a class="btn btn-primary"
                                    href="{{ route('bitrix_module_admin_options', $module->id) }}">Перейти
-                                    в раздел "Страница настроек"</a>
+                                    в раздел "Страница настроек"
+                                </a>
                             </p>
                             <hr>
                             @if (count($module->infoblocks))
@@ -118,7 +129,8 @@
                             <p>
                                 <a class="btn btn-primary"
                                    href="{{ route('bitrix_module_data_storage', $module->id) }}">Перейти
-                                    в раздел "Хранение данных"</a>
+                                    в раздел "Хранение данных"
+                                </a>
                             </p>
                         </div>
                     </div>
