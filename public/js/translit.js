@@ -100,7 +100,7 @@
         var elToChangeID, val;
         val = $(this).val();
         elToChangeID = $(this).attr('data-translit_to');
-        return $("#" + elToChangeID).val(translit(val));
+        $("#" + elToChangeID).val(translit(val));
       });
     });
   });

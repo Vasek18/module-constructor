@@ -12,7 +12,7 @@ use App\Models\Modules\Bitrix\BitrixComponentsParamsGroups;
 class BitrixComponent extends Model{
 	protected $table = 'bitrix_components';
 	protected $fillable = ['name', 'sort', 'code', 'icon_path', 'desc'];
-
+	public $timestamps = false;
 
 	// создание компонента
 	public static function store($module, Request $request){
@@ -244,7 +244,6 @@ class BitrixComponent extends Model{
 			$paramText .= "\t\t".'),'.PHP_EOL."\t\t";
 
 			$paramsText .= $paramText;
-
 
 			$paramsLangText .= '$MESS["'.$langKeyAttr.'"] = "'.$param->name.'";'.PHP_EOL;
 		}

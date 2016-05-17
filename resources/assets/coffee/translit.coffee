@@ -88,6 +88,7 @@ window.translit = (str, saveCase) ->
 
 
 # привязываемся к событию изменения поля с которого будем брать транслитерацию
+# todo проблема в том, что у элемента с data-translit_from тоже должен быть указан айди
 $(document).ready( ->
 	$("[data-translit_from]").each( (index, element) ->
 		elToListenID = $(element).attr('data-translit_from')
@@ -98,6 +99,8 @@ $(document).ready( ->
 			elToChangeID = $(this).attr('data-translit_to')
 			$("##{elToChangeID}").val(translit(val))
 
+			return
+			
 		return
 	)
 	return
