@@ -43,6 +43,7 @@ class BitrixComponent extends Model{
 		);
 
 		$this->saveDescriptionFileInFolder();
+		$this->saveDescriptionLangFileInFolder();
 
 		$this->saveStep(2);
 	}
@@ -73,7 +74,7 @@ class BitrixComponent extends Model{
 		$this->saveStep(6);
 	}
 
-	public function saveInFolder(){
+	public function saveInFolder(){ // todo я вообще его юзаю?
 		$this->saveDescriptionFileInFolder();
 		$this->saveDescriptionLangFileInFolder();
 	}
@@ -109,9 +110,6 @@ class BitrixComponent extends Model{
 
 	public function saveDescriptionLangFileInFolder(){
 		$module = $this->module()->first();
-		$module_folder = $module->module_folder;
-
-		Bitrix::disk()->makeDirectory($module_folder."/install/components/".$this->code);
 
 		$path_items = $this->path_items()->get();
 
@@ -138,7 +136,7 @@ class BitrixComponent extends Model{
 
 		//dd($replace);
 
-		Bitrix::changeVarsInModuleFileAndSave('bitrix\install\components\component_name\lang\ru\.description.php', $module->id, $search, $replace, 'bitrix\install\components\\'.$this->code.'\lang\ru\.description.php');
+		Bitrix::changeVarsInModuleFileAndSave('bitrix\install\components\component_name\lang\ru\.description.php', $module->id, $search, $replace, $this->getFolder().'\lang\ru\.description.php');
 	}
 
 	public function saveStep($step){

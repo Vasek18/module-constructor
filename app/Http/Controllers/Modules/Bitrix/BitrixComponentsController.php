@@ -80,6 +80,34 @@ class BitrixComponentsController extends Controller{
 		return view("bitrix.components.detail", $data);
 	}
 
+	public function update(Bitrix $module, BitrixComponent $component, Request $request){
+
+		if ($request->name){
+			$component->name = $request->name;
+			$component->save();
+
+			$component->saveDescriptionLangFileInFolder();
+		}
+
+		if ($request->desc){
+			$component->desc = $request->desc;
+			$component->save();
+
+			$component->saveDescriptionLangFileInFolder();
+		}
+
+		if ($request->sort){
+			$component->sort = $request->sort;
+			$component->save();
+
+			$component->saveDescriptionFileInFolder();
+		}
+
+		if (!$request->ajax()){
+			return redirect(action('Modules\Bitrix\BitrixComponentsController@index', $module->id));
+		}
+	}
+
 	public function show_visual_path(Bitrix $module, BitrixComponent $component, Request $request){
 		$data = [
 			'module'     => $module,
