@@ -59,6 +59,7 @@ class BitrixComponentsController extends Controller{
 
 		$component = BitrixComponent::store($module, $request);
 
+		$component->createFolder();
 		$component->createDefaultPath();
 		$component->createDefaultComponentPhp();
 		$component->createDefaultTemplate();

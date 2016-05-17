@@ -42,6 +42,8 @@ class BitrixComponent extends Model{
 			]
 		);
 
+		$this->saveDescriptionFileInFolder();
+
 		$this->saveStep(2);
 	}
 
@@ -79,8 +81,6 @@ class BitrixComponent extends Model{
 	// todo третий уровень
 	public function saveDescriptionFileInFolder(){
 		$module = $this->module()->first();
-		$module_folder = $module->module_folder;
-		Bitrix::disk()->makeDirectory($module_folder."/install/components/".$this->code);
 
 		$path_items = $this->path_items()->get();
 
@@ -104,9 +104,7 @@ class BitrixComponent extends Model{
 			$path_items[0]->name,
 		);
 
-		//dd($replace);
-
-		Bitrix::changeVarsInModuleFileAndSave('bitrix\install\components\component_name\.description.php', $module->id, $search, $replace, 'bitrix\install\components\\'.$this->code.'\.description.php');
+		Bitrix::changeVarsInModuleFileAndSave('bitrix\install\components\component_name\.description.php', $module->id, $search, $replace, $this->getFolder().'\.description.php');
 	}
 
 	public function saveDescriptionLangFileInFolder(){
@@ -141,10 +139,6 @@ class BitrixComponent extends Model{
 		//dd($replace);
 
 		Bitrix::changeVarsInModuleFileAndSave('bitrix\install\components\component_name\lang\ru\.description.php', $module->id, $search, $replace, 'bitrix\install\components\\'.$this->code.'\lang\ru\.description.php');
-	}
-
-	public function deleteFolder(){
-		Storage::disk('user_modules')->deleteDirectory($this->getFolder());
 	}
 
 	public function saveStep($step){
@@ -183,6 +177,14 @@ class BitrixComponent extends Model{
 		$module_folder = Bitrix::getFolder($module, $full);
 
 		return $module_folder.'\install\components\\'.$module->module_full_id.'\\'.$this->code;
+	}
+
+	public function createFolder(){
+		Bitrix::disk()->makeDirectory($this->getFolder());
+	}
+
+	public function deleteFolder(){
+		Storage::disk('user_modules')->deleteDirectory($this->getFolder());
 	}
 
 	public function saveParamsInFile(){

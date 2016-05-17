@@ -54,7 +54,7 @@
         <div class="form-group">
             <label class="col-md-4 control-label">Вес сортировки компонента</label>
             <div class="col-md-6">
-                <input type="text" name="COMPONENT_SORT" class="form-control" aria-describedby="COMPONENT_SORT_help">
+                <input type="text" name="COMPONENT_SORT" class="form-control" aria-describedby="COMPONENT_SORT_help" value="500">
                 <span class="help-block" id="COMPONENT_SORT_help">Это нужно для сортировки в списке компонентов внутри группы при редактировании страницы.</span>
             </div>
         </div>
