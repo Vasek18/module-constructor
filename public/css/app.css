@@ -75,7 +75,18 @@ a.you-can-change {
 
 a.you-can-change:hover {
   text-decoration: none;
-  background: #ccc;
+  background: #eee;
+}
+
+.draggable {
+  cursor: pointer;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+.draggable:hover,
+.draggable:focus {
+  background: #eee;
 }
 
 .text-center {

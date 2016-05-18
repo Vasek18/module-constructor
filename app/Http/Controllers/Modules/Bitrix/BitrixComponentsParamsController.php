@@ -26,7 +26,7 @@ class BitrixComponentsParamsController extends Controller{
 		$data = [
 			'module'        => $module,
 			'component'     => $component,
-			'params'        => $component->params()->get(),
+			'params'        => $component->params()->orderBy('sort', 'asc')->get(),
 			'params_types'  => BitrixComponentsParamsTypes::all(),
 			'params_groups' => BitrixComponentsParamsGroups::all()
 		];

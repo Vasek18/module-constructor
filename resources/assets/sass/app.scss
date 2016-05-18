@@ -2,7 +2,7 @@
 
 $footerHeight : 50px;
 $footerHeightReverse : -50px;
-$hoverBackgroundColor : #ccc;
+$hoverBackgroundColor : #eee;
 $fontColor : #777;
 
 html, body{
@@ -71,15 +71,14 @@ a.you-can-change{
     background      : $hoverBackgroundColor;
   }
 }
-//.draggable{
-//  cursor         : pointer;
-//  padding-top    : 2px;
-//  padding-bottom : 2px;
-//  &:hover, &:focus{
-//    background : $hoverBackgroundColor;
-//  }
-//}
-
+.draggable{
+  cursor         : pointer;
+  padding-top    : 2px;
+  padding-bottom : 2px;
+  &:hover, &:focus{
+    background : $hoverBackgroundColor;
+  }
+}
 .text-center{
   text-align : center;
 }

@@ -19,7 +19,8 @@
                     <h4 class="modal-title">Загрузка файлов параметров компонента</h4>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ action('Modules\Bitrix\BitrixComponentsParamsController@upload_params_files', [$module->id, $component->id]) }}" method="POST"
+                    <form action="{{ action('Modules\Bitrix\BitrixComponentsParamsController@upload_params_files', [$module->id, $component->id]) }}"
+                          method="POST"
                           enctype="multipart/form-data">
                         {{ csrf_field() }}
                         <div class="form-group">
@@ -45,14 +46,11 @@
           action="{{ action('Modules\Bitrix\BitrixComponentsParamsController@store', [$module->id, $component->id]) }}">
         {{ csrf_field() }}
         <div class="row option-headers">
-            <div class="col-md-1">
-                <label>Сортировка</label>
+            <div class="col-md-3">
+                <label>Название свойства</label>
             </div>
             <div class="col-md-2">
                 <label>Код свойства</label>
-            </div>
-            <div class="col-md-2">
-                <label>Название свойства</label>
             </div>
             <div class="col-md-2">
                 <label>Тип свойства</label>
@@ -66,12 +64,14 @@
                 <label>Удалить</label>
             </div>
         </div>
-        {{--todo вынести row--}}
-        {{--@each('bitrix.admin_options.item', $params, 'option')--}}
-        @foreach($params as $i => $param)
-            {{--{{dd($param)}}--}}
-            @include('bitrix.components.params.item', ['param' => $param, 'i' => $i, 'module' => $module, 'component' => $component])
-        @endforeach
+        <div class="draggable-container">
+            {{--todo вынести row--}}
+            {{--@each('bitrix.admin_options.item', $params, 'option')--}}
+            @foreach($params as $i => $param)
+                {{--{{dd($param)}}--}}
+                @include('bitrix.components.params.item', ['param' => $param, 'i' => $i, 'module' => $module, 'component' => $component])
+            @endforeach
+        </div>
         {{-- Дополнительно показываем ещё несколько пустых строк --}}
         @for ($j = count($params); $j < count($params)+5; $j++)
             @include('bitrix.components.params.item', ['param' => null, 'i' => $j, 'module' => $module, 'component' => $component])

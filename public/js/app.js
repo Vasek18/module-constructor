@@ -2,11 +2,8 @@
   $('.draggable').draggable();
 
   $(document).on("mouseup", ".draggable", function() {
-    var i;
-    i = 0;
-    $('.draggable .sort-val').each(function() {
+    $('.draggable .sort-val').each(function(i, el) {
       $(this).val(i);
-      return i++;
     });
   });
 

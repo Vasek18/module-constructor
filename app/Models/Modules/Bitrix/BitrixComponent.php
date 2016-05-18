@@ -295,7 +295,7 @@ class BitrixComponent extends Model{
 		$searchLang = Array('{GROUPS_LANG}', '{PARAMS_LANG}');
 		$replaceLang = Array($groupsLangText, $paramsLangText);
 
-		Bitrix::changeVarsInModuleFileAndSave('bitrix\install\components\component_name\.parameters.php', $module->id, $search, $replace, 'bitrix\install\components\\'.$this->code.'\.parameters.php');
+		Bitrix::changeVarsInModuleFileAndSave('bitrix\install\components\component_name\.parameters.php', $module->id, $search, $replace, $this->getFolder().'\.parameters.php');
 		Bitrix::changeVarsInModuleFileAndSave('bitrix\install\components\component_name\lang\ru\.parameters.php', $module->id, $searchLang, $replaceLang, 'bitrix\install\components\\'.$this->code.'\lang\ru\.parameters.php');
 
 		return true;
