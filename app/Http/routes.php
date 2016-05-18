@@ -66,6 +66,7 @@ Route::group(['prefix' => 'my-bitrix'], function (){
 		Route::get('{component}/delete', 'Modules\Bitrix\BitrixComponentsController@destroy');
 		Route::get('{component}', ['as' => 'bitrix_component_detail', 'uses' => 'Modules\Bitrix\BitrixComponentsController@show']);
 		Route::post('upload_component_zip', ['as' => 'upload_component_zip', 'uses' => 'Modules\Bitrix\BitrixComponentsController@upload_zip']);
+		Route::get('{component}/download', 'Modules\Bitrix\BitrixComponentsController@download');
 
 		// путь в визуальном редакторе
 		Route::group(['prefix' => '{component}/visual_path'], function (){

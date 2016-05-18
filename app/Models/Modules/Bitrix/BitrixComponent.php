@@ -214,6 +214,18 @@ class BitrixComponent extends Model{
 		Storage::disk('user_modules')->deleteDirectory($this->getFolder());
 	}
 
+	public function generateZip(){
+		$archiveName = $this->code.".zip";
+
+		//dd(glob($this->getFolder(true). '/{,.[a-zA-Z]}*', GLOB_BRACE));
+
+		$zipper = new \Chumper\Zipper\Zipper;
+		//$zipper->make($archiveName)->folder($this->code)->add(glob($this->getFolder(true). '/{,.}*', GLOB_BRACE))->close();
+		$zipper->make($archiveName)->folder($this->code)->add($this->getFolder(true))->close();
+
+		return $archiveName;
+	}
+
 	public function saveParamsInFile(){
 		$module = $this->module()->first();
 		$params = $this->params()->get();

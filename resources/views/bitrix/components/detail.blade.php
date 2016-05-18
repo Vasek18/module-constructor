@@ -41,9 +41,19 @@
         </form>
     </div>
     <div class="col-md-1">
-        <a href="{{ action('Modules\Bitrix\BitrixComponentsController@destroy', [$module->id, $component->id]) }}"
-           class="btn btn-danger">
-            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-        </a>
+        <p>
+            <a href="{{ action('Modules\Bitrix\BitrixComponentsController@download', [$module->id, $component->id]) }}"
+               class="btn btn-sm btn-success">
+                <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+                Скачать
+            </a>
+        </p>
+        <p>
+            <a href="{{ action('Modules\Bitrix\BitrixComponentsController@destroy', [$module->id, $component->id]) }}"
+               class="btn btn-sm btn-danger">
+                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                Удалить
+            </a>
+        </p>
     </div>
 @stop

@@ -17,6 +17,7 @@ use Chumper\Zipper\Zipper;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Modules\Bitrix\BitrixComponentsParamsGroups;
 use App\Models\Modules\Bitrix\BitrixComponentsParamsVals;
+use Illuminate\Support\Facades\Response;
 
 class BitrixComponentsController extends Controller{
 	use UserOwnModule;
@@ -106,6 +107,19 @@ class BitrixComponentsController extends Controller{
 		if (!$request->ajax()){
 			return redirect(action('Modules\Bitrix\BitrixComponentsController@index', $module->id));
 		}
+	}
+
+	// todo проверка на возможность скачивания
+	// todo файлы и папки начинающиеся с .
+	public function download(Bitrix $module, BitrixComponent $component, Request $request){
+		if ($pathToZip = $component->generateZip()){
+			$response = Response::download($pathToZip)->deleteFileAfterSend(true);
+			ob_end_clean(); // без этого архив скачивается поверждённым
+
+			return $response;
+		}
+
+		return back();
 	}
 
 	public function show_visual_path(Bitrix $module, BitrixComponent $component, Request $request){
