@@ -135,7 +135,7 @@ class BitrixComponentsController extends Controller{
 				]
 			);
 			if ($request->path_id_2 && $request->path_name_2){
-				BitrixComponentPathItem::updateOrCreate(
+				BitrixComponentsPathItem::updateOrCreate(
 					[
 						'level'        => 2,
 						'component_id' => $component->id
@@ -155,7 +155,7 @@ class BitrixComponentsController extends Controller{
 				])->delete();
 			}
 			if ($request->path_id_3 && $request->path_name_3){ // todo я ж не использую это пока
-				BitrixComponentPathItem::updateOrCreate(
+				BitrixComponentsPathItem::updateOrCreate(
 					[
 						'level'        => 3,
 						'component_id' => $component->id

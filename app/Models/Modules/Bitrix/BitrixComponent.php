@@ -105,7 +105,29 @@ class BitrixComponent extends Model{
 			$path_items[0]->name,
 		);
 
-		Bitrix::changeVarsInModuleFileAndSave('bitrix\install\components\component_name\.description.php', $module->id, $search, $replace, $this->getFolder().'\.description.php');
+		$file = '.description.php';
+		if (isset($path_items[1])){
+			$file = '.description2.php';
+			$search[] = '{MODULE_COMPONENTS_SUBFOLDER_ID}';
+			$search[] = '{MODULE_COMPONENTS_SUBFOLDER_SORT}';
+			$search[] = '{MODULE_COMPONENTS_SUBFOLDER_NAME}';
+			$replace[] = $path_items[1]->code;
+			$replace[] = $path_items[1]->sort;
+			$replace[] = $path_items[1]->name;
+			if (isset($path_items[2])){
+				$file = '.description3.php';
+				$search[] = '{MODULE_COMPONENTS_SUBSUBFOLDER_ID}';
+				$search[] = '{MODULE_COMPONENTS_SUBSUBFOLDER_SORT}';
+				$search[] = '{MODULE_COMPONENTS_SUBSUBFOLDER_NAME}';
+				$replace[] = $path_items[2]->code;
+				$replace[] = $path_items[2]->sort;
+				$replace[] = $path_items[2]->name;
+			}
+		}
+
+		//dd($file);
+
+		Bitrix::changeVarsInModuleFileAndSave('bitrix\install\components\component_name\\'.$file, $module->id, $search, $replace, $this->getFolder().'\.description.php');
 	}
 
 	public function saveDescriptionLangFileInFolder(){
@@ -129,14 +151,21 @@ class BitrixComponent extends Model{
 			$path_items[0]->name,
 		);
 
+		$file = '.description.php';
 		if (isset($path_items[1])){
+			$file = '.description2.php';
 			$search[] = '{MODULE_COMPONENTS_SUBFOLDER_NAME}';
 			$replace[] = $path_items[1]->name;
+			if (isset($path_items[2])){
+				$file = '.description3.php';
+				$search[] = '{MODULE_COMPONENTS_SUBSUBFOLDER_NAME}';
+				$replace[] = $path_items[2]->name;
+			}
 		}
 
 		//dd($replace);
 
-		Bitrix::changeVarsInModuleFileAndSave('bitrix\install\components\component_name\lang\ru\.description.php', $module->id, $search, $replace, $this->getFolder().'\lang\ru\.description.php');
+		Bitrix::changeVarsInModuleFileAndSave('bitrix\install\components\component_name\lang\ru\\'.$file, $module->id, $search, $replace, $this->getFolder().'\lang\ru\.description.php');
 	}
 
 	public function saveStep($step){
