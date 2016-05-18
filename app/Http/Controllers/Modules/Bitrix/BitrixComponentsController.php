@@ -36,7 +36,7 @@ class BitrixComponentsController extends Controller{
 			'components' => $components
 		];
 
-		return view("bitrix.components.components", $data);
+		return view("bitrix.components.index", $data);
 	}
 
 	// страница добавления компонента
