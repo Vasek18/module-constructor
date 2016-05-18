@@ -11,10 +11,9 @@ class CreateBitrixComponentsParamsTypesTable extends Migration{
 	 */
 	public function up(){
 		Schema::create('bitrix_components_params_types', function (Blueprint $table){
-			$table->increments('id');
+			$table->string('form_type')->unique(); // эт не тип формы, а скорее внутренний код в компонентах Битрикса
 			$table->string('name_ru');
 			$table->string('name_en');
-			$table->string('form_type'); // эт не тип формы, а скорее внутренний код в компонентах Битрикса
 		});
 	}
 

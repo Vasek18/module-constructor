@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class BitrixComponentsParams extends Model{
 	protected $table = 'bitrix_components_params';
-	protected $fillable = ['component_id', 'type_id', 'code', 'name', 'sort', 'group_id', 'refresh', 'default', 'size', 'cols', 'multiple', 'default', 'additional_values', 'spec_vals', 'spec_vals_args'];
+	protected $fillable = ['component_id', 'type', 'code', 'name', 'sort', 'group_id', 'refresh', 'default', 'size', 'cols', 'multiple', 'default', 'additional_values', 'spec_vals', 'spec_vals_args'];
 	public $timestamps = false;
 
 	// todo

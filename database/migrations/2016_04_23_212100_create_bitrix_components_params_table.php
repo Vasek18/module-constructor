@@ -14,7 +14,7 @@ class CreateBitrixComponentsParamsTable extends Migration{
 			$table->increments('id');
 			$table->integer('component_id')->unsigned();
 			$table->foreign('component_id')->references('id')->on('bitrix_components')->onDelete('cascade');
-			$table->integer('type_id')->unsigned();
+			$table->string('type');
 			//$table->foreign('type_id')->references('id')->on('bitrix_components_params_types'); // todo
 			$table->integer('sort')->unsigned()->nullable()->default(500);
 			$table->string('code');

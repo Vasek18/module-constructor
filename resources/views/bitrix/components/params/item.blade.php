@@ -16,8 +16,10 @@
         <label class="sr-only" for="param_{{$i}}_type">Тип</label>
         <select class="form-control" name="param_type[]" id="param_{{$i}}_type">
             @foreach($params_types as $type)
-                <option @if ($param && $param->type_id == $type->id) selected
-                        @endif value="{{$type->id}}">{{$type->name_ru}}</option>
+                <option @if ($param && $param->type == $type->form_type) selected
+                        @endif
+                        @if ((!$param || !$param->type) && $type->form_type == 'STRING') selected @endif
+                        value="{{$type->form_type}}">{{$type->name_ru}}</option>
             @endforeach
         </select>
     </div>

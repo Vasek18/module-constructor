@@ -57,7 +57,7 @@ class BitrixComponentsParamsController extends Controller{
 				$paramArr['sort'] = $request['param_sort'][$i];
 			}
 			if (isset($request['param_type'][$i])){
-				$paramArr['type_id'] = $request['param_type'][$i];
+				$paramArr['type'] = $request['param_type'][$i];
 			}
 			if (isset($request['param_group_id'][$i])){
 				$paramArr['group_id'] = $request['param_group_id'][$i];

@@ -228,7 +228,7 @@ class BitrixComponent extends Model{
 
 	public function saveParamsInFile(){
 		$module = $this->module()->first();
-		$params = $this->params()->get();
+		$params = $this->params()->orderBy('sort', 'asc')->get();
 
 		$groupsText = ''; // todo
 		$groupsLangText = ''; // todo
@@ -237,9 +237,6 @@ class BitrixComponent extends Model{
 		$paramsLangText = '';
 		foreach ($params as $param){
 			//dd($param);
-			if ($param->type_id){
-				$typeCode = BitrixComponentsParamsTypes::find($param->type_id)->form_type;
-			}
 			if ($param->group_id){
 				$parentCode = BitrixComponentsParamsGroups::find($param->group_id)->code;
 			}
@@ -248,7 +245,7 @@ class BitrixComponent extends Model{
 			$paramText = '"'.strtoupper($param->code).'"  =>  Array(
 			"PARENT" => "'.$parentCode.'",
 			"NAME" => GetMessage("'.$langKeyAttr.'"),
-			"TYPE" => "'.$typeCode.'",'.PHP_EOL;
+			"TYPE" => "'.$param->type.'",'.PHP_EOL;
 			if ($param->refresh){
 				$paramText .= "\t\t\t".'"REFRESH" => "Y",'.PHP_EOL;
 			}
@@ -268,7 +265,7 @@ class BitrixComponent extends Model{
 				$paramText .= "\t\t\t".'"COLS" => "'.$param->cols.'",'.PHP_EOL;
 			}
 
-			if ($typeCode == 'LIST'){
+			if ($param->type == 'LIST'){
 				if ($param->spec_vals == 'array'){
 					$paramText .= "\t\t\t".'"VALUES" => Array('.PHP_EOL;
 					if (count($param->vals)){
@@ -296,7 +293,7 @@ class BitrixComponent extends Model{
 		$replaceLang = Array($groupsLangText, $paramsLangText);
 
 		Bitrix::changeVarsInModuleFileAndSave('bitrix\install\components\component_name\.parameters.php', $module->id, $search, $replace, $this->getFolder().'\.parameters.php');
-		Bitrix::changeVarsInModuleFileAndSave('bitrix\install\components\component_name\lang\ru\.parameters.php', $module->id, $searchLang, $replaceLang, 'bitrix\install\components\\'.$this->code.'\lang\ru\.parameters.php');
+		Bitrix::changeVarsInModuleFileAndSave('bitrix\install\components\component_name\lang\ru\.parameters.php', $module->id, $searchLang, $replaceLang, $this->getFolder().'\lang\ru\.parameters.php');
 
 		return true;
 
