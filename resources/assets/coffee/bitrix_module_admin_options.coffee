@@ -178,13 +178,3 @@ $(document).on "click", ".add-dop-row", () ->
     row.before(newRow)
 
     return false
-
-$(document).on "change", "[name=option_name\\[\\]]", () ->
-    name = $(this).val()
-    row = $(this).parents('.option')
-    codeInput = row.find('[name=option_code\\[\\]]')
-
-    if not codeInput.val()
-        codeInput.val(translit(name))
-
-    return

@@ -35,16 +35,6 @@
     return false;
   });
 
-  $(document).on("change", "[name=option_name\\[\\]]", function() {
-    var codeInput, name, row;
-    name = $(this).val();
-    row = $(this).parents('.option');
-    codeInput = row.find('[name=option_code\\[\\]]');
-    if (!codeInput.val()) {
-      codeInput.val(translit(name));
-    }
-  });
-
 }).call(this);
 
 //# sourceMappingURL=bitrix_module_admin_options.js.map

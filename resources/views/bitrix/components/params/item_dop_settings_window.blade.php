@@ -7,7 +7,7 @@
                 <h4 class="modal-title">Дополнительные настройки</h4>
             </div>
             <div class="modal-body">
-                <div class="form-group">
+                <div class="form-group" data-for_types="LIST CHECKBOX">
                     <label for="param_{{$i}}_refresh">Обновляет ли остальные настройки?</label>
                     <div class="checkbox">
                         <label>
@@ -16,7 +16,7 @@
                         </label>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group"  data-for_types="LIST STRING FILE">
                     <label for="param_{{$i}}_multiple">Множественное?</label>
                     <div class="checkbox">
                         <label>
@@ -25,22 +25,22 @@
                         </label>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" data-for_types="LIST">
                     <label for="param_{{$i}}_size">Высота</label>
                     <input class="form-control" type="text" name="param_size[]" id="param_{{$i}}_size"
                            @if ($param) value="{{$param->size}}" @endif>
                 </div>
-                <div class="form-group">
+                <div class="form-group" data-for_types="STRING">
                     <label for="param_{{$i}}_cols">Ширина</label>
                     <input class="form-control" type="text" name="param_cols[]" id="param_{{$i}}_cols"
                            @if ($param) value="{{$param->cols}}" @endif>
                 </div>
-                <div class="form-group">
+                <div class="form-group" data-for_types="STRING LIST">
                     <label for="param_{{$i}}_default">Значение по умолчанию</label>
                     <input class="form-control" type="text" name="param_default[]" id="param_{{$i}}_default"
                            @if ($param) value="{{$param->default}}" @endif>
                 </div>
-                <div class="form-group">
+                <div class="form-group" data-for_types="LIST">
                     <label for="param_{{$i}}_additional_values">Показывать дополнительные значения?</label>
                     <div class="checkbox">
                         <label>
@@ -49,7 +49,7 @@
                         </label>
                     </div>
                 </div>
-                <div class="form-group only-one" data-for_type_ids="3,4">
+                <div class="form-group only-one" data-for_types="LIST">
                     <div class="item">
                         <label>
                             <input type="radio" name="param_{{$i}}_vals_type" value="array"

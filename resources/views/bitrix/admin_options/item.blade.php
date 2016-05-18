@@ -10,7 +10,8 @@
     <div class="col-md-3">
         <label class="sr-only" for="option_{{$i}}_id">Код</label>
         <input type="text" class="form-control" name="option_code[]" id="option_{{$i}}_id"
-               placeholder="Код" value="{{$option ? $option->code : ''}}">
+               placeholder="Код" value="{{$option ? $option->code : ''}}"
+               @unless ($option) data-translit_from="option_{{$i}}_name" @endif>
     </div>
     <div class="col-md-2">
         <label class="sr-only" for="option_{{$i}}_type">Тип</label>

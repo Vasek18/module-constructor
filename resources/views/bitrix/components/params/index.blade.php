@@ -6,6 +6,10 @@
 
 @section('page')
 
+    @push('scripts')
+    <script src="/js/bitrix_module_components_params.js"></script>
+    @endpush
+
     @include('bitrix.components.progress_way_menu')
     <button class="btn btn-primary" data-toggle="modal"
             data-target="#upload_prepared_files">Загрузить готовые файлы
