@@ -35,12 +35,13 @@
     </div>
     <div class="col-md-2">
         <a href="#" class="btn btn-default" data-toggle="modal"
-           data-target="#component_params_dop_settings_window_{{$i}}">Доп. параметры</a>
-        @include('bitrix.components.params_item_dop_settings_window', ['param' => $param, 'i' => $i])
+           data-target="#component_params_dop_settings_window_{{$i}}">Доп. параметры
+        </a>
+        @include('bitrix.components.params.item_dop_settings_window', ['param' => $param, 'i' => $i])
     </div>
     <div class="col-md-1">
         @if ($param)
-            <a href="{{ action('Modules\Bitrix\BitrixComponentsController@delete_param', [$module->id, $component->id, $param->id]) }}"
+            <a href="{{ action('Modules\Bitrix\BitrixComponentsParamsController@destroy', [$module->id, $component->id, $param->id]) }}"
                class="btn btn-danger">
                 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
             </a>

@@ -76,10 +76,10 @@ Route::group(['prefix' => 'my-bitrix'], function (){
 
 		// параметры в визуальном редакторе
 		Route::group(['prefix' => '{component}/params'], function (){
-			Route::get('', ['as' => 'bitrix_component_params', 'uses' => 'Modules\Bitrix\BitrixComponentsController@show_params']);;
-			Route::post('', 'Modules\Bitrix\BitrixComponentsController@store_params');
-			Route::get('{param}/delete', 'Modules\Bitrix\BitrixComponentsController@delete_param');
-			Route::post('upload', 'Modules\Bitrix\BitrixComponentsController@upload_params_files');
+			Route::get('', ['as' => 'bitrix_component_params', 'uses' => 'Modules\Bitrix\BitrixComponentsParamsController@index']);;
+			Route::post('', 'Modules\Bitrix\BitrixComponentsParamsController@store');
+			Route::get('{param}/delete', 'Modules\Bitrix\BitrixComponentsParamsController@destroy');
+			Route::post('upload', 'Modules\Bitrix\BitrixComponentsParamsController@upload_params_files');
 		});
 
 		// component.php
