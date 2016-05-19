@@ -324,4 +324,8 @@ class BitrixComponent extends Model{
 	public function templates(){
 		return $this->hasMany('App\Models\Modules\Bitrix\BitrixComponentsTemplates', "component_id");
 	}
+
+	public function arbitraryFiles(){
+		return $this->hasMany('App\Models\Modules\Bitrix\BitrixComponentsArbitraryFiles', "component_id");
+	}
 }
