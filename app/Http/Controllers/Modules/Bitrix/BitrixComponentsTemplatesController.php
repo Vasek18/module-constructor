@@ -65,6 +65,10 @@ class BitrixComponentsTemplatesController extends Controller{
 			return false;
 		}
 
+		if ($template->code == '.default'){
+			return redirect(route('bitrix_component_templates', ['module' => $module->id, 'component' => $component->id])); // todo возвращать ошибку
+		}
+
 		Storage::disk('user_modules')->deleteDirectory($template->getFolder());
 
 		// удаляем запись из БД
