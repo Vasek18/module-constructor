@@ -10,18 +10,19 @@
 
     @include('bitrix.components.templates.create_modal')
 
-
-    <h2>Шаблоны</h2>
-
     @if ($templates)
-        <ul>
+        <h2>Шаблоны</h2>
+        <div class="list-group">
             @foreach($templates as $template)
-                <li>
-                    <p>{{$template->name}} ({{$template->code}})</p>
-                    <a href="{{ action('Modules\Bitrix\BitrixComponentsTemplatesController@destroy', [$module->id, $component->id, $template->id]) }}" class="btn btn-danger">Удалить</a>
-                </li>
+                <div class="list-group-item clearfix template">
+                    <a href="#">{{$template->name}} ({{$template->code}})</a>
+                    <a href="{{ action('Modules\Bitrix\BitrixComponentsTemplatesController@destroy', [$module->id, $component->id, $template->id]) }}"
+                       class="btn btn-danger pull-right">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                    </a>
+                </div>
             @endforeach
-        </ul>
+        </div>
     @endif
 
 @stop
