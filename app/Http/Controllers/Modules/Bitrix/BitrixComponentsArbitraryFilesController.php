@@ -38,13 +38,13 @@ class BitrixComponentsArbitraryFilesController extends Controller{
 		$aFile = BitrixComponentsArbitraryFiles::updateOrCreate( // todo мб другой метод, ведь если файл есть, то мы ничего не обновляем
 			[
 				'component_id' => $component->id,
-				'path'      => $addPath,
-				'filename'  => $file->getClientOriginalName()
+				'path'         => $addPath,
+				'filename'     => $file->getClientOriginalName()
 			],
 			[
 				'component_id' => $component->id,
-				'path'      => $addPath,
-				'filename'  => $file->getClientOriginalName()
+				'path'         => $addPath,
+				'filename'     => $file->getClientOriginalName()
 			]
 		);
 
@@ -65,7 +65,12 @@ class BitrixComponentsArbitraryFilesController extends Controller{
 		return $path;
 	}
 
-	public function destroy(){
+	public function destroy(Bitrix $module, BitrixComponent $component, BitrixComponentsArbitraryFiles $file, Request $request){
 
+		$file->delete();
+
+		$file->deleteFile();
+
+		return back();
 	}
 }
