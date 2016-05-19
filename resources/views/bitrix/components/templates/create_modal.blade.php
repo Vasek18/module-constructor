@@ -2,7 +2,7 @@
 <div class="modal fade" id="create-template-modal" tabindex="-1" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form action="{{action('Modules\Bitrix\BitrixComponentsController@store_template', [$module->id, $component->id])}}"
+            <form action="{{action('Modules\Bitrix\BitrixComponentsTemplatesController@store', [$module->id, $component->id])}}"
                   method="post" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <div class="modal-header">

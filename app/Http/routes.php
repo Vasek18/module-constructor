@@ -97,9 +97,9 @@ Route::group(['prefix' => 'my-bitrix'], function (){
 
 		// шаблоны
 		Route::group(['prefix' => '{component}/templates'], function (){
-			Route::get('', ['as' => 'bitrix_component_templates', 'uses' => 'Modules\Bitrix\BitrixComponentsController@show_templates']);
-			Route::post('store', 'Modules\Bitrix\BitrixComponentsController@store_template');
-			Route::get('{template}/delete', 'Modules\Bitrix\BitrixComponentsController@delete_template');
+			Route::get('', ['as' => 'bitrix_component_templates', 'uses' => 'Modules\Bitrix\BitrixComponentsTemplatesController@index']);
+			Route::post('store', 'Modules\Bitrix\BitrixComponentsTemplatesController@store');
+			Route::get('{template}/delete', 'Modules\Bitrix\BitrixComponentsTemplatesController@destroy');
 		});
 	});
 
