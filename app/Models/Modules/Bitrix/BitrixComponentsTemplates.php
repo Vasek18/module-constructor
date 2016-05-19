@@ -4,11 +4,34 @@ namespace App\Models\Modules\Bitrix;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Chumper\Zipper\Zipper;
+use Illuminate\Support\Facades\Storage;
 
 class BitrixComponentsTemplates extends Model{
 	protected $table = 'bitrix_components_templates';
 	protected $fillable = ['component_id', 'code', 'name'];
 	public $timestamps = false;
+
+	public function extractUploadedZip($archive){
+		$fileName = time().$archive->getClientOriginalName();
+		$archive->move('user_upload/', $fileName);
+
+		$zipper = new Zipper;
+		$zipper->make('user_upload/'.$fileName);
+		if ($zipper->contains('template.php')){
+			$this->createFolder();
+			$zipper->extractTo($this->component->getFolder(true).'/templates/'.$this->code);
+		}else{
+			$zipper->extractTo($this->component->getFolder(true).'/templates/');
+		}
+		$zipper->close();
+
+		unlink('user_upload/'.$fileName);
+	}
+
+	public function createFolder(){
+		Storage::disk('user_modules')->makeDirectory($this->component->getFolder().'/templates/'.$this->code);
+	}
 
 	public function getFolder(){
 		$component_folder = $this->component()->first()->getFolder();

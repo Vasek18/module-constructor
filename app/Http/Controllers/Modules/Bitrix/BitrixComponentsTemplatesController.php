@@ -10,7 +10,6 @@ use App\Models\Modules\Bitrix\Bitrix;
 use App\Models\Modules\Bitrix\BitrixComponentsTemplates;
 use App\Models\Modules\Bitrix\BitrixComponent;
 use App\Http\Controllers\Traits\UserOwnModule;
-use Chumper\Zipper\Zipper;
 use Illuminate\Support\Facades\Storage;
 
 class BitrixComponentsTemplatesController extends Controller{
@@ -50,16 +49,7 @@ class BitrixComponentsTemplatesController extends Controller{
 			$template_php = ''; // todo
 			Storage::disk('user_modules')->put($template->getFolder().'\template.php', $template_php);
 		}else{
-			$fileName = time().$archive->getClientOriginalName();
-			$archive->move('user_upload/', $fileName);
-
-			Storage::disk('user_modules')->makeDirectory($component->getFolder().'/templates/'.$templateCode);
-
-			$zipper = new Zipper;
-			$zipper->make('user_upload/'.$fileName)->extractTo($component->getFolder(true).'/templates/'.$templateCode);
-			$zipper->close();
-
-			unlink('user_upload/'.$fileName);
+			$template->extractUploadedZip($archive);
 		}
 		$component->saveStep(6);
 
