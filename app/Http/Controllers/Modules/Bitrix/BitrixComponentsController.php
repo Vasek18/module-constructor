@@ -196,17 +196,14 @@ class BitrixComponentsController extends Controller{
 	public function show_component_php(Bitrix $module, BitrixComponent $component, Request $request){
 		$data = [
 			'module'     => $module,
-			'component'  => $component,
-			'path_items' => $component->path_items()->get()
+			'component'  => $component
 		];
 
-		return view("bitrix.components.component_php", $data);
+		return view("bitrix.components.component_php.index", $data);
 	}
 
 	public function store_component_php(Bitrix $module, BitrixComponent $component, Request $request){
 		$component_php = $request->component_php;
-		$component->component_php = $component_php;
-		$component->save();
 
 		Storage::disk('user_modules')->put($component->getFolder().'\component.php', $component_php);
 

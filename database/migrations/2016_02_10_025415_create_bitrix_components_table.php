@@ -22,7 +22,6 @@ class CreateBitrixComponentsTable extends Migration{
 			$table->integer('sort');
 			$table->string('icon_path');
 			$table->text('desc');
-			$table->text('component_php'); // todo я не уверен, что здесь его место
 			$table->string('steps')->nullable();
 		});
 	}

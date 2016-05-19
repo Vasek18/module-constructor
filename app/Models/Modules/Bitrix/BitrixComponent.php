@@ -50,8 +50,6 @@ class BitrixComponent extends Model{
 
 	public function createDefaultComponentPhp(){
 		$component_php = '<? $this->IncludeComponentTemplate(); ?>';
-		$this->component_php = $component_php;
-		$this->save();
 
 		Storage::disk('user_modules')->put($this->getFolder().'\component.php', $component_php);
 
@@ -307,6 +305,12 @@ class BitrixComponent extends Model{
 
 	public function getLangKeyAttribute(){
 		return strtoupper($this->module()->first()->PARTNER_CODE."_".$this->code);
+	}
+
+	public function getComponentPhpAttribute(){
+		$code = Storage::disk('user_modules')->get($this->getFolder().'\component.php');
+
+		return $code;
 	}
 
 	public function module(){
