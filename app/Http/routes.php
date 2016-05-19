@@ -90,8 +90,8 @@ Route::group(['prefix' => 'my-bitrix'], function (){
 
 		// другие файлы
 		Route::group(['prefix' => '{component}/other_files'], function (){
-			Route::get('', ['as' => 'bitrix_component_other_files', 'uses' => 'Modules\Bitrix\BitrixComponentsController@show_other_files']);
-			Route::post('store', 'Modules\Bitrix\BitrixComponentsController@store_other_files');
+			Route::get('', ['as' => 'bitrix_component_other_files', 'uses' => 'Modules\Bitrix\BitrixComponentsArbitraryFilesController@index']);
+			Route::post('', 'Modules\Bitrix\BitrixComponentsArbitraryFilesController@store');
 		});
 
 		// шаблоны

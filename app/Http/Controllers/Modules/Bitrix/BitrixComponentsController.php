@@ -220,27 +220,6 @@ class BitrixComponentsController extends Controller{
 		return back();
 	}
 
-	public function show_other_files(Bitrix $module, BitrixComponent $component, Request $request){
-		$data = [
-			'module'     => $module,
-			'component'  => $component,
-			'path_items' => $component->path_items()->get()
-		];
-
-		return view("bitrix.components.other_files", $data);
-	}
-
-	public function store_other_files(Bitrix $module, BitrixComponent $component, Request $request){
-		$file = $request->file('new_file');
-		$addPath = $request->path;
-		//dd($request);
-		$file->move($component->getFolder(true).$addPath, $file->getClientOriginalName());
-
-		$component->saveStep(5);
-
-		return back();
-	}
-
 	public function show_templates(Bitrix $module, BitrixComponent $component, Request $request){
 		$data = [
 			'module'    => $module,

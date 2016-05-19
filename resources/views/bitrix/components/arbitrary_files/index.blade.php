@@ -9,7 +9,7 @@
     @include('bitrix.components.progress_way_menu')
 
     <h2>Добавить файл</h2>
-    <form action="{{ action('Modules\Bitrix\BitrixComponentsController@store_other_files', [$module->id, $component->id]) }}"
+    <form action="{{ action('Modules\Bitrix\BitrixComponentsArbitraryFilesController@store', [$module->id, $component->id]) }}"
           method="post"
           enctype="multipart/form-data">
         {{ csrf_field() }}
