@@ -21,7 +21,22 @@
             <label for="file">Имя</label>
             <input class="form-control" type="file" name="new_file" id="file" required>
         </div>
-        <button class="btn btn-primary">Добавить</button>
+        <div class="form-group">
+            <button class="btn btn-primary">Добавить</button>
+        </div>
     </form>
-
+    @if (count($files))
+        <h3>Список файлов</h3>
+        <div class="list-group">
+            @foreach($files as $i => $file)
+                <div class="list-group-item clearfix file">
+                    <a href="#">{{$file->path}}{{$file->filename}}</a>
+                    <a href="{{ action('Modules\Bitrix\BitrixComponentsArbitraryFilesController@destroy', [$module->id, $component->id, $file->id]) }}"
+                       class="btn btn-danger pull-right">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                    </a>
+                </div>
+            @endforeach
+        </div>
+    @endif
 @stop

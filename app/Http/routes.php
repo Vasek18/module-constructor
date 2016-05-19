@@ -92,6 +92,7 @@ Route::group(['prefix' => 'my-bitrix'], function (){
 		Route::group(['prefix' => '{component}/other_files'], function (){
 			Route::get('', ['as' => 'bitrix_component_other_files', 'uses' => 'Modules\Bitrix\BitrixComponentsArbitraryFilesController@index']);
 			Route::post('', 'Modules\Bitrix\BitrixComponentsArbitraryFilesController@store');
+			Route::get('{file}/delete', 'Modules\Bitrix\BitrixComponentsArbitraryFilesController@destroy');
 		});
 
 		// шаблоны
