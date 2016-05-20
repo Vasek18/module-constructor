@@ -4,7 +4,6 @@ namespace App\Models\Modules\Bitrix;
 
 use Illuminate\Database\Eloquent\Model;
 use Auth;
-use Illuminate\Support\Facades\Storage;
 
 class BitrixInfoblocks extends Model{
 	protected $table = 'bitrix_infoblocks';
@@ -14,7 +13,7 @@ class BitrixInfoblocks extends Model{
 	public static function writeInFile(Bitrix $module){
 		$module_folder = $module->module_folder;
 		$path = $module_folder.'/install/index.php';
-		$file = Storage::disk('user_modules')->get($path);
+		$file = $module->disk()->get($path);
 
 		$iblocksCreationFunctionCodeTemplate = static::findInfoblockCreationAndDeletionCodeInInstallFile($file, 'createNecessaryIblocks');
 		$iblocksCreationFunctionCode = $module->generateInfoblocksCreationFunctionCode();
@@ -26,7 +25,7 @@ class BitrixInfoblocks extends Model{
 		$replace = [$iblocksCreationFunctionCode, $iblocksDeletionFunctionCode];
 		$file = str_replace($search, $replace, $file);
 
-		Storage::disk('user_modules')->put($path, $file);
+		$module->disk()->put($path, $file);
 
 		static::writeInLangFile($module);
 

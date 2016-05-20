@@ -4,9 +4,6 @@ namespace App\Models\Modules\Bitrix;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use App\Models\Modules\Bitrix\BitrixComponentsParamsTypes;
-use App\Models\Modules\Bitrix\BitrixComponentsParamsGroups;
 
 // todo магические числа у шагов
 class BitrixComponent extends Model{
@@ -37,7 +34,7 @@ class BitrixComponent extends Model{
 				'component_id' => $this->id,
 				'level'        => 1,
 				'code'         => $module->PARTNER_CODE."_".$module->code."_components",
-				'name'         => $module->MODULE_NAME,
+				'name'         => $module->name,
 				'sort'         => 500
 			]
 		);
@@ -51,7 +48,7 @@ class BitrixComponent extends Model{
 	public function createDefaultComponentPhp(){
 		$component_php = '<? $this->IncludeComponentTemplate(); ?>';
 
-		Storage::disk('user_modules')->put($this->getFolder().'\component.php', $component_php);
+		$this->module()->first()->disk()->put($this->getFolder().'\component.php', $component_php);
 
 		$this->saveStep(4);
 	}
@@ -67,7 +64,7 @@ class BitrixComponent extends Model{
 
 		$template_php = 'Hello World';
 
-		Storage::disk('user_modules')->put($template->getFolder().'\template.php', $template_php);
+		$this->module()->first()->disk()->put($template->getFolder().'\template.php', $template_php);
 
 		$this->saveStep(6);
 	}
@@ -199,17 +196,17 @@ class BitrixComponent extends Model{
 
 	public function getFolder($full = false){
 		$module = $this->module()->first();
-		$module_folder = Bitrix::getFolder($module, $full);
+		$module_folder = $module->getFolder($full);
 
 		return $module_folder.'\install\components\\'.$module->module_full_id.'\\'.$this->code;
 	}
 
 	public function createFolder(){
-		Bitrix::disk()->makeDirectory($this->getFolder());
+		$this->module()->first()->disk()->makeDirectory($this->getFolder());
 	}
 
 	public function deleteFolder(){
-		Storage::disk('user_modules')->deleteDirectory($this->getFolder());
+		$this->module()->first()->disk()->deleteDirectory($this->getFolder());
 	}
 
 	public function generateZip(){
@@ -308,7 +305,7 @@ class BitrixComponent extends Model{
 	}
 
 	public function getComponentPhpAttribute(){
-		$code = Storage::disk('user_modules')->get($this->getFolder().'\component.php');
+		$code = $this->module()->first()->disk()->get($this->getFolder().'\component.php');
 
 		return $code;
 	}

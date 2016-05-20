@@ -10,7 +10,6 @@ use Auth;
 use App\Models\Modules\Bitrix\Bitrix;
 use App\Models\Modules\Bitrix\BitrixEventsHandlers;
 use App\Http\Controllers\Traits\UserOwnModule;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
 class BitrixEventHandlersController extends Controller{
@@ -48,7 +47,7 @@ class BitrixEventHandlersController extends Controller{
 		// удаляем старые обработчики, чтобы при изменение уже заполненной строчки, старые данные с этой строчки не существовали
 		$module->handlers()->delete();
 		// удаляем удаляем их файлы
-		Storage::disk('user_modules')->deleteDirectory($module->module_folder."/lib/eventhandlers");
+		$module->disk()->deleteDirectory($module->module_folder."/lib/eventhandlers");
 
 		// перебираем все строки полей
 		foreach ($request->event as $i => $event){

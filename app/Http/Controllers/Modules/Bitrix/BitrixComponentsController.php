@@ -11,7 +11,6 @@ use App\Models\Modules\Bitrix\BitrixComponentsPathItem;
 use App\Models\Modules\Bitrix\BitrixComponent;
 use App\Http\Controllers\Traits\UserOwnModule;
 use Chumper\Zipper\Zipper;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
 
 class BitrixComponentsController extends Controller{
@@ -205,7 +204,7 @@ class BitrixComponentsController extends Controller{
 	public function store_component_php(Bitrix $module, BitrixComponent $component, Request $request){
 		$component_php = $request->component_php;
 
-		Storage::disk('user_modules')->put($component->getFolder().'\component.php', $component_php);
+		$module->disk()->put($component->getFolder().'\component.php', $component_php);
 
 		$component->saveStep(4);
 
@@ -240,9 +239,9 @@ class BitrixComponentsController extends Controller{
 	public function extractComponentToModuleFolder(Bitrix $module, $fileName){
 		$moduleFullID = $module->PARTNER_CODE.".".$module->MODULE_CODE; // todo вынести в вычисляемое поле
 		// если вдруг папки для компонентов нет => создаём её
-		Storage::disk('user_modules')->makeDirectory($moduleFullID."/install/components/".$moduleFullID);
+		$module->disk()->makeDirectory($moduleFullID."/install/components/".$moduleFullID);
 
-		$moduleFolder = $module::getFolder($module);
+		$moduleFolder = $module->getFolder();
 		$zipper = new Zipper;
 		$zipper->make('user_upload/'.$fileName)->extractTo($moduleFolder.'/install/components/'.$moduleFullID);
 
@@ -253,7 +252,7 @@ class BitrixComponentsController extends Controller{
 		BitrixComponent::where('module_id', $module->id)->delete();
 
 		$moduleFullID = $module->PARTNER_CODE.".".$module->MODULE_CODE; // todo вынести в вычисляемое поле
-		$directories = Storage::disk('user_modules')->directories($moduleFullID."/install/components/");
+		$directories = $module->disk()->directories($moduleFullID."/install/components/");
 		//dd($directories);
 		foreach ($directories as $componentFolder){
 			$dirs = explode("/", $componentFolder);

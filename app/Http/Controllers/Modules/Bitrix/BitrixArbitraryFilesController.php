@@ -9,7 +9,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Modules\Bitrix\Bitrix;
 use App\Models\Modules\Bitrix\BitrixArbitraryFiles;
 use App\Http\Controllers\Traits\UserOwnModule;
-use Illuminate\Support\Facades\Storage;
 
 class BitrixArbitraryFilesController extends Controller{
 
@@ -81,7 +80,7 @@ class BitrixArbitraryFilesController extends Controller{
 		}
 
 		$file->deleteFileFromModuleFolder();
-		Storage::disk('user_modules')->put($file->getFullPath(false, $path).$filename, $request->code);
+		$module->disk()->put($file->getFullPath(false, $path).$filename, $request->code);
 
 		$file->update([
 			'filename' => $filename,

@@ -4,7 +4,6 @@ namespace App\Models\Modules\Bitrix;
 
 use Illuminate\Database\Eloquent\Model;
 use Auth;
-use Illuminate\Support\Facades\Storage;
 
 class BitrixArbitraryFiles extends Model{
 	protected $table = 'bitrix_arbitrary_files';
@@ -26,13 +25,13 @@ class BitrixArbitraryFiles extends Model{
 		if (!$path){
 			$path = $this->path;
 		}
-		$moduleFolder = $this->module->getFolderD($full);
+		$moduleFolder = $this->module->getFolder($full);
 
 		return $moduleFolder.'/install/files'.$path;
 	}
 
 	public function getCodeAttribute(){
-		$code = Storage::disk('user_modules')->get($this->getFullPath().$this->filename);
+		$code = $this->module()->first()->disk()->get($this->getFullPath().$this->filename);
 
 		return $code;
 	}

@@ -3,9 +3,7 @@
 namespace App\Models\Modules\Bitrix;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
 use Chumper\Zipper\Zipper;
-use Illuminate\Support\Facades\Storage;
 
 class BitrixComponentsTemplates extends Model{
 	protected $table = 'bitrix_components_templates';
@@ -30,7 +28,7 @@ class BitrixComponentsTemplates extends Model{
 	}
 
 	public function createFolder(){
-		Storage::disk('user_modules')->makeDirectory($this->component->getFolder().'/templates/'.$this->code);
+		$this->component()->first()->module()->first()->disk()->makeDirectory($this->component->getFolder().'/templates/'.$this->code);
 	}
 
 	public function getFolder(){

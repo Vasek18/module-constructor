@@ -11,6 +11,8 @@ class BitrixEventsHandlers extends Model{
 
 	protected $fillable = ['from_module', 'event', 'class', 'method', 'php_code'];
 
+	public $timestamps = false;
+
 	public static function store(Bitrix $module, $fields){
 		// todo почему я должен так явно всё это расписывать?
 		if (!isset($fields['from_module'])){
@@ -69,7 +71,7 @@ class BitrixEventsHandlers extends Model{
 				$template_search = Array('{MODULE_NAMESPACE}', '{CLASS_NAMESPACE}', '{CLASS}', '{FUNCTIONS}');
 				$template_replace = Array($module->namespace, $class['class_namespace'], $class['class'], $class['functionsCode']);
 				$handlerFile = str_replace($template_search, $template_replace, $handlerTemplate);
-				Storage::disk('user_modules')->put($module->module_folder.'/lib/eventhandlers/'.strtolower($class['class']).'.php', $handlerFile);
+				$module->disk()->put($module->module_folder.'/lib/eventhandlers/'.strtolower($class['class']).'.php', $handlerFile);
 			}
 			//dd($installHandlersCode);
 
@@ -78,10 +80,10 @@ class BitrixEventsHandlers extends Model{
 	}
 
 	protected static function writeHandlerRegisterAndUnregisterCodeInInstallFile($module, $installHandlersCode, $uninstallHandlersCode){
-		$file = Storage::disk('user_modules')->get($module->module_folder.'/install/index.php');
+		$file = $module->disk()->get($module->module_folder.'/install/index.php');
 		$file = preg_replace('/function InstallEvents\(\)\{[^\}]+\}/i', 'function InstallEvents(){'.PHP_EOL.$installHandlersCode.PHP_EOL.'}', $file);
 		$file = preg_replace('/function UnInstallEvents\(\)\{[^\}]+\}/i', 'function UnInstallEvents(){'.PHP_EOL.$uninstallHandlersCode.PHP_EOL.'}', $file);
-		Storage::disk('user_modules')->put($module->module_folder.'/install/index.php', $file);
+		$module->disk()->put($module->module_folder.'/install/index.php', $file);
 	}
 
 	protected function getHandlerCode(){

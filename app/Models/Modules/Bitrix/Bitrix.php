@@ -17,8 +17,8 @@ class Bitrix extends Model{
 	 */
 	protected $table = 'bitrixes';
 
-	protected static function disk(){
-		return Storage::disk('user_modules');
+	public function disk(){
+		return Storage::disk('user_modules_bitrix');
 	}
 
 	protected $replaceArray = [
@@ -151,7 +151,7 @@ class Bitrix extends Model{
 		// записываем в модуль
 		$count = 1; // только первое вхождение
 		$outputFilePath = str_replace("bitrix", $module->module_folder, $outputPath ? $outputPath : $path, $count); // todo если изменить диск,то можно избавиться от такой замены
-		Storage::disk('user_modules')->put($outputFilePath, $file);
+		Storage::disk('user_modules_bitrix')->put($outputFilePath, $file);
 
 	}
 
@@ -177,14 +177,13 @@ class Bitrix extends Model{
 
 	// создаёт архив модуля для скачивания
 	// todo проверки на успех
-	public static function generateZip(Bitrix $module){
-		$folder = $module->PARTNER_CODE.".".$module->code;
-		$archiveName = $module->PARTNER_CODE."_".$module->code.".zip";
-		$rootFolder = Storage::disk('user_modules')->getDriver()->getAdapter()->getPathPrefix();
+	public function generateZip(){
+		$archiveName = $this->PARTNER_CODE."_".$this->code.".zip";
+		$rootFolder = $this->disk()->getDriver()->getAdapter()->getPathPrefix();
 
 		$zipper = new \Chumper\Zipper\Zipper;
 		//$zipper->make($archiveName)->folder("test")->add($rootFolder.$folder);
-		$zipper->make($archiveName)->folder($folder)->add($rootFolder.$folder)->close();
+		$zipper->make($archiveName)->folder($this->module_folder)->add($rootFolder.$this->module_folder)->close();
 
 		return $archiveName;
 	}
@@ -212,31 +211,17 @@ class Bitrix extends Model{
 	}
 
 	// получить папку модуля
-	// todo не статик
-	public static function getFolder(Bitrix $module, $fromRoot = true){
+	public function getFolder($fromRoot = true){
 		$modulesRootFolder = '';
 		if ($fromRoot){
-			$modulesRootFolder = Storage::disk('user_modules')->getDriver()->getAdapter()->getPathPrefix();
+			$modulesRootFolder = $this->disk()->getDriver()->getAdapter()->getPathPrefix();
 		}
-		$folder = $module->PARTNER_CODE.".".$module->code;
 
-		return $modulesRootFolder.$folder;
+		return $modulesRootFolder.$this->module_folder;
 	}
 
-	// todo должно заменить getFolder, а потом убрать D в конце
-	public function getFolderD($fromRoot = true){
-		$modulesRootFolder = '';
-		if ($fromRoot){
-			$modulesRootFolder = Storage::disk('user_modules')->getDriver()->getAdapter()->getPathPrefix();
-		}
-		$folder = $this->PARTNER_CODE.".".$this->code;
-
-		return $modulesRootFolder.$folder;
-	}
-
-	public static function deleteFolder(Bitrix $module){
-		$folder = $module->PARTNER_CODE.".".$module->code;
-		Storage::disk('user_modules')->deleteDirectory($folder);
+	public function deleteFolder(){
+		$this->disk()->deleteDirectory($this->module_folder);
 	}
 
 	public static function existsModuleWithThisCodeAndPartnerCode($partnerCode, $moduleCode){
@@ -248,7 +233,7 @@ class Bitrix extends Model{
 	}
 
 	public function theSameFolderAlreadyExists(){
-		return in_array($this->module_folder, Storage::disk('user_modules')->directories());
+		return in_array($this->module_folder, $this->disk()->directories());
 	}
 
 	public function generateInfoblocksCreationFunctionCode(){
@@ -274,7 +259,7 @@ class Bitrix extends Model{
 	public function writeInfoblocksLangInfoInFile(){
 		$module_folder = $this->module_folder;
 		$path = $module_folder.'/lang/ru/install/index.php';
-		$file = Storage::disk('user_modules')->get($path);
+		$file = $this->disk()->get($path);
 
 		$iblocks = $this->infoblocks()->get();
 		foreach ($iblocks as $iblock){
@@ -296,7 +281,7 @@ class Bitrix extends Model{
 
 		}
 
-		Storage::disk('user_modules')->put($path, $file);
+		$this->disk()->put($path, $file);
 
 		return true;
 	}

@@ -82,7 +82,7 @@ class BitrixController extends Controller{
 			$module->version = $this->request->version;
 			$module->save();
 
-			$module->changeVarsInModuleFileAndSave('bitrix/lang/ru/install/index.php', $module->id);
+			$module->changeVarsInModuleFileAndSave('bitrix/install/version.php', $module->id);
 		}
 
 		if (!$this->request->ajax()){
@@ -105,7 +105,7 @@ class BitrixController extends Controller{
 			Bitrix::upgradeVersion($module->id, $this->request->version);
 			Bitrix::updateDownloadCount($module->id);
 
-			if ($pathToZip = Bitrix::generateZip($module)){
+			if ($pathToZip = $module->generateZip()){
 				$response = Response::download($pathToZip)->deleteFileAfterSend(true);
 				ob_end_clean(); // без этого архив скачивается поверждённым
 
@@ -125,7 +125,7 @@ class BitrixController extends Controller{
 			return $this->unauthorized($this->request);
 		}
 		// удаляем папку
-		Storage::disk('user_modules')->deleteDirectory($module->module_folder);
+		$module->deleteFolder();
 		// удаляем запись из БД
 		$module->delete();
 

@@ -10,7 +10,6 @@ use App\Models\Modules\Bitrix\Bitrix;
 use App\Models\Modules\Bitrix\BitrixComponentsTemplates;
 use App\Models\Modules\Bitrix\BitrixComponent;
 use App\Http\Controllers\Traits\UserOwnModule;
-use Illuminate\Support\Facades\Storage;
 
 class BitrixComponentsTemplatesController extends Controller{
 	use UserOwnModule;
@@ -47,7 +46,7 @@ class BitrixComponentsTemplatesController extends Controller{
 		$archive = $request->file('files');
 		if (!$archive){
 			$template_php = ''; // todo
-			Storage::disk('user_modules')->put($template->getFolder().'\template.php', $template_php);
+			$module->disk()->put($template->getFolder().'\template.php', $template_php);
 		}else{
 			$template->extractUploadedZip($archive);
 		}
@@ -69,7 +68,7 @@ class BitrixComponentsTemplatesController extends Controller{
 			return redirect(route('bitrix_component_templates', ['module' => $module->id, 'component' => $component->id])); // todo возвращать ошибку
 		}
 
-		Storage::disk('user_modules')->deleteDirectory($template->getFolder());
+		$module->disk()->deleteDirectory($template->getFolder());
 
 		// удаляем запись из БД
 		BitrixComponentsTemplates::destroy($template->id);

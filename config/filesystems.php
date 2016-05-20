@@ -85,9 +85,9 @@ return [
             'root'   => storage_path().'/modules_templates',
         ],
 
-        'user_modules' => [ // модули пользователей
+        'user_modules_bitrix' => [ // модули пользователей
                             'driver' => 'local',
-                            'root'   => storage_path().'/user_modules',
+                            'root'   => storage_path().'/user_modules_bitrix',
         ],
 
     ],
