@@ -294,6 +294,22 @@ class BitrixComponent extends Model{
 
 	}
 
+	public function parseDescriptionFile(){
+
+	}
+
+	public function parseParamsFile(){
+
+	}
+
+	public function gatherListOfArbitraryFiles(){
+
+	}
+
+	public function parseTemplates(){
+
+	}
+
 	public function getStepsAttribute($value){
 		$steps = array_filter(explode(",", $value));
 

@@ -61,7 +61,6 @@ class BitrixComponentsController extends Controller{
 
 		$component->saveStep(1);
 
-		//
 		return redirect(action('Modules\Bitrix\BitrixComponentsController@show', [$module->id, $component->id]));
 	}
 
@@ -194,8 +193,8 @@ class BitrixComponentsController extends Controller{
 
 	public function show_component_php(Bitrix $module, BitrixComponent $component, Request $request){
 		$data = [
-			'module'     => $module,
-			'component'  => $component
+			'module'    => $module,
+			'component' => $component
 		];
 
 		return view("bitrix.components.component_php.index", $data);
@@ -222,8 +221,17 @@ class BitrixComponentsController extends Controller{
 
 		$fileName = $this->moveComponentToPublic($request);
 		$this->extractComponentToModuleFolder($module, $fileName);
+		$componentCode = $this->getComponentCodeFromFolder($fileName);
 		unlink('user_upload/'.$fileName);
-		$this->createComponentsFromFiles($module);
+		$component = $this->createEmptyComponent($module, $componentCode);
+		$component->parseDescriptionFile();
+		$component->parseParamsFile();
+		$component->gatherListOfArbitraryFiles();
+		$component->parseTemplates();
+
+		if ($component){
+			return redirect(action('Modules\Bitrix\BitrixComponentsController@show', [$module->id, $component->id]));
+		}
 
 		return redirect(route('bitrix_module_components', $module->id));
 	}
@@ -237,34 +245,35 @@ class BitrixComponentsController extends Controller{
 	}
 
 	public function extractComponentToModuleFolder(Bitrix $module, $fileName){
-		$moduleFullID = $module->PARTNER_CODE.".".$module->MODULE_CODE; // todo вынести в вычисляемое поле
 		// если вдруг папки для компонентов нет => создаём её
-		$module->disk()->makeDirectory($moduleFullID."/install/components/".$moduleFullID);
+		$module->disk()->makeDirectory($module->module_full_id."/install/components/".$module->module_full_id);
 
 		$moduleFolder = $module->getFolder();
 		$zipper = new Zipper;
-		$zipper->make('user_upload/'.$fileName)->extractTo($moduleFolder.'/install/components/'.$moduleFullID);
+		$zipper->make('user_upload/'.$fileName);
+		$zipper->extractTo($moduleFolder.'/install/components/'.$module->module_full_id);
 
 		return true;
 	}
 
-	public function createComponentsFromFiles($module){
-		BitrixComponent::where('module_id', $module->id)->delete();
+	public function getComponentCodeFromFolder($fileName){ // todo мб есть способ покрасивее
+		$zipper = new Zipper;
+		$zipper->make('user_upload/'.$fileName);
+		$files = $zipper->listFiles();
+		$path = explode('/', $files[0]);
 
-		$moduleFullID = $module->PARTNER_CODE.".".$module->MODULE_CODE; // todo вынести в вычисляемое поле
-		$directories = $module->disk()->directories($moduleFullID."/install/components/");
-		//dd($directories);
-		foreach ($directories as $componentFolder){
-			$dirs = explode("/", $componentFolder);
-			$componentCode = $dirs[count($dirs) - 1];
-			//dd($component);
+		return $path[0];
+	}
 
-			$component = new BitrixComponent;
-			$component->module_id = $module->id;
-			$component->code = $componentCode;
-			$component->save();
-		}
+	public function createEmptyComponent(Bitrix $module, $componentCode){
+		BitrixComponent::where(['module_id' => $module->id, 'code' => $componentCode])->delete(); // не обновляем, а удаляем, чтобы каскадно удалить записи из связанных таблиц
+		
+		$component = new BitrixComponent;
+		$component->module_id = $module->id;
+		$component->code = $componentCode;
+		$component->save();
 
+		return $component;
 	}
 
 	public function destroy(Bitrix $module, BitrixComponent $component, Request $request){
