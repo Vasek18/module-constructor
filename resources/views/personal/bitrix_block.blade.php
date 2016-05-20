@@ -7,16 +7,16 @@
 @if ( !$bitrix_modules->isEmpty())
     @foreach($bitrix_modules as $module)
         <div class="panel panel-default">
-            <div class="panel-heading">Модуль "{{$module->MODULE_NAME}}" ({{$module->PARTNER_CODE}}
-                .{{$module->MODULE_CODE}}) | Версия {{$module->VERSION}}
+            <div class="panel-heading">Модуль "{{$module->name}}" ({{$module->PARTNER_CODE}}
+                .{{$module->code}}) | Версия {{$module->version}}
             </div>
             <div class="panel-body">
                 <div class="row">
                     <div class="sections-links col-md-10">
                         <dl>
                             <dt>Описание</dt>
-                            @if($module->MODULE_DESCRIPTION)
-                                <dd>{{$module->MODULE_DESCRIPTION}}</dd>
+                            @if($module->description)
+                                <dd>{{$module->description}}</dd>
                             @else
                                 <dd><span class="not-exist">Отсутствует</span></dd>
                             @endif

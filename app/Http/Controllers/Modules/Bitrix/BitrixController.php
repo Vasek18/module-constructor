@@ -67,19 +67,19 @@ class BitrixController extends Controller{
 			return $this->unauthorized($this->request);
 		}
 		if ($this->request->name){
-			$module->MODULE_NAME = $this->request->name;
+			$module->name = $this->request->name;
 			$module->save();
 
 			$module->changeVarsInModuleFileAndSave('bitrix/lang/ru/install/index.php', $module->id);
 		}
 		if ($this->request->description){
-			$module->MODULE_DESCRIPTION = $this->request->description;
+			$module->description = $this->request->description;
 			$module->save();
 
 			$module->changeVarsInModuleFileAndSave('bitrix/lang/ru/install/index.php', $module->id);
 		}
 		if ($this->request->version){
-			$module->VERSION = $this->request->version;
+			$module->version = $this->request->version;
 			$module->save();
 
 			$module->changeVarsInModuleFileAndSave('bitrix/lang/ru/install/index.php', $module->id);
@@ -125,8 +125,7 @@ class BitrixController extends Controller{
 			return $this->unauthorized($this->request);
 		}
 		// удаляем папку
-		$myModuleFolder = $module->PARTNER_CODE.".".$module->MODULE_CODE;
-		Storage::disk('user_modules')->deleteDirectory($myModuleFolder);
+		Storage::disk('user_modules')->deleteDirectory($module->module_folder);
 		// удаляем запись из БД
 		$module->delete();
 

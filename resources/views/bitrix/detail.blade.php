@@ -15,26 +15,26 @@
                 {{ method_field('PUT') }}
                 <div class="form-group">
                     <label>Код</label>
-                    <p class="form-control-static">{{$module->PARTNER_CODE}}.{{$module->MODULE_CODE}}</p>
+                    <p class="form-control-static">{{$module->PARTNER_CODE}}.{{$module->code}}</p>
                 </div>
                 <div class="form-group">
                     <label for="name">Название</label>
                     <p class="form-control-static">
                         <a href="#" class="you-can-change ajax" data-name="name"
-                           data-pattern="[a-zA-Zа-яА-Я0-9]*">{{$module->MODULE_NAME}}</a>
+                           data-pattern="[a-zA-Zа-яА-Я0-9]*">{{$module->name}}</a>
                     </p>
                 </div>
                 <div class="form-group">
                     <label for="description">Описание</label>
                     <p class="form-control-static">
                         <a href="#" class="you-can-change ajax" data-name="description"
-                           data-formtype="textarea">{{$module->MODULE_DESCRIPTION}}</a>
+                           data-formtype="textarea">{{$module->description}}</a>
                     </p>
                 </div>
                 <div class="form-group">
                     <label for="version">Версия</label>
                     <p class="form-control-static">
-                        <a href="#" class="you-can-change ajax" data-name="version">{{$module->VERSION}}</a>
+                        <a href="#" class="you-can-change ajax" data-name="version">{{$module->version}}</a>
                     </p>
                 </div>
                 <div class="form-group">

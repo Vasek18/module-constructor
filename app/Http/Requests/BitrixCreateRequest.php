@@ -28,7 +28,7 @@ class BitrixCreateRequest extends FormRequest{
 			'PARTNER_URI'    => 'required',
 			'PARTNER_CODE'   => 'required',
 			'MODULE_NAME'    => 'required',
-			'MODULE_CODE'    => 'required|unique:bitrixes,MODULE_CODE,NULL,id,PARTNER_CODE,'.$this->PARTNER_CODE,
+			'MODULE_CODE'    => 'required|unique:bitrixes,code,NULL,id,PARTNER_CODE,'.$this->PARTNER_CODE,
 			'MODULE_VERSION' => 'required'
 		];
 	}

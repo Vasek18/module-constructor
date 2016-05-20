@@ -8,8 +8,8 @@
             <div class="col-md-12">
                 <div class="panel panel-default">
                     @if ($module->id)
-                        <div class="panel-heading">@yield('h1') | Модуль "{{$module->MODULE_NAME}}"
-                            ({{$module->PARTNER_CODE}}.{{$module->MODULE_CODE}})
+                        <div class="panel-heading">@yield('h1') | Модуль "{{$module->name}}"
+                            ({{$module->PARTNER_CODE}}.{{$module->code}})
                         </div>
                         <div class="panel-body">
                             @yield('page')

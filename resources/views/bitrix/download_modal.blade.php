@@ -13,7 +13,7 @@
                     <div class="form-group">
                         <label for="version">Версия</label>
                         <input class="form-control" type="text" name="version" id="version" required
-                               value="{{upgradeVersionNumber($module->VERSION)}}">
+                               value="{{upgradeVersionNumber($module->version)}}">
                     </div>
                     <button type="submit" class="btn btn-primary" name="module_download">Скачать</button>
                 </form>

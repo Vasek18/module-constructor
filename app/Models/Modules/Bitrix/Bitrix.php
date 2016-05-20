@@ -25,10 +25,10 @@ class Bitrix extends Model{
 		'{MODULE_CLASS_NAME}'  => 'class_name',
 		'{MODULE_ID}'          => 'module_full_id',
 		'{LANG_KEY}'           => 'lang_key',
-		'{VERSION}'            => 'VERSION',
+		'{VERSION}'            => 'version',
 		'{DATE_TIME}'          => 'updated_at',
-		'{MODULE_NAME}'        => 'MODULE_NAME',
-		'{MODULE_DESCRIPTION}' => 'MODULE_DESCRIPTION',
+		'{MODULE_NAME}'        => 'name',
+		'{MODULE_DESCRIPTION}' => 'description',
 		'{PARTNER_NAME}'       => 'PARTNER_NAME',
 		'{PARTNER_URI}'        => 'PARTNER_URI'
 	];
@@ -36,7 +36,7 @@ class Bitrix extends Model{
 	public $priceForDownload = 500;
 
 	// на случай, если я где-то буду использовать create, эти поля можно будет записывать
-	protected $fillable = ['MODULE_NAME', 'MODULE_DESCRIPTION', 'MODULE_CODE', 'PARTNER_NAME', 'PARTNER_URI', 'PARTNER_CODE', 'VERSION'];
+	protected $fillable = ['name', 'description', 'code', 'PARTNER_NAME', 'PARTNER_URI', 'PARTNER_CODE', 'version'];
 
 	// создание модуля (записывание в бд)
 	// todo валидация данных
@@ -58,14 +58,14 @@ class Bitrix extends Model{
 		$bitrix::completeUserProfile(Auth::id(), $request);
 
 		// запись в БД
-		$bitrix->MODULE_NAME = trim($request->MODULE_NAME);
-		$bitrix->MODULE_DESCRIPTION = trim($request->MODULE_DESCRIPTION);
-		$bitrix->MODULE_CODE = trim($request->MODULE_CODE);
+		$bitrix->name = trim($request->MODULE_NAME);
+		$bitrix->description = trim($request->MODULE_DESCRIPTION);
+		$bitrix->code = trim($request->MODULE_CODE);
 		$bitrix->PARTNER_NAME = trim($request->PARTNER_NAME);
 		$bitrix->PARTNER_URI = trim($request->PARTNER_URI);
 		$bitrix->PARTNER_CODE = trim($request->PARTNER_CODE);
 		if ($request->MODULE_VERSION){
-			$bitrix->VERSION = trim($request->MODULE_VERSION);
+			$bitrix->version = trim($request->MODULE_VERSION);
 		}
 
 		Auth::user()->bitrixes()->save($bitrix);
@@ -178,8 +178,8 @@ class Bitrix extends Model{
 	// создаёт архив модуля для скачивания
 	// todo проверки на успех
 	public static function generateZip(Bitrix $module){
-		$folder = $module->PARTNER_CODE.".".$module->MODULE_CODE;
-		$archiveName = $module->PARTNER_CODE."_".$module->MODULE_CODE.".zip";
+		$folder = $module->PARTNER_CODE.".".$module->code;
+		$archiveName = $module->PARTNER_CODE."_".$module->code.".zip";
 		$rootFolder = Storage::disk('user_modules')->getDriver()->getAdapter()->getPathPrefix();
 
 		$zipper = new \Chumper\Zipper\Zipper;
@@ -218,7 +218,7 @@ class Bitrix extends Model{
 		if ($fromRoot){
 			$modulesRootFolder = Storage::disk('user_modules')->getDriver()->getAdapter()->getPathPrefix();
 		}
-		$folder = $module->PARTNER_CODE.".".$module->MODULE_CODE;
+		$folder = $module->PARTNER_CODE.".".$module->code;
 
 		return $modulesRootFolder.$folder;
 	}
@@ -229,18 +229,18 @@ class Bitrix extends Model{
 		if ($fromRoot){
 			$modulesRootFolder = Storage::disk('user_modules')->getDriver()->getAdapter()->getPathPrefix();
 		}
-		$folder = $this->PARTNER_CODE.".".$this->MODULE_CODE;
+		$folder = $this->PARTNER_CODE.".".$this->code;
 
 		return $modulesRootFolder.$folder;
 	}
 
 	public static function deleteFolder(Bitrix $module){
-		$folder = $module->PARTNER_CODE.".".$module->MODULE_CODE;
+		$folder = $module->PARTNER_CODE.".".$module->code;
 		Storage::disk('user_modules')->deleteDirectory($folder);
 	}
 
 	public static function existsModuleWithThisCodeAndPartnerCode($partnerCode, $moduleCode){
-		if (Bitrix::where('PARTNER_CODE', $partnerCode)->where('MODULE_CODE', $moduleCode)->count()){
+		if (Bitrix::where('PARTNER_CODE', $partnerCode)->where('code', $moduleCode)->count()){
 			return true;
 		}
 
@@ -322,23 +322,23 @@ class Bitrix extends Model{
 	}
 
 	public function getModuleFolderAttribute(){
-		return $this->PARTNER_CODE.".".$this->MODULE_CODE;
+		return $this->PARTNER_CODE.".".$this->code;
 	}
 
 	public function getModuleFullIdAttribute(){
-		return $this->PARTNER_CODE.".".$this->MODULE_CODE;
+		return $this->PARTNER_CODE.".".$this->code;
 	}
 
 	public function getLangKeyAttribute(){
-		return strtoupper($this->PARTNER_CODE."_".$this->MODULE_CODE);
+		return strtoupper($this->PARTNER_CODE."_".$this->code);
 	}
 
 	public function getClassNameAttribute(){
-		return $this->PARTNER_CODE."_".$this->MODULE_CODE;
+		return $this->PARTNER_CODE."_".$this->code;
 	}
 
 	public function getNamespaceAttribute(){
-		return studly_case($this->PARTNER_CODE)."\\".studly_case($this->MODULE_CODE);
+		return studly_case($this->PARTNER_CODE)."\\".studly_case($this->code);
 	}
 
 	// связи с другими моделями

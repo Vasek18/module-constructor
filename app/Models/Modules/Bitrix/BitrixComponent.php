@@ -36,7 +36,7 @@ class BitrixComponent extends Model{
 			[
 				'component_id' => $this->id,
 				'level'        => 1,
-				'code'         => $module->PARTNER_CODE."_".$module->MODULE_CODE."_components",
+				'code'         => $module->PARTNER_CODE."_".$module->code."_components",
 				'name'         => $module->MODULE_NAME,
 				'sort'         => 500
 			]
