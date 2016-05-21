@@ -12,6 +12,7 @@ use App\Models\Modules\Bitrix\BitrixComponent;
 use App\Http\Controllers\Traits\UserOwnModule;
 use Chumper\Zipper\Zipper;
 use Illuminate\Support\Facades\Response;
+use App\vArrParse;
 
 class BitrixComponentsController extends Controller{
 	use UserOwnModule;
@@ -70,6 +71,17 @@ class BitrixComponentsController extends Controller{
 			'component'  => $component,
 			'path_items' => $component->path_items()->get()
 		];
+
+		$vArrFile = new vArrParse;
+		//dd(getPhpArrayFromFile($component->getFolder(true).'/.description.php', 'arComponentDescription'));
+		//dd($vArrFile->getPhpArrayFromFile($component->getFolder(true).'/.parameters.php', 'arComponentParameters'));
+		dd($vArrFile->parseFromText('$arSortFields = Array(
+		"ID" => GetMessage("T_IBLOCK_DESC_FID"),
+		"NAME" => GetMessage("T_IBLOCK_DESC_FNAME"),
+		"ACTIVE_FROM" => GetMessage("T_IBLOCK_DESC_FACT"),
+		"SORT" => GetMessage("T_IBLOCK_DESC_FSORT"),
+		"TIMESTAMP_X" => GetMessage("T_IBLOCK_DESC_FTSAMP")
+);', 'arSortFields'));
 
 		return view("bitrix.components.detail", $data);
 	}

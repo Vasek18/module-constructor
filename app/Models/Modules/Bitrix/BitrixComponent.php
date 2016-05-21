@@ -295,11 +295,11 @@ class BitrixComponent extends Model{
 	}
 
 	public function parseDescriptionFile(){
-		dd(getPhpArrayFromFile($this->getFolder(true).'/.description.php', 'arComponentDescription'));
+		//dd(getPhpArrayFromFile($this->getFolder(true).'/.description.php', 'arComponentDescription'));
 	}
 
 	public function parseParamsFile(){
-
+		//dd(getPhpArrayFromFile($this->getFolder(true).'/.parameters.php', '$arComponentParameters'));
 	}
 
 	public function gatherListOfArbitraryFiles(){
