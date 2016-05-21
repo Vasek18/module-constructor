@@ -12,8 +12,9 @@ class vArrParse{
 	}
 
 	public function parseFromText($text, $arrayName){
+		$text = $this->normalizeText($text);
 		$arrString = $this->getStringWithOnlyArrayBody($text, $arrayName);
-		//dd($arrString);
+		//dd($text);
 		$array = $this->parseArrayFromPreparedString($arrString);
 
 		//dd($array);
@@ -23,6 +24,9 @@ class vArrParse{
 
 	public function getStringWithOnlyArrayBody($text, $arrayName = '', $sub = false){
 		// todo очистка от комментариев
+		//
+		//echo $text;
+		//echo "<br>";
 
 		$varEnding = ';';
 		if ($sub){ // если вложенный массив
@@ -37,7 +41,22 @@ class vArrParse{
 
 		if (isset($matches[1])){
 			$arrString = $matches[1];
-
+			//print_r($matches);
+			//echo "<br>";
+			if ($sub){
+				if ($closingParenthesisPos = strpos($arrString, ')') !== false){
+					$closingParenthesisPos = intval(strpos($arrString, ')'));
+					//echo intval(strpos($arrString, ')')).' '.intval(strpos($arrString, '('));
+					//echo "<br>";
+					if ((strpos($arrString, '(') === false) || (intval(strpos($arrString, '(')) > intval($closingParenthesisPos))){ // случай когда мы захватили сестринский массив
+						$arrString = substr($arrString, 0, $closingParenthesisPos);
+					}
+				}
+			}
+			//
+			//echo $arrString;
+			//echo "<br>";
+			//echo "<br>";
 			return $arrString;
 		}
 
@@ -45,22 +64,35 @@ class vArrParse{
 	}
 
 	protected function parseArrayFromPreparedString($arrString){
+		//echo $arrString;
+		//echo "<br>";
 		$skip = 0;
 		$array = [];
 		$arrElsTemp = explode(',', $arrString);
+		//print_r($arrElsTemp);
+		//echo "<br>";
 
 		foreach ($arrElsTemp as $c => $pair){
-			//echo $skip;
 			//echo "<br>";
-			//dd($pair);
+			//echo $skip;
+			echo $pair;
+			echo "<br>";
 			if ($skip){
 				$skip--;
 				continue;
 			}
 			if (strpos($pair, '=>') != false){ // ассоциативный
+				//echo $pair;
+				//echo "<br>";
 				$itemTemp = $this->explodeKeyAndValueFromStringOfAssiciativeArray($pair);
+				//print_r($itemTemp);
+				//echo "<br>";
 
-				if ($this->isValANewSubArrayStartstrpos($itemTemp['val'])){ // вложенный
+				if (in_array($itemTemp['val'], ['Array()', 'array()'])){ // не используем нашу логику для пустого массива
+					$array[$itemTemp['key']] = Array();
+					continue;
+				}
+				if ($this->isValANewSubArrayStartstrPos($itemTemp['val'])){ // вложенный
 					$newArrString = substr($arrString, strpos($arrString, $itemTemp['val']));
 					//if (strpos($newArrString, '),')){ // обрезание массива в случае следующего сестринского
 					//	$newArrString = substr($newArrString, 0, strpos($newArrString, '),')+1); // поскольку нам нужная скобка в функции дальше
@@ -74,6 +106,10 @@ class vArrParse{
 
 				$array[$itemTemp['key']] = $itemTemp['val'];
 				//dd($array);
+			}else{
+				if (strlen(trim($pair))){ // неассоциативный
+					$array[] = $this->normalizeVal($pair);
+				}
 			}
 		}
 
@@ -85,23 +121,19 @@ class vArrParse{
 		$key = null;
 		$val = null;
 		$itemTemp = explode('=>', $string);
+		//print_r($itemTemp);
+		//echo "<br>";
+		$itemTemp[0] = str_replace('Array(', '', $itemTemp[0]); // мне не совсем понятно, когда актуальна эта строчка
 		preg_match('/[\s\'\"]*([^\'\"]+)[\s\'\"]*/', $itemTemp[0], $keys);
 		$key = $keys[1];
+		//if ()
 
-		$itemTemp[1] = trim($itemTemp[1]);
-		if (substr($itemTemp[1], 0, 1) == '"' || substr($itemTemp[1], 0, 1) == "'"){ // если первый элемент ковычка
-			preg_match('/[\s\'\"]+(.+)[\s\'\"]+/', $itemTemp[1], $vals);
-		}else{
-			preg_match('/[\s\'\"]*(.+)[\s\'\"]*/', $itemTemp[1], $vals);
-		}
-		if (isset($vals[1])){ // тупо чтобы на эксепшион не попасть
-			$val = $vals[1];
-		}
+		$val = $this->normalizeVal($itemTemp[1]);
 
 		return ['key' => $key, 'val' => $val];
 	}
 
-	protected function isValANewSubArrayStartstrpos($val){
+	protected function isValANewSubArrayStartstrPos($val){
 		if (strpos($val, 'rray') !== false){
 			return true;
 		}
@@ -115,6 +147,27 @@ class vArrParse{
 		//}
 
 		return substr_count($string, '=>');
+	}
+
+	protected function normalizeText($text){
+		$text = preg_replace('/\([\s,]+\)/', '()', $text);
+		$text = preg_replace('/[\s,]+\)/', ')', $text);
+
+		return $text;
+	}
+
+	protected function normalizeVal($val){
+		$val = trim($val);
+		if (substr($val, 0, 1) == '"' || substr($val, 0, 1) == "'"){ // если первый элемент ковычка
+			preg_match('/[\s\'\"]+(.+)[\s\'\"]+/', $val, $vals);
+		}else{
+			preg_match('/[\s\'\"]*(.+)[\s\'\"]*/', $val, $vals);
+		}
+		if (isset($vals[1])){ // тупо чтобы на эксепшион не попасть
+			$val = $vals[1];
+		}
+
+		return $val;
 	}
 
 }

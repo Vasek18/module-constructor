@@ -159,17 +159,17 @@ class vArrParseTest extends TestCase{
 	),
 );';
 		$expectedArr = array(
-			"NAME" => 'GetMessage("REGIONS_COMPONENT_NAME")',
+			"NAME"        => 'GetMessage("REGIONS_COMPONENT_NAME")',
 			"DESCRIPTION" => 'GetMessage("REGIONS_COMPONENT")',
-			"ICON" => "/images/regions.gif",
-			"SORT" => 10,
-			"CACHE_PATH" => "Y",
-			"PATH" => array(
-				"ID" => "v_regions",
-				"SORT" => 2200,
-				"NAME" => 'GetMessage("V_REGIONS_COMPONENTS")',
+			"ICON"        => "/images/regions.gif",
+			"SORT"        => 10,
+			"CACHE_PATH"  => "Y",
+			"PATH"        => array(
+				"ID"    => "v_regions",
+				"SORT"  => 2200,
+				"NAME"  => 'GetMessage("V_REGIONS_COMPONENTS")',
 				"CHILD" => array(
-					"ID" => "v_regions_select",
+					"ID"   => "v_regions_select",
 					"NAME" => 'GetMessage("V_REGIONS_SELECT")',
 					"SORT" => 10,
 				)
@@ -183,15 +183,58 @@ class vArrParseTest extends TestCase{
 	}
 
 	/** @test */
-	//function it_gets_associative_array_in_one_line_starting_with_array_and_contains_two_subarrays_with_string_value(){
-	//	$string = "\$test = Array('ololo' => 'trololo', 'subarr' => Array('foo' => 'bar'), 'subsub' => Array('a' => 'b'));";
-	//	$expectedArr = Array('ololo' => 'trololo', 'subarr' => Array('foo' => 'bar'), 'subsub' => Array('a' => 'b'));
+	function it_gets_associative_array_in_one_line_starting_with_array_and_contains_two_subarrays_with_string_value(){
+		$string = "\$test = Array('ololo' => 'trololo', 'subarr' => Array('foo' => 'bar'), 'subsub' => Array('a' => 'b'));";
+		$expectedArr = Array('ololo' => 'trololo', 'subarr' => Array('foo' => 'bar'), 'subsub' => Array('a' => 'b'));
+
+		$gottenArr = $this->vArrParse->parseFromText($string, 'test');
+		//dd($expectedArr);
+
+		$this->assertEquals($expectedArr, $gottenArr);
+	}
+
+	/** @test */
+	function it_gets_associative_array_starting_with_array_and_contains_subarray_with_subarray_with_string_value(){
+		$string = "\$test = Array('subarr' => Array('subsub' => Array('a' => 'b')));";
+		$expectedArr = Array('subarr' => Array('subsub' => Array('a' => 'b')));
+
+		$gottenArr = $this->vArrParse->parseFromText($string, 'test');
+		//dd($expectedArr);
+
+		$this->assertEquals($expectedArr, $gottenArr);
+	}
+
+	/** @test */
+	function it_gets_associative_array_starting_with_array_and_contains_empty_array_followed_by_subarray_with_subarray_with_string_value(){
+		$string = "\$test = Array('ololo' => Array(), 'subarr' => Array('subsub' => Array('a' => 'b')));";
+		$expectedArr = Array('ololo' => Array(), 'subarr' => Array('subsub' => Array('a' => 'b')));
+
+		$gottenArr = $this->vArrParse->parseFromText($string, 'test');
+		//dd($expectedArr);
+
+		$this->assertEquals($expectedArr, $gottenArr);
+	}
+
+	///** @test */
+	//function it_gets_array_starting_with_array_and_contains_two_subarrays_with_string_value_in_each(){
+	//	$string = "\$test = Array(Array('a' => 'b'), Array('subsub' => 'ololo'));";
+	//	$expectedArr = Array(Array('a' => 'b'), Array('subsub' => 'ololo'));
 	//
 	//	$gottenArr = $this->vArrParse->parseFromText($string, 'test');
 	//	//dd($expectedArr);
 	//
 	//	$this->assertEquals($expectedArr, $gottenArr);
 	//}
+	/** @test */
+	function it_gets_non_asociative_array_with_two_string_values(){
+		$string = "\$test = Array('a', 'b');";
+		$expectedArr = Array('a', 'b');
+
+		$gottenArr = $this->vArrParse->parseFromText($string, 'test');
+		//dd($expectedArr);
+
+		$this->assertEquals($expectedArr, $gottenArr);
+	}
 }
 
 ?>

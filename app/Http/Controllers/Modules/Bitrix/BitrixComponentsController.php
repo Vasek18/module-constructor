@@ -76,7 +76,8 @@ class BitrixComponentsController extends Controller{
 		$vArrFile = new vArrParse;
 		//dd($vArrFile->parseFromFile($component->getFolder(true).'/.description.php', 'arComponentDescription'));
 		//dd($vArrFile->parseFromFile($component->getFolder(true).'/.parameters.php', 'arComponentParameters'));
-		dd($vArrFile->parseFromText("\$test = Array('ololo' => 'trololo', 'subarr' => Array('foo' => 'bar'), 'subsub' => Array('a' => 'b'));", 'test'));
+		//dd($vArrFile->parseFromText("\$test = Array('ololo' => 'trololo', 'subarr' => Array('foo' => 'bar', 'subsub' => Array('a' => 'b')));", 'test'));
+		dd($vArrFile->parseFromText("\$test = Array('a', 'b');", 'test'));
 		// ###
 
 		return view("bitrix.components.detail", $data);
