@@ -267,7 +267,7 @@ class BitrixComponentsController extends Controller{
 
 	public function createEmptyComponent(Bitrix $module, $componentCode){
 		BitrixComponent::where(['module_id' => $module->id, 'code' => $componentCode])->delete(); // не обновляем, а удаляем, чтобы каскадно удалить записи из связанных таблиц
-		
+
 		$component = new BitrixComponent;
 		$component->module_id = $module->id;
 		$component->code = $componentCode;
