@@ -72,16 +72,12 @@ class BitrixComponentsController extends Controller{
 			'path_items' => $component->path_items()->get()
 		];
 
+		// ###
 		$vArrFile = new vArrParse;
-		//dd(getPhpArrayFromFile($component->getFolder(true).'/.description.php', 'arComponentDescription'));
-		//dd($vArrFile->getPhpArrayFromFile($component->getFolder(true).'/.parameters.php', 'arComponentParameters'));
-		dd($vArrFile->parseFromText('$arSortFields = Array(
-		"ID" => GetMessage("T_IBLOCK_DESC_FID"),
-		"NAME" => GetMessage("T_IBLOCK_DESC_FNAME"),
-		"ACTIVE_FROM" => GetMessage("T_IBLOCK_DESC_FACT"),
-		"SORT" => GetMessage("T_IBLOCK_DESC_FSORT"),
-		"TIMESTAMP_X" => GetMessage("T_IBLOCK_DESC_FTSAMP")
-);', 'arSortFields'));
+		//dd($vArrFile->parseFromFile($component->getFolder(true).'/.description.php', 'arComponentDescription'));
+		//dd($vArrFile->parseFromFile($component->getFolder(true).'/.parameters.php', 'arComponentParameters'));
+		dd($vArrFile->parseFromText("\$test = Array('ololo' => 'trololo', 'subarr' => Array('foo' => 'bar'), 'subsub' => Array('a' => 'b'));", 'test'));
+		// ###
 
 		return view("bitrix.components.detail", $data);
 	}

@@ -5,71 +5,75 @@ namespace App;
 class vArrParse{
 
 	public function parseFromFile($file, $arrayName){
-		$this->getPhpArrayFromFile($file, $arrayName);
+		$fileContent = file_get_contents($file);
+
+		//dd($fileContent);
+		return $this->parseFromText($fileContent, $arrayName);
 	}
 
 	public function parseFromText($text, $arrayName){
-		$array = [];
+		$arrString = $this->getStringWithOnlyArrayBody($text, $arrayName);
+		//dd($arrString);
+		$array = $this->parseArrayFromPreparedString($arrString);
 
-		preg_match('/'.$arrayName.'\s*\=\s(?:array|Array)\((.+)\);/is', $text, $matches); // массив внутри в таком случае не должен содержать ";"
-		if ($matches[1]){ // вариант $arComponentDescription = array(
-			$array = $this->parseArrayFromPreparedString($matches[1]);
-
-			//dd($arrElsTemp);
-		}
+		//dd($array);
 
 		return $array;
 	}
 
-	// todo очистка от комментариев
-	public function getPhpArrayFromFile($file, $arrayName){
-		$fileContent = file_get_contents($file);
-		//if (substr($arrayName, 0, 1) != '$'){ // todo это надо?
-		//	$arrayName = '$'.$arrayName;
-		//}
+	public function getStringWithOnlyArrayBody($text, $arrayName = '', $sub = false){
+		// todo очистка от комментариев
 
-		$array = [];
-
-		preg_match('/'.$arrayName.'\s*\=\s(?:array|Array)\((.+)\);/is', $fileContent, $matches); // массив внутри в таком случае не должен содержать ";"
-		if ($matches[1]){ // вариант $arComponentDescription = array(
-			$array = $this->parseArrayFromPreparedString($matches[1]);
-
-			//dd($arrElsTemp);
+		$varEnding = ';';
+		if ($sub){ // если вложенный массив
+			$varEnding = '';
 		}
 
-		return $array;
+		if ($arrayName){
+			preg_match('/'.$arrayName.'\s*\=\s(?:array|Array)\((.+)\)'.$varEnding.'/is', $text, $matches);
+		}else{
+			preg_match('/(?:array|Array)\((.+)\)'.$varEnding.'/is', $text, $matches);
+		}
+
+		if (isset($matches[1])){
+			$arrString = $matches[1];
+
+			return $arrString;
+		}
+
+		return false;
 	}
 
-	// todo пока не работает с вариантом, если за вложенным массивом есть ещё элементы
 	protected function parseArrayFromPreparedString($arrString){
+		$skip = 0;
 		$array = [];
-		$arrElsTemp = preg_split('/(?:,|\(\r)/i', $arrString);
+		$arrElsTemp = explode(',', $arrString);
 
-		$subArrStarted = false;
-		foreach ($arrElsTemp as $c => $item){
-			//echo $c.' ### '.$item;
+		foreach ($arrElsTemp as $c => $pair){
+			//echo $skip;
 			//echo "<br>";
-			if ($subArrStarted){
-				if (strpos($item, '\'') === false && strpos($item, '\"') === false){ // типа нет ключа
-					if (strpos($item, ')') !== false){
-						$subArrStarted = false;
-					}
-				}
+			//dd($pair);
+			if ($skip){
+				$skip--;
 				continue;
 			}
-			if (strpos($item, '=>') != false){ // ассоциативный
-				$itemTemp = $this->explodeKeyAndValueFromString($item);
-				//print_r($itemTemp);
+			if (strpos($pair, '=>') != false){ // ассоциативный
+				$itemTemp = $this->explodeKeyAndValueFromStringOfAssiciativeArray($pair);
 
-				if (strpos($itemTemp['val'], 'rray') === 1){ // вложенный
-					$subArrStarted = true;
-					$newArrString = substr($arrString, strpos($arrString, $item) + strlen($item));
-					$array[$itemTemp['key']] = $this->parseArrayFromPreparedString($newArrString, 2);
+				if ($this->isValANewSubArrayStartstrpos($itemTemp['val'])){ // вложенный
+					$newArrString = substr($arrString, strpos($arrString, $itemTemp['val']));
+					//if (strpos($newArrString, '),')){ // обрезание массива в случае следующего сестринского
+					//	$newArrString = substr($newArrString, 0, strpos($newArrString, '),')+1); // поскольку нам нужная скобка в функции дальше
+					//}
+					$newArrString = $this->getStringWithOnlyArrayBody($newArrString, '', true);
+					$array[$itemTemp['key']] = $this->parseArrayFromPreparedString($newArrString);
+
+					$skip = $this->countAssociativePairs($newArrString) - 1; // минус 1, потому что на этом шаге мы уже спарсили один ключ
 					continue;
 				}
 
 				$array[$itemTemp['key']] = $itemTemp['val'];
-				continue;
+				//dd($array);
 			}
 		}
 
@@ -77,14 +81,40 @@ class vArrParse{
 	}
 
 	// вытащить из примерно такой строки ""CACHE_PATH" => "Y"" ключ и значение
-	protected function explodeKeyAndValueFromString($string){
+	protected function explodeKeyAndValueFromStringOfAssiciativeArray($string){
+		$key = null;
+		$val = null;
 		$itemTemp = explode('=>', $string);
 		preg_match('/[\s\'\"]*([^\'\"]+)[\s\'\"]*/', $itemTemp[0], $keys);
 		$key = $keys[1];
-		preg_match('/\s*(.+)\s*/', $itemTemp[1], $vals); // todo убирать кавычки по краям
-		$val = $vals[1];
+
+		$itemTemp[1] = trim($itemTemp[1]);
+		if (substr($itemTemp[1], 0, 1) == '"' || substr($itemTemp[1], 0, 1) == "'"){ // если первый элемент ковычка
+			preg_match('/[\s\'\"]+(.+)[\s\'\"]+/', $itemTemp[1], $vals);
+		}else{
+			preg_match('/[\s\'\"]*(.+)[\s\'\"]*/', $itemTemp[1], $vals);
+		}
+		if (isset($vals[1])){ // тупо чтобы на эксепшион не попасть
+			$val = $vals[1];
+		}
 
 		return ['key' => $key, 'val' => $val];
+	}
+
+	protected function isValANewSubArrayStartstrpos($val){
+		if (strpos($val, 'rray') !== false){
+			return true;
+		}
+
+		return false;
+	}
+
+	protected function countAssociativePairs($string){
+		//if (substr_count($string, '=>')){
+		//	dd($string);
+		//}
+
+		return substr_count($string, '=>');
 	}
 
 }
