@@ -66,50 +66,48 @@ class vArrParse{
 	protected function parseArrayFromPreparedString($arrString){
 		//echo $arrString;
 		//echo "<br>";
-		$skip = 0;
 		$array = [];
-		$arrElsTemp = explode(',', $arrString);
+		$arrElsTemp = $this->explodeOneLevelOfArrayInItems($arrString);
+		//echo "<pre>";
 		//print_r($arrElsTemp);
+		//echo "</pre>";
 		//echo "<br>";
 
 		foreach ($arrElsTemp as $c => $pair){
+
+			$itemTemp = $this->extractKeyAndValueFromString($pair);
+			//echo "<pre>";
+			//print_r($itemTemp);
+			//echo "</pre>";
+			//echo "<br>";
+
 			//echo "<br>";
 			//echo $skip;
-			echo $pair;
-			echo "<br>";
-			if ($skip){
-				$skip--;
+			//echo $pair;
+			//echo "<br>";
+			//echo $pair;
+			//echo "<br>";
+			//$itemTemp = $this->explodeKeyAndValueFromStringOfAssiciativeArray($pair);
+			//print_r($itemTemp);
+			//echo "<br>";
+
+			//if (in_array($itemTemp['val'], ['Array()', 'array()'])){ // не используем нашу логику для пустого массива
+			//	$array[$itemTemp['key']] = Array();
+			//	continue;
+			//}
+			if ($this->isValASubArray($itemTemp['val'])){ // вложенный
+				$newArrString = $this->getStringWithOnlyArrayBody($itemTemp['val'], '', true);
+				$array[$itemTemp['key']] = $this->parseArrayFromPreparedString($newArrString);
+
 				continue;
 			}
-			if (strpos($pair, '=>') != false){ // ассоциативный
-				//echo $pair;
-				//echo "<br>";
-				$itemTemp = $this->explodeKeyAndValueFromStringOfAssiciativeArray($pair);
-				//print_r($itemTemp);
-				//echo "<br>";
 
-				if (in_array($itemTemp['val'], ['Array()', 'array()'])){ // не используем нашу логику для пустого массива
-					$array[$itemTemp['key']] = Array();
-					continue;
-				}
-				if ($this->isValANewSubArrayStartstrPos($itemTemp['val'])){ // вложенный
-					$newArrString = substr($arrString, strpos($arrString, $itemTemp['val']));
-					//if (strpos($newArrString, '),')){ // обрезание массива в случае следующего сестринского
-					//	$newArrString = substr($newArrString, 0, strpos($newArrString, '),')+1); // поскольку нам нужная скобка в функции дальше
-					//}
-					$newArrString = $this->getStringWithOnlyArrayBody($newArrString, '', true);
-					$array[$itemTemp['key']] = $this->parseArrayFromPreparedString($newArrString);
+			//dd($array);
 
-					$skip = $this->countAssociativePairs($newArrString) - 1; // минус 1, потому что на этом шаге мы уже спарсили один ключ
-					continue;
-				}
-
+			if (isset($itemTemp['key'])){
 				$array[$itemTemp['key']] = $itemTemp['val'];
-				//dd($array);
 			}else{
-				if (strlen(trim($pair))){ // неассоциативный
-					$array[] = $this->normalizeVal($pair);
-				}
+				$array[] = $itemTemp['val'];
 			}
 		}
 
@@ -117,24 +115,38 @@ class vArrParse{
 	}
 
 	// вытащить из примерно такой строки ""CACHE_PATH" => "Y"" ключ и значение
-	protected function explodeKeyAndValueFromStringOfAssiciativeArray($string){
-		$key = null;
-		$val = null;
-		$itemTemp = explode('=>', $string);
-		//print_r($itemTemp);
-		//echo "<br>";
-		$itemTemp[0] = str_replace('Array(', '', $itemTemp[0]); // мне не совсем понятно, когда актуальна эта строчка
-		preg_match('/[\s\'\"]*([^\'\"]+)[\s\'\"]*/', $itemTemp[0], $keys);
-		$key = $keys[1];
-		//if ()
+	protected function extractKeyAndValueFromString($string){
+		$answer = [];
+		$pair = explode('=>', $string, 2);
 
-		$val = $this->normalizeVal($itemTemp[1]);
+		if (count($pair) == 1){ // не ассоциативный
+			$val = $pair[0];
+		}else{
+			$key = $pair[0];
+			$val = $pair[1];
+		}
 
-		return ['key' => $key, 'val' => $val];
+		if (isset($key)){
+			$key = $this->normalizeVal($key); // todo здесь, наверное другая функция нужна будет
+			$answer['key'] = $key;
+		}
+		$val = $this->normalizeVal($val);
+		$answer['val'] = $val;
+
+		return $answer;
 	}
 
-	protected function isValANewSubArrayStartstrPos($val){
-		if (strpos($val, 'rray') !== false){
+	protected function isValASubArray($val){
+		if (strpos($val, 'Array') === 0){
+			if ($val == 'Array'){ // будем считать пустой массив не массивом
+				return false;
+			}
+			return true;
+		}
+		if (strpos($val, 'array') === 0){
+			if ($val == 'array'){ // будем считать пустой массив не массивом
+				return false;
+			}
 			return true;
 		}
 
@@ -159,15 +171,54 @@ class vArrParse{
 	protected function normalizeVal($val){
 		$val = trim($val);
 		if (substr($val, 0, 1) == '"' || substr($val, 0, 1) == "'"){ // если первый элемент ковычка
-			preg_match('/[\s\'\"]+(.+)[\s\'\"]+/', $val, $vals);
-		}else{
-			preg_match('/[\s\'\"]*(.+)[\s\'\"]*/', $val, $vals);
-		}
-		if (isset($vals[1])){ // тупо чтобы на эксепшион не попасть
-			$val = $vals[1];
+			$val = substr($val, 1, strlen($val) - 2); // обрезаем по краям
+			//$val = $this->normalizeVal($val);
 		}
 
 		return $val;
+	}
+
+	protected function explodeOneLevelOfArrayInItems($arrString){
+		$items = [];
+
+		while (strlen($arrString)){
+			$offset = 0;
+			$pos = strpos($arrString, ','); // находим разделитель
+			if (!$pos){ // если не нашли разделитель, то это всё один элемент
+				$pos = strlen($arrString);
+			}
+			$substr = substr($arrString, 0, $pos); // считаем элемент, всё что до него
+			$opens = substr_count($substr, '('); // считаем открывающие скобки
+			$closes = substr_count($substr, ')'); // считаем закрывающие скобки
+			if ($opens > $closes){ // если открылся массив
+				while ($opens > $closes){ // идём в цикле, пока не закроется
+					if ($offset > strlen($arrString)){ // если произошло переполнение, то просто берём всю строку
+						$pos = strlen($arrString);
+						$substr = substr($arrString, 0, $pos);
+						break;
+					}
+					$pos = strpos($arrString, ',', $offset);
+					if (!$pos){ // если не нашли разделитель, то это всё один элемент
+						$pos = strlen($arrString);
+						$substr = substr($arrString, 0, $pos);
+						break;
+					}
+					$substr = substr($arrString, 0, $pos);
+					$opens = substr_count($substr, '(');// считаем открывающие скобки
+					$closes = substr_count($substr, ')'); // считаем закрывающие скобки
+					$offset += $pos + 1;
+					//echo "<br>";
+				}
+				//dd($opens.' '.$closes);
+				//echo "<br>";
+			}
+			//echo $substr;
+			//echo "<br>";
+			$items[] = $substr;
+			$arrString = substr($arrString, $pos + 1); // убираем из исходной строки найденный элемент
+		}
+
+		return $items;
 	}
 
 }

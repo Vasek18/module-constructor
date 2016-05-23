@@ -215,16 +215,17 @@ class vArrParseTest extends TestCase{
 		$this->assertEquals($expectedArr, $gottenArr);
 	}
 
-	///** @test */
-	//function it_gets_array_starting_with_array_and_contains_two_subarrays_with_string_value_in_each(){
-	//	$string = "\$test = Array(Array('a' => 'b'), Array('subsub' => 'ololo'));";
-	//	$expectedArr = Array(Array('a' => 'b'), Array('subsub' => 'ololo'));
-	//
-	//	$gottenArr = $this->vArrParse->parseFromText($string, 'test');
-	//	//dd($expectedArr);
-	//
-	//	$this->assertEquals($expectedArr, $gottenArr);
-	//}
+	/** @test */
+	function it_gets_array_starting_with_array_and_contains_two_subarrays_with_string_value_in_each(){
+		$string = "\$test = Array(Array('a' => 'b'), Array('subsub' => 'ololo'));";
+		$expectedArr = Array(Array('a' => 'b'), Array('subsub' => 'ololo'));
+
+		$gottenArr = $this->vArrParse->parseFromText($string, 'test');
+		//dd($expectedArr);
+
+		$this->assertEquals($expectedArr, $gottenArr);
+	}
+
 	/** @test */
 	function it_gets_non_asociative_array_with_two_string_values(){
 		$string = "\$test = Array('a', 'b');";
