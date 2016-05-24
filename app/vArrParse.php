@@ -60,10 +60,20 @@ class vArrParse{
 		//echo "<br>";
 
 		foreach ($arrElsTemp as $c => $pair){
+			//echo $pair;
+			//echo "<br>";
 
 			$itemTemp = $this->extractKeyAndValueFromString($pair);
+			//echo "<pre>";
+			//print_r($itemTemp);
+			//echo "</pre>";
+			//echo "<br>";
 
 			if ($this->isValASubArray($itemTemp['val'])){ // вложенный
+				//echo "<pre>";
+				//print_r($itemTemp['val']);
+				//echo "</pre>";
+				//echo "<br>";
 				$newArrString = $this->getStringWithOnlyArrayBody($itemTemp['val'], '', true);
 				$itemTemp['val'] = $this->parseArrayFromPreparedString($newArrString);
 			}
@@ -151,7 +161,7 @@ class vArrParse{
 			}
 			$substr = substr($arrString, 0, $pos); // считаем элементом, всё что до разделителя
 			while ($this->isSubArrOpened($substr)){
-				if ($pos > strlen($arrString)){ // если произошло переполнение, то просто берём всю строку // todo этого быть не должно
+				if ($pos >= strlen($arrString)){ // если произошло переполнение, то просто берём всю строку // todo этого быть не должно
 					$pos = strlen($arrString);
 					$substr = $arrString;
 					break;
