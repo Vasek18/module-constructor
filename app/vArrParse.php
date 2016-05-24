@@ -6,6 +6,7 @@ class vArrParse{
 
 	public function parseFromFile($file, $arrayName){
 		$fileContent = file_get_contents($file);
+
 		return $this->parseFromText($fileContent, $arrayName);
 	}
 
@@ -18,8 +19,6 @@ class vArrParse{
 	}
 
 	public function getStringWithOnlyArrayBody($text, $arrayName = '', $sub = false){
-		// todo очистка от комментариев
-
 		$varEnding = ';';
 		if ($sub){ // если вложенный массив
 			$varEnding = '';
@@ -41,6 +40,7 @@ class vArrParse{
 					}
 				}
 			}
+
 			return $arrString;
 		}
 
@@ -48,8 +48,16 @@ class vArrParse{
 	}
 
 	protected function parseArrayFromPreparedString($arrString){
+		//echo $arrString;
+		//echo "<br>";
+		//echo "###";
+		//echo "<br>";
 		$array = [];
 		$arrElsTemp = $this->explodeOneLevelOfArrayInItems($arrString);
+		//echo "<pre>";
+		//print_r($arrElsTemp);
+		//echo "</pre>";
+		//echo "<br>";
 
 		foreach ($arrElsTemp as $c => $pair){
 
@@ -117,6 +125,7 @@ class vArrParse{
 	}
 
 	protected function normalizeText($text){
+		// todo очистка от комментариев
 		$text = preg_replace('/\([\s,]+\)/', '()', $text);
 		$text = preg_replace('/[\s,]+\)/', ')', $text);
 
@@ -136,38 +145,41 @@ class vArrParse{
 		$items = [];
 
 		while (strlen($arrString)){
-			$offset = 0;
 			$pos = strpos($arrString, ','); // находим разделитель
 			if (!$pos){ // если не нашли разделитель, то это всё один элемент
 				$pos = strlen($arrString);
 			}
-			$substr = substr($arrString, 0, $pos); // считаем элемент, всё что до него
-			$opens = substr_count($substr, '('); // считаем открывающие скобки
-			$closes = substr_count($substr, ')'); // считаем закрывающие скобки
-			if ($opens > $closes){ // если открылся массив
-				while ($opens > $closes){ // идём в цикле, пока не закроется
-					if ($offset > strlen($arrString)){ // если произошло переполнение, то просто берём всю строку
-						$pos = strlen($arrString);
-						$substr = substr($arrString, 0, $pos);
-						break;
-					}
-					$pos = strpos($arrString, ',', $offset);
-					if (!$pos){ // если не нашли разделитель, то это всё один элемент
-						$pos = strlen($arrString);
-						$substr = substr($arrString, 0, $pos);
-						break;
-					}
-					$substr = substr($arrString, 0, $pos);
-					$opens = substr_count($substr, '(');// считаем открывающие скобки
-					$closes = substr_count($substr, ')'); // считаем закрывающие скобки
-					$offset += $pos + 1;
+			$substr = substr($arrString, 0, $pos); // считаем элементом, всё что до разделителя
+			while ($this->isSubArrOpened($substr)){
+				if ($pos > strlen($arrString)){ // если произошло переполнение, то просто берём всю строку // todo этого быть не должно
+					$pos = strlen($arrString);
+					$substr = $arrString;
+					break;
 				}
+				$pos = strpos($arrString, ',', $pos + 1);
+				if (!$pos){ // если не нашли разделитель, то это всё один элемент
+					$pos = strlen($arrString);
+					$substr = $arrString;
+					break;
+				}
+				$substr = substr($arrString, 0, $pos + 1);
 			}
 			$items[] = $substr;
 			$arrString = substr($arrString, $pos + 1); // убираем из исходной строки найденный элемент
 		}
 
 		return $items;
+	}
+
+	protected function isSubArrOpened($string){
+		$opens = substr_count($string, '('); // считаем открывающие скобки
+		$closes = substr_count($string, ')'); // считаем закрывающие скобки
+
+		if ($opens > $closes){
+			return $opens - $closes;
+		}
+
+		return false;
 	}
 
 }

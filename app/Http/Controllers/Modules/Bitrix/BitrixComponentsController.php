@@ -12,7 +12,6 @@ use App\Models\Modules\Bitrix\BitrixComponent;
 use App\Http\Controllers\Traits\UserOwnModule;
 use Chumper\Zipper\Zipper;
 use Illuminate\Support\Facades\Response;
-use App\vArrParse;
 
 class BitrixComponentsController extends Controller{
 	use UserOwnModule;
@@ -71,14 +70,6 @@ class BitrixComponentsController extends Controller{
 			'component'  => $component,
 			'path_items' => $component->path_items()->get()
 		];
-
-		// ###
-		$vArrFile = new vArrParse;
-		//dd($vArrFile->parseFromFile($component->getFolder(true).'/.description.php', 'arComponentDescription'));
-		dd($vArrFile->parseFromFile($component->getFolder(true).'/.parameters.php', 'arComponentParameters'));
-		//dd($vArrFile->parseFromText("\$test = Array('ololo' => 'trololo', 'subarr' => Array('foo' => 'bar', 'subsub' => Array('a' => 'b')));", 'test'));
-		dd($vArrFile->parseFromText("\$test = Array(Array('a' => 'b'), Array('subsub' => 'ololo'));", 'test'));
-		// ###
 
 		return view("bitrix.components.detail", $data);
 	}

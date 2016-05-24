@@ -236,6 +236,46 @@ class vArrParseTest extends TestCase{
 
 		$this->assertEquals($expectedArr, $gottenArr);
 	}
+
+	/** @test */
+	function it_gets_non_asociative_array_with_two_empty_arrays(){
+		$string = "\$test = Array(Array(), Array());";
+		$expectedArr = Array(Array(), Array());
+
+		$gottenArr = $this->vArrParse->parseFromText($string, 'test');
+		//dd($expectedArr);
+
+		$this->assertEquals($expectedArr, $gottenArr);
+	}
+
+	///** @test */
+	//function it_gets_non_asociative_array_with_ass_array_of_3_els_and_with_ass_arr_of_one_el(){
+	//	// не представляю почему, но в этой ситуации всё падает, если в первом подмассиве 3, 6, 8 элементов
+	//	$string = '$test = array(
+	//"one" => Array(
+	//	"a" => "b",
+	//	"c"   => "d",
+	//	"e"   => "f"
+	//),
+	//"two"      => Array(
+	//	"g"   => "h",
+	//);';
+	//	$expectedArr = array(
+	//		"one" => Array(
+	//			"a" => "b",
+	//			"c" => "d",
+	//			"e" => "f"
+	//		),
+	//		"two" => Array(
+	//			"g" => "h",
+	//		)
+	//	);
+	//
+	//	$gottenArr = $this->vArrParse->parseFromText($string, 'test');
+	//	//dd($expectedArr);
+	//
+	//	$this->assertEquals($expectedArr, $gottenArr);
+	//}
 }
 
 ?>
