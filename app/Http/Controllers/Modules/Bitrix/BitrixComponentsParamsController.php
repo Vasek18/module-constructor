@@ -102,13 +102,13 @@ class BitrixComponentsParamsController extends Controller{
 			//dd($paramArr);
 			//dd($request);
 
-			$param = BitrixComponentsParams::updateOrCreate(
-				[
-					'code'         => $code,
-					'component_id' => $component->id
-				],
-				$paramArr
-			);
+				$param = BitrixComponentsParams::updateOrCreate(
+					[
+						'code'         => $code,
+						'component_id' => $component->id
+					],
+					$paramArr
+				);
 
 			// сохранение опций
 			if (count($request['param_'.$i.'_vals_key']) && $request['param_'.$i.'_vals_type'] == "array"){

@@ -248,7 +248,7 @@ class vArrParseTest extends TestCase{
 		$this->assertEquals($expectedArr, $gottenArr);
 	}
 
-	///** @test */
+	// todo почему-то расскомментирование этого теста всё роняет /** @test */
 	//function it_gets_non_asociative_array_with_ass_array_of_3_els_and_with_ass_arr_of_one_el(){
 	//	// не представляю почему, но в этой ситуации всё падает, если в первом подмассиве 3, 6, 8 элементов
 	//	$string = '$test = array(

@@ -4,6 +4,7 @@ namespace App\Models\Modules\Bitrix;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use App\vArrParse;
 
 // todo магические числа у шагов
 class BitrixComponent extends Model{
@@ -295,11 +296,35 @@ class BitrixComponent extends Model{
 	}
 
 	public function parseDescriptionFile(){
-		//dd(getPhpArrayFromFile($this->getFolder(true).'/.description.php', 'arComponentDescription'));
+		$vArrParse = new vArrParse;
+		$info = $vArrParse->parseFromFile($this->getFolder(true).'/.description.php', 'arComponentDescription');
+		$this->name = $info['NAME'];
+		$this->desc = $info['DESCRIPTION'];
+		$this->icon_path = $info['ICON'];
+		$this->sort = $info['SORT'];
+		$this->save();
 	}
 
 	public function parseParamsFile(){
-		//dd(getPhpArrayFromFile($this->getFolder(true).'/.parameters.php', '$arComponentParameters'));
+		$vArrParse = new vArrParse;
+		$info = $vArrParse->parseFromFile($this->getFolder(true).'/.parameters.php', 'arComponentParameters');
+		foreach ($info['PARAMETERS'] as $code => $param){
+			$newParamParams = [
+				'code'         => $code,
+				'component_id' => $this->id
+			];
+			if (isset($param["NAME"])){
+				$newParamParams['name'] = $param["NAME"];
+			}
+			$param = BitrixComponentsParams::updateOrCreate(
+				[
+					'code'         => $code,
+					'component_id' => $this->id
+				],
+				$newParamParams
+			);
+		}
+		//dd($info);
 	}
 
 	public function gatherListOfArbitraryFiles(){
