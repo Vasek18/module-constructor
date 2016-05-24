@@ -25,7 +25,7 @@ class vArrParse{
 		}
 
 		if ($arrayName){
-			preg_match('/'.$arrayName.'\s*\=\s(?:array|Array)\((.+)\)'.$varEnding.'/is', $text, $matches);
+			preg_match('/'.$arrayName.'\s*\=\s*(?:array|Array)\((.+)\)'.$varEnding.'/is', $text, $matches);
 		}else{
 			preg_match('/(?:array|Array)\((.+)\)'.$varEnding.'/is', $text, $matches);
 		}
@@ -40,6 +40,15 @@ class vArrParse{
 					}
 				}
 			}
+
+			return $arrString;
+		}
+
+		if ($arrayName){
+			preg_match('/'.$arrayName.'\[[\"\']*([^\"\']+)[\"\']*\]\s*\=\s*([^;]+);/is', $text, $matches);
+		}
+		if (isset($matches[1]) && isset($matches[2])){ // типа такого test["ololo"] = "trololo";
+			$arrString = $matches[1].' => '.$matches[2];
 
 			return $arrString;
 		}

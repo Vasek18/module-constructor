@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Models\Modules\Bitrix\Bitrix;
+use App\vArrParse;
 
 class HomeController extends Controller{
 	/**
@@ -14,6 +15,8 @@ class HomeController extends Controller{
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index(){
+		//$vArrParse = new vArrParse;
+		//dd($vArrParse->parseFromText('$test["ololo"] = "trololo";', 'test'));
 		$countModules = Bitrix::count();
 		$modulesEnding = 'ей';
 		if (substr($countModules, -1, 1) == '1'){

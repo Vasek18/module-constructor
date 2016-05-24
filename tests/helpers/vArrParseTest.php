@@ -276,6 +276,30 @@ class vArrParseTest extends TestCase{
 
 		$this->assertEquals($expectedArr, $gottenArr);
 	}
+
+	/** @test */
+	function it_parses_compact_ass_array_of_one_string_value(){
+		// не представляю почему, но в этой ситуации всё падает, если в первом подмассиве 3, 6, 8 элементов
+		$string = '$test["ololo"] = "trololo";';
+		$expectedArr['ololo'] = 'trololo';
+
+		$gottenArr = $this->vArrParse->parseFromText($string, 'test');
+		//dd($gottenArr);
+
+		$this->assertEquals($expectedArr, $gottenArr);
+	}
+
+	///** @test */
+	//function it_parses_two_compact_ass_arrays_of_one_string_value_that_are_of_one_name(){
+	//	$string = '$test["ololo"] = "trololo"; $test["foo"] = "bar";';
+	//	$expectedArr['ololo'] = 'trololo';
+	//	$expectedArr['foo'] = 'bar';
+	//
+	//	$gottenArr = $this->vArrParse->parseFromText($string, 'test');
+	//	//dd($gottenArr);
+	//
+	//	$this->assertEquals($expectedArr, $gottenArr);
+	//}
 }
 
 ?>
