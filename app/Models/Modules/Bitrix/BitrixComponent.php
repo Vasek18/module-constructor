@@ -298,11 +298,13 @@ class BitrixComponent extends Model{
 	public function parseDescriptionFile(){
 		$vArrParse = new vArrParse;
 		$info = $vArrParse->parseFromFile($this->getFolder(true).'/.description.php', 'arComponentDescription');
-		$this->name = $info['NAME'];
-		$this->desc = $info['DESCRIPTION'];
+		$this->name = extractLangVal($info['NAME'], $this->getFolder(true).'/lang/ru/.description.php');
+		$this->desc = extractLangVal($info['DESCRIPTION'], $this->getFolder(true).'/lang/ru/.description.php');
 		$this->icon_path = $info['ICON'];
 		$this->sort = $info['SORT'];
 		$this->save();
+
+		//dd($this->name);
 	}
 
 	public function parseParamsFile(){
@@ -314,7 +316,7 @@ class BitrixComponent extends Model{
 				'component_id' => $this->id
 			];
 			if (isset($param["NAME"])){
-				$newParamParams['name'] = $param["NAME"];
+				$newParamParams['name'] = extractLangVal($param["NAME"], $this->getFolder(true).'/lang/ru/.parameters.php');
 			}
 			$param = BitrixComponentsParams::updateOrCreate(
 				[
