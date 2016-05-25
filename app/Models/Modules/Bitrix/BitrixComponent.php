@@ -304,7 +304,76 @@ class BitrixComponent extends Model{
 		$this->sort = $info['SORT'];
 		$this->save();
 
-		//dd($this->name);
+		if (isset($info['PATH'])){
+			$pathItem = [
+				'level'        => 1,
+				'component_id' => $this->id
+			];
+			if (isset($info['PATH']['ID'])){
+				$pathItem['code'] = $info['PATH']['ID'];
+			}
+			if (isset($info['PATH']['NAME'])){
+				$pathItem['name'] = extractLangVal($info['PATH']['NAME'], $this->getFolder(true).'/lang/ru/.description.php');
+			}
+			if (isset($info['PATH']['SORT'])){
+				$pathItem['sort'] = $info['PATH']['SORT'];
+			}
+			BitrixComponentsPathItem::updateOrCreate(
+				[
+					'level'        => 1,
+					'component_id' => $this->id
+				],
+				$pathItem
+			);
+
+			if (isset($info['PATH']["CHILD"])){
+				$pathItem = [
+					'level'        => 2,
+					'component_id' => $this->id
+				];
+				if (isset($info['PATH']["CHILD"]['ID'])){
+					$pathItem['code'] = $info['PATH']["CHILD"]['ID'];
+				}
+				if (isset($info['PATH']["CHILD"]['NAME'])){
+					$pathItem['name'] = extractLangVal($info['PATH']["CHILD"]['NAME'], $this->getFolder(true).'/lang/ru/.description.php');
+				}
+				if (isset($info['PATH']["CHILD"]['SORT'])){
+					$pathItem['sort'] = $info['PATH']["CHILD"]['SORT'];
+				}
+				BitrixComponentsPathItem::updateOrCreate(
+					[
+						'level'        => 2,
+						'component_id' => $this->id
+					],
+					$pathItem
+				);
+
+				if (isset($info['PATH']["CHILD"]["CHILD"])){
+					$pathItem = [
+						'level'        => 3,
+						'component_id' => $this->id
+					];
+					if (isset($info['PATH']["CHILD"]["CHILD"]['ID'])){
+						$pathItem['code'] = $info['PATH']["CHILD"]["CHILD"]['ID'];
+					}
+					if (isset($info['PATH']["CHILD"]["CHILD"]['NAME'])){
+						$pathItem['name'] = extractLangVal($info['PATH']["CHILD"]["CHILD"]['NAME'], $this->getFolder(true).'/lang/ru/.description.php');
+					}
+					if (isset($info['PATH']["CHILD"]["CHILD"]['SORT'])){
+						$pathItem['sort'] = $info['PATH']["CHILD"]["CHILD"]['SORT'];
+					}
+					BitrixComponentsPathItem::updateOrCreate(
+						[
+							'level'        => 3,
+							'component_id' => $this->id
+						],
+						$pathItem
+					);
+				}
+			}
+		}
+
+		//dd($info);
 	}
 
 	public function parseParamsFile(){

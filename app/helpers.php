@@ -20,6 +20,9 @@ function extractLangVal($val, $langfile){
 			//dd($langVals[$matches[1]]);
 			return $langVals[$matches[1]];
 		}
+		else{
+			return '';
+		}
 	}
 
 	return $val;
