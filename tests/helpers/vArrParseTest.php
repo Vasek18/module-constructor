@@ -289,17 +289,27 @@ class vArrParseTest extends TestCase{
 		$this->assertEquals($expectedArr, $gottenArr);
 	}
 
-	///** @test */
-	//function it_parses_two_compact_ass_arrays_of_one_string_value_that_are_of_one_name(){
-	//	$string = '$test["ololo"] = "trololo"; $test["foo"] = "bar";';
-	//	$expectedArr['ololo'] = 'trololo';
-	//	$expectedArr['foo'] = 'bar';
-	//
-	//	$gottenArr = $this->vArrParse->parseFromText($string, 'test');
-	//	//dd($gottenArr);
-	//
-	//	$this->assertEquals($expectedArr, $gottenArr);
-	//}
+	/** @test */
+	function it_parses_two_compact_ass_arrays_of_one_string_value_that_are_of_one_name(){
+		$string = '$test["ololo"] = "trololo"; $test["foo"] = "bar";';
+		$expectedArr['ololo'] = 'trololo';
+		$expectedArr['foo'] = 'bar';
+
+		$gottenArr = $this->vArrParse->parseFromText($string, 'test');
+		//dd($gottenArr);
+
+		$this->assertEquals($expectedArr, $gottenArr);
+	}
+
+	/** @test */
+	function it_doesnt_care_about_dollar_character(){
+		$string = "\$test = Array('ololo' => 'trololo');";
+		$expectedArr = Array('ololo' => 'trololo');
+
+		$gottenArr = $this->vArrParse->parseFromText($string, '$test');
+
+		$this->assertEquals($expectedArr, $gottenArr);
+	}
 }
 
 ?>

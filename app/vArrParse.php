@@ -12,13 +12,47 @@ class vArrParse{
 
 	public function parseFromText($text, $arrayName){
 		$text = $this->normalizeText($text);
+		$arrayName = $this->validateArrayName($arrayName);
+		$text = $this->transformAllPartsOfArrToANormalAndJointForm($text, $arrayName);
+		//dd($text);
 		$arrString = $this->getStringWithOnlyArrayBody($text, $arrayName);
 		$array = $this->parseArrayFromPreparedString($arrString);
 
 		return $array;
 	}
 
+	protected function validateArrayName($arrayName){
+		$arrayName = str_replace('$', '', $arrayName);
+
+		return $arrayName;
+	}
+
+	protected function transformAllPartsOfArrToANormalAndJointForm($text, $arrayName){
+		// нормальной будем считать форму $arr = Array('key' => 'value')
+
+		if ($arrayName){
+			preg_match_all('/'.$arrayName.'\s*\[[\"\']*([^\"\']+)[\"\']*\]\s*\=\s*([^;]+);/is', $text, $matches);
+		}
+
+		if (count($matches[1]) && count($matches[2])){ // типа такого test["ololo"] = "trololo";
+			//dd($matches);
+			$arrString = $arrayName.' = Array(';
+			foreach ($matches[1] as $c => $match){
+				$arrString .= '"'.$match.'" => '.$matches[2][$c];
+				if (isset($matches[2][$c + 1])){
+					$arrString .= ',';
+				}
+			}
+			$arrString .= ');';
+
+			return $arrString;
+		}
+
+		return $text;
+	}
+
 	public function getStringWithOnlyArrayBody($text, $arrayName = '', $sub = false){
+		//echo $text;
 		$varEnding = ';';
 		if ($sub){ // если вложенный массив
 			$varEnding = '';
@@ -30,6 +64,8 @@ class vArrParse{
 			preg_match('/(?:array|Array)\((.+)\)'.$varEnding.'/is', $text, $matches);
 		}
 
+		//dd($matches);
+
 		if (isset($matches[1])){
 			$arrString = $matches[1];
 			if ($sub){
@@ -40,15 +76,6 @@ class vArrParse{
 					}
 				}
 			}
-
-			return $arrString;
-		}
-
-		if ($arrayName){
-			preg_match('/'.$arrayName.'\[[\"\']*([^\"\']+)[\"\']*\]\s*\=\s*([^;]+);/is', $text, $matches);
-		}
-		if (isset($matches[1]) && isset($matches[2])){ // типа такого test["ololo"] = "trololo";
-			$arrString = $matches[1].' => '.$matches[2];
 
 			return $arrString;
 		}
