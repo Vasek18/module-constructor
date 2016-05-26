@@ -37,7 +37,25 @@ function ifStringIsValName($string){
 }
 
 // todo это должно быть по идее в пространстве имён Битрикса
-function getLangFiles($root, $file){
+function getLangFilesForThisFile($root, $file){
+	// todo захардкожен диск
+	$answer = [];
 
+	$dirs = \Storage::disk('user_modules_bitrix')->directories($root.'/lang');
+	foreach ($dirs as $dir){
+		$langFiles = \Storage::disk('user_modules_bitrix')->files($dir);
+		foreach ($langFiles as $langFile){
+			if ($dir.$file == $langFile){
+				$dirPathArr = explode('/', $dir);
+				$langKey = $dirPathArr[count($dirPathArr) - 1];
+
+				$langFile = str_replace($root, '', $langFile);
+				$answer[$langKey] = $langFile;
+			}
+		}
+	}
+
+	return $answer;
 }
+
 ?>

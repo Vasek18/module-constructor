@@ -472,22 +472,12 @@ class BitrixComponent extends Model{
 				continue;
 			}
 
-			preg_match('/^(.*)\/([^\/]+)/is', $file, $matches); // всегда будет слеш
-			$path = $matches[1];
-			$fileName = $matches[2];
+			BitrixComponentsArbitraryFiles::addInBDExistingFile($file, $this);
 
-			$aFile = BitrixComponentsArbitraryFiles::updateOrCreate( // todo мб другой метод, ведь если файл есть, то мы ничего не обновляем
-				[
-					'component_id' => $this->id,
-					'path'         => $path,
-					'filename'     => $fileName
-				],
-				[
-					'component_id' => $this->id,
-					'path'         => $path,
-					'filename'     => $fileName
-				]
-			);
+			$langFiles = getLangFilesForThisFile($dir, $file);
+			foreach ($langFiles as $langFile){
+				BitrixComponentsArbitraryFiles::addInBDExistingFile($langFile, $this);
+			}
 		}
 	}
 
