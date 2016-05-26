@@ -482,7 +482,23 @@ class BitrixComponent extends Model{
 	}
 
 	public function parseTemplates(){
+		$dir = str_replace('\\', '/', $this->getFolder()); // todo к чему такие сложности
+		$dirs = $this->module->disk()->directories($dir.'/templates');
+		foreach ($dirs as $dir){
+			$templatePathArr = explode('/', $dir);
+			$templateCode = $templatePathArr[count($templatePathArr) - 1];
 
+			$template = BitrixComponentsTemplates::updateOrCreate(
+				[
+					'component_id' => $this->id,
+					'code'         => $templateCode
+				],
+				[
+					'component_id' => $this->id,
+					'code'         => $templateCode
+				]
+			);
+		}
 	}
 
 	public function getStepsAttribute($value){

@@ -16,7 +16,6 @@ class CreateBitrixComponentsTemplatesTable extends Migration{
 			$table->foreign('component_id')->references('id')->on('bitrix_components')->onDelete('cascade');
 			$table->string('code');
 			$table->string('name');
-			$table->text('template_php'); // todo я не уверен, что здесь его место
 		});
 	}
 

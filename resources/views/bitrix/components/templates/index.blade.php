@@ -15,7 +15,7 @@
         <div class="list-group">
             @foreach($templates as $template)
                 <div class="list-group-item clearfix template">
-                    <a href="#">{{$template->name}} ({{$template->code}})</a>
+                    <a href="#">{{$template->code}} {{$template->name?'('.$template->name.')':$template->name}}</a>
                     <a href="{{ action('Modules\Bitrix\BitrixComponentsTemplatesController@destroy', [$module->id, $component->id, $template->id]) }}"
                        class="btn btn-danger pull-right">
                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
