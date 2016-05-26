@@ -308,8 +308,12 @@ class BitrixComponent extends Model{
 		$info = $vArrParse->parseFromFile($this->getFolder(true).'/.description.php', 'arComponentDescription');
 		$this->name = extractLangVal($info['NAME'], $this->getFolder(true).'/lang/ru/.description.php');
 		$this->desc = extractLangVal($info['DESCRIPTION'], $this->getFolder(true).'/lang/ru/.description.php');
-		$this->icon_path = $info['ICON'];
-		$this->sort = $info['SORT'];
+		if (isset($info['ICON'])){
+			$this->icon_path = $info['ICON'];
+		}
+		if (isset($info['SORT'])){
+			$this->sort = $info['SORT'];
+		}
 		$this->save();
 
 		// создаём путь первого уровня
@@ -405,10 +409,14 @@ class BitrixComponent extends Model{
 				$newParamParams['type'] = $param["TYPE"];
 			}
 			if (isset($param["DEFAULT"])){
-				$newParamParams['default'] = $param["DEFAULT"];
+				if (!is_array($param["DEFAULT"])){ // todo как вообще сюда мог массив попасть? я же не исполняю файлы! (проверить можно на news)
+					$newParamParams['default'] = $param["DEFAULT"];
+				}
 			}
 			if (isset($param["PARENT"])){
-				$newParamParams['group_id'] = BitrixComponentsParamsGroups::where('CODE', $param["PARENT"])->first()->id;
+				if (BitrixComponentsParamsGroups::where('CODE', $param["PARENT"])->count()){
+					$newParamParams['group_id'] = BitrixComponentsParamsGroups::where('CODE', $param["PARENT"])->first()->id;
+				}
 			}
 			if (isset($param["REFRESH"])){
 				$newParamParams['refresh'] = $param["REFRESH"] == 'Y';
@@ -427,24 +435,26 @@ class BitrixComponent extends Model{
 				$newParamParams
 			);
 			if (isset($param["VALUES"])){ // не думаю, что здесь нужна проверка на тип свойства, но всё же можно подумать об этом
-				if (ifStringIsValName($param["VALUES"])){
-					$vals = $vArrParse->parseFromFile($this->getFolder(true).'/.parameters.php', $param["VALUES"]);
-					// todo вариант, когда параметры вписаны в само значение в виде Array(...)
-					if (count($vals)){
-						$newParam->spec_vals = 'array';
-						$newParam->save();
-						foreach ($vals as $valKey => $valVal){
-							$newVal = BitrixComponentsParamsVals::updateOrCreate(
-								[
-									'param_id' => $newParam->id,
-									'key'      => $valKey
-								],
-								[
-									'param_id' => $newParam->id,
-									'key'      => $valKey,
-									'value'    => extractLangVal($valVal, $this->getFolder(true).'/lang/ru/.parameters.php') // todo зачем мне каждый раз запускать парсер файла, мб лучше получить массив из ланга 1 раз
-								]
-							);
+				if (!is_array($param["VALUES"])){ // todo как вообще сюда мог массив попасть? я же не исполняю файлы! (проверить можно на news)
+					if (ifStringIsValName($param["VALUES"])){
+						$vals = $vArrParse->parseFromFile($this->getFolder(true).'/.parameters.php', $param["VALUES"]);
+						// todo вариант, когда параметры вписаны в само значение в виде Array(...)
+						if (count($vals)){
+							$newParam->spec_vals = 'array';
+							$newParam->save();
+							foreach ($vals as $valKey => $valVal){
+								$newVal = BitrixComponentsParamsVals::updateOrCreate(
+									[
+										'param_id' => $newParam->id,
+										'key'      => $valKey
+									],
+									[
+										'param_id' => $newParam->id,
+										'key'      => $valKey,
+										'value'    => extractLangVal($valVal, $this->getFolder(true).'/lang/ru/.parameters.php') // todo зачем мне каждый раз запускать парсер файла, мб лучше получить массив из ланга 1 раз
+									]
+								);
+							}
 						}
 					}
 				}
