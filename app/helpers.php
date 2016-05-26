@@ -36,4 +36,8 @@ function ifStringIsValName($string){
 	return false;
 }
 
+// todo это должно быть по идее в пространстве имён Битрикса
+function getLangFiles($root, $file){
+
+}
 ?>

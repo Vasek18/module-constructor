@@ -5,12 +5,18 @@ namespace App\Models\Modules\Bitrix;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use App\vArrParse;
+use Illuminate\Support\Facades\Storage;
 
 // todo магические числа у шагов
 class BitrixComponent extends Model{
 	protected $table = 'bitrix_components';
 	protected $fillable = ['name', 'sort', 'code', 'icon_path', 'desc'];
 	public $timestamps = false;
+	public $nonArbitraryFiles = [
+		'/component.php',
+		'/.description.php',
+		'/.parameters.php'
+	];
 
 	// создание компонента
 	public static function store($module, Request $request){
@@ -196,6 +202,8 @@ class BitrixComponent extends Model{
 	}
 
 	public function getFolder($full = false){
+		// todo взглни на gatherListOfArbitraryFiles
+
 		$module = $this->module()->first();
 		$module_folder = $module->getFolder($full);
 
@@ -446,7 +454,41 @@ class BitrixComponent extends Model{
 	}
 
 	public function gatherListOfArbitraryFiles(){
+		$dir = str_replace('\\', '/', $this->getFolder()); // todo к чему такие сложности
+		$files = $this->module->disk()->allFiles($dir);
 
+		foreach ($files as $file){
+			$file = str_replace($dir, '', $file);
+
+			if (in_array($file, $this->nonArbitraryFiles)){
+				continue;
+			}
+
+			if (strpos($file, '/templates/') !== false){
+				continue;
+			}
+
+			if (strpos($file, '/lang/') !== false){ // todo обрабатывать и ланги
+				continue;
+			}
+
+			preg_match('/^(.*)\/([^\/]+)/is', $file, $matches); // всегда будет слеш
+			$path = $matches[1];
+			$fileName = $matches[2];
+
+			$aFile = BitrixComponentsArbitraryFiles::updateOrCreate( // todo мб другой метод, ведь если файл есть, то мы ничего не обновляем
+				[
+					'component_id' => $this->id,
+					'path'         => $path,
+					'filename'     => $fileName
+				],
+				[
+					'component_id' => $this->id,
+					'path'         => $path,
+					'filename'     => $fileName
+				]
+			);
+		}
 	}
 
 	public function parseTemplates(){
