@@ -16,16 +16,24 @@ function extractLangVal($val, $langfile){
 		$langVals = $vArrParse->parseFromFile($langfile, '$MESS');
 		//dd($langVals);
 
-		if(isset($langVals[$matches[1]])){
+		if (isset($langVals[$matches[1]])){
 			//dd($langVals[$matches[1]]);
 			return $langVals[$matches[1]];
-		}
-		else{
+		}else{
 			return '';
 		}
 	}
 
 	return $val;
+}
+
+function ifStringIsValName($string){
+	preg_match('/^\$([a-zA-Z_]+)/is', trim($string), $matches);
+	if ($matches[0]){
+		return true;
+	}
+
+	return false;
 }
 
 ?>

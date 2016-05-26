@@ -59,7 +59,7 @@ class vArrParse{
 		}
 
 		if ($arrayName){
-			preg_match('/'.$arrayName.'\s*\=\s*(?:array|Array)\((.+)\)'.$varEnding.'/is', $text, $matches);
+			preg_match('/'.$arrayName.'\s*\=\s*(?:array|Array)\(([^\;]+)\)'.$varEnding.'/is', $text, $matches);
 		}else{
 			preg_match('/(?:array|Array)\((.+)\)'.$varEnding.'/is', $text, $matches);
 		}

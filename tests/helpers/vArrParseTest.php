@@ -310,6 +310,26 @@ class vArrParseTest extends TestCase{
 
 		$this->assertEquals($expectedArr, $gottenArr);
 	}
+
+	/** @test */
+	function it_returns_empty_arr_if_arr_is_actually_empty(){
+		$string = "\$test = Array();";
+		$expectedArr = Array();
+
+		$gottenArr = $this->vArrParse->parseFromText($string, '$test');
+
+		$this->assertEquals($expectedArr, $gottenArr);
+	}
+
+	/** @test */
+	function it_returns_empty_arr_if_there_is_no_arr_with_such_name(){
+		$string = "Array();";
+		$expectedArr = [];
+
+		$gottenArr = $this->vArrParse->parseFromText($string, '$test');
+
+		$this->assertEquals($expectedArr, $gottenArr);
+	}
 }
 
 ?>

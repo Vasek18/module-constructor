@@ -304,6 +304,7 @@ class BitrixComponent extends Model{
 		$this->sort = $info['SORT'];
 		$this->save();
 
+		// создаём путь первого уровня
 		if (isset($info['PATH'])){
 			$pathItem = [
 				'level'        => 1,
@@ -326,6 +327,7 @@ class BitrixComponent extends Model{
 				$pathItem
 			);
 
+			// создаём путь второго уровня
 			if (isset($info['PATH']["CHILD"])){
 				$pathItem = [
 					'level'        => 2,
@@ -348,6 +350,7 @@ class BitrixComponent extends Model{
 					$pathItem
 				);
 
+				// создаём путь третьего уровня
 				if (isset($info['PATH']["CHILD"]["CHILD"])){
 					$pathItem = [
 						'level'        => 3,
@@ -377,6 +380,9 @@ class BitrixComponent extends Model{
 	}
 
 	public function parseParamsFile(){
+		// todo создание групп свойств
+		// todo подтягивать имена стандартных значений, если они не указаны (например CACHE_TIME)
+
 		$vArrParse = new vArrParse;
 		$info = $vArrParse->parseFromFile($this->getFolder(true).'/.parameters.php', 'arComponentParameters');
 		foreach ($info['PARAMETERS'] as $code => $param){
@@ -387,13 +393,54 @@ class BitrixComponent extends Model{
 			if (isset($param["NAME"])){
 				$newParamParams['name'] = extractLangVal($param["NAME"], $this->getFolder(true).'/lang/ru/.parameters.php');
 			}
-			$param = BitrixComponentsParams::updateOrCreate(
+			if (isset($param["TYPE"])){
+				$newParamParams['type'] = $param["TYPE"];
+			}
+			if (isset($param["DEFAULT"])){
+				$newParamParams['default'] = $param["DEFAULT"];
+			}
+			if (isset($param["PARENT"])){
+				$newParamParams['group_id'] = BitrixComponentsParamsGroups::where('CODE', $param["PARENT"])->first()->id;
+			}
+			if (isset($param["REFRESH"])){
+				$newParamParams['refresh'] = $param["REFRESH"] == 'Y';
+			}
+			if (isset($param["MULTIPLE"])){
+				$newParamParams['multiple'] = $param["MULTIPLE"] == 'Y';
+			}
+			if (isset($param["ADDITIONAL_VALUES"])){
+				$newParamParams['additional_values'] = $param["ADDITIONAL_VALUES"] == 'Y';
+			}
+			$newParam = BitrixComponentsParams::updateOrCreate(
 				[
 					'code'         => $code,
 					'component_id' => $this->id
 				],
 				$newParamParams
 			);
+			if (isset($param["VALUES"])){ // не думаю, что здесь нужна проверка на тип свойства, но всё же можно подумать об этом
+				if (ifStringIsValName($param["VALUES"])){
+					$vals = $vArrParse->parseFromFile($this->getFolder(true).'/.parameters.php', $param["VALUES"]);
+					// todo вариант, когда параметры вписаны в само значение в виде Array(...)
+					if (count($vals)){
+						$newParam->spec_vals = 'array';
+						$newParam->save();
+						foreach ($vals as $valKey => $valVal){
+							$newVal = BitrixComponentsParamsVals::updateOrCreate(
+								[
+									'param_id' => $newParam->id,
+									'key'      => $valKey
+								],
+								[
+									'param_id' => $newParam->id,
+									'key'      => $valKey,
+									'value'    => extractLangVal($valVal, $this->getFolder(true).'/lang/ru/.parameters.php') // todo зачем мне каждый раз запускать парсер файла, мб лучше получить массив из ланга 1 раз
+								]
+							);
+						}
+					}
+				}
+			}
 		}
 		//dd($info);
 	}
