@@ -18,23 +18,56 @@ class BitrixMailEventsController extends Controller{
 		$mail_events = $module->mailEvents()->get();
 
 		$data = [
-			'module' => $module,
-			'mail_events'  => $mail_events
+			'module'      => $module,
+			'mail_events' => $mail_events
 
 		];
 
 		return view("bitrix.mail_events.index", $data);
 	}
 
-	public function create(){
-		//
+	public function create(Bitrix $module, Request $request){
+		if (!$this->userCreatedModule($module->id)){
+			return $this->unauthorized($request);
+		}
+		$data = [
+			'module' => $module,
+		];
+
+		return view("bitrix.mail_events.new", $data);
 	}
 
 	public function store(Bitrix $module, Request $request){
+		if (!$this->userCreatedModule($module->id)){
+			return $this->unauthorized($request);
+		}
+
+		$mail_event = BitrixMailEvents::updateOrCreate(
+			[
+				'module_id' => $module->id,
+				'code'  => $request->MAIL_EVENT_CODE
+			],
+			[
+				'module_id' => $module->id,
+				'name'      => $request->MAIL_EVENT_NAME,
+				'code'  => $request->MAIL_EVENT_CODE,
+				'sort'  => $request->MAIL_EVENT_SORT
+			]
+		);
+
+		return redirect(action('Modules\Bitrix\BitrixMailEventsController@show', [$module->id, $mail_event->id]));
 	}
 
-	public function show($id){
-		//
+	public function show(Bitrix $module, BitrixMailEvents $mail_event, Request $request){
+		if (!$this->userCreatedModule($module->id)){
+			return $this->unauthorized($request);
+		}
+		$data = [
+			'module'     => $module,
+			'mail_event'  => $mail_event
+		];
+
+		return view("bitrix.mail_events.detail", $data);
 	}
 
 	public function edit($id){

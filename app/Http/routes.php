@@ -76,7 +76,7 @@ Route::group(['prefix' => 'my-bitrix'], function (){
 
 		// параметры в визуальном редакторе
 		Route::group(['prefix' => '{component}/params'], function (){
-			Route::get('', ['as' => 'bitrix_component_params', 'uses' => 'Modules\Bitrix\BitrixComponentsParamsController@index']);;
+			Route::get('', ['as' => 'bitrix_component_params', 'uses' => 'Modules\Bitrix\BitrixComponentsParamsController@index']);
 			Route::post('', 'Modules\Bitrix\BitrixComponentsParamsController@store');
 			Route::get('{param}/delete', 'Modules\Bitrix\BitrixComponentsParamsController@destroy');
 			Route::post('upload', 'Modules\Bitrix\BitrixComponentsParamsController@upload_params_files');
@@ -128,6 +128,9 @@ Route::group(['prefix' => 'my-bitrix'], function (){
 
 	Route::group(['prefix' => '{module}/mail_events'], function (){
 		Route::get('', ['as' => 'bitrix_module_mail_events', 'uses' => 'Modules\Bitrix\BitrixMailEventsController@index']);
+		Route::get('create', ['uses' => 'Modules\Bitrix\BitrixMailEventsController@create']);
+		Route::post('', 'Modules\Bitrix\BitrixMailEventsController@store');
+		Route::get('{mail_event}', ['uses' => 'Modules\Bitrix\BitrixMailEventsController@show']);
 	});
 });
 //Route::post('my/bitrix/{bitrix}/download', 'Modules\Bitrix\BitrixController@download_zip');

@@ -17,7 +17,7 @@
     @endif
 
     <form class="form-horizontal" role="form" method="POST"
-          action="{{ action('Modules\Bitrix\BitrixComponentsController@store', $module->id) }}">
+          action="{{ action('Modules\Bitrix\BitrixMailEventsController@store', $module->id) }}">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <div class="form-group">
             <label class="col-md-4 control-label">Название компонента</label>

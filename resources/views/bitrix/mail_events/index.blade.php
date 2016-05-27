@@ -6,7 +6,7 @@
 
 @section('page')
 
-    <a href="#" class="btn btn-primary">Добавить почтовое событий</a>
+    <a href="{{action('Modules\Bitrix\BitrixMailEventsController@create', [$module->id])}}" class="btn btn-primary">Добавить почтовое событий</a>
     <hr>
     @if (count($mail_events))
         <h2>Компоненты</h2>

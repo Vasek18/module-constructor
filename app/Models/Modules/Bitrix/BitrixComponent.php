@@ -19,7 +19,7 @@ class BitrixComponent extends Model{
 	];
 
 	// создание компонента
-	public static function store($module, Request $request){
+	public static function 	store($module, Request $request){
 		$component = new BitrixComponent;
 		// запись в БД
 		$component->module_id = $module->id;

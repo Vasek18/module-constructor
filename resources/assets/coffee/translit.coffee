@@ -98,6 +98,7 @@ $(document).ready( ->
 			val = $(this).val()
 			elToChangeID = $(this).attr('data-translit_to')
 			$("##{elToChangeID}").val(translit(val))
+			$("##{elToChangeID}").change()
 
 			return
 			
