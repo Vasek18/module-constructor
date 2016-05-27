@@ -125,6 +125,10 @@ Route::group(['prefix' => 'my-bitrix'], function (){
 		Route::post('{file}/update', 'Modules\Bitrix\BitrixArbitraryFilesController@update');
 
 	});
+
+	Route::group(['prefix' => '{module}/mail_events'], function (){
+		Route::get('', ['as' => 'bitrix_module_mail_events', 'uses' => 'Modules\Bitrix\BitrixMailEventsController@index']);
+	});
 });
 //Route::post('my/bitrix/{bitrix}/download', 'Modules\Bitrix\BitrixController@download_zip');
 //Route::resource('my/bitrix', 'Modules\Bitrix\BitrixController', [

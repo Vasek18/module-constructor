@@ -1,0 +1,27 @@
+@extends('bitrix.internal_template')
+
+@section('h1')
+    Почтовые события
+@stop
+
+@section('page')
+
+    <a href="#" class="btn btn-primary">Добавить почтовое событий</a>
+    <hr>
+    @if (count($mail_events))
+        <h2>Компоненты</h2>
+        <div class="list-group">
+            @foreach($mail_events as $mail_event)
+                <div class="list-group-item clearfix component">
+                    <a href="#">
+                        "{{$mail_event->name}}" ({{$mail_event->code}})
+                    </a>
+                    <a href="#"
+                       class="btn btn-danger pull-right">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                    </a>
+                </div>
+            @endforeach
+        </div>
+    @endif
+@stop

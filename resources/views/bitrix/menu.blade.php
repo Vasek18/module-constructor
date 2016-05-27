@@ -17,6 +17,7 @@
                 <li><a href="{{ route('bitrix_module_admin_options', $module->id) }}">Страница настроек</a></li>
                 <li><a href="{{ route('bitrix_module_data_storage', $module->id) }}">Хранение данных</a></li>
                 <li><a href="{{ route('bitrix_module_arbitrary_files', $module->id) }}">Произвольные файлы</a></li>
+                <li><a href="{{ route('bitrix_module_mail_events', $module->id) }}">Почтовые события</a></li>
             </ul>
         </div>
     </div>

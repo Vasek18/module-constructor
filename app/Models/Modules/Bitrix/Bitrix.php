@@ -347,6 +347,10 @@ class Bitrix extends Model{
 		return $this->hasMany('App\Models\Modules\Bitrix\BitrixInfoblocks', 'module_id');
 	}
 
+	public function mailEvents(){
+		return $this->hasMany('App\Models\Modules\Bitrix\BitrixMailEvents', 'module_id');
+	}
+
 	public function arbitraryFiles(){
 		return $this->hasMany('App\Models\Modules\Bitrix\BitrixArbitraryFiles', 'module_id');
 	}
