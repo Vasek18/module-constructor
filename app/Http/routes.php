@@ -118,6 +118,7 @@ Route::group(['prefix' => 'my-bitrix'], function (){
 		});
 	});
 
+	// произвольные файлы
 	Route::group(['prefix' => '{module}/arbitrary_files'], function (){
 		Route::get('', ['as' => 'bitrix_module_arbitrary_files', 'uses' => 'Modules\Bitrix\BitrixArbitraryFilesController@index']);
 		Route::post('', 'Modules\Bitrix\BitrixArbitraryFilesController@store');
@@ -126,12 +127,14 @@ Route::group(['prefix' => 'my-bitrix'], function (){
 
 	});
 
+	// почтовые события
 	Route::group(['prefix' => '{module}/mail_events'], function (){
 		Route::get('', ['as' => 'bitrix_module_mail_events', 'uses' => 'Modules\Bitrix\BitrixMailEventsController@index']);
 		Route::get('create', ['uses' => 'Modules\Bitrix\BitrixMailEventsController@create']);
 		Route::post('', 'Modules\Bitrix\BitrixMailEventsController@store');
 		Route::get('{mail_event}', ['uses' => 'Modules\Bitrix\BitrixMailEventsController@show']);
 		Route::put('{mail_event}', 'Modules\Bitrix\BitrixMailEventsController@update');
+		Route::get('{mail_event}/delete', 'Modules\Bitrix\BitrixMailEventsController@destroy');
 	});
 });
 //Route::post('my/bitrix/{bitrix}/download', 'Modules\Bitrix\BitrixController@download_zip');

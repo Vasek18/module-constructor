@@ -16,7 +16,7 @@
                     <a href="#">
                         "{{$mail_event->name}}" ({{$mail_event->code}})
                     </a>
-                    <a href="#"
+                    <a href="{{ action('Modules\Bitrix\BitrixMailEventsController@destroy', [$module->id, $mail_event->id]) }}"
                        class="btn btn-danger pull-right">
                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                     </a>

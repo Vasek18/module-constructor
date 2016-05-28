@@ -90,11 +90,14 @@ class BitrixMailEventsController extends Controller{
 	}
 
 	public function update(Bitrix $module, BitrixMailEvents $mail_event, Request $request){
+		if (!$this->userCreatedModule($module->id)){
+			return $this->unauthorized($request);
+		}
 		if ($request->code){
 			$mail_event->code = $request->code;
 			$mail_event->save();
 		}
-		
+
 		if ($request->name){
 			$mail_event->name = $request->name;
 			$mail_event->save();
@@ -110,7 +113,13 @@ class BitrixMailEventsController extends Controller{
 		}
 	}
 
-	public function destroy(Bitrix $module, Request $request){
+	public function destroy(Bitrix $module, BitrixMailEvents $mail_event, Request $request){
+		if (!$this->userCreatedModule($module->id)){
+			return $this->unauthorized($request);
+		}
 
+		$mail_event->delete();
+
+		return redirect(action('Modules\Bitrix\BitrixMailEventsController@index', [$module->id]));
 	}
 }

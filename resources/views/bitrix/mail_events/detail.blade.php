@@ -55,7 +55,7 @@
     <div class="col-md-2">
         <br>
         <p>
-            <a href="#"
+            <a href="{{ action('Modules\Bitrix\BitrixMailEventsController@destroy', [$module->id, $mail_event->id]) }}"
                class="btn btn-sm btn-danger">
                 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                 Удалить событие
