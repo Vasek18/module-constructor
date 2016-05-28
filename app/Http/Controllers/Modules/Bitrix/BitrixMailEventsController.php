@@ -130,7 +130,8 @@ class BitrixMailEventsController extends Controller{
 		}
 		$data = [
 			'module'     => $module,
-			'mail_event' => $mail_event
+			'mail_event' => $mail_event,
+			'template'   => null
 		];
 
 		return view("bitrix.mail_events.mail_template", $data);
@@ -140,15 +141,15 @@ class BitrixMailEventsController extends Controller{
 
 		$template = BitrixMailEventsTemplate::create(
 			[
-				'mail_event_id'  => $mail_event->id,
-				'name'        => $request->name,
-				'from'        => $request->from,
-				'to'          => $request->to,
-				'copy'        => $request->copy,
-				'hidden_copy' => $request->hidden_copy,
-				'reply_to'    => $request->reply_to,
-				'in_reply_to' => $request->in_reply_to,
-				'body'        => $request->body
+				'mail_event_id' => $mail_event->id,
+				'name'          => $request->name,
+				'from'          => $request->from,
+				'to'            => $request->to,
+				'copy'          => $request->copy,
+				'hidden_copy'   => $request->hidden_copy,
+				'reply_to'      => $request->reply_to,
+				'in_reply_to'   => $request->in_reply_to,
+				'body'          => $request->body
 			]
 		);
 
@@ -166,5 +167,23 @@ class BitrixMailEventsController extends Controller{
 		];
 
 		return view("bitrix.mail_events.mail_template", $data);
+	}
+
+	public function update_template(Bitrix $module, BitrixMailEvents $mail_event, BitrixMailEventsTemplate $template, Request $request){
+
+		//dd($template->id);
+
+		$template->name = $request->name;
+		$template->from = $request->from;
+		$template->to = $request->to;
+		$template->copy = $request->copy;
+		$template->hidden_copy = $request->hidden_copy;
+		$template->reply_to = $request->reply_to;
+		$template->in_reply_to = $request->in_reply_to;
+		$template->body = $request->body;
+
+		$template->save();
+
+		return redirect(action('Modules\Bitrix\BitrixMailEventsController@show', [$module->id, $mail_event->id]));
 	}
 }

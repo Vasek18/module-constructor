@@ -54,7 +54,7 @@
         @if (count($mail_event->templates))
             @foreach($mail_event->templates as $template)
                 <p>
-                    <a href="#">{{$template->name}}</a>
+                    <a href="{{ action('Modules\Bitrix\BitrixMailEventsController@show_template', [$module->id, $mail_event->id, $template->id]) }}">{{$template->name}}</a>
                 </p>
             @endforeach
         @else

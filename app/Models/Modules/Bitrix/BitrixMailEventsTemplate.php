@@ -11,11 +11,11 @@ class BitrixMailEventsTemplate extends Model{
 		'mail_event_id',
 		'code',
 		'name',
-		'email_from',
-		'email_to',
-		'email_copy',
-		'email_hidden_copy',
-		'email_in_reply_to',
+		'from',
+		'to',
+		'copy',
+		'hidden_copy',
+		'in_reply_to',
 		'body'
 	];
 	public $timestamps = false;
