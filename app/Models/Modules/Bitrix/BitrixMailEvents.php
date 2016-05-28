@@ -17,4 +17,8 @@ class BitrixMailEvents extends Model{
 	public function vars(){
 		return $this->hasMany('App\Models\Modules\Bitrix\BitrixMailEventsVar', 'mail_event_id');
 	}
+
+	public function templates(){
+		return $this->hasMany('App\Models\Modules\Bitrix\BitrixMailEventsTemplate', 'mail_event_id');
+	}
 }

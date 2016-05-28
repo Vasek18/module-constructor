@@ -51,6 +51,16 @@
     </div>
     <div class="col-md-5 col-md-offset-1">
         <h2>Шаблоны</h2>
+        @if (count($mail_event->templates))
+            @foreach($mail_event->templates as $template)
+                <a href="#">{{$template->code}} {{$template->name?'('.$template->name.')':''}}</a>
+            @endforeach
+        @else
+            <p class="not-exist">Отсутствуют</p>
+        @endif
+        <p>
+            <a href="#" class="btn btn-primary">Добавить шаблон</a>
+        </p>
     </div>
     <div class="col-md-2">
         <br>
