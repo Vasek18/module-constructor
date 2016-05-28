@@ -17,5 +17,6 @@ elixir(function(mix){
 		.coffee('a.you-can-change.coffee')
 		.coffee('bitrix_module_admin_options.coffee')
 		.coffee('bitrix_module_components_params.coffee')
-		.coffee('translit.coffee');
+		.coffee('translit.coffee')
+		.coffee('bitrix_mail_event_create_form.coffee');
 });

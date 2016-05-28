@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Modules\Bitrix\Bitrix;
 use App\Models\Modules\Bitrix\BitrixMailEvents;
+use App\Models\Modules\Bitrix\BitrixMailEventsVar;
 use App\Http\Controllers\Traits\UserOwnModule;
 
 class BitrixMailEventsController extends Controller{
@@ -54,6 +55,20 @@ class BitrixMailEventsController extends Controller{
 				'sort'  => $request->MAIL_EVENT_SORT
 			]
 		);
+
+		foreach ($request->MAIL_EVENT_VARS_CODES as $i => $code){
+			$mail_event_var = BitrixMailEventsVar::updateOrCreate(
+				[
+					'mail_event_id' => $mail_event->id,
+					'code'  => $code
+				],
+				[
+					'mail_event_id' => $mail_event->id,
+					'name'      => $request->MAIL_EVENT_VARS_NAMES[$i],
+					'code'  => $code
+				]
+			);
+		}
 
 		return redirect(action('Modules\Bitrix\BitrixMailEventsController@show', [$module->id, $mail_event->id]));
 	}
