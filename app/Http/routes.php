@@ -135,6 +135,11 @@ Route::group(['prefix' => 'my-bitrix'], function (){
 		Route::get('{mail_event}', ['uses' => 'Modules\Bitrix\BitrixMailEventsController@show']);
 		Route::put('{mail_event}', 'Modules\Bitrix\BitrixMailEventsController@update');
 		Route::get('{mail_event}/delete', 'Modules\Bitrix\BitrixMailEventsController@destroy');
+		Route::get('{mail_event}/templates/create', ['uses' => 'Modules\Bitrix\BitrixMailEventsController@create_template']);
+		Route::post('{mail_event}/templates', ['uses' => 'Modules\Bitrix\BitrixMailEventsController@store_template']);
+		Route::get('{mail_event}/templates/{template}', ['uses' => 'Modules\Bitrix\BitrixMailEventsController@show_template']);
+		Route::post('{mail_event}/templates/{template}/update', ['uses' => 'Modules\Bitrix\BitrixMailEventsController@update_template']);
+		Route::get('{mail_event}/templates/{template}/delete', ['uses' => 'Modules\Bitrix\BitrixMailEventsController@destroy_template']);
 	});
 });
 //Route::post('my/bitrix/{bitrix}/download', 'Modules\Bitrix\BitrixController@download_zip');

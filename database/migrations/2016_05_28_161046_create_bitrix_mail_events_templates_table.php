@@ -14,13 +14,13 @@ class CreateBitrixMailEventsTemplatesTable extends Migration{
 			$table->increments('id');
 			$table->integer('mail_event_id')->unsigned();
 			$table->foreign('mail_event_id')->references('id')->on('bitrix_mail_events')->onDelete('cascade');
-			$table->string('code');
-			$table->string('name')->nullable();
-			$table->string('email_from')->nullable();
-			$table->string('email_to')->nullable();
-			$table->string('email_copy')->nullable();
-			$table->string('email_hidden_copy')->nullable();
-			$table->string('email_in_reply_to')->nullable();
+			$table->string('name');
+			$table->string('from');
+			$table->string('to');
+			$table->string('copy')->nullable();
+			$table->string('hidden_copy')->nullable();
+			$table->string('reply_to')->nullable();
+			$table->string('in_reply_to')->nullable();
 			$table->text('body')->nullable();
 		});
 	}

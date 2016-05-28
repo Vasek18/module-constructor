@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Modules\Bitrix\Bitrix;
 use App\Models\Modules\Bitrix\BitrixMailEvents;
 use App\Models\Modules\Bitrix\BitrixMailEventsVar;
+use App\Models\Modules\Bitrix\BitrixMailEventsTemplate;
 use App\Http\Controllers\Traits\UserOwnModule;
 
 class BitrixMailEventsController extends Controller{
@@ -121,5 +122,49 @@ class BitrixMailEventsController extends Controller{
 		$mail_event->delete();
 
 		return redirect(action('Modules\Bitrix\BitrixMailEventsController@index', [$module->id]));
+	}
+
+	public function create_template(Bitrix $module, BitrixMailEvents $mail_event, Request $request){
+		if (!$this->userCreatedModule($module->id)){
+			return $this->unauthorized($request);
+		}
+		$data = [
+			'module'     => $module,
+			'mail_event' => $mail_event
+		];
+
+		return view("bitrix.mail_events.mail_template", $data);
+	}
+
+	public function store_template(Bitrix $module, BitrixMailEvents $mail_event, Request $request){
+
+		$template = BitrixMailEventsTemplate::create(
+			[
+				'mail_event_id'  => $mail_event->id,
+				'name'        => $request->name,
+				'from'        => $request->from,
+				'to'          => $request->to,
+				'copy'        => $request->copy,
+				'hidden_copy' => $request->hidden_copy,
+				'reply_to'    => $request->reply_to,
+				'in_reply_to' => $request->in_reply_to,
+				'body'        => $request->body
+			]
+		);
+
+		return redirect(action('Modules\Bitrix\BitrixMailEventsController@show', [$module->id, $mail_event->id]));
+	}
+
+	public function show_template(Bitrix $module, BitrixMailEvents $mail_event, BitrixMailEventsTemplate $template, Request $request){
+		if (!$this->userCreatedModule($module->id)){
+			return $this->unauthorized($request);
+		}
+		$data = [
+			'module'     => $module,
+			'mail_event' => $mail_event,
+			'template'   => $template
+		];
+
+		return view("bitrix.mail_events.mail_template", $data);
 	}
 }

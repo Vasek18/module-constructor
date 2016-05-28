@@ -53,13 +53,17 @@
         <h2>Шаблоны</h2>
         @if (count($mail_event->templates))
             @foreach($mail_event->templates as $template)
-                <a href="#">{{$template->code}} {{$template->name?'('.$template->name.')':''}}</a>
+                <p>
+                    <a href="#">{{$template->name}}</a>
+                </p>
             @endforeach
         @else
             <p class="not-exist">Отсутствуют</p>
         @endif
         <p>
-            <a href="#" class="btn btn-primary">Добавить шаблон</a>
+            <a href="{{ action('Modules\Bitrix\BitrixMailEventsController@create_template', [$module->id, $mail_event->id]) }}"
+               class="btn btn-primary">Добавить шаблон
+            </a>
         </p>
     </div>
     <div class="col-md-2">
