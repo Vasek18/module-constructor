@@ -120,6 +120,25 @@
                                     в раздел "Хранение данных"
                                 </a>
                             </p>
+                            <hr>
+                            @if (count($module->mailEvents))
+                                <h3>Почтовые события</h3>
+                                <ul>
+                                    @foreach($module->mailEvents as $mail_event)
+                                        <li>
+                                            <a href="{{ action('Modules\Bitrix\BitrixMailEventsController@show', [$module->id, $mail_event->id]) }}">{{$mail_event->name}}</a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @else
+                                <p>Не работает с почтой</p>
+                            @endif
+                            <p>
+                                <a class="btn btn-primary"
+                                   href="{{ route('bitrix_module_mail_events', $module->id) }}">Перейти
+                                    в раздел "Почтовые события"
+                                </a>
+                            </p>
                         </div>
                     </div>
                 </div>
