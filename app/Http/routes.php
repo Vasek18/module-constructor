@@ -131,6 +131,7 @@ Route::group(['prefix' => 'my-bitrix'], function (){
 		Route::get('create', ['uses' => 'Modules\Bitrix\BitrixMailEventsController@create']);
 		Route::post('', 'Modules\Bitrix\BitrixMailEventsController@store');
 		Route::get('{mail_event}', ['uses' => 'Modules\Bitrix\BitrixMailEventsController@show']);
+		Route::put('{mail_event}', 'Modules\Bitrix\BitrixMailEventsController@update');
 	});
 });
 //Route::post('my/bitrix/{bitrix}/download', 'Modules\Bitrix\BitrixController@download_zip');

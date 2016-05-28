@@ -8,7 +8,7 @@
     <div class="col-md-4">
         <h2>Информация</h2>
         <form method="post"
-              action="#"
+              action="{{ action('Modules\Bitrix\BitrixMailEventsController@update', [$module->id, $mail_event->id]) }}"
               class="readonly">
             {{ csrf_field() }}
             {{ method_field('PUT') }}

@@ -46,13 +46,13 @@ class BitrixMailEventsController extends Controller{
 		$mail_event = BitrixMailEvents::updateOrCreate(
 			[
 				'module_id' => $module->id,
-				'code'  => $request->MAIL_EVENT_CODE
+				'code'      => $request->MAIL_EVENT_CODE
 			],
 			[
 				'module_id' => $module->id,
 				'name'      => $request->MAIL_EVENT_NAME,
-				'code'  => $request->MAIL_EVENT_CODE,
-				'sort'  => $request->MAIL_EVENT_SORT
+				'code'      => $request->MAIL_EVENT_CODE,
+				'sort'      => $request->MAIL_EVENT_SORT
 			]
 		);
 
@@ -60,12 +60,12 @@ class BitrixMailEventsController extends Controller{
 			$mail_event_var = BitrixMailEventsVar::updateOrCreate(
 				[
 					'mail_event_id' => $mail_event->id,
-					'code'  => $code
+					'code'          => $code
 				],
 				[
 					'mail_event_id' => $mail_event->id,
-					'name'      => $request->MAIL_EVENT_VARS_NAMES[$i],
-					'code'  => $code
+					'name'          => $request->MAIL_EVENT_VARS_NAMES[$i],
+					'code'          => $code
 				]
 			);
 		}
@@ -79,7 +79,7 @@ class BitrixMailEventsController extends Controller{
 		}
 		$data = [
 			'module'     => $module,
-			'mail_event'  => $mail_event
+			'mail_event' => $mail_event
 		];
 
 		return view("bitrix.mail_events.detail", $data);
@@ -89,8 +89,25 @@ class BitrixMailEventsController extends Controller{
 		//
 	}
 
-	public function update(Bitrix $module, Request $request){
+	public function update(Bitrix $module, BitrixMailEvents $mail_event, Request $request){
+		if ($request->code){
+			$mail_event->code = $request->code;
+			$mail_event->save();
+		}
+		
+		if ($request->name){
+			$mail_event->name = $request->name;
+			$mail_event->save();
+		}
 
+		if ($request->sort){
+			$mail_event->sort = $request->sort;
+			$mail_event->save();
+		}
+
+		if (!$request->ajax()){
+			return redirect(action('Modules\Bitrix\BitrixMailEventsController@show', [$module->id, $mail_event->id]));
+		}
 	}
 
 	public function destroy(Bitrix $module, Request $request){
