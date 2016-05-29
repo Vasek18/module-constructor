@@ -1,7 +1,8 @@
 <?php
 
-namespace App;
+namespace App\Helpers;
 
+// todo переделать всё на статик?
 class vArrParse{
 
 	public function parseFromFile($file, $arrayName){

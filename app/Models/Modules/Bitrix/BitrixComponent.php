@@ -4,7 +4,7 @@ namespace App\Models\Modules\Bitrix;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use App\vArrParse;
+use App\Helpers\vArrParse;
 use Illuminate\Support\Facades\Storage;
 
 // todo магические числа у шагов
