@@ -186,4 +186,14 @@ class BitrixMailEventsController extends Controller{
 
 		return redirect(action('Modules\Bitrix\BitrixMailEventsController@show', [$module->id, $mail_event->id]));
 	}
+
+	public function destroy_template(Bitrix $module, BitrixMailEvents $mail_event, BitrixMailEventsTemplate $template, Request $request){
+		if (!$this->userCreatedModule($module->id)){
+			return $this->unauthorized($request);
+		}
+
+		$template->delete();
+
+		return back();
+	}
 }

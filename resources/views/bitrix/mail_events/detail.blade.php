@@ -49,14 +49,21 @@
             <button type="submit" class="hidden">Сохранить</button>
         </form>
     </div>
-    <div class="col-md-5 col-md-offset-1">
+    <div class="col-md-4 col-md-offset-1">
         <h2>Шаблоны</h2>
         @if (count($mail_event->templates))
-            @foreach($mail_event->templates as $template)
-                <p>
-                    <a href="{{ action('Modules\Bitrix\BitrixMailEventsController@show_template', [$module->id, $mail_event->id, $template->id]) }}">{{$template->name}}</a>
-                </p>
-            @endforeach
+            <div class="list-group">
+                @foreach($mail_event->templates as $template)
+                    <div class="list-group-item clearfix">
+                    <a href="{{ action('Modules\Bitrix\BitrixMailEventsController@show_template', [$module->id, $mail_event->id, $template->id]) }}">{{$template->name}}
+                    </a>
+                    <a href="{{ action('Modules\Bitrix\BitrixMailEventsController@destroy_template', [$module->id, $mail_event->id, $template->id]) }}"
+                       class="btn btn-danger pull-right">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                    </a>
+                    </div>
+                @endforeach
+            </div>
         @else
             <p class="not-exist">Отсутствуют</p>
         @endif
@@ -66,7 +73,7 @@
             </a>
         </p>
     </div>
-    <div class="col-md-2">
+    <div class="col-md-2 col-md-offset-1">
         <br>
         <p>
             <a href="{{ action('Modules\Bitrix\BitrixMailEventsController@destroy', [$module->id, $mail_event->id]) }}"
