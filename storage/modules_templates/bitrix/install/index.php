@@ -209,6 +209,14 @@ Class {MODULE_CLASS_NAME} extends CModule{
 		return $ibp->Add($arFieldsProp);
 	}
 
+	public function createNecessaryMailEvents(){
+		return true;
+	} // createNecessaryMailEvents
+
+	public function deleteNecessaryMailEvents(){
+		return true;
+	} // deleteNecessaryMailEvents
+
 	function createMailEvent($code, $name, $description, $sort, $LID = 'ru'){
 		$params = Array(
 			"LID"         => $LID,
@@ -241,6 +249,17 @@ Class {MODULE_CLASS_NAME} extends CModule{
 		return $templateID;
 	}
 
+	function deleteMailEvent($code){
+		$rsMess = CEventMessage::GetList($by, $order, Array('TYPE_ID' => $code));
+		while ($arMess = $rsMess->Fetch()){
+			$template = new CEventMessage;
+			$template->Delete($arMess["ID"]);
+		}
+
+		$et = new CEventType;
+		$et->Delete($code);
+	}
+
 	public function isVersionD7(){
 		return CheckVersion(\Bitrix\Main\ModuleManager::getVersion('main'), '14.00.00');
 	}
@@ -260,6 +279,7 @@ Class {MODULE_CLASS_NAME} extends CModule{
 			\Bitrix\Main\ModuleManager::registerModule($this->MODULE_ID);
 
 			$this->InstallDB();
+			$this->createNecessaryMailEvents();
 			$this->InstallEvents();
 			$this->InstallFiles();
 		}else{
@@ -277,6 +297,7 @@ Class {MODULE_CLASS_NAME} extends CModule{
 		$request = $context->getRequest();
 
 		$this->UnInstallFiles();
+		$this->deleteNecessaryMailEvents();
 		$this->UnInstallEvents();
 
 		if ($request["savedata"] != "Y")
