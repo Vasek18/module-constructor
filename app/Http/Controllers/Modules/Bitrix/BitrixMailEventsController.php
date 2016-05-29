@@ -196,4 +196,34 @@ class BitrixMailEventsController extends Controller{
 
 		return back();
 	}
+
+	public function destroy_var(Bitrix $module, BitrixMailEvents $mail_event, BitrixMailEventsVar $var, Request $request){
+		if (!$this->userCreatedModule($module->id)){
+			return $this->unauthorized($request);
+		}
+
+		$var->delete();
+
+		return back();
+	}
+
+	public function add_var(Bitrix $module, BitrixMailEvents $mail_event, Request $request){
+		if (!$this->userCreatedModule($module->id)){
+			return $this->unauthorized($request);
+		}
+
+		$mail_event_var = BitrixMailEventsVar::updateOrCreate(
+			[
+				'mail_event_id' => $mail_event->id,
+				'code'          => $request->MAIL_EVENT_VARS_CODE
+			],
+			[
+				'mail_event_id' => $mail_event->id,
+				'name'          => $request->MAIL_EVENT_VARS_NAME,
+				'code'          => $request->MAIL_EVENT_VARS_CODE
+			]
+		);
+
+		return back();
+	}
 }
