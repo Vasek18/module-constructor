@@ -8,6 +8,7 @@ use Auth;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
+use App\Helpers\vArrParse;
 
 class Bitrix extends Model{
 	/**
@@ -284,6 +285,88 @@ class Bitrix extends Model{
 		$this->disk()->put($path, $file);
 
 		return true;
+	}
+
+	public function storeMailEventsInModuleFolder(){
+		$this->writeMailEventsCreationCode();
+		$this->writeMailEventsDeletionCode();
+		$this->writeMailEventsLangCode();
+	}
+
+	public function writeMailEventsCreationCode(){
+		$code = "\t".'public function createNecessaryMailEvents(){'.PHP_EOL;
+
+		$mailEvents = $this->mailEvents()->get();
+		foreach ($mailEvents as $mailEvent){
+			$code .= "\t\t".$mailEvent->generateCreationCode().PHP_EOL;
+		}
+
+		$code .= "\t".'} // createNecessaryMailEvents';
+
+		$path = $this->module_folder.'/install/index.php';
+		$file = $this->disk()->get($path);
+
+		$currentCode = findFunctionCodeInTextUsingCommentOnEnd($file, 'createNecessaryMailEvents');
+
+		$file = str_replace($currentCode, $code, $file);
+
+		$this->disk()->put($path, $file);
+
+		return $code;
+	}
+
+	public function writeMailEventsDeletionCode(){
+		$code = "\t".'public function deleteNecessaryMailEvents(){'.PHP_EOL;
+
+		$mailEvents = $this->mailEvents()->get();
+		foreach ($mailEvents as $mailEvent){
+			$code .= "\t\t".$mailEvent->generateDeletionCode().PHP_EOL;
+		}
+
+		$code .= "\t".'} // deleteNecessaryMailEvents';
+
+		$path = $this->module_folder.'/install/index.php';
+		$file = $this->disk()->get($path);
+
+		$currentCode = findFunctionCodeInTextUsingCommentOnEnd($file, 'deleteNecessaryMailEvents');
+
+		$file = str_replace($currentCode, $code, $file);
+
+		$this->disk()->put($path, $file);
+
+		return $code;
+	}
+
+	public function writeMailEventsLangCode(){
+		foreach ($this->mailEvents as $mailEvent){
+			$this->changeVarInLangFile($mailEvent->lang_key.'_NAME', $mailEvent->name, '/lang/ru/install/index.php');
+			$this->changeVarInLangFile($mailEvent->lang_key.'_DESC', $mailEvent->description, '/lang/ru/install/index.php');
+		}
+	}
+
+	// мб в vArrParse перенести
+	public function changeVarInLangFile($key, $var, $pathToLangFile){
+		$path = $this->module_folder.$pathToLangFile;
+		$langFile = $this->disk()->get($path);
+
+		$vArrParse = new vArrParse;
+		$langArr = $vArrParse->parseFromText($langFile, 'MESS');
+
+		// записываем переменую
+		$langArr[$key] = $var;
+
+		// записываем в файл
+		$langCode = '<?'.PHP_EOL;
+		foreach ($langArr as $code => $val){
+			if (strlen($val)){
+				$langCode .= '$MESS["'.$code.'"] = "'.$val.'";'.PHP_EOL;
+			}
+		}
+		$langCode .= '?>';
+
+		$this->disk()->put($path, $langCode);
+
+		return $langCode;
 	}
 
 	// todo это наверное какой-то глобальный хелпер должен быть, хоть и актуальный только для Битрикса

@@ -71,4 +71,14 @@ function getFunctionTextForSearchInText($text, $functionName){
 	return $function;
 }
 
+function findFunctionCodeInTextUsingCommentOnEnd($text, $functionName){
+	$beginningCode = "\t".'public function '.$functionName.'(){';
+	$beginningPosition = strpos($text, $beginningCode);
+	$endingCode = "\t".'} // '.$functionName;
+	$endingPosition = strpos($text, $endingCode);
+	$codeLength = $endingPosition - $beginningPosition + strlen($endingCode);
+
+	return substr($text, $beginningPosition, $codeLength);
+}
+
 ?>

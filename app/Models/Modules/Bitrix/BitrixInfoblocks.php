@@ -36,6 +36,7 @@ class BitrixInfoblocks extends Model{
 		return $module->writeInfoblocksLangInfoInFile();
 	}
 
+	// todo есть замена в виде findFunctionCodeInTextUsingCommentOnEnd, а вообще надо на vFuncParse перейти
 	protected static function findInfoblockCreationAndDeletionCodeInInstallFile($file, $functionName){
 		$beginningCode = "\t".'public function '.$functionName.'(){';
 		$beginningPosition = strpos($file, $beginningCode);

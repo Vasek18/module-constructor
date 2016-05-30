@@ -58,6 +58,9 @@ class BitrixMailEventsController extends Controller{
 		);
 
 		foreach ($request->MAIL_EVENT_VARS_CODES as $i => $code){
+			if (!strlen($code)){
+				continue;
+			}
 			$mail_event_var = BitrixMailEventsVar::updateOrCreate(
 				[
 					'mail_event_id' => $mail_event->id,
@@ -70,6 +73,8 @@ class BitrixMailEventsController extends Controller{
 				]
 			);
 		}
+
+		$module->storeMailEventsInModuleFolder();
 
 		return redirect(action('Modules\Bitrix\BitrixMailEventsController@show', [$module->id, $mail_event->id]));
 	}
@@ -109,6 +114,8 @@ class BitrixMailEventsController extends Controller{
 			$mail_event->save();
 		}
 
+		$module->storeMailEventsInModuleFolder();
+
 		if (!$request->ajax()){
 			return redirect(action('Modules\Bitrix\BitrixMailEventsController@show', [$module->id, $mail_event->id]));
 		}
@@ -119,7 +126,11 @@ class BitrixMailEventsController extends Controller{
 			return $this->unauthorized($request);
 		}
 
+		$mail_event->deleteLangCode();
+
 		$mail_event->delete();
+
+		$module->storeMailEventsInModuleFolder();
 
 		return redirect(action('Modules\Bitrix\BitrixMailEventsController@index', [$module->id]));
 	}
@@ -138,6 +149,9 @@ class BitrixMailEventsController extends Controller{
 	}
 
 	public function store_template(Bitrix $module, BitrixMailEvents $mail_event, Request $request){
+		if (!$this->userCreatedModule($module->id)){
+			return $this->unauthorized($request);
+		}
 
 		$template = BitrixMailEventsTemplate::create(
 			[
@@ -152,6 +166,8 @@ class BitrixMailEventsController extends Controller{
 				'body'          => $request->body
 			]
 		);
+
+		$module->storeMailEventsInModuleFolder();
 
 		return redirect(action('Modules\Bitrix\BitrixMailEventsController@show', [$module->id, $mail_event->id]));
 	}
@@ -170,6 +186,9 @@ class BitrixMailEventsController extends Controller{
 	}
 
 	public function update_template(Bitrix $module, BitrixMailEvents $mail_event, BitrixMailEventsTemplate $template, Request $request){
+		if (!$this->userCreatedModule($module->id)){
+			return $this->unauthorized($request);
+		}
 
 		//dd($template->id);
 
@@ -184,6 +203,8 @@ class BitrixMailEventsController extends Controller{
 
 		$template->save();
 
+		$module->storeMailEventsInModuleFolder();
+
 		return redirect(action('Modules\Bitrix\BitrixMailEventsController@show', [$module->id, $mail_event->id]));
 	}
 
@@ -194,6 +215,8 @@ class BitrixMailEventsController extends Controller{
 
 		$template->delete();
 
+		$module->storeMailEventsInModuleFolder();
+
 		return back();
 	}
 
@@ -203,6 +226,8 @@ class BitrixMailEventsController extends Controller{
 		}
 
 		$var->delete();
+
+		$module->storeMailEventsInModuleFolder();
 
 		return back();
 	}
@@ -223,6 +248,8 @@ class BitrixMailEventsController extends Controller{
 				'code'          => $request->MAIL_EVENT_VARS_CODE
 			]
 		);
+
+		$module->storeMailEventsInModuleFolder();
 
 		return back();
 	}

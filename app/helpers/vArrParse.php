@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 // todo переделать всё на статик?
+// todo не работает, если в значении есть запятая
 class vArrParse{
 
 	public function parseFromFile($file, $arrayName){
