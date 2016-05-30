@@ -89,6 +89,14 @@
             </div>
         </div>
         <div class="form-group">
+            <label class="col-md-4 control-label">Тема</label>
+            <div class="col-md-6">
+                <input type="text" class="form-control" id="theme" name="theme"
+                       value="{{$template ? $template->theme : ''}}" aria-describedby="theme_help">
+                <span class="help-block" id="theme_help"></span>
+            </div>
+        </div>
+        <div class="form-group">
             <div class="col-md-12">
                 <textarea name="body" id="" class="form-control" rows="20">{{$template ? $template->body : ''}}</textarea>
             </div>

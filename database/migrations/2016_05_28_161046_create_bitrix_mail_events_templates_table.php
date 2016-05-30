@@ -21,6 +21,7 @@ class CreateBitrixMailEventsTemplatesTable extends Migration{
 			$table->string('hidden_copy')->nullable();
 			$table->string('reply_to')->nullable();
 			$table->string('in_reply_to')->nullable();
+			$table->string('theme')->nullable();
 			$table->text('body')->nullable();
 		});
 	}

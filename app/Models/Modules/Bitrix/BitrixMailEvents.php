@@ -11,13 +11,13 @@ class BitrixMailEvents extends Model{
 	public $timestamps = false;
 
 	public function generateCreationCode(){
-		$code = 'createMailEvent("'.$this->code.'", Loc::getMessage("'.$this->lang_key.'_NAME"), Loc::getMessage("'.$this->lang_key.'_DESC"), '.$this->sort.');';
+		$code = '$this->createMailEvent("'.$this->code.'", Loc::getMessage("'.$this->lang_key.'_NAME"), Loc::getMessage("'.$this->lang_key.'_DESC"), '.$this->sort.');';
 
 		return $code;
 	}
 
 	public function generateDeletionCode(){
-		$code = 'deleteMailEvent("'.$this->code.'");';
+		$code = '$this->deleteMailEvent("'.$this->code.'");';
 
 		return $code;
 	}

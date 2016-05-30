@@ -296,9 +296,11 @@ class Bitrix extends Model{
 	public function writeMailEventsCreationCode(){
 		$code = "\t".'public function createNecessaryMailEvents(){'.PHP_EOL;
 
-		$mailEvents = $this->mailEvents()->get();
-		foreach ($mailEvents as $mailEvent){
+		foreach ($this->mailEvents as $mailEvent){
 			$code .= "\t\t".$mailEvent->generateCreationCode().PHP_EOL;
+			foreach ($mailEvent->templates as $template){
+				$code .= "\t\t".$template->generateCreationCode().PHP_EOL;
+			}
 		}
 
 		$code .= "\t".'} // createNecessaryMailEvents';
@@ -341,10 +343,15 @@ class Bitrix extends Model{
 		foreach ($this->mailEvents as $mailEvent){
 			$this->changeVarInLangFile($mailEvent->lang_key.'_NAME', $mailEvent->name, '/lang/ru/install/index.php');
 			$this->changeVarInLangFile($mailEvent->lang_key.'_DESC', $mailEvent->description, '/lang/ru/install/index.php');
+			foreach ($mailEvent->templates as $template){
+				$this->changeVarInLangFile($template->lang_key.'_THEME', $template->theme, '/lang/ru/install/index.php');
+				$this->changeVarInLangFile($template->lang_key.'_BODY', $template->body, '/lang/ru/install/index.php');
+			}
 		}
 	}
 
 	// мб в vArrParse перенести
+	// todo перенести работу с лангами всех сущностей Битрикса сюда
 	public function changeVarInLangFile($key, $var, $pathToLangFile){
 		$path = $this->module_folder.$pathToLangFile;
 		$langFile = $this->disk()->get($path);

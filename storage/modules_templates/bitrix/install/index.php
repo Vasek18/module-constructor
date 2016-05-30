@@ -240,7 +240,7 @@ Class {MODULE_CLASS_NAME} extends CModule{
 	function createMailTemplate($params){
 		$params["ACTIVE"] = "Y";
 		if (!isset($params["LID"])){
-			$params["LID"] = SITE_ID;
+			$params["LID"] = 's1';
 		}
 
 		$template = new CEventMessage;

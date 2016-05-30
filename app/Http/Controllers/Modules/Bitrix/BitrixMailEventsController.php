@@ -163,6 +163,7 @@ class BitrixMailEventsController extends Controller{
 				'hidden_copy'   => $request->hidden_copy,
 				'reply_to'      => $request->reply_to,
 				'in_reply_to'   => $request->in_reply_to,
+				'theme'         => $request->theme,
 				'body'          => $request->body
 			]
 		);
@@ -199,6 +200,7 @@ class BitrixMailEventsController extends Controller{
 		$template->hidden_copy = $request->hidden_copy;
 		$template->reply_to = $request->reply_to;
 		$template->in_reply_to = $request->in_reply_to;
+		$template->theme = $request->theme;
 		$template->body = $request->body;
 
 		$template->save();
@@ -212,6 +214,8 @@ class BitrixMailEventsController extends Controller{
 		if (!$this->userCreatedModule($module->id)){
 			return $this->unauthorized($request);
 		}
+
+		$template->deleteLangCode();
 
 		$template->delete();
 
