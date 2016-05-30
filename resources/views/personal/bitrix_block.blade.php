@@ -102,8 +102,8 @@
                                 </a>
                             </p>
                             <hr>
+                            <h3>Инфоблоки</h3>
                             @if (count($module->infoblocks))
-                                <h3>Инфоблоки</h3>
                                 <ul>
                                     @foreach($module->infoblocks as $infoblock)
                                         <li>
@@ -121,8 +121,8 @@
                                 </a>
                             </p>
                             <hr>
-                            @if (count($module->mailEvents))
                                 <h3>Почтовые события</h3>
+                                @if (count($module->mailEvents))
                                 <ul>
                                     @foreach($module->mailEvents as $mail_event)
                                         <li>

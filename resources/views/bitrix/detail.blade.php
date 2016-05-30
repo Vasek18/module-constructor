@@ -78,5 +78,9 @@
         <dd>
             <a href="{{ route('bitrix_module_admin_options', $module->id) }}">{{$module->options()->count()}}</a>
         </dd>
+        <dt>Почтовых событий:</dt>
+        <dd>
+            <a href="{{ route('bitrix_module_mail_events', $module->id) }}">{{$module->mailEvents()->count()}}</a>
+        </dd>
     </dl>
 @stop
