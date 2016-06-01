@@ -23,7 +23,7 @@
                         </dl>
                     </div>
                     <div class="actions col-md-2">
-                        @if ($module->can_download)
+                        @if ($user->haveEnoughMoneyForDownload())
                             <a data-toggle="modal" data-target="#modal_download_{{$module->id}}" href="#"
                                class="btn btn-sm btn-block btn-success">
                                 <span class="glyphicon glyphicon-download" aria-hidden="true"></span>

@@ -36,9 +36,12 @@ class User extends Model implements AuthenticatableContract,
 	 */
 	protected $hidden = ['password', 'remember_token'];
 
-	public function makeBuy($price){
-		$this->money = $this->money - $price;
-		$this->save();
+	public function haveEnoughMoneyForDownload(){
+		if ($this->coins){
+			return true;
+		}
+
+		return false;
 	}
 
 	public function bitrixes(){

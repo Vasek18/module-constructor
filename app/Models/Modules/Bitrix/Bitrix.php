@@ -34,8 +34,6 @@ class Bitrix extends Model{
 		'{PARTNER_URI}'        => 'PARTNER_URI'
 	];
 
-	public $priceForDownload = 500;
-
 	// на случай, если я где-то буду использовать create, эти поля можно будет записывать
 	protected $fillable = ['name', 'description', 'code', 'PARTNER_NAME', 'PARTNER_URI', 'PARTNER_CODE', 'version'];
 

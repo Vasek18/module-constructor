@@ -45,7 +45,7 @@
             </form>
         </div>
         <div class="col-md-2">
-            @if ($module->can_download)
+            @if ($user->haveEnoughMoneyForDownload())
                 <a class="btn btn-sm btn-success btn-block" data-toggle="modal" data-target="#modal_download_{{$module->id}}" href="#">
                     <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
                     Скачать

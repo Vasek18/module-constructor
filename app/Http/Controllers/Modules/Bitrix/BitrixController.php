@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Modules\Bitrix;
 use App\Models\Modules\Bitrix\Bitrix;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Storage;
+use Auth;
+use App\Models\User;
 use App\Http\Requests;
 use App\Http\Controllers\Traits\UserOwnModule;
 use Illuminate\Support\Facades\Response;
@@ -99,17 +100,15 @@ class BitrixController extends Controller{
 			return $this->unauthorized($this->request);
 		}
 
-		//dd($this->request->version);
+		$user = User::find(Auth::id());
 
-		if ($module->can_download){
+		if ($user->haveEnoughMoneyForDownload()){
 			Bitrix::upgradeVersion($module->id, $this->request->version);
 			Bitrix::updateDownloadCount($module->id);
 
 			if ($pathToZip = $module->generateZip()){
 				$response = Response::download($pathToZip)->deleteFileAfterSend(true);
 				ob_end_clean(); // без этого архив скачивается поверждённым
-
-				$this->user->makeBuy($module->priceForDownload);
 
 				return $response;
 			}

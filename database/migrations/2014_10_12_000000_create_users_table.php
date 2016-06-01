@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration{
 			$table->string('company_name')->nullable(); // название его компании
 			$table->string('bitrix_partner_code')->nullable()->unique(); // для модулей Битрикс
 			$table->string('bitrix_company_name')->nullable(); // для модулей Битрикс // возможно не надо в виду company_name
-			$table->integer('money')->unsigned()->default(0);
+			$table->integer('coins')->unsigned()->default(0);
 			$table->rememberToken();
 			$table->timestamps();
 		});
