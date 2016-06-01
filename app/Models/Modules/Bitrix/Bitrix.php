@@ -177,12 +177,12 @@ class Bitrix extends Model{
 	// создаёт архив модуля для скачивания
 	// todo проверки на успех
 	public function generateZip(){
+		// чтобы работали файлы с точки, нужно в Illuminate\Filesystem\Filesystem заменить строчку в методе files c $glob = glob($directory.'/*'); на $glob = glob($directory. '/{,.}*', GLOB_BRACE);
+		
 		$archiveName = $this->PARTNER_CODE."_".$this->code.".zip";
-		$rootFolder = $this->disk()->getDriver()->getAdapter()->getPathPrefix();
 
 		$zipper = new \Chumper\Zipper\Zipper;
-		//$zipper->make($archiveName)->folder("test")->add($rootFolder.$folder);
-		$zipper->make($archiveName)->folder($this->module_folder)->add($rootFolder.$this->module_folder)->close();
+		$zipper->make($archiveName)->folder($this->module_folder)->add($this->getFolder(true))->close();
 
 		return $archiveName;
 	}
