@@ -11,13 +11,27 @@
         </div>
         <div class="collapse navbar-collapse" id="bitrix_menu">
             <ul class="nav navbar-nav">
-                <li><a href="{{ route('bitrix_module_detail', $module->id) }}">Основное</a></li>
-                <li><a href="{{ route('bitrix_module_components', $module->id) }}">Компоненты</a></li>
-                <li><a href="{{ route('bitrix_module_events_handlers', $module->id) }}">Обработчики событий</a></li>
-                <li><a href="{{ route('bitrix_module_admin_options', $module->id) }}">Страница настроек</a></li>
-                <li><a href="{{ route('bitrix_module_data_storage', $module->id) }}">Хранение данных</a></li>
-                <li><a href="{{ route('bitrix_module_arbitrary_files', $module->id) }}">Произвольные файлы</a></li>
-                <li><a href="{{ route('bitrix_module_mail_events', $module->id) }}">Почтовые события</a></li>
+                <li class="{!! classActiveSegment(3, null) !!}">
+                    <a href="{{ route('bitrix_module_detail', $module->id) }}">Основное</a>
+                </li>
+                <li class="{!! classActiveSegment(3, 'components') !!}">
+                    <a href="{{ route('bitrix_module_components', $module->id) }}">Компоненты</a>
+                </li>
+                <li class="{!! classActiveSegment(3, 'data_storage') !!}">
+                    <a href="{{ route('bitrix_module_data_storage', $module->id) }}">Хранение данных</a>
+                </li>
+                <li class="{!! classActiveSegment(3, 'admin_options') !!}">
+                    <a href="{{ route('bitrix_module_admin_options', $module->id) }}">Страница настроек</a>
+                </li>
+                <li class="{!! classActiveSegment(3, 'events_handlers') !!}">
+                    <a href="{{ route('bitrix_module_events_handlers', $module->id) }}">Обработчики событий</a>
+                </li>
+                <li class="{!! classActiveSegment(3, 'arbitrary_files') !!}">
+                    <a href="{{ route('bitrix_module_arbitrary_files', $module->id) }}">Произвольные файлы</a>
+                </li>
+                <li class="{!! classActiveSegment(3, 'mail_events') !!}">
+                    <a href="{{ route('bitrix_module_mail_events', $module->id) }}">Почтовые события</a>
+                </li>
             </ul>
         </div>
     </div>
