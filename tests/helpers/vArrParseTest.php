@@ -1,6 +1,6 @@
 <?php
 
-use App\vArrParse;
+use App\Helpers\vArrParse;
 
 class vArrParseTest extends TestCase{
 

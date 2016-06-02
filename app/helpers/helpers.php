@@ -81,4 +81,16 @@ function findFunctionCodeInTextUsingCommentOnEnd($text, $functionName){
 	return substr($text, $beginningPosition, $codeLength);
 }
 
+// используется в меню
+function classActiveSegment($segment, $value){
+	if (!is_array($value)){
+		return Request::segment($segment) == $value ? ' active' : '';
+	}
+	foreach ($value as $v){
+		if (Request::segment($segment) == $v) return ' active';
+	}
+
+	return '';
+}
+
 ?>
