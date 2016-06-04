@@ -11,7 +11,7 @@ class BitrixCreateFormDBTest extends TestCase{
 
 	protected $standartModuleName = 'Ololo';
 	protected $standartModuleDescription = 'Ololo trololo';
-	protected $standartModuleCode = 'ololo';
+	protected $standartModuleCode = 'ololo_from_test';
 	protected $standartModuleVersion = '0.0.1';
 
 	function fillNewBitrixForm($params = Array()){

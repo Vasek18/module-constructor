@@ -2,7 +2,6 @@
 
 use App\Models\Modules\Bitrix\Bitrix;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\DB;
 
 class BitrixCreateFormFilesTest extends TestCase{
 
@@ -10,7 +9,7 @@ class BitrixCreateFormFilesTest extends TestCase{
 
 	protected $standartModuleName = 'Ololo';
 	protected $standartModuleDescription = 'Ololo trololo';
-	protected $standartModuleCode = 'ololo';
+	protected $standartModuleCode = 'ololo_from_test';
 	protected $standartModuleVersion = '0.0.1';
 
 	function fillNewBitrixForm($params = Array()){
@@ -111,34 +110,42 @@ class BitrixCreateFormFilesTest extends TestCase{
 
 		$this->assertEquals($expectedContent, $langFileContent);
 	}
-	//	/** @test */
-	//	function it_fills_right_version_file_at_creation(){
-	//		$this->signIn();
-	//
-	//		$module = $this->useBitrixStoreMethod();
-	//		$dirName = Bitrix::getFolder($module, false);
-	//		$langFileContent = $this->disk()->get($dirName.'/install/version.php');
-	//
-	//		$template_search = ['{VERSION}', '{DATE_TIME}'];
-	//
-	//		$template_replace = [$module->VERSION, $module->updated_at];
-	//
-	//		$templateLangFile = Storage::disk('modules_templates')->get('bitrix/install/version.php');
-	//		$expectedContent = $file = str_replace($template_search, $template_replace, $templateLangFile);
-	//
-	//		Bitrix::deleteFolder($module);
-	//
-	//		$this->assertEquals($expectedContent, $langFileContent);
-	//	}
-	//	/** @test */
-	//	function it_doesnt_rewrite_existing_folder_with_the_same_name(){
-	//		$this->signIn();
-	//		$module = $this->useBitrixStoreMethod();
-	//		$this->assertFalse($this->useBitrixStoreMethod());
-	//
-	//		Bitrix::deleteFolder($module);
-	//
-	//	}
+
+	/** @test */
+	function it_fills_right_version_file_at_creation(){
+		$this->signIn();
+
+		$this->fillNewBitrixForm();
+
+		$module = $this->getModuleModel();
+
+		$versionFileContent = $this->disk()->get($module->module_folder.'/install/version.php');
+
+		$template_search = ['{VERSION}', '{DATE_TIME}'];
+		$template_replace = [$module->version, $module->updated_at];
+		$templateVersionFile = Storage::disk('modules_templates')->get('bitrix/install/version.php');
+		$expectedContent = $file = str_replace($template_search, $template_replace, $templateVersionFile);
+
+		$module->deleteFolder();
+
+		$this->assertEquals($expectedContent, $versionFileContent);
+	}
+
+	/** @test */
+	function it_doesnt_rewrite_existing_folder_with_the_same_name(){
+		$this->signIn();
+		$this->fillNewBitrixForm();
+
+		$module = $this->getModuleModel();
+
+		$versionFileContent = $this->disk()->get($module->module_folder.'/install/version.php');
+
+		$this->fillNewBitrixForm();
+
+		$module->deleteFolder();
+
+		$this->assertNotFalse(strpos($versionFileContent, $module->updated_at.''), 'Module folder was rewrited');
+	}
 }
 
 ?>
