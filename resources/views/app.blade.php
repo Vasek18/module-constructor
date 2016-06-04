@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Конструктор модулей</title>
+    <title>{{trans('app.site_name')}}</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/app.css">
     <link href='https://fonts.googleapis.com/css?family=Lato:100,400,700,900' rel='stylesheet'>
@@ -21,28 +21,27 @@
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
                             data-target="#top-navbar-collapse-1" aria-expanded="false">
-                        <span class="sr-only">Toggle navigation</span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/">Конструктор модулей</a>
+                    <a class="navbar-brand" href="/">{{trans('app.site_name')}}</a>
                 </div>
                 <div class="collapse navbar-collapse" id="top-navbar-collapse-1">
                     <ul class="nav navbar-nav navbar-right">
                         @if (!Auth::check())
                             <li>
-                                <a href="{{ route('auth') }}">Авторизация</a>
+                                <a href="{{ route('auth') }}">{{trans('app.link_to_auth_title')}}</a>
                             </li>
                             <li>
-                                <a href="{{ route('reg') }}">Регистрация</a>
+                                <a href="{{ route('reg') }}">{{trans('app.link_to_reg_title')}}</a>
                             </li>
                         @else
                             <li>
-                                <a href="{{ route('personal') }}">Личный кабинет</a>
+                                <a href="{{ route('personal') }}">{{trans('app.link_to_personal_title')}}</a>
                             </li>
                             <li>
-                                <a href="{{ route('logout') }}">Выйти</a>
+                                <a href="{{ route('logout') }}">{{trans('app.link_to_logout_title')}}</a>
                             </li>
                         @endif
                     </ul>
@@ -55,7 +54,7 @@
 </div>
 <footer>
     <div class="creator">
-        <a href="http://aristov-vasiliy.ru/">Разработчик сервиса Аристов Василий</a>
+        <a href="http://aristov-vasiliy.ru/">{{trans('app.site_developer')}}</a>
     </div>
 </footer>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>

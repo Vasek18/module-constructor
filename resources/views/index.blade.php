@@ -5,34 +5,30 @@
         <div class="row">
             <div class="banner-on-main clearfix">
                 <div class="col-md-8">
-                    <strong>Делаешь сайты, а зарабатываешь меньше 100 000р в месяц?</strong>
+                    <strong>{{trans('home.little_earnings')}}</strong>
                 </div>
             </div>
             <div class="banner-on-main clearfix">
                 <div class="col-md-8 col-md-offset-4">
-                    <strong>Не можешь создать модуль под Битрикс, потому что это слишком сложно?</strong>
+                    <strong>{{trans('home.bitrix_difficult')}}</strong>
                 </div>
             </div>
             <div class="banner-on-main clearfix">
                 <div class="col-md-8">
-                    <strong>Часто повторяешь свой код?</strong>
+                    <strong>{{trans('home.code_repeat')}}</strong>
                 </div>
             </div>
             <div class="banner-on-main clearfix">
                 <div class="col-md-8 col-md-offset-4">
-                    <strong>Хватит это терпеть!</strong>
-                    <p>Не, серьёзно, это же совсем не сложно теперь. Просто заполняй простые формочки в сервисе,
-                        читай
-                        подсказки и на выходе получишь готовый для публикации в Marketplace архив с модулем.
-                        <br>
-                    И просто качай бабло.
+                    <strong>{{trans('home.stop_it')}}</strong>
+                    <p>{{trans('home.why_stop_it')}}
                     </p>
                 </div>
             </div>
             <div class="col-md-8 col-md-offset-2 modules-created">
-                <p>С нами создано уже</p>
+                <p>{{trans('home.there_were_created')}}</p>
                 <strong>{{$countModules}}</strong>
-                <p>модул{{$modulesEnding}}</p>
+                <p>{{trans('home.modules', ['ru_ending' => $modulesEnding])}}</p>
             </div>
         </div>
     </div>
