@@ -62,6 +62,6 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase{
 	}
 
 	protected function disk(){
-		return Storage::disk('user_modules');
+		return Storage::disk('user_modules_bitrix');
 	}
 }

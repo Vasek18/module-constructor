@@ -3,6 +3,7 @@
 use App\Models\Modules\Bitrix\Bitrix;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\DB;
+use App\Models\User;
 
 class BitrixCreateFormDBTest extends TestCase{
 
@@ -67,6 +68,46 @@ class BitrixCreateFormDBTest extends TestCase{
 			'code'         => $this->standartModuleCode,
 			'PARTNER_CODE' => $this->user->bitrix_partner_code
 		]);
+	}
+
+	/** @test */
+	function it_writes_all_fields_right(){
+		$this->signIn();
+
+		$this->fillNewBitrixForm();
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$this->seeInDatabase('bitrixes', [
+			'name'         => $this->standartModuleName,
+			'code'         => $this->standartModuleCode,
+			'description'  => $this->standartModuleDescription,
+			'version'      => $this->standartModuleVersion,
+			'user_id'      => $this->user->id,
+			'PARTNER_CODE' => $this->user->bitrix_partner_code,
+			'PARTNER_NAME' => $this->user->bitrix_company_name,
+			'PARTNER_URI'  => $this->user->site,
+		]);
+	}
+
+	/** @test */
+	function it_completes_user_profile(){
+		$user = factory(App\Models\User::class)->create(['bitrix_company_name' => null, 'bitrix_partner_code' => null, 'site' => null]);
+		$this->signIn($user);
+
+		$this->fillNewBitrixForm([
+			'PARTNER_NAME' => 'Vasya',
+			'PARTNER_CODE' => 'vs',
+			'PARTNER_URI'  => 'http://ololotrololo.com'
+		]);
+
+		$creator = User::find($user->id);
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$this->assertEquals("Vasya", $creator->bitrix_company_name);
+		$this->assertEquals("vs", $creator->bitrix_partner_code);
+		$this->assertEquals("http://ololotrololo.com", $creator->site);
 	}
 
 	/** @test */
@@ -140,7 +181,7 @@ class BitrixCreateFormDBTest extends TestCase{
 	}
 
 	/** @test */
-	function it_returns_an_error_when_a_pair_of_user_code_and_module_code_are_not_unique(){
+	function it_doesnt_create_module_when_a_pair_of_user_code_and_module_code_are_not_unique(){
 		$this->signIn();
 
 		$this->fillNewBitrixForm();
