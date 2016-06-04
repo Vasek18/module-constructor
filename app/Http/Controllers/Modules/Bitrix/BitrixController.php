@@ -22,8 +22,6 @@ use Illuminate\Support\Facades\Response;
 class BitrixController extends Controller{
 	protected $rootFolder = '/construct/bitrix/'; // корневая папка модуля
 
-	use UserOwnModule;
-
 	protected $request;
 
 	public function __construct(Request $request){
@@ -50,9 +48,7 @@ class BitrixController extends Controller{
 
 	// детальная страница модуля
 	public function show(Bitrix $module){
-		if (!$this->userCreatedModule($module->id)){
-			return $this->unauthorized($this->request);
-		}
+
 		//dd($id);
 		$data = [
 			'module' => $module
@@ -64,9 +60,7 @@ class BitrixController extends Controller{
 
 	// редактирование параметра
 	public function update(Bitrix $module){
-		if (!$this->userCreatedModule($module->id)){
-			return $this->unauthorized($this->request);
-		}
+
 		if ($this->request->name){
 			$module->name = $this->request->name;
 			$module->save();
@@ -92,13 +86,9 @@ class BitrixController extends Controller{
 	}
 
 	// кнопка скачивания зип архива
-	// todo нельзя скачать модуль, если он не оплачен
 	// todo нельзя указать версию ниже нынешней
 	// todo нельзя указать последнюю версию, если были произведены изменения
 	public function download_zip(Bitrix $module){
-		if (!$this->userCreatedModule($module->id)){
-			return $this->unauthorized($this->request);
-		}
 
 		$user = User::find(Auth::id());
 
@@ -120,9 +110,7 @@ class BitrixController extends Controller{
 	// удаление модуля
 	// todo подтверждение удаления
 	public function destroy(Bitrix $module){
-		if (!$this->userCreatedModule($module->id)){
-			return $this->unauthorized($this->request);
-		}
+
 		// удаляем папку
 		$module->deleteFolder();
 		// удаляем запись из БД

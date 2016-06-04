@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use App\Models\Modules\Bitrix\Bitrix;
 
 class User extends Model implements AuthenticatableContract,
 	AuthorizableContract,
@@ -38,6 +39,14 @@ class User extends Model implements AuthenticatableContract,
 
 	public function haveEnoughMoneyForDownload(){
 		if ($this->coins){
+			return true;
+		}
+
+		return false;
+	}
+
+	public function isBitrixModuleOwner(Bitrix $module){
+		if ($this->id === $module->user_id){
 			return true;
 		}
 

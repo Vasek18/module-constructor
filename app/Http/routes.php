@@ -35,7 +35,7 @@ Route::group(['prefix' => 'password'], function (){
 
 // Битрикс
 //Route::group(['prefix' => 'my/bitrix'], function (){
-Route::group(['prefix' => 'my-bitrix'], function (){
+Route::group(['prefix' => 'my-bitrix', 'middleware' => 'bitrix.owner'], function (){
 	Route::get('create', 'Modules\Bitrix\BitrixController@create');
 	Route::post('', 'Modules\Bitrix\BitrixController@store');
 	Route::get('{module}', ['as' => 'bitrix_module_detail', 'uses' => 'Modules\Bitrix\BitrixController@show']);
