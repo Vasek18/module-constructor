@@ -13,8 +13,8 @@ return [
 	|
 	*/
 
-	'error'                => 'Ошибка!',
-	'there_occur_errors'   => 'При заполнение формы возникли ошибки',
+	'error'                => 'Error!',
+	'there_occur_errors'   => 'An errors occurred while processing forms',
 	'accepted'             => 'The :attribute must be accepted.',
 	'active_url'           => 'The :attribute is not a valid URL.',
 	'after'                => 'The :attribute must be a date after :date.',
@@ -38,7 +38,7 @@ return [
 	'digits_between'       => 'The :attribute must be between :min and :max digits.',
 	'email'                => 'The :attribute must be a valid email address.',
 	'exists'               => 'The selected :attribute is invalid.',
-	'filled'               => 'Поле :attribute обязательно.',
+	'filled'               => 'The :attribute field is required.',
 	'image'                => 'The :attribute must be an image.',
 	'in'                   => 'The selected :attribute is invalid.',
 	'integer'              => 'The :attribute must be an integer.',
@@ -60,12 +60,12 @@ return [
 	'not_in'               => 'The selected :attribute is invalid.',
 	'numeric'              => 'The :attribute must be a number.',
 	'regex'                => 'The :attribute format is invalid.',
-	'required'             => 'Поле :attribute обязательно.',
-	'required_if'          => 'Поле :attribute обязательно, если :other is :value.',
-	'required_with'        => 'Поле :attribute обязательно, если :values is present.',
-	'required_with_all'    => 'Поле :attribute обязательно, если :values is present.',
-	'required_without'     => 'Поле :attribute обязательно, если :values is not present.',
-	'required_without_all' => 'Поле :attribute обязательно, если none of :values are present.',
+	'required'             => 'The :attribute field is required.',
+	'required_if'          => 'The :attribute field is required when :other is :value.',
+	'required_with'        => 'The :attribute field is required when :values is present.',
+	'required_with_all'    => 'The :attribute field is required when :values is present.',
+	'required_without'     => 'The :attribute field is required when :values is not present.',
+	'required_without_all' => 'The :attribute field is required when none of :values are present.',
 	'same'                 => 'The :attribute and :other must match.',
 	'size'                 => [
 		'numeric' => 'The :attribute must be :size.',
@@ -91,23 +91,23 @@ return [
 
 	'custom' => [
 		'MODULE_NAME'    => [
-			'required' => 'Поле "Название модуля" обязательно',
+			'required' => 'The "Module name" field is required',
 		],
 		'MODULE_CODE'    => [
-			'required' => 'Поле "Код модуля" обязательно',
-			'unique'   => 'Модуль с таким кодом уже существует у вас',
+			'required' => 'The "Module code" field is required',
+			'unique'   => 'Module with such code already exists among yours',
 		],
 		'MODULE_VERSION' => [
-			'required' => 'Поле "Версия модуля" обязательно',
+			'required' => 'The "Module version" field is required',
 		],
 		'PARTNER_NAME'   => [
-			'required' => 'Поле "Имя партнёра" обязательно',
+			'required' => 'The "Partner name" field is required',
 		],
 		'PARTNER_URI'    => [
-			'required' => 'Поле "Ссылка на ваш сайт" обязательно',
+			'required' => 'The "Partner uri" field is required',
 		],
 		'PARTNER_CODE'   => [
-			'required' => 'Поле "Код партнёра" обязательно',
+			'required' => 'The "Partner code" field is required',
 		],
 	],
 

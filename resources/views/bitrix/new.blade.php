@@ -9,7 +9,7 @@
                     <div class="panel-body">
                         @if (count($errors) > 0)
                             <div class="alert alert-danger">
-                                <strong>Ошибка!</strong> При заполнение формы возникли ошибки<br><br>
+                                <strong>{{trans('validation.error')}}</strong> {{trans('validation.there_occur_errors')}}:<br><br>
                                 <ul>
                                     @foreach ($errors->all() as $error)
                                         <li>{{ $error }}</li>

@@ -138,6 +138,78 @@ class BitrixCreateFormInterfaceTest extends TestCase{
 	}
 
 	/** @test */
+	function it_returns_error_request_without_partner_name_en(){
+		$this->setLang('en');
+		$this->signIn();
+
+		$this->fillNewBitrixForm(['PARTNER_NAME' => '']);
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$this->see('The "Partner name" field is required');
+	}
+
+	/** @test */
+	function it_returns_error_request_without_partner_uri_en(){
+		$this->setLang('en');
+		$this->signIn();
+
+		$this->fillNewBitrixForm(['PARTNER_URI' => '']);
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$this->see('The "Partner uri" field is required');
+	}
+
+	/** @test */
+	function it_returns_error_request_without_partner_code_en(){
+		$this->setLang('en');
+		$this->signIn();
+
+		$this->fillNewBitrixForm(['PARTNER_CODE' => '']);
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$this->see('The "Partner code" field is required');
+	}
+
+	/** @test */
+	function it_returns_error_request_without_module_name_en(){
+		$this->setLang('en');
+		$this->signIn();
+
+		$this->fillNewBitrixForm(['MODULE_NAME' => '']);
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$this->see('The "Module name" field is required');
+	}
+
+	/** @test */
+	function it_returns_error_request_without_module_code_en(){
+		$this->setLang('en');
+		$this->signIn();
+
+		$this->fillNewBitrixForm(['MODULE_CODE' => '']);
+
+		$this->deleteFolder('');
+
+		$this->see('The "Module code" field is required');
+	}
+
+	/** @test */
+	function it_returns_error_request_without_module_version_en(){
+		$this->setLang('en');
+		$this->signIn();
+
+		$this->fillNewBitrixForm(['MODULE_VERSION' => '']);
+
+		$this->deleteFolder('');
+
+		$this->see('The "Module version" field is required');
+	}
+
+	/** @test */
 	function it_returns_an_error_when_a_pair_of_user_code_and_module_code_are_not_unique(){
 		$this->signIn();
 
@@ -146,7 +218,19 @@ class BitrixCreateFormInterfaceTest extends TestCase{
 
 		$this->deleteFolder($this->standartModuleCode);
 
-		$this->see('The m o d u l e  c o d e has already been taken');
+		$this->see('Модуль с таким кодом уже существует у вас');
+	}
+	/** @test */
+	function it_returns_an_error_when_a_pair_of_user_code_and_module_code_are_not_unique_en(){
+		$this->setLang('en');
+		$this->signIn();
+
+		$this->fillNewBitrixForm();
+		$this->fillNewBitrixForm();
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$this->see('Module with such code already exists among yours');
 	}
 }
 
