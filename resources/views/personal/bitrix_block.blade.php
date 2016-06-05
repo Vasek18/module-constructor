@@ -1,8 +1,5 @@
-<h3>Битрикс
-    <a href="{{ action('Modules\Bitrix\BitrixController@create') }}" class="btn btn-success pull-right">Создать
-        модуль на
-        Битриксе
-    </a>
+<h3>{{trans('personal_index.bitrix')}}
+    <a href="{{ action('Modules\Bitrix\BitrixController@create') }}" class="btn btn-success pull-right">        {{trans('personal_index.create_bitrix_module')}}</a>
 </h3>
 @if ( !$bitrix_modules->isEmpty())
     @foreach($bitrix_modules as $module)
@@ -148,5 +145,5 @@
     @endforeach
 
 @else
-    <p>Пусто</p>
+    <p>{{trans('personal_index.empty')}}</p>
 @endif
