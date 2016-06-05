@@ -197,6 +197,50 @@ class BitrixCreateFormFilesTest extends TestCase{
 
 		$this->assertEquals($expectedContent, $versionFileContent);
 	}
+
+	/** @test */
+	function it_validates_version_field_from_nondigits(){
+		$this->signIn();
+
+		$this->fillNewBitrixForm([
+			'MODULE_VERSION' => '  Test   '
+		]);
+
+		$module = $this->getModuleModel();
+
+		$versionFileContent = $this->disk()->get($module->module_folder.'/install/version.php');
+
+		$template_search = ['{VERSION}', '{DATE_TIME}'];
+		$template_replace = ['0.0.1', $module->updated_at];
+		$templateVersionFile = Storage::disk('modules_templates')->get('bitrix/install/version.php');
+		$expectedContent = $file = str_replace($template_search, $template_replace, $templateVersionFile);
+
+		$module->deleteFolder();
+
+		$this->assertEquals($expectedContent, $versionFileContent);
+	}
+
+	/** @test */
+	function it_validates_version_field_from_all_zeros(){
+		$this->signIn();
+
+		$this->fillNewBitrixForm([
+			'MODULE_VERSION' => '  0.0.0'
+		]);
+
+		$module = $this->getModuleModel();
+
+		$versionFileContent = $this->disk()->get($module->module_folder.'/install/version.php');
+
+		$template_search = ['{VERSION}', '{DATE_TIME}'];
+		$template_replace = ['0.0.1', $module->updated_at];
+		$templateVersionFile = Storage::disk('modules_templates')->get('bitrix/install/version.php');
+		$expectedContent = $file = str_replace($template_search, $template_replace, $templateVersionFile);
+
+		$module->deleteFolder();
+
+		$this->assertEquals($expectedContent, $versionFileContent);
+	}
 }
 
 ?>

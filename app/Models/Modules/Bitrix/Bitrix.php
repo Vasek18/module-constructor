@@ -63,9 +63,14 @@ class Bitrix extends Model{
 		$bitrix->PARTNER_NAME = trim($request->PARTNER_NAME);
 		$bitrix->PARTNER_URI = trim($request->PARTNER_URI);
 		$bitrix->PARTNER_CODE = trim($request->PARTNER_CODE);
-		if ($request->MODULE_VERSION){
-			$bitrix->version = trim($request->MODULE_VERSION);
+		$version = trim($request->MODULE_VERSION);
+		if (!preg_match('/[0-9]+\.[0-9]+\.[0-9]+/is', $version)){
+			$version = '0.0.1';
 		}
+		if ($version == '0.0.0'){
+			$version = '0.0.1';
+		}
+		$bitrix->version = $version;
 
 		Auth::user()->bitrixes()->save($bitrix);
 		$module_id = $bitrix->id;
@@ -178,7 +183,7 @@ class Bitrix extends Model{
 	// todo проверки на успех
 	public function generateZip(){
 		// чтобы работали файлы с точки, нужно в Illuminate\Filesystem\Filesystem заменить строчку в методе files c $glob = glob($directory.'/*'); на $glob = glob($directory. '/{,.}*', GLOB_BRACE);
-		
+
 		$archiveName = $this->PARTNER_CODE."_".$this->code.".zip";
 
 		$zipper = new \Chumper\Zipper\Zipper;

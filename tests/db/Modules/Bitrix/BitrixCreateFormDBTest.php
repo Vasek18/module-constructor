@@ -217,7 +217,7 @@ class BitrixCreateFormDBTest extends TestCase{
 			'PARTNER_NAME'       => '  Test   ',
 			'PARTNER_URI'        => '  Test   ',
 			'PARTNER_CODE'       => '  Test   ',
-			'MODULE_VERSION'     => '  Test   '
+			'MODULE_VERSION'     => '  0.0.1   '
 		]);
 
 		$this->deleteFolder('ololo_from_test');
@@ -229,7 +229,41 @@ class BitrixCreateFormDBTest extends TestCase{
 			'PARTNER_NAME' => 'Test',
 			'PARTNER_URI'  => 'Test',
 			'PARTNER_CODE' => 'Test',
-			'version'      => 'Test'
+			'version'      => '0.0.1'
+		]);
+	}
+
+	/** @test */
+	function it_validates_version_field_from_nondigits(){
+		$this->signIn();
+
+		$this->fillNewBitrixForm([
+			'MODULE_VERSION' => '  Test   '
+		]);
+
+		$this->deleteFolder('ololo_from_test');
+
+		$this->seeInDatabase('bitrixes', [
+			'code'         => $this->standartModuleCode,
+			'PARTNER_CODE' => $this->user->bitrix_partner_code,
+			'version'      => '0.0.1'
+		]);
+	}
+
+	/** @test */
+	function it_validates_version_field_from_all_zeros(){
+		$this->signIn();
+
+		$this->fillNewBitrixForm([
+			'MODULE_VERSION' => '  0.0.0'
+		]);
+
+		$this->deleteFolder('ololo_from_test');
+
+		$this->seeInDatabase('bitrixes', [
+			'code'         => $this->standartModuleCode,
+			'PARTNER_CODE' => $this->user->bitrix_partner_code,
+			'version'      => '0.0.1'
 		]);
 	}
 }
