@@ -48,14 +48,18 @@ class BitrixCreateFormFilesTest extends TestCase{
 	}
 
 	function deleteFolder($moduleCode){
-		if (Bitrix::where('code', $moduleCode)->where('PARTNER_CODE', $this->user->bitrix_partner_code)->count()){
-			$module = Bitrix::where('code', $moduleCode)->where('PARTNER_CODE', $this->user->bitrix_partner_code)->first();
+		if (Bitrix::where('code', $moduleCode)->count()){
+			$module = Bitrix::where('code', $moduleCode)->first();
 			$module->deleteFolder();
 		}
 	}
 
-	function getModuleModel(){
-		return Bitrix::where('code', $this->standartModuleCode)->where('PARTNER_CODE', $this->user->bitrix_partner_code)->first();
+	function getModuleModel($code = null){
+		if (!$code){
+			$code = $this->standartModuleCode;
+		}
+
+		return Bitrix::where('code', $code)->first();
 	}
 
 	/** @test */
@@ -101,8 +105,8 @@ class BitrixCreateFormFilesTest extends TestCase{
 
 		$langFileContent = $this->disk()->get($module->module_folder.'/lang/ru/install/index.php');
 
-		$template_search = ['{MODULE_CLASS_NAME}', '{MODULE_ID}', '{LANG_KEY}', '{VERSION}', '{DATE_TIME}', '{MODULE_NAME}', '{MODULE_DESCRIPTION}', '{PARTNER_NAME}', '{PARTNER_URI}'];
-		$template_replace = [$module->PARTNER_CODE."_".$module->MODULE_CODE, $module->PARTNER_CODE.".".$module->code, $module->lang_key, $module->VERSION, date('Y-m-d H:i:s'), $module->name, $module->description, $module->PARTNER_NAME, $module->PARTNER_URI];
+		$template_search = ['{MODULE_ID}', '{LANG_KEY}', '{MODULE_NAME}', '{MODULE_DESCRIPTION}', '{PARTNER_NAME}', '{PARTNER_URI}'];
+		$template_replace = [$this->user->bitrix_partner_code.".".$this->standartModuleCode, $module->lang_key, $this->standartModuleName, $this->standartModuleDescription, $this->user->bitrix_company_name, $this->user->site];
 		$templateLangFile = Storage::disk('modules_templates')->get('bitrix/lang/ru/install/index.php');
 		$expectedContent = $file = str_replace($template_search, $template_replace, $templateLangFile);
 
@@ -122,7 +126,7 @@ class BitrixCreateFormFilesTest extends TestCase{
 		$versionFileContent = $this->disk()->get($module->module_folder.'/install/version.php');
 
 		$template_search = ['{VERSION}', '{DATE_TIME}'];
-		$template_replace = [$module->version, $module->updated_at];
+		$template_replace = [$this->standartModuleVersion, $module->updated_at];
 		$templateVersionFile = Storage::disk('modules_templates')->get('bitrix/install/version.php');
 		$expectedContent = $file = str_replace($template_search, $template_replace, $templateVersionFile);
 
@@ -145,6 +149,53 @@ class BitrixCreateFormFilesTest extends TestCase{
 		$module->deleteFolder();
 
 		$this->assertNotFalse(strpos($versionFileContent, $module->updated_at.''), 'Module folder was rewrited');
+	}
+
+	/** @test */
+	function it_trims_fields_in_lang_file(){
+		$this->signIn();
+
+		$this->fillNewBitrixForm([
+			'MODULE_NAME'        => '  Test   ',
+			'MODULE_DESCRIPTION' => '  Test   ',
+			'MODULE_CODE'        => '  ololo_from_test   ',
+			'PARTNER_NAME'       => '  Test   ',
+			'PARTNER_URI'        => '  Test   ',
+			'PARTNER_CODE'       => '  Test   ',
+			'MODULE_VERSION'     => '  Test   '
+		]);
+
+		$module = $this->getModuleModel('ololo_from_test');
+		$langFileContent = $this->disk()->get($module->module_folder.'/lang/ru/install/index.php');
+
+		$template_search = ['{MODULE_ID}', '{LANG_KEY}', '{MODULE_NAME}', '{MODULE_DESCRIPTION}', '{PARTNER_NAME}', '{PARTNER_URI}'];
+		$template_replace = ["Test.ololo_from_test", "TEST_OLOLO_FROM_TEST", 'Test', 'Test', 'Test', 'Test'];
+		$templateLangFile = Storage::disk('modules_templates')->get('bitrix/lang/ru/install/index.php');
+		$expectedContent = $file = str_replace($template_search, $template_replace, $templateLangFile);
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$this->assertEquals($expectedContent, $langFileContent);
+	}
+
+	/** @test */
+	function it_trims_version_value(){
+		$this->signIn();
+
+		$this->fillNewBitrixForm(['MODULE_VERSION' => '  0.0.1   ']);
+
+		$module = $this->getModuleModel();
+
+		$versionFileContent = $this->disk()->get($module->module_folder.'/install/version.php');
+
+		$template_search = ['{VERSION}', '{DATE_TIME}'];
+		$template_replace = ['0.0.1', $module->updated_at];
+		$templateVersionFile = Storage::disk('modules_templates')->get('bitrix/install/version.php');
+		$expectedContent = $file = str_replace($template_search, $template_replace, $templateVersionFile);
+
+		$module->deleteFolder();
+
+		$this->assertEquals($expectedContent, $versionFileContent);
 	}
 }
 

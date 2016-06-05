@@ -50,8 +50,8 @@ class BitrixCreateFormDBTest extends TestCase{
 	}
 
 	function deleteFolder($moduleCode){
-		if (Bitrix::where('code', $moduleCode)->where('PARTNER_CODE', $this->user->bitrix_partner_code)->count()){
-			$module = Bitrix::where('code', $moduleCode)->where('PARTNER_CODE', $this->user->bitrix_partner_code)->first();
+		if (Bitrix::where('code', $moduleCode)->count()){
+			$module = Bitrix::where('code', $moduleCode)->first();
 			$module->deleteFolder();
 		}
 	}
@@ -170,12 +170,26 @@ class BitrixCreateFormDBTest extends TestCase{
 	function it_doesnt_create_module_without_module_code(){
 		$this->signIn();
 
-		$this->fillNewBitrixForm(['code' => '']);
+		$this->fillNewBitrixForm(['MODULE_CODE' => '']);
 
 		$this->deleteFolder('');
 
 		$this->dontSeeInDatabase('bitrixes', [
 			'code'         => "",
+			'PARTNER_CODE' => $this->user->bitrix_partner_code
+		]);
+	}
+
+	/** @test */
+	function it_doesnt_create_module_without_module_version(){
+		$this->signIn();
+
+		$this->fillNewBitrixForm(['MODULE_VERSION' => '']);
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$this->dontSeeInDatabase('bitrixes', [
+			'code'         => $this->standartModuleCode,
 			'PARTNER_CODE' => $this->user->bitrix_partner_code
 		]);
 	}
@@ -196,23 +210,22 @@ class BitrixCreateFormDBTest extends TestCase{
 	function it_trims_fields(){
 		$this->signIn();
 
-		$this->visit('/my-bitrix/create');
 		$this->fillNewBitrixForm([
 			'MODULE_NAME'        => '  Test   ',
 			'MODULE_DESCRIPTION' => '  Test   ',
-			'MODULE_CODE'        => '  Test   ',
+			'MODULE_CODE'        => '  ololo_from_test   ',
 			'PARTNER_NAME'       => '  Test   ',
 			'PARTNER_URI'        => '  Test   ',
 			'PARTNER_CODE'       => '  Test   ',
 			'MODULE_VERSION'     => '  Test   '
 		]);
 
-		$this->deleteFolder($this->standartModuleCode);
+		$this->deleteFolder('ololo_from_test');
 
 		$this->seeInDatabase('bitrixes', [
 			'name'         => 'Test',
 			'description'  => 'Test',
-			'code'         => 'Test',
+			'code'         => 'ololo_from_test',
 			'PARTNER_NAME' => 'Test',
 			'PARTNER_URI'  => 'Test',
 			'PARTNER_CODE' => 'Test',

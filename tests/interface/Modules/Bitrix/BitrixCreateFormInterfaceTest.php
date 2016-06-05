@@ -49,8 +49,8 @@ class BitrixCreateFormInterfaceTest extends TestCase{
 	}
 
 	function deleteFolder($moduleCode){
-		if (Bitrix::where('code', $moduleCode)->where('PARTNER_CODE', $this->user->bitrix_partner_code)->count()){
-			$module = Bitrix::where('code', $moduleCode)->where('PARTNER_CODE', $this->user->bitrix_partner_code)->first();
+		if (Bitrix::where('code', $moduleCode)->count()){
+			$module = Bitrix::where('code', $moduleCode)->first();
 			$module->deleteFolder();
 		}
 	}
@@ -72,58 +72,69 @@ class BitrixCreateFormInterfaceTest extends TestCase{
 	}
 
 	/** @test */
-	function it_doesnt_create_module_without_partner_name(){
+	function it_returns_error_request_without_partner_name(){
 		$this->signIn();
 
 		$this->fillNewBitrixForm(['PARTNER_NAME' => '']);
 
 		$this->deleteFolder($this->standartModuleCode);
 
-		$this->see('Поле p a r t n e r  n a m e обязательно.');
+		$this->see('Поле "Имя партнёра" обязательно');
 	}
 
 	/** @test */
-	function it_doesnt_create_module_without_partner_uri(){
+	function it_returns_error_request_without_partner_uri(){
 		$this->signIn();
 
 		$this->fillNewBitrixForm(['PARTNER_URI' => '']);
 
 		$this->deleteFolder($this->standartModuleCode);
 
-		$this->see('Поле p a r t n e r  u r i обязательно.');
+		$this->see('Поле "Ссылка на ваш сайт" обязательно');
 	}
 
 	/** @test */
-	function it_doesnt_create_module_without_partner_code(){
+	function it_returns_error_request_without_partner_code(){
 		$this->signIn();
 
 		$this->fillNewBitrixForm(['PARTNER_CODE' => '']);
 
 		$this->deleteFolder($this->standartModuleCode);
 
-		$this->see('Поле p a r t n e r  c o d e обязательно.');
+		$this->see('Поле "Код партнёра" обязательно');
 	}
 
 	/** @test */
-	function it_doesnt_create_module_without_module_name(){
+	function it_returns_error_request_without_module_name(){
 		$this->signIn();
 
 		$this->fillNewBitrixForm(['MODULE_NAME' => '']);
 
 		$this->deleteFolder($this->standartModuleCode);
 
-		$this->see('Поле m o d u l e  n a m e обязательно.');
+		$this->see('Поле "Название модуля" обязательно');
 	}
 
 	/** @test */
-	function it_doesnt_create_module_without_module_code(){
+	function it_returns_error_request_without_module_code(){
 		$this->signIn();
 
 		$this->fillNewBitrixForm(['MODULE_CODE' => '']);
 
 		$this->deleteFolder('');
 
-		$this->see('Поле m o d u l e  c o d e обязательно.');
+		$this->see('Поле "Код модуля" обязательно');
+	}
+
+	/** @test */
+	function it_returns_error_request_without_module_version(){
+		$this->signIn();
+
+		$this->fillNewBitrixForm(['MODULE_VERSION' => '']);
+
+		$this->deleteFolder('');
+
+		$this->see('Поле "Версия модуля" обязательно');
 	}
 
 	/** @test */
@@ -135,7 +146,7 @@ class BitrixCreateFormInterfaceTest extends TestCase{
 
 		$this->deleteFolder($this->standartModuleCode);
 
-		$this->see('The m o d u l e  c o d e has already been taken.');
+		$this->see('The m o d u l e  c o d e has already been taken');
 	}
 }
 
