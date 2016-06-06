@@ -1,7 +1,7 @@
 @extends('bitrix.internal_template')
 
 @section('h1')
-    Страница настроек
+    {{ trans('bitrix_admin_options.h1') }}
 @stop
 
 @section('page')
@@ -12,23 +12,21 @@
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <div class="row option-headers">
             <div class="col-md-4">
-                <label>Название свойства</label>
+                <label>{{ trans('bitrix_admin_options.option_name') }}</label>
             </div>
             <div class="col-md-3">
-                <label>Код свойства</label>
+                <label>{{ trans('bitrix_admin_options.option_code') }}</label>
             </div>
             <div class="col-md-2">
-                <label>Тип свойства</label>
+                <label>{{ trans('bitrix_admin_options.option_type') }}</label>
             </div>
             <div class="col-md-2">
-                <label>Доп. поля</label>
+                <label>{{ trans('bitrix_admin_options.option_additional_settings') }}</label>
             </div>
             <div class="col-md-1">
             </div>
         </div>
         <div class="draggable-container">
-            {{--todo вынести row--}}
-            {{--@each('bitrix.admin_options.item', $options, 'option')--}}
             @foreach($options as $i => $option)
                 {{--{{dd($option)}}--}}
                 @include('bitrix.admin_options.item', ['option' => $option, 'i' => $i, 'module' => $module])
@@ -41,28 +39,19 @@
         <div class="row overlast-row">
             <div class="col-md-12">
                 <p>
-                    <a href="#" class="btn btn-default btn-block add-dop-row">Добавить строчку</a>
+                    <a href="#"
+                       class="btn btn-default btn-block add-dop-row">{{ trans('bitrix_admin_options.add_row') }}</a>
                 </p>
             </div>
         </div>
         <div class="row">
             <div class="col-md-12">
-                <button class="btn btn-primary btn-block">Сохранить</button>
+                <button class="btn btn-primary btn-block">{{ trans('bitrix_admin_options.save') }}</button>
             </div>
         </div>
     </form>
     <hr>
-    <p class="description">Здесь задаются настройки, которые можно будет получить на сайте через
-        COption::GetOptionString("{код модуля}", "{код опции}");. Сами значения задаются на странице настроек модуля
-        (Настройки -> Настройки модулей -> Название модуля).
-        <br>
-        Также вместе с указанными вами настройками создастся вкладка со стандартными настройками прав модуля.
-    </p>
+    <p class="description">{!! trans('bitrix_admin_options.step_description') !!}</p>
     <hr>
-    <p>
-        Чтобы подставит значение одного свойства в другое, впишите в значение последнего:
-    <pre>
-        COption::GetOptionString($module_id, "{Код вашего свойства}")
-    </pre>
-    </p>
+    <p>{!! trans('bitrix_admin_options.hints') !!}</p>
 @stop
