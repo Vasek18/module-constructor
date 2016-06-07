@@ -15,27 +15,22 @@ class BitrixStuffSeeder extends Seeder{
 		// типы опций для страницы настройки модулей
 		DB::table('bitrix_modules_options_types')->insert([
 			'NAME_RU'   => 'Строка',
-			'NAME_EN'   => 'String',
 			'FORM_TYPE' => 'text',
 		]);
 		DB::table('bitrix_modules_options_types')->insert([
 			'NAME_RU'   => 'Многострочный текст',
-			'NAME_EN'   => 'Text',
 			'FORM_TYPE' => 'textarea',
 		]);
 		DB::table('bitrix_modules_options_types')->insert([
 			'NAME_RU'   => 'Селект',
-			'NAME_EN'   => 'Select',
 			'FORM_TYPE' => 'selectbox',
 		]);
 		DB::table('bitrix_modules_options_types')->insert([
 			'NAME_RU'   => 'Множественный селект',
-			'NAME_EN'   => 'Multi select',
 			'FORM_TYPE' => 'multiselectbox',
 		]);
 		DB::table('bitrix_modules_options_types')->insert([
 			'NAME_RU'   => 'Чекбокс',
-			'NAME_EN'   => 'Checkbox',
 			'FORM_TYPE' => 'checkbox',
 		]);
 
@@ -79,57 +74,57 @@ class BitrixStuffSeeder extends Seeder{
 
 		// стандартные группы опций для arParams компоненты
 		DB::table('bitrix_components_params_groups')->insert([
-			'code' => 'BASE',
-			'sort' => 100,
-			'name' => 'Основные параметры',
-			'desc' => 'Основные параметры.',
+			'code'     => 'BASE',
+			'sort'     => 100,
+			'name'     => 'Основные параметры',
+			'desc'     => 'Основные параметры.',
 			'standard' => true
 		]);
 		DB::table('bitrix_components_params_groups')->insert([
-			'code' => 'DATA_SOURCE',
-			'sort' => 200,
-			'name' => 'Источник данных',
-			'desc' => 'Тип и ID инфоблока.',
+			'code'     => 'DATA_SOURCE',
+			'sort'     => 200,
+			'name'     => 'Источник данных',
+			'desc'     => 'Тип и ID инфоблока.',
 			'standard' => true
 		]);
 		DB::table('bitrix_components_params_groups')->insert([
-			'code' => 'VISUAL',
-			'sort' => 300,
-			'name' => 'Внешний вид',
-			'desc' => 'Редко используемая группа. Сюда предполагается загонять параметры, отвечающие за внешний вид.',
+			'code'     => 'VISUAL',
+			'sort'     => 300,
+			'name'     => 'Внешний вид',
+			'desc'     => 'Редко используемая группа. Сюда предполагается загонять параметры, отвечающие за внешний вид.',
 			'standard' => true
 		]);
 		DB::table('bitrix_components_params_groups')->insert([
-			'code' => 'URL_TEMPLATES',
-			'sort' => 400,
-			'name' => 'Шаблоны ссылок',
-			'desc' => 'Шаблоны ссылок',
+			'code'     => 'URL_TEMPLATES',
+			'sort'     => 400,
+			'name'     => 'Шаблоны ссылок',
+			'desc'     => 'Шаблоны ссылок',
 			'standard' => true
 		]);
 		DB::table('bitrix_components_params_groups')->insert([
-			'code' => 'SEF_MODE',
-			'sort' => 500,
-			'desc' => 'Группа для всех параметров, связанных с использованием ЧПУ.',
+			'code'     => 'SEF_MODE',
+			'sort'     => 500,
+			'desc'     => 'Группа для всех параметров, связанных с использованием ЧПУ.',
 			'standard' => true
 		]);
 		DB::table('bitrix_components_params_groups')->insert([
-			'code' => 'AJAX_SETTINGS',
-			'sort' => 550,
-			'desc' => 'Все, что касается ajax.',
+			'code'     => 'AJAX_SETTINGS',
+			'sort'     => 550,
+			'desc'     => 'Все, что касается ajax.',
 			'standard' => true
 		]);
 		DB::table('bitrix_components_params_groups')->insert([
-			'code' => 'CACHE_SETTINGS',
-			'sort' => 600,
-			'name' => 'Настройки кеширования',
-			'desc' => 'Появляется при указании параметра CACHE_TIME.',
+			'code'     => 'CACHE_SETTINGS',
+			'sort'     => 600,
+			'name'     => 'Настройки кеширования',
+			'desc'     => 'Появляется при указании параметра CACHE_TIME.',
 			'standard' => true
 		]);
 		DB::table('bitrix_components_params_groups')->insert([
-			'code' => 'ADDITIONAL_SETTINGS',
-			'sort' => 700,
-			'name' => 'Дополнительные настройки',
-			'desc' => 'Эта группа появляется, например, при указании параметра SET_TITLE.',
+			'code'     => 'ADDITIONAL_SETTINGS',
+			'sort'     => 700,
+			'name'     => 'Дополнительные настройки',
+			'desc'     => 'Эта группа появляется, например, при указании параметра SET_TITLE.',
 			'standard' => true
 		]);
 

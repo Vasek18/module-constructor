@@ -8,7 +8,7 @@
             <div class="col-md-12">
                 <div class="panel panel-default">
                     @if ($module->id)
-                        <div class="panel-heading">@yield('h1') | Модуль "{{$module->name}}"
+                        <div class="panel-heading">@yield('h1') | {{ trans('app.bitrix_module') }} "{{$module->name}}"
                             ({{$module->PARTNER_CODE}}.{{$module->code}})
                         </div>
                         <div class="panel-body">
@@ -16,7 +16,7 @@
                         </div>
                     @else
                         <div class="panel-body">
-                            Ошибка!
+                            {{ trans('app.error') }}
                         </div>
                     @endif
                 </div>

@@ -7,4 +7,6 @@ return [
 	'link_to_reg_title'      => 'Registration',
 	'link_to_personal_title' => 'Personal',
 	'link_to_logout_title'   => 'Logout',
+	'bitrix_module'          => 'Module',
+	'error'                  => 'Error!',
 ];
