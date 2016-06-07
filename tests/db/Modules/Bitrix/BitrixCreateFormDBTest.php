@@ -49,13 +49,6 @@ class BitrixCreateFormDBTest extends TestCase{
 		$this->press('module_create');
 	}
 
-	function deleteFolder($moduleCode){
-		if (Bitrix::where('code', $moduleCode)->count()){
-			$module = Bitrix::where('code', $moduleCode)->first();
-			$module->deleteFolder();
-		}
-	}
-
 	/** @test */
 	function smn_can_create_module(){
 		$this->signIn();

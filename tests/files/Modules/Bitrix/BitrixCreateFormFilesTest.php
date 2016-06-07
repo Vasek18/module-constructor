@@ -47,13 +47,6 @@ class BitrixCreateFormFilesTest extends TestCase{
 		$this->press('module_create');
 	}
 
-	function deleteFolder($moduleCode){
-		if (Bitrix::where('code', $moduleCode)->count()){
-			$module = Bitrix::where('code', $moduleCode)->first();
-			$module->deleteFolder();
-		}
-	}
-
 	function getModuleModel($code = null){
 		if (!$code){
 			$code = $this->standartModuleCode;

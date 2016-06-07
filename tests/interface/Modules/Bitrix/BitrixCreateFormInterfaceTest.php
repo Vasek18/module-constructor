@@ -48,13 +48,6 @@ class BitrixCreateFormInterfaceTest extends TestCase{
 		$this->press('module_create');
 	}
 
-	function deleteFolder($moduleCode){
-		if (Bitrix::where('code', $moduleCode)->count()){
-			$module = Bitrix::where('code', $moduleCode)->first();
-			$module->deleteFolder();
-		}
-	}
-
 	/** @test */
 	function unauthorized_cannot_get_to_this_page(){
 		$this->visit('/my-bitrix/create');
