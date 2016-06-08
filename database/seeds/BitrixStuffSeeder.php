@@ -15,22 +15,27 @@ class BitrixStuffSeeder extends Seeder{
 		// типы опций для страницы настройки модулей
 		DB::table('bitrix_modules_options_types')->insert([
 			'NAME_RU'   => 'Строка',
+			'sort'      => '1',
 			'FORM_TYPE' => 'text',
 		]);
 		DB::table('bitrix_modules_options_types')->insert([
 			'NAME_RU'   => 'Многострочный текст',
+			'sort'      => '2',
 			'FORM_TYPE' => 'textarea',
 		]);
 		DB::table('bitrix_modules_options_types')->insert([
 			'NAME_RU'   => 'Селект',
+			'sort'      => '3',
 			'FORM_TYPE' => 'selectbox',
 		]);
 		DB::table('bitrix_modules_options_types')->insert([
 			'NAME_RU'   => 'Множественный селект',
+			'sort'      => '4',
 			'FORM_TYPE' => 'multiselectbox',
 		]);
 		DB::table('bitrix_modules_options_types')->insert([
 			'NAME_RU'   => 'Чекбокс',
+			'sort'      => '5',
 			'FORM_TYPE' => 'checkbox',
 		]);
 

@@ -32,7 +32,7 @@ class BitrixOptionsController extends Controller{
 			$options[$i]->vals = BitrixAdminOptionsVals::where('option_id', $option->id)->get();
 		}
 		//dd($options);
-		$options_types = DB::table('bitrix_modules_options_types')->get();
+		$options_types = DB::table('bitrix_modules_options_types')->orderBy('sort', 'asc')->get();
 
 		$data = [
 			'module'        => $module,

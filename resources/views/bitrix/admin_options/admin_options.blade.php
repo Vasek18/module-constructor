@@ -46,7 +46,7 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                <button class="btn btn-primary btn-block">{{ trans('bitrix_admin_options.save') }}</button>
+                <button class="btn btn-primary btn-block" name="save" type="submit">{{ trans('bitrix_admin_options.save') }}</button>
             </div>
         </div>
     </form>
