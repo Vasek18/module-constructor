@@ -21,13 +21,13 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 	function getPropsArrayFromFile($module){
 		$optionsFileContent = $this->disk()->get($module->module_folder.'/options.php');
 		$vArrParse = new vArrParse();
-		$optionsArr = $vArrParse->parseFromText($optionsFileContent, 'aTabs');
+		$optionsArr = vArrParse::parseFromText($optionsFileContent, 'aTabs');
 
 		return $optionsArr;
 	}
 
 	/** @test */
-	function smn_can_create_option(){
+	function smn_can_create_string_option_without_dop_params(){
 		// todo проверка лангов
 		$this->signIn();
 		$module = $this->createBitrixModule();
@@ -45,6 +45,50 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 		$this->deleteFolder($this->standartModuleCode);
 
 		$this->assertEquals($optionArrExpected, $optionsArr[0]['OPTIONS']);
+	}
+
+	/** @test */
+	function smn_can_create_two_string_option_without_dop_params(){
+	}
+
+	/** @test */
+	function it_wont_create_string_option_without_code(){
+	}
+
+	/** @test */
+	function smn_can_create_textarea_option_without_dop_params(){
+	}
+
+	/** @test */
+	function smn_can_create_select_option_without_dop_params(){
+	}
+
+	/** @test */
+	function smn_can_create_multiselect_option_without_dop_params(){
+	}
+
+	/** @test */
+	function smn_can_create_checkbox_option_without_dop_params(){
+	}
+
+	/** @test */
+	function smn_can_create_string_option_with_dop_params(){
+	}
+
+	/** @test */
+	function smn_can_create_textarea_option_with_dop_params(){
+	}
+
+	/** @test */
+	function smn_can_create_select_option_with_dop_params(){
+	}
+
+	/** @test */
+	function smn_can_create_multiselect_option_with_dop_params(){
+	}
+
+	/** @test */
+	function smn_can_create_checkbox_option_with_dop_params(){
 	}
 }
 

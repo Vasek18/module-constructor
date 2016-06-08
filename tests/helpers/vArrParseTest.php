@@ -6,18 +6,12 @@ class vArrParseTest extends TestCase{
 
 	protected $vArrParse;
 
-	public function setUp(){
-		parent::setUp();
-
-		$this->vArrParse = new vArrParse();
-	}
-
 	/** @test */
 	function it_gets_associative_array_in_one_line_starting_with_array_and_contains_one_string_value(){
 		$string = "\$test = Array('ololo' => 'trololo');";
 		$expectedArr = Array('ololo' => 'trololo');
 
-		$gottenArr = $this->vArrParse->parseFromText($string, 'test');
+		$gottenArr = vArrParse::parseFromText($string, 'test');
 
 		$this->assertEquals($expectedArr, $gottenArr);
 	}
@@ -27,7 +21,7 @@ class vArrParseTest extends TestCase{
 		$string = "\$test = Array('ololo' => 1487);";
 		$expectedArr = Array('ololo' => 1487);
 
-		$gottenArr = $this->vArrParse->parseFromText($string, 'test');
+		$gottenArr = vArrParse::parseFromText($string, 'test');
 
 		$this->assertEquals($expectedArr, $gottenArr);
 	}
@@ -37,7 +31,7 @@ class vArrParseTest extends TestCase{
 		$string = "\$test = Array('ololo' => 'trololo', 'foo' => 'bar');";
 		$expectedArr = Array('ololo' => 'trololo', 'foo' => 'bar');
 
-		$gottenArr = $this->vArrParse->parseFromText($string, 'test');
+		$gottenArr = vArrParse::parseFromText($string, 'test');
 
 		$this->assertEquals($expectedArr, $gottenArr);
 	}
@@ -47,7 +41,7 @@ class vArrParseTest extends TestCase{
 		$string = "\$test = Array('ololo' => 1487, 'foo' => 1489);";
 		$expectedArr = Array('ololo' => 1487, 'foo' => 1489);
 
-		$gottenArr = $this->vArrParse->parseFromText($string, 'test');
+		$gottenArr = vArrParse::parseFromText($string, 'test');
 
 		$this->assertEquals($expectedArr, $gottenArr);
 	}
@@ -58,7 +52,7 @@ class vArrParseTest extends TestCase{
 		'foo' => 'bar');";
 		$expectedArr = Array('ololo' => 'trololo', 'foo' => 'bar');
 
-		$gottenArr = $this->vArrParse->parseFromText($string, 'test');
+		$gottenArr = vArrParse::parseFromText($string, 'test');
 
 		$this->assertEquals($expectedArr, $gottenArr);
 	}
@@ -71,7 +65,7 @@ class vArrParseTest extends TestCase{
 		);";
 		$expectedArr = Array('ololo' => 'trololo', 'foo' => 'bar');
 
-		$gottenArr = $this->vArrParse->parseFromText($string, 'test');
+		$gottenArr = vArrParse::parseFromText($string, 'test');
 
 		$this->assertEquals($expectedArr, $gottenArr);
 	}
@@ -81,7 +75,7 @@ class vArrParseTest extends TestCase{
 		$string = "\$test = Array('ololo' => 'trololo', 'emptyarr' => Array());";
 		$expectedArr = Array('ololo' => 'trololo', 'emptyarr' => Array());
 
-		$gottenArr = $this->vArrParse->parseFromText($string, 'test');
+		$gottenArr = vArrParse::parseFromText($string, 'test');
 
 		$this->assertEquals($expectedArr, $gottenArr);
 	}
@@ -91,7 +85,7 @@ class vArrParseTest extends TestCase{
 		$string = "\$test = Array('ololo' => 'trololo', 'subarr' => Array('foo' => 'bar'));";
 		$expectedArr = Array('ololo' => 'trololo', 'subarr' => Array('foo' => 'bar'));
 
-		$gottenArr = $this->vArrParse->parseFromText($string, 'test');
+		$gottenArr = vArrParse::parseFromText($string, 'test');
 
 		$this->assertEquals($expectedArr, $gottenArr);
 	}
@@ -101,7 +95,7 @@ class vArrParseTest extends TestCase{
 		$string = "\$test = Array('ololo' => 'trololo', 'subarr' => Array('foo' => 'bar', 'baz' => 'bazz'));";
 		$expectedArr = Array('ololo' => 'trololo', 'subarr' => Array('foo' => 'bar', 'baz' => 'bazz'));
 
-		$gottenArr = $this->vArrParse->parseFromText($string, 'test');
+		$gottenArr = vArrParse::parseFromText($string, 'test');
 
 		$this->assertEquals($expectedArr, $gottenArr);
 	}
@@ -111,7 +105,7 @@ class vArrParseTest extends TestCase{
 		$string = "\$test = Array('ololo' => 'trololo', 'subarr' => Array('foo' => 'bar'), 'baz' => 'bazz');";
 		$expectedArr = Array('ololo' => 'trololo', 'subarr' => Array('foo' => 'bar'), 'baz' => 'bazz');
 
-		$gottenArr = $this->vArrParse->parseFromText($string, 'test');
+		$gottenArr = vArrParse::parseFromText($string, 'test');
 		//dd($expectedArr);
 
 		$this->assertEquals($expectedArr, $gottenArr);
@@ -122,7 +116,7 @@ class vArrParseTest extends TestCase{
 		$string = "\$test = Array('ololo' => 'trololo', 'subarr' => Array('foo' => 'bar', 'a' => 'b'), 'baz' => 'bazz');";
 		$expectedArr = Array('ololo' => 'trololo', 'subarr' => Array('foo' => 'bar', 'a' => 'b'), 'baz' => 'bazz');
 
-		$gottenArr = $this->vArrParse->parseFromText($string, 'test');
+		$gottenArr = vArrParse::parseFromText($string, 'test');
 		//dd($expectedArr);
 
 		$this->assertEquals($expectedArr, $gottenArr);
@@ -133,7 +127,7 @@ class vArrParseTest extends TestCase{
 		$string = "\$test = Array('ololo' => 'trololo', 'subarr' => Array('foo' => 'bar', 'subsub' => Array('a' => 'b')));";
 		$expectedArr = Array('ololo' => 'trololo', 'subarr' => Array('foo' => 'bar', 'subsub' => Array('a' => 'b')));
 
-		$gottenArr = $this->vArrParse->parseFromText($string, 'test');
+		$gottenArr = vArrParse::parseFromText($string, 'test');
 		//dd($expectedArr);
 
 		$this->assertEquals($expectedArr, $gottenArr);
@@ -176,7 +170,7 @@ class vArrParseTest extends TestCase{
 			),
 		);
 
-		$gottenArr = $this->vArrParse->parseFromText($string, 'arComponentDescription');
+		$gottenArr = vArrParse::parseFromText($string, 'arComponentDescription');
 		//dd($gottenArr);
 
 		$this->assertEquals($expectedArr, $gottenArr);
@@ -187,7 +181,7 @@ class vArrParseTest extends TestCase{
 		$string = "\$test = Array('ololo' => 'trololo', 'subarr' => Array('foo' => 'bar'), 'subsub' => Array('a' => 'b'));";
 		$expectedArr = Array('ololo' => 'trololo', 'subarr' => Array('foo' => 'bar'), 'subsub' => Array('a' => 'b'));
 
-		$gottenArr = $this->vArrParse->parseFromText($string, 'test');
+		$gottenArr = vArrParse::parseFromText($string, 'test');
 		//dd($expectedArr);
 
 		$this->assertEquals($expectedArr, $gottenArr);
@@ -198,7 +192,7 @@ class vArrParseTest extends TestCase{
 		$string = "\$test = Array('subarr' => Array('subsub' => Array('a' => 'b')));";
 		$expectedArr = Array('subarr' => Array('subsub' => Array('a' => 'b')));
 
-		$gottenArr = $this->vArrParse->parseFromText($string, 'test');
+		$gottenArr = vArrParse::parseFromText($string, 'test');
 		//dd($expectedArr);
 
 		$this->assertEquals($expectedArr, $gottenArr);
@@ -209,7 +203,7 @@ class vArrParseTest extends TestCase{
 		$string = "\$test = Array('ololo' => Array(), 'subarr' => Array('subsub' => Array('a' => 'b')));";
 		$expectedArr = Array('ololo' => Array(), 'subarr' => Array('subsub' => Array('a' => 'b')));
 
-		$gottenArr = $this->vArrParse->parseFromText($string, 'test');
+		$gottenArr = vArrParse::parseFromText($string, 'test');
 		//dd($expectedArr);
 
 		$this->assertEquals($expectedArr, $gottenArr);
@@ -220,7 +214,7 @@ class vArrParseTest extends TestCase{
 		$string = "\$test = Array(Array('a' => 'b'), Array('subsub' => 'ololo'));";
 		$expectedArr = Array(Array('a' => 'b'), Array('subsub' => 'ololo'));
 
-		$gottenArr = $this->vArrParse->parseFromText($string, 'test');
+		$gottenArr = vArrParse::parseFromText($string, 'test');
 		//dd($expectedArr);
 
 		$this->assertEquals($expectedArr, $gottenArr);
@@ -231,7 +225,7 @@ class vArrParseTest extends TestCase{
 		$string = "\$test = Array('a', 'b');";
 		$expectedArr = Array('a', 'b');
 
-		$gottenArr = $this->vArrParse->parseFromText($string, 'test');
+		$gottenArr = vArrParse::parseFromText($string, 'test');
 		//dd($expectedArr);
 
 		$this->assertEquals($expectedArr, $gottenArr);
@@ -242,7 +236,7 @@ class vArrParseTest extends TestCase{
 		$string = "\$test = Array(Array(), Array());";
 		$expectedArr = Array(Array(), Array());
 
-		$gottenArr = $this->vArrParse->parseFromText($string, 'test');
+		$gottenArr = vArrParse::parseFromText($string, 'test');
 		//dd($expectedArr);
 
 		$this->assertEquals($expectedArr, $gottenArr);
@@ -271,7 +265,7 @@ class vArrParseTest extends TestCase{
 			)
 		);
 
-		$gottenArr = $this->vArrParse->parseFromText($string, 'test');
+		$gottenArr = vArrParse::parseFromText($string, 'test');
 		//dd($gottenArr);
 
 		$this->assertEquals($expectedArr, $gottenArr);
@@ -283,7 +277,7 @@ class vArrParseTest extends TestCase{
 		$string = '$test["ololo"] = "trololo";';
 		$expectedArr['ololo'] = 'trololo';
 
-		$gottenArr = $this->vArrParse->parseFromText($string, 'test');
+		$gottenArr = vArrParse::parseFromText($string, 'test');
 		//dd($gottenArr);
 
 		$this->assertEquals($expectedArr, $gottenArr);
@@ -295,7 +289,7 @@ class vArrParseTest extends TestCase{
 		$expectedArr['ololo'] = 'trololo';
 		$expectedArr['foo'] = 'bar';
 
-		$gottenArr = $this->vArrParse->parseFromText($string, 'test');
+		$gottenArr = vArrParse::parseFromText($string, 'test');
 		//dd($gottenArr);
 
 		$this->assertEquals($expectedArr, $gottenArr);
@@ -306,7 +300,7 @@ class vArrParseTest extends TestCase{
 		$string = "\$test = Array('ololo' => 'trololo');";
 		$expectedArr = Array('ololo' => 'trololo');
 
-		$gottenArr = $this->vArrParse->parseFromText($string, '$test');
+		$gottenArr = vArrParse::parseFromText($string, '$test');
 
 		$this->assertEquals($expectedArr, $gottenArr);
 	}
@@ -316,7 +310,7 @@ class vArrParseTest extends TestCase{
 		$string = "\$test = Array();";
 		$expectedArr = Array();
 
-		$gottenArr = $this->vArrParse->parseFromText($string, '$test');
+		$gottenArr = vArrParse::parseFromText($string, '$test');
 
 		$this->assertEquals($expectedArr, $gottenArr);
 	}
@@ -326,7 +320,7 @@ class vArrParseTest extends TestCase{
 		$string = "Array();";
 		$expectedArr = [];
 
-		$gottenArr = $this->vArrParse->parseFromText($string, '$test');
+		$gottenArr = vArrParse::parseFromText($string, '$test');
 
 		$this->assertEquals($expectedArr, $gottenArr);
 	}
