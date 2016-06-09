@@ -2,34 +2,33 @@
 
 namespace App\Helpers;
 
-// todo переделать всё на статик?
 // todo не работает, если в значении есть запятая
 class vArrParse{
 
-	public function parseFromFile($file, $arrayName){
+	public static function parseFromFile($file, $arrayName){
 		$fileContent = file_get_contents($file);
 
-		return $this->parseFromText($fileContent, $arrayName);
+		return static::parseFromText($fileContent, $arrayName);
 	}
 
-	public function parseFromText($text, $arrayName){
-		$text = $this->normalizeText($text);
-		$arrayName = $this->validateArrayName($arrayName);
-		$text = $this->transformAllPartsOfArrToANormalAndJointForm($text, $arrayName);
+	public static function parseFromText($text, $arrayName){
+		$text = static::normalizeText($text);
+		$arrayName = static::validateArrayName($arrayName);
+		$text = static::transformAllPartsOfArrToANormalAndJointForm($text, $arrayName);
 		//dd($text);
-		$arrString = $this->getStringWithOnlyArrayBody($text, $arrayName);
-		$array = $this->parseArrayFromPreparedString($arrString);
+		$arrString = static::getStringWithOnlyArrayBody($text, $arrayName);
+		$array = static::parseArrayFromPreparedString($arrString);
 
 		return $array;
 	}
 
-	protected function validateArrayName($arrayName){
+	protected static function validateArrayName($arrayName){
 		$arrayName = str_replace('$', '', $arrayName);
 
 		return $arrayName;
 	}
 
-	protected function transformAllPartsOfArrToANormalAndJointForm($text, $arrayName){
+	protected static function transformAllPartsOfArrToANormalAndJointForm($text, $arrayName){
 		// нормальной будем считать форму $arr = Array('key' => 'value')
 
 		if ($arrayName){
@@ -53,7 +52,7 @@ class vArrParse{
 		return $text;
 	}
 
-	public function getStringWithOnlyArrayBody($text, $arrayName = '', $sub = false){
+	public static function getStringWithOnlyArrayBody($text, $arrayName = '', $sub = false){
 		//echo $text;
 		$varEnding = ';';
 		if ($sub){ // если вложенный массив
@@ -85,13 +84,13 @@ class vArrParse{
 		return false;
 	}
 
-	protected function parseArrayFromPreparedString($arrString){
+	protected static function parseArrayFromPreparedString($arrString){
 		//echo $arrString;
 		//echo "<br>";
 		//echo "###";
 		//echo "<br>";
 		$array = [];
-		$arrElsTemp = $this->explodeOneLevelOfArrayInItems($arrString);
+		$arrElsTemp = static::explodeOneLevelOfArrayInItems($arrString);
 		//echo "<pre>";
 		//print_r($arrElsTemp);
 		//echo "</pre>";
@@ -101,19 +100,19 @@ class vArrParse{
 			//echo $pair;
 			//echo "<br>";
 
-			$itemTemp = $this->extractKeyAndValueFromString($pair);
+			$itemTemp = static::extractKeyAndValueFromString($pair);
 			//echo "<pre>";
 			//print_r($itemTemp);
 			//echo "</pre>";
 			//echo "<br>";
 
-			if ($this->isValASubArray($itemTemp['val'])){ // вложенный
+			if (static::isValASubArray($itemTemp['val'])){ // вложенный
 				//echo "<pre>";
 				//print_r($itemTemp['val']);
 				//echo "</pre>";
 				//echo "<br>";
-				$newArrString = $this->getStringWithOnlyArrayBody($itemTemp['val'], '', true);
-				$itemTemp['val'] = $this->parseArrayFromPreparedString($newArrString);
+				$newArrString = static::getStringWithOnlyArrayBody($itemTemp['val'], '', true);
+				$itemTemp['val'] = static::parseArrayFromPreparedString($newArrString);
 			}
 
 			if (isset($itemTemp['key'])){
@@ -126,7 +125,7 @@ class vArrParse{
 		return $array;
 	}
 
-	protected function extractKeyAndValueFromString($string){
+	protected static function extractKeyAndValueFromString($string){
 		$answer = [];
 
 		$string = trim($string); // чтобы следующее условие не упало в случае ,{пробел}Array // todo вынести в normalize text
@@ -144,16 +143,16 @@ class vArrParse{
 		}
 
 		if (isset($key)){
-			$key = $this->normalizeVal($key); // todo здесь, наверное другая функция нужна будет
+			$key = static::normalizeVal($key); // todo здесь, наверное другая функция нужна будет
 			$answer['key'] = $key;
 		}
-		$val = $this->normalizeVal($val);
+		$val = static::normalizeVal($val);
 		$answer['val'] = $val;
 
 		return $answer;
 	}
 
-	protected function isValASubArray($val){
+	protected static function isValASubArray($val){
 		if (strpos($val, 'Array') === 0){
 			if ($val == 'Array'){ // будем считать пустой массив не массивом
 				return false;
@@ -172,7 +171,7 @@ class vArrParse{
 		return false;
 	}
 
-	protected function normalizeText($text){
+	protected static function normalizeText($text){
 		// todo очистка от комментариев
 		$text = preg_replace('/\([\s,]+\)/', '()', $text);
 		$text = preg_replace('/[\s,]+\)/', ')', $text);
@@ -180,7 +179,7 @@ class vArrParse{
 		return $text;
 	}
 
-	protected function normalizeVal($val){
+	protected static function normalizeVal($val){
 		$val = trim($val);
 		if (substr($val, 0, 1) == '"' || substr($val, 0, 1) == "'"){ // если первый элемент ковычка
 			$val = substr($val, 1, strlen($val) - 2); // обрезаем по краям
@@ -189,7 +188,7 @@ class vArrParse{
 		return $val;
 	}
 
-	protected function explodeOneLevelOfArrayInItems($arrString){
+	protected static function explodeOneLevelOfArrayInItems($arrString){
 		$items = [];
 
 		while (strlen($arrString)){
@@ -198,7 +197,7 @@ class vArrParse{
 				$pos = strlen($arrString);
 			}
 			$substr = substr($arrString, 0, $pos); // считаем элементом, всё что до разделителя
-			while ($this->isSubArrOpened($substr)){
+			while (static::isSubArrOpened($substr)){
 				if ($pos >= strlen($arrString)){ // если произошло переполнение, то просто берём всю строку // todo этого быть не должно
 					$pos = strlen($arrString);
 					$substr = $arrString;
@@ -219,7 +218,7 @@ class vArrParse{
 		return $items;
 	}
 
-	protected function isSubArrOpened($string){
+	protected static function isSubArrOpened($string){
 		$opens = substr_count($string, '('); // считаем открывающие скобки
 		$closes = substr_count($string, ')'); // считаем закрывающие скобки
 
