@@ -37,7 +37,7 @@ class BitrixAdminOptions extends Model{
 
 			$options = $module->options()->orderBy('sort', 'asc')->get();
 			$optionsString = '';
-			$optionsLangString = '';
+			Bitrix::changeVarsInModuleFileAndSave('bitrix/lang/ru/options.php', $module->id); // todo нужно лишь для создания файла
 
 			foreach ($options as $option){
 				$field_params_string = $option->getParamsStringForFile($option->type);
@@ -48,11 +48,17 @@ class BitrixAdminOptions extends Model{
 
 				$optionsString .= $string;
 
-				$optionsLangString .= '$MESS["'.$module->lang_key.'_'.strtoupper($option->code).'_TITLE"] = "'.$option->name.'";'.PHP_EOL;
+				$module->changeVarInLangFile($option->lang_key, $option->name, 'lang/ru/options.php');
+				if ($option->type == 'selectbox' || $option->type == 'multiselectbox'){
+					if ($option->vals->count()){
+						foreach ($option->vals as $val){
+							$module->changeVarInLangFile($val->lang_key, $val->value, 'lang/ru/options.php'); // todo, а это всегда надо?
+						}
+					}
+				}
 			}
 
 			Bitrix::changeVarsInModuleFileAndSave('bitrix/options.php', $module->id, Array("{OPTIONS}"), Array($optionsString));
-			Bitrix::changeVarsInModuleFileAndSave('bitrix/lang/ru/options.php', $module->id, Array("{OPTIONS_LANG}"), Array($optionsLangString));
 		}
 	}
 
@@ -94,16 +100,20 @@ class BitrixAdminOptions extends Model{
 
 		$string = 'Array(';
 		foreach ($vals as $val){
-			$string .= "'".$val->key."' => '".$val->value."', ";
+			$string .= "'".$val->key."' => Loc::getMessage('".$val->lang_key."'), ";
 		}
 		$string .= ')';
 
 		return $string;
 	}
 
+	public function getLangKeyAttribute(){
+		return $this->module->lang_key.'_'.strtoupper($this->code).'_TITLE';
+	}
+
 	// связи с другими моделями
 	public function module(){
-		return $this->belongsTo('App\Models\Modules\Bitrix');
+		return $this->belongsTo('App\Models\Modules\Bitrix\Bitrix');
 	}
 
 	public function vals(){

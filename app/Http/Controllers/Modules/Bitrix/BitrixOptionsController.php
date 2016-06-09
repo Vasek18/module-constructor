@@ -22,9 +22,6 @@ class BitrixOptionsController extends Controller{
 
 	// страница настроек для страницы настроек
 	public function index(Bitrix $module, Request $request){
-		if (!$this->userCreatedModule($module->id)){
-			return $this->unauthorized($request);
-		}
 		$options = BitrixAdminOptions::where('module_id', $module->id)->orderBy('sort', 'asc')->get();
 		//$options = BitrixAdminOptions::where('module_id', $module->id)->with("vals")->get();
 		// вот такой сложный путь, потому что закомментирование сверху почему-то показывает null во вью в поле значений
@@ -46,9 +43,6 @@ class BitrixOptionsController extends Controller{
 	}
 
 	public function store(Bitrix $module, Request $request){
-		if (!$this->userCreatedModule($module->id)){
-			return $this->unauthorized($request);
-		}
 		//dd($request);
 
 		// перебираем все строки полей
@@ -93,7 +87,7 @@ class BitrixOptionsController extends Controller{
 				$prop["spec_vals_args"] = $request['option_'.$i.'_spec_args'];
 			}
 
-			if ($prop["type"] == 'checkbox'){ // todo хардкод
+			if ($prop["type"] == 'checkbox'){
 				$prop["spec_vals_args"] = 'Y'; // если спросят, почему нет выбора, мы ответим "зачем?"
 			}
 
@@ -110,7 +104,7 @@ class BitrixOptionsController extends Controller{
 			);
 
 			// сохранение опций
-			if ($prop["type"] == 'selectbox' || $prop["type"] == 'multiselectbox'){ // todo хардкода
+			if ($prop["type"] == 'selectbox' || $prop["type"] == 'multiselectbox'){
 				//dd($request["option_'.$i.'_vals_type"]);
 				if (count($request['option_'.$i.'_vals_key']) && $request['option_'.$i.'_vals_type'] == "array"){
 					//dd($prop);

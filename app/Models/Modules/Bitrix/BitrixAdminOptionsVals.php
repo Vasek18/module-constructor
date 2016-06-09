@@ -10,8 +10,12 @@ class BitrixAdminOptionsVals extends Model{
 	protected $fillable = ['option_id', 'key', 'value'];
 	public $timestamps = false;
 
+	public function getLangKeyAttribute(){
+		return $this->option->lang_key.'_'.strtoupper($this->key).'_TITLE';
+	}
+
 	// связи с другими моделями
 	public function option(){
-		return $this->belongsTo('App\Models\Modules\BitrixAdminOptions');
+		return $this->belongsTo('App\Models\Modules\Bitrix\BitrixAdminOptions');
 	}
 }

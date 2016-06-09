@@ -356,6 +356,9 @@ class Bitrix extends Model{
 	// мб в vArrParse перенести
 	// todo перенести работу с лангами всех сущностей Битрикса сюда
 	public function changeVarInLangFile($key, $var, $pathToLangFile){
+		if (substr($pathToLangFile, 0, 1) != '/'){
+			$pathToLangFile = '/'.$pathToLangFile;
+		}
 		$path = $this->module_folder.$pathToLangFile;
 		$langFile = $this->disk()->get($path);
 

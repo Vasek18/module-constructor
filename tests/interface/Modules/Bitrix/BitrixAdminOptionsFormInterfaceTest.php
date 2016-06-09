@@ -58,7 +58,7 @@ class BitrixAdminOptionsFormInterfaceTest extends TestCase{
 	}
 
 	/** @test */
-	function not_auther_cannot_get_to_this_page_of_anothers_module(){
+	function not_author_cannot_get_to_this_page_of_anothers_module(){
 		$this->signIn();
 		$module = $this->createBitrixModule();
 
