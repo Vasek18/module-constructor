@@ -307,28 +307,30 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 		$this->assertArraySubset([$module->lang_key.'_OLOLO_FROM_TEST_TITLE' => 'Ololo'], $optionsLangArr);
 	}
 
-	/** @test */ // todo
+	/** @test */
 	function smn_can_create_select_option_with_one_options(){
-		//$this->signIn();
-		//$module = $this->createBitrixModule();
-		//
-		//$this->createPropOnForm($module, 0, [
-		//	'name'        => 'Ololo',
-		//	'code'        => 'ololo_from_test',
-		//	'type'        => 'selectbox',
-		//	'vals_key1'   => 'a',
-		//	'vals_value1' => 'b',
-		//]);
-		//
-		//$optionsArr = $this->getPropsArrayFromFile($module);
-		//$optionsLangArr = $this->getLangFileArray($module);
-		//
-		//$this->deleteFolder($this->standartModuleCode);
-		//
-		//$optionArrExpected = [['ololo_from_test', "Loc::getMessage('".$module->lang_key."_OLOLO_FROM_TEST_TITLE')", '', ['selectbox', Array('a' => "Loc::getMessage('".$module->lang_key."_OLOLO_FROM_TEST_TITLE_".'a'."_TITLE')")]]];
-		//$this->assertEquals($optionArrExpected, $optionsArr[0]['OPTIONS']);
-		//
-		//$this->assertArraySubset([$module->lang_key.'_OLOLO_FROM_TEST_TITLE' => 'Ololo'], $optionsLangArr);
+		$this->signIn();
+		$module = $this->createBitrixModule();
+
+		$this->createPropOnForm($module, 0, [
+			'name'        => 'Ololo',
+			'code'        => 'ololo_from_test',
+			'type'        => 'selectbox',
+			'vals_key1'   => 'a',
+			'vals_value1' => 'b',
+		]);
+
+		$optionsArr = $this->getPropsArrayFromFile($module);
+		$optionsLangArr = $this->getLangFileArray($module);
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$optionArrExpected = [['ololo_from_test', "Loc::getMessage('".$module->lang_key."_OLOLO_FROM_TEST_TITLE')", '', ['selectbox', Array('a' => "Loc::getMessage('".$module->lang_key."_OLOLO_FROM_TEST_TITLE_".'A'."_TITLE')")]]];
+		//dd($optionArrExpected);
+		$this->assertEquals($optionArrExpected, $optionsArr[0]['OPTIONS']);
+
+		$this->assertArraySubset([$module->lang_key.'_OLOLO_FROM_TEST_TITLE' => 'Ololo'], $optionsLangArr);
+		$this->assertArraySubset([$module->lang_key.'_OLOLO_FROM_TEST_TITLE_'.'A'.'_TITLE' => 'b'], $optionsLangArr);
 	}
 
 	/** @test */ // todo
