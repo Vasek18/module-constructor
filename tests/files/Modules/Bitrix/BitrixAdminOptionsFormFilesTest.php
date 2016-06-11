@@ -5,6 +5,13 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Helpers\vArrParse;
 
 class BitrixAdminOptionsFormFilesTest extends TestCase{
+	// todo доп параметры у новых селектов
+	// todo доп параметры у уже созданных селектов
+	// todo доп параметры у уже созданных настроек
+	// todo удаление настройки
+	// todo удаление опшионов у селекта
+	// todo изменение опшионов у селекта
+	// todo значение по умолчанию
 
 	use DatabaseTransactions;
 
@@ -22,12 +29,12 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 			$inputs['option_height['.$rowNumber.']'] = $params['height'];
 		}
 		if (isset($params['vals_key1'])){
-			$inputs['option_'.($rowNumber-1).'_vals_type'] = 'array';
-			$inputs['option_'.($rowNumber-1).'_vals_key[1]'] = $params['vals_key1'];
+			$inputs['option_'.($rowNumber).'_vals_type'] = 'array';
+			$inputs['option_'.($rowNumber).'_vals_key[1]'] = $params['vals_key1'];
 		}
 		if (isset($params['vals_value1'])){
-			$inputs['option_'.($rowNumber-1).'_vals_type'] = 'array';
-			$inputs['option_'.($rowNumber-1).'_vals_value[1]'] = $params['vals_value1'];
+			$inputs['option_'.($rowNumber).'_vals_type'] = 'array';
+			$inputs['option_'.($rowNumber).'_vals_value[1]'] = $params['vals_value1'];
 		}
 		//dd($inputs);
 		$this->submitForm('save', $inputs);
@@ -52,7 +59,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 		$this->signIn();
 		$module = $this->createBitrixModule();
 
-		$this->createPropOnForm($module, 1, [
+		$this->createPropOnForm($module, 0, [
 			'name' => 'Ololo',
 			'code' => 'ololo_from_test',
 			'type' => 'text',
@@ -74,13 +81,13 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 		$this->signIn();
 		$module = $this->createBitrixModule();
 
-		$this->createPropOnForm($module, 1, [
+		$this->createPropOnForm($module, 0, [
 			'name' => 'Ololo',
 			'code' => 'ololo_from_test',
 			'type' => 'text',
 		]);
 
-		$this->createPropOnForm($module, 2, [
+		$this->createPropOnForm($module, 1, [
 			'name' => 'Тест',
 			'code' => 'test_from_test',
 			'type' => 'text',
@@ -106,13 +113,13 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 		$this->signIn();
 		$module = $this->createBitrixModule();
 
-		$this->createPropOnForm($module, 1, [
+		$this->createPropOnForm($module, 0, [
 			'name' => 'Ololo',
 			'code' => 'ololo_from_test',
 			'type' => 'text',
 		]);
 
-		$this->createPropOnForm($module, 2, [
+		$this->createPropOnForm($module, 1, [
 			'name' => 'Тест',
 			'code' => 'ololo_from_test',
 			'type' => 'text',
@@ -137,7 +144,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 		$this->signIn();
 		$module = $this->createBitrixModule();
 
-		$this->createPropOnForm($module, 1, [
+		$this->createPropOnForm($module, 0, [
 			'name' => 'Ololo',
 			'code' => '',
 			'type' => 'text',
@@ -170,7 +177,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 		$this->signIn();
 		$module = $this->createBitrixModule();
 
-		$this->createPropOnForm($module, 1, [
+		$this->createPropOnForm($module, 0, [
 			'name' => 'Ololo',
 			'code' => 'ololo_from_test',
 			'type' => 'textarea',
@@ -192,7 +199,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 		$this->signIn();
 		$module = $this->createBitrixModule();
 
-		$this->createPropOnForm($module, 1, [
+		$this->createPropOnForm($module, 0, [
 			'name' => 'Ololo',
 			'code' => 'ololo_from_test',
 			'type' => 'selectbox',
@@ -214,7 +221,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 		$this->signIn();
 		$module = $this->createBitrixModule();
 
-		$this->createPropOnForm($module, 1, [
+		$this->createPropOnForm($module, 0, [
 			'name' => 'Ololo',
 			'code' => 'ololo_from_test',
 			'type' => 'multiselectbox',
@@ -236,7 +243,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 		$this->signIn();
 		$module = $this->createBitrixModule();
 
-		$this->createPropOnForm($module, 1, [
+		$this->createPropOnForm($module, 0, [
 			'name' => 'Ololo',
 			'code' => 'ololo_from_test',
 			'type' => 'checkbox',
@@ -258,7 +265,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 		$this->signIn();
 		$module = $this->createBitrixModule();
 
-		$this->createPropOnForm($module, 1, [
+		$this->createPropOnForm($module, 0, [
 			'name'  => 'Ololo',
 			'code'  => 'ololo_from_test',
 			'type'  => 'text',
@@ -281,7 +288,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 		$this->signIn();
 		$module = $this->createBitrixModule();
 
-		$this->createPropOnForm($module, 1, [
+		$this->createPropOnForm($module, 0, [
 			'name'   => 'Ololo',
 			'code'   => 'ololo_from_test',
 			'type'   => 'textarea',
@@ -305,11 +312,11 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 		//$this->signIn();
 		//$module = $this->createBitrixModule();
 		//
-		//$this->createPropOnForm($module, 1, [
-		//	'name' => 'Ololo',
-		//	'code' => 'ololo_from_test',
-		//	'type' => 'selectbox',
-		//	'vals_key1' => 'a',
+		//$this->createPropOnForm($module, 0, [
+		//	'name'        => 'Ololo',
+		//	'code'        => 'ololo_from_test',
+		//	'type'        => 'selectbox',
+		//	'vals_key1'   => 'a',
 		//	'vals_value1' => 'b',
 		//]);
 		//
@@ -318,7 +325,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 		//
 		//$this->deleteFolder($this->standartModuleCode);
 		//
-		//$optionArrExpected = [['ololo_from_test', "Loc::getMessage('".$module->lang_key."_OLOLO_FROM_TEST_TITLE')", '', ['selectbox', Array()]]];
+		//$optionArrExpected = [['ololo_from_test', "Loc::getMessage('".$module->lang_key."_OLOLO_FROM_TEST_TITLE')", '', ['selectbox', Array('a' => "Loc::getMessage('".$module->lang_key."_OLOLO_FROM_TEST_TITLE_".'a'."_TITLE')")]]];
 		//$this->assertEquals($optionArrExpected, $optionsArr[0]['OPTIONS']);
 		//
 		//$this->assertArraySubset([$module->lang_key.'_OLOLO_FROM_TEST_TITLE' => 'Ololo'], $optionsLangArr);

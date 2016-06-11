@@ -10,12 +10,12 @@
                 <div class="form-group" data-for_type_ids="textarea">
                     <label for="option_{{$i}}_height">{{ trans('bitrix_admin_options.height') }}</label>
                     <input class="form-control" type="text" name="option_height[]" id="option_{{$i}}_height"
-                           @if ($option) value="{{$option->height}}" @endif>
+                           @if ($option) value="{{$option->height}}" @endif pattern="[0-9]*">
                 </div>
                 <div class="form-group" data-for_type_ids="text textarea">
                     <label for="option_{{$i}}_width">{{ trans('bitrix_admin_options.width') }}</label>
                     <input class="form-control" type="text" name="option_width[]" id="option_{{$i}}_width"
-                           @if ($option) value="{{$option->width}}" @endif>
+                           @if ($option) value="{{$option->width}}" @endif pattern="[0-9]*">
                 </div>
                 {{--                {{dd($option->vals)}}--}}
                 <div class="form-group only-one" data-for_type_ids="selectbox multiselectbox">
@@ -28,64 +28,14 @@
                         </label>
                         @if ($option && $option->vals)
                             @foreach($option->vals as $val)
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <input class="form-control" type="text" name="option_{{$i}}_vals_key[]"
-                                               value="{{$val->key}}">
-                                    </div>
-                                    <div class="col-md-1">=&gt;</div>
-                                    <div class="col-md-5">
-                                        <input class="form-control" type="text" name="option_{{$i}}_vals_value[]"
-                                               value="{{$val->value}}">
-                                    </div>
-                                    <div class="col-md-2">
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox">
-                                                <small>{{ trans('bitrix_admin_options.option_option_default') }}</small>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
+                                @include('bitrix.admin_options.option_val_item', ['val' => $val, 'i' => $i])
                             @endforeach
                             @for($j = count($option->vals); $j<=count($option->vals)+5;$j++)
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <input class="form-control" type="text" name="option_{{$i}}_vals_key[]">
-                                    </div>
-                                    <div class="col-md-1">=&gt;</div>
-                                    <div class="col-md-5">
-                                        <input class="form-control" type="text" name="option_{{$i}}_vals_value[]">
-                                    </div>
-                                    <div class="col-md-2">
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox">
-                                                <small>{{ trans('bitrix_admin_options.option_option_default') }}</small>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
+                                @include('bitrix.admin_options.option_val_item', ['val' => null, 'i' => $i])
                             @endfor
                         @else
                             @for($j = 0; $j<=5;$j++)
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <input class="form-control" type="text" name="option_{{$j}}_vals_key[]">
-                                    </div>
-                                    <div class="col-md-1">=&gt;</div>
-                                    <div class="col-md-5">
-                                        <input class="form-control" type="text" name="option_{{$j}}_vals_value[]">
-                                    </div>
-                                    <div class="col-md-2">
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox">
-                                                <small>{{ trans('bitrix_admin_options.option_option_default') }}</small>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
+                                @include('bitrix.admin_options.option_val_item', ['val' => null, 'i' => $i])
                             @endfor
                         @endif
                     </div>
@@ -106,7 +56,8 @@
                                     @endif>
                             <b>{{ trans('bitrix_admin_options.iblock_elements_list') }}</b>
                         </label>
-                        <input type="text" name="option_{{$i}}_spec_args[]" class="form-control" placeholder="{{ trans('bitrix_admin_options.iblock') }}"
+                        <input type="text" name="option_{{$i}}_spec_args[]" class="form-control"
+                               placeholder="{{ trans('bitrix_admin_options.iblock') }}"
                                @if ($option && $option->spec_vals == 'iblock_items_list') value="{{$option->spec_vals_args}}" @endif>
                     </div>
                     <div>{{ trans('bitrix_admin_options.or') }}</div>
@@ -117,7 +68,8 @@
                                     @endif>
                             <b>{{ trans('bitrix_admin_options.iblock_props_list') }}</b>
                         </label>
-                        <input type="text" name="option_{{$i}}_spec_args[]" class="form-control" placeholder="{{ trans('bitrix_admin_options.iblock') }}"
+                        <input type="text" name="option_{{$i}}_spec_args[]" class="form-control"
+                               placeholder="{{ trans('bitrix_admin_options.iblock') }}"
                                @if ($option && $option->spec_vals == 'iblock_props_list') value="{{$option->spec_vals_args}}" @endif>
                     </div>
                 </div>
