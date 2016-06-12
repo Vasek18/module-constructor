@@ -102,6 +102,7 @@ class BitrixOptionsController extends Controller{
 				],
 				$prop
 			);
+			$option->deleteProps(); // чтобы было возможным удалять опшионы
 
 			// сохранение опций
 			if ($prop["type"] == 'selectbox' || $prop["type"] == 'multiselectbox'){

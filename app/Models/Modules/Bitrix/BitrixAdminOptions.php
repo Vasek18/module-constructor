@@ -107,6 +107,10 @@ class BitrixAdminOptions extends Model{
 		return $string;
 	}
 
+	public function deleteProps(){
+		BitrixAdminOptionsVals::where('option_id', $this->id)->delete();
+	}
+
 	public function getLangKeyAttribute(){
 		return $this->module->lang_key.'_'.strtoupper($this->code).'_TITLE';
 	}

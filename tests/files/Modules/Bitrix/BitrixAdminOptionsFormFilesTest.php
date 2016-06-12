@@ -27,6 +27,14 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 		if (isset($params['height'])){
 			$inputs['option_height['.$rowNumber.']'] = $params['height'];
 		}
+		if (isset($params['vals_key0'])){
+			$inputs['option_'.($rowNumber).'_vals_type'] = 'array';
+			$inputs['option_'.($rowNumber).'_vals_key[0]'] = $params['vals_key0'];
+		}
+		if (isset($params['vals_value0'])){
+			$inputs['option_'.($rowNumber).'_vals_type'] = 'array';
+			$inputs['option_'.($rowNumber).'_vals_value[0]'] = $params['vals_value0'];
+		}
 		if (isset($params['vals_key1'])){
 			$inputs['option_'.($rowNumber).'_vals_type'] = 'array';
 			$inputs['option_'.($rowNumber).'_vals_key[1]'] = $params['vals_key1'];
@@ -34,14 +42,6 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 		if (isset($params['vals_value1'])){
 			$inputs['option_'.($rowNumber).'_vals_type'] = 'array';
 			$inputs['option_'.($rowNumber).'_vals_value[1]'] = $params['vals_value1'];
-		}
-		if (isset($params['vals_key2'])){
-			$inputs['option_'.($rowNumber).'_vals_type'] = 'array';
-			$inputs['option_'.($rowNumber).'_vals_key[2]'] = $params['vals_key2'];
-		}
-		if (isset($params['vals_value2'])){
-			$inputs['option_'.($rowNumber).'_vals_type'] = 'array';
-			$inputs['option_'.($rowNumber).'_vals_value[2]'] = $params['vals_value2'];
 		}
 		if (isset($params['vals_type'])){
 			$inputs['option_'.($rowNumber).'_vals_type'] = $params['vals_type'];
@@ -329,8 +329,8 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 			'name'        => 'Ololo',
 			'code'        => 'ololo_from_test',
 			'type'        => 'selectbox',
-			'vals_key1'   => 'a',
-			'vals_value1' => 'b',
+			'vals_key0'   => 'a',
+			'vals_value0' => 'b',
 		]);
 
 		$optionsArr = $this->getPropsArrayFromFile($module);
@@ -347,6 +347,54 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 	}
 
 	/** @test */
+	function smn_cannot_create_select_option_with_one_options_where_no_key(){
+		$this->signIn();
+		$module = $this->createBitrixModule();
+
+		$this->createPropOnForm($module, 0, [
+			'name'      => 'Ololo',
+			'code'      => 'ololo_from_test',
+			'type'      => 'selectbox',
+			'vals_key0' => 'a',
+		]);
+
+		$optionsArr = $this->getPropsArrayFromFile($module);
+		$optionsLangArr = $this->getLangFileArray($module);
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$optionArrExpected = [['ololo_from_test', "Loc::getMessage('".$module->lang_key."_OLOLO_FROM_TEST_TITLE')", '', ['selectbox', Array()]]];
+		//dd($optionArrExpected);
+		$this->assertEquals($optionArrExpected, $optionsArr[0]['OPTIONS']);
+
+		$this->assertArraySubset([$module->lang_key.'_OLOLO_FROM_TEST_TITLE' => 'Ololo'], $optionsLangArr);
+	}
+
+	/** @test */
+	function smn_cannot_create_select_option_with_one_options_where_no_value(){
+		$this->signIn();
+		$module = $this->createBitrixModule();
+
+		$this->createPropOnForm($module, 0, [
+			'name'        => 'Ololo',
+			'code'        => 'ololo_from_test',
+			'type'        => 'selectbox',
+			'vals_value0' => 'b',
+		]);
+
+		$optionsArr = $this->getPropsArrayFromFile($module);
+		$optionsLangArr = $this->getLangFileArray($module);
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$optionArrExpected = [['ololo_from_test', "Loc::getMessage('".$module->lang_key."_OLOLO_FROM_TEST_TITLE')", '', ['selectbox', Array()]]];
+		//dd($optionArrExpected);
+		$this->assertEquals($optionArrExpected, $optionsArr[0]['OPTIONS']);
+
+		$this->assertArraySubset([$module->lang_key.'_OLOLO_FROM_TEST_TITLE' => 'Ololo'], $optionsLangArr);
+	}
+
+	/** @test */
 	function smn_can_create_select_option_with_two_options(){
 		$this->signIn();
 		$module = $this->createBitrixModule();
@@ -355,10 +403,10 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 			'name'        => 'Ololo',
 			'code'        => 'ololo_from_test',
 			'type'        => 'selectbox',
-			'vals_key1'   => 'a',
-			'vals_value1' => 'b',
-			'vals_key2'   => 'c',
-			'vals_value2' => 'd',
+			'vals_key0'   => 'a',
+			'vals_value0' => 'b',
+			'vals_key1'   => 'c',
+			'vals_value1' => 'd',
 		]);
 
 		$optionsArr = $this->getPropsArrayFromFile($module);
@@ -484,6 +532,142 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 	}
 
 	/** @test */
+	function smn_can_change_option_at_select_option_with_one_option(){
+		$this->signIn();
+		$module = $this->createBitrixModule();
+
+		$this->createPropOnForm($module, 0, [
+			'name'        => 'Ololo',
+			'code'        => 'ololo_from_test',
+			'type'        => 'selectbox',
+			'vals_key0'   => 'a',
+			'vals_value0' => 'b',
+		]);
+
+		$this->createPropOnForm($module, 0, [
+			'name'        => 'Ololo',
+			'code'        => 'ololo_from_test',
+			'type'        => 'selectbox',
+			'vals_key0'   => 'c',
+			'vals_value0' => 'd',
+		]);
+
+		$optionsArr = $this->getPropsArrayFromFile($module);
+		$optionsLangArr = $this->getLangFileArray($module);
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$optionArrExpected = [['ololo_from_test', "Loc::getMessage('".$module->lang_key."_OLOLO_FROM_TEST_TITLE')", '', ['selectbox', Array('c' => "Loc::getMessage('".$module->lang_key."_OLOLO_FROM_TEST_TITLE_".'C'."_TITLE')")]]];
+		//dd($optionArrExpected);
+		$this->assertEquals($optionArrExpected, $optionsArr[0]['OPTIONS']);
+
+		$this->assertArraySubset([$module->lang_key.'_OLOLO_FROM_TEST_TITLE' => 'Ololo'], $optionsLangArr);
+		$this->assertArraySubset([$module->lang_key.'_OLOLO_FROM_TEST_TITLE_'.'C'.'_TITLE' => 'd'], $optionsLangArr);
+	}
+
+	/** @test */
+	function smn_can_remove_option_at_select_option_with_one_option(){
+		$this->signIn();
+		$module = $this->createBitrixModule();
+
+		$this->createPropOnForm($module, 0, [
+			'name'        => 'Ololo',
+			'code'        => 'ololo_from_test',
+			'type'        => 'selectbox',
+			'vals_key0'   => 'a',
+			'vals_value0' => 'b',
+		]);
+
+		$this->createPropOnForm($module, 0, [
+			'name'        => 'Ololo',
+			'code'        => 'ololo_from_test',
+			'type'        => 'selectbox',
+			'vals_key0'   => '',
+			'vals_value0' => 'd',
+		]);
+
+		$optionsArr = $this->getPropsArrayFromFile($module);
+		$optionsLangArr = $this->getLangFileArray($module);
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$optionArrExpected = [['ololo_from_test', "Loc::getMessage('".$module->lang_key."_OLOLO_FROM_TEST_TITLE')", '', ['selectbox', Array()]]];
+		//dd($optionArrExpected);
+		$this->assertEquals($optionArrExpected, $optionsArr[0]['OPTIONS']);
+
+		$this->assertArraySubset([$module->lang_key.'_OLOLO_FROM_TEST_TITLE' => 'Ololo'], $optionsLangArr);
+	}
+
+	/** @test */
+	function smn_can_remove_option_at_select_option_with_one_option_and_make_it_iblock_elements_list(){
+		$this->signIn();
+		$module = $this->createBitrixModule();
+
+		$this->createPropOnForm($module, 0, [
+			'name'        => 'Ololo',
+			'code'        => 'ololo_from_test',
+			'type'        => 'selectbox',
+			'vals_key0'   => 'a',
+			'vals_value0' => 'b',
+		]);
+
+		$this->createPropOnForm($module, 0, [
+			'name'      => 'Ololo',
+			'code'      => 'ololo_from_test',
+			'type'      => 'multiselectbox',
+			'vals_type' => 'iblock_items_list',
+		]);
+
+		$optionsArr = $this->getPropsArrayFromFile($module);
+		$optionsLangArr = $this->getLangFileArray($module);
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$optionArrExpected = [
+			['ololo_from_test', "Loc::getMessage('".$module->lang_key."_OLOLO_FROM_TEST_TITLE')", '', ['multiselectbox', '$iblock_items()']]
+		];
+		//dd($optionArrExpected);
+		$this->assertEquals($optionArrExpected, $optionsArr[0]['OPTIONS']);
+
+		$this->assertArraySubset([$module->lang_key.'_OLOLO_FROM_TEST_TITLE' => 'Ololo'], $optionsLangArr);
+	}
+
+	/** @test */
+	function smn_can_add_option_at_select_option_with_already_one_option(){
+		$this->signIn();
+		$module = $this->createBitrixModule();
+
+		$this->createPropOnForm($module, 0, [
+			'name'        => 'Ololo',
+			'code'        => 'ololo_from_test',
+			'type'        => 'selectbox',
+			'vals_key0'   => 'a',
+			'vals_value0' => 'b',
+		]);
+
+		$this->createPropOnForm($module, 0, [
+			'name'        => 'Ololo',
+			'code'        => 'ololo_from_test',
+			'type'        => 'selectbox',
+			'vals_key1'   => 'c',
+			'vals_value1' => 'd',
+		]);
+
+		$optionsArr = $this->getPropsArrayFromFile($module);
+		$optionsLangArr = $this->getLangFileArray($module);
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$optionArrExpected = [
+			['ololo_from_test', "Loc::getMessage('".$module->lang_key."_OLOLO_FROM_TEST_TITLE')", '', ['selectbox', Array('a' => "Loc::getMessage('".$module->lang_key."_OLOLO_FROM_TEST_TITLE_".'A'."_TITLE')", 'c' => "Loc::getMessage('".$module->lang_key."_OLOLO_FROM_TEST_TITLE_".'C'."_TITLE')")]]
+		];
+		//dd($optionArrExpected);
+		$this->assertEquals($optionArrExpected, $optionsArr[0]['OPTIONS']);
+
+		$this->assertArraySubset([$module->lang_key.'_OLOLO_FROM_TEST_TITLE' => 'Ololo'], $optionsLangArr);
+	}
+
+	/** @test */
 	function smn_can_create_multiselect_option_with_one_options(){
 		$this->signIn();
 		$module = $this->createBitrixModule();
@@ -492,8 +676,8 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 			'name'        => 'Ololo',
 			'code'        => 'ololo_from_test',
 			'type'        => 'multiselectbox',
-			'vals_key1'   => '2',
-			'vals_value1' => 'b',
+			'vals_key0'   => '2',
+			'vals_value0' => 'b',
 		]);
 
 		$optionsArr = $this->getPropsArrayFromFile($module);
@@ -518,10 +702,10 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 			'name'        => 'Ololo',
 			'code'        => 'ololo_from_test',
 			'type'        => 'multiselectbox',
-			'vals_key1'   => 'a',
-			'vals_value1' => 'b',
-			'vals_key2'   => 'g',
-			'vals_value2' => 'd',
+			'vals_key0'   => 'a',
+			'vals_value0' => 'b',
+			'vals_key1'   => 'g',
+			'vals_value1' => 'd',
 		]);
 
 		$optionsArr = $this->getPropsArrayFromFile($module);
