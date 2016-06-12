@@ -5,7 +5,6 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Helpers\vArrParse;
 
 class BitrixAdminOptionsFormFilesTest extends TestCase{
-	// todo доп параметры у новых селектов
 	// todo доп параметры у уже созданных селектов
 	// todo доп параметры у уже созданных настроек
 	// todo удаление настройки
@@ -35,6 +34,14 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 		if (isset($params['vals_value1'])){
 			$inputs['option_'.($rowNumber).'_vals_type'] = 'array';
 			$inputs['option_'.($rowNumber).'_vals_value[1]'] = $params['vals_value1'];
+		}
+		if (isset($params['vals_key2'])){
+			$inputs['option_'.($rowNumber).'_vals_type'] = 'array';
+			$inputs['option_'.($rowNumber).'_vals_key[2]'] = $params['vals_key2'];
+		}
+		if (isset($params['vals_value2'])){
+			$inputs['option_'.($rowNumber).'_vals_type'] = 'array';
+			$inputs['option_'.($rowNumber).'_vals_value[2]'] = $params['vals_value2'];
 		}
 		//dd($inputs);
 		$this->submitForm('save', $inputs);
@@ -333,8 +340,114 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 		$this->assertArraySubset([$module->lang_key.'_OLOLO_FROM_TEST_TITLE_'.'A'.'_TITLE' => 'b'], $optionsLangArr);
 	}
 
+	/** @test */
+	function smn_can_create_select_option_with_two_options(){
+		$this->signIn();
+		$module = $this->createBitrixModule();
+
+		$this->createPropOnForm($module, 0, [
+			'name'        => 'Ololo',
+			'code'        => 'ololo_from_test',
+			'type'        => 'selectbox',
+			'vals_key1'   => 'a',
+			'vals_value1' => 'b',
+			'vals_key2'   => 'c',
+			'vals_value2' => 'd',
+		]);
+
+		$optionsArr = $this->getPropsArrayFromFile($module);
+		$optionsLangArr = $this->getLangFileArray($module);
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$optionArrExpected = [
+			['ololo_from_test', "Loc::getMessage('".$module->lang_key."_OLOLO_FROM_TEST_TITLE')", '', ['selectbox', Array('a' => "Loc::getMessage('".$module->lang_key."_OLOLO_FROM_TEST_TITLE_".'A'."_TITLE')", 'c' => "Loc::getMessage('".$module->lang_key."_OLOLO_FROM_TEST_TITLE_".'C'."_TITLE')")]]
+		];
+		//dd($optionArrExpected);
+		$this->assertEquals($optionArrExpected, $optionsArr[0]['OPTIONS']);
+
+		$this->assertArraySubset([$module->lang_key.'_OLOLO_FROM_TEST_TITLE' => 'Ololo'], $optionsLangArr);
+		$this->assertArraySubset([$module->lang_key.'_OLOLO_FROM_TEST_TITLE_'.'A'.'_TITLE' => 'b'], $optionsLangArr);
+		$this->assertArraySubset([$module->lang_key.'_OLOLO_FROM_TEST_TITLE_'.'C'.'_TITLE' => 'd'], $optionsLangArr);
+	}
+
 	/** @test */ // todo
-	function smn_can_create_multiselect_option_with_dop_params(){
+	function smn_can_create_select_option_with_iblock_types_list(){
+
+	}
+
+	/** @test */ // todo
+	function smn_can_create_select_option_with_iblocks_list(){
+
+	}
+
+	/** @test */ // todo
+	function smn_can_create_select_option_with_iblock_cats_list(){
+
+	}
+
+	/** @test */ // todo
+	function smn_can_create_select_option_with_iblock_elements_list(){
+
+	}
+
+	/** @test */ // todo
+	function smn_can_create_select_option_with_iblock_props_list(){
+
+	}
+
+	/** @test */
+	function smn_can_create_multiselect_option_with_one_options(){
+		$this->signIn();
+		$module = $this->createBitrixModule();
+
+		$this->createPropOnForm($module, 0, [
+			'name'        => 'Ololo',
+			'code'        => 'ololo_from_test',
+			'type'        => 'multiselectbox',
+			'vals_key1'   => '2',
+			'vals_value1' => 'b',
+		]);
+
+		$optionsArr = $this->getPropsArrayFromFile($module);
+		$optionsLangArr = $this->getLangFileArray($module);
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$optionArrExpected = [['ololo_from_test', "Loc::getMessage('".$module->lang_key."_OLOLO_FROM_TEST_TITLE')", '', ['multiselectbox', Array('2' => "Loc::getMessage('".$module->lang_key."_OLOLO_FROM_TEST_TITLE_".'2'."_TITLE')")]]];
+		//dd($optionArrExpected);
+		$this->assertEquals($optionArrExpected, $optionsArr[0]['OPTIONS']);
+
+		$this->assertArraySubset([$module->lang_key.'_OLOLO_FROM_TEST_TITLE' => 'Ololo'], $optionsLangArr);
+		$this->assertArraySubset([$module->lang_key.'_OLOLO_FROM_TEST_TITLE_'.'2'.'_TITLE' => 'b'], $optionsLangArr);
+	}
+
+	/** @test */ // todo
+	function smn_can_create_multiselect_option_with_two_options(){
+
+	}
+	/** @test */ // todo
+	function smn_can_create_multiselect_option_with_iblock_types_list(){
+
+	}
+
+	/** @test */ // todo
+	function smn_can_create_multiselect_option_with_iblocks_list(){
+
+	}
+
+	/** @test */ // todo
+	function smn_can_create_multiselect_option_with_iblock_cats_list(){
+
+	}
+
+	/** @test */ // todo
+	function smn_can_create_multiselect_option_with_iblock_elements_list(){
+
+	}
+
+	/** @test */ // todo
+	function smn_can_create_multiselect_option_with_iblock_props_list(){
 
 	}
 }
