@@ -43,6 +43,12 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 			$inputs['option_'.($rowNumber).'_vals_type'] = 'array';
 			$inputs['option_'.($rowNumber).'_vals_value[2]'] = $params['vals_value2'];
 		}
+		if (isset($params['vals_type'])){
+			$inputs['option_'.($rowNumber).'_vals_type'] = $params['vals_type'];
+		}
+		if (isset($params['iblock'])){
+			$inputs['option_'.($rowNumber).'_spec_args[0]'] = $params['iblock'];
+		}
 		//dd($inputs);
 		$this->submitForm('save', $inputs);
 	}
@@ -371,29 +377,110 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 		$this->assertArraySubset([$module->lang_key.'_OLOLO_FROM_TEST_TITLE_'.'C'.'_TITLE' => 'd'], $optionsLangArr);
 	}
 
-	/** @test */ // todo
-	function smn_can_create_select_option_with_iblock_types_list(){
-
-	}
-
-	/** @test */ // todo
+	/** @test */
 	function smn_can_create_select_option_with_iblocks_list(){
+		$this->signIn();
+		$module = $this->createBitrixModule();
 
+		$this->createPropOnForm($module, 0, [
+			'name'      => 'Ololo',
+			'code'      => 'ololo_from_test',
+			'type'      => 'selectbox',
+			'vals_type' => 'iblocks_list',
+		]);
+
+		$optionsArr = $this->getPropsArrayFromFile($module);
+		$optionsLangArr = $this->getLangFileArray($module);
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$optionArrExpected = [
+			['ololo_from_test', "Loc::getMessage('".$module->lang_key."_OLOLO_FROM_TEST_TITLE')", '', ['selectbox', '$iblocks()']]
+		];
+		//dd($optionArrExpected);
+		$this->assertEquals($optionArrExpected, $optionsArr[0]['OPTIONS']);
+
+		$this->assertArraySubset([$module->lang_key.'_OLOLO_FROM_TEST_TITLE' => 'Ololo'], $optionsLangArr);
 	}
 
-	/** @test */ // todo
-	function smn_can_create_select_option_with_iblock_cats_list(){
-
-	}
-
-	/** @test */ // todo
+	/** @test */
 	function smn_can_create_select_option_with_iblock_elements_list(){
+		$this->signIn();
+		$module = $this->createBitrixModule();
 
+		$this->createPropOnForm($module, 0, [
+			'name'      => 'Ololo',
+			'code'      => 'ololo_from_test',
+			'type'      => 'selectbox',
+			'vals_type' => 'iblock_items_list',
+		]);
+
+		$optionsArr = $this->getPropsArrayFromFile($module);
+		$optionsLangArr = $this->getLangFileArray($module);
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$optionArrExpected = [
+			['ololo_from_test', "Loc::getMessage('".$module->lang_key."_OLOLO_FROM_TEST_TITLE')", '', ['selectbox', '$iblock_items()']]
+		];
+		//dd($optionArrExpected);
+		$this->assertEquals($optionArrExpected, $optionsArr[0]['OPTIONS']);
+
+		$this->assertArraySubset([$module->lang_key.'_OLOLO_FROM_TEST_TITLE' => 'Ololo'], $optionsLangArr);
 	}
 
-	/** @test */ // todo
-	function smn_can_create_select_option_with_iblock_props_list(){
+	/** @test */
+	function smn_can_create_select_option_with_iblock_elements_list_with_param(){
+		$this->signIn();
+		$module = $this->createBitrixModule();
 
+		$this->createPropOnForm($module, 0, [
+			'name'      => 'Ololo',
+			'code'      => 'ololo_from_test',
+			'type'      => 'selectbox',
+			'vals_type' => 'iblock_items_list',
+			'iblock'    => 'COption::GetOptionString("aristov.test", "iblock")',
+		]);
+
+		$optionsArr = $this->getPropsArrayFromFile($module);
+		$optionsLangArr = $this->getLangFileArray($module);
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$optionArrExpected = [
+			['ololo_from_test', "Loc::getMessage('".$module->lang_key."_OLOLO_FROM_TEST_TITLE')", '', ['selectbox', '$iblock_items(COption::GetOptionString("aristov.test", "iblock"))']]
+		];
+		//dd($optionArrExpected);
+		$this->assertEquals($optionArrExpected, $optionsArr[0]['OPTIONS']);
+
+		$this->assertArraySubset([$module->lang_key.'_OLOLO_FROM_TEST_TITLE' => 'Ololo'], $optionsLangArr);
+	}
+
+	/** @test */
+	function smn_can_create_select_option_with_iblock_props_list(){
+		$this->signIn();
+		$module = $this->createBitrixModule();
+
+		$this->createPropOnForm($module, 0, [
+			'name'      => 'Ololo',
+			'code'      => 'ololo_from_test',
+			'type'      => 'selectbox',
+			'vals_type' => 'iblock_props_list',
+			'iblock'    => 'COption::GetOptionString("aristov.test", "iblock")',
+		]);
+
+		$optionsArr = $this->getPropsArrayFromFile($module);
+		$optionsLangArr = $this->getLangFileArray($module);
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$optionArrExpected = [
+			['ololo_from_test', "Loc::getMessage('".$module->lang_key."_OLOLO_FROM_TEST_TITLE')", '', ['selectbox', '$iblock_props(COption::GetOptionString("aristov.test", "iblock"))']]
+		];
+		//dd($optionArrExpected);
+		$this->assertEquals($optionArrExpected, $optionsArr[0]['OPTIONS']);
+
+		$this->assertArraySubset([$module->lang_key.'_OLOLO_FROM_TEST_TITLE' => 'Ololo'], $optionsLangArr);
 	}
 
 	/** @test */
@@ -422,33 +509,114 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 		$this->assertArraySubset([$module->lang_key.'_OLOLO_FROM_TEST_TITLE_'.'2'.'_TITLE' => 'b'], $optionsLangArr);
 	}
 
-	/** @test */ // todo
+	/** @test */
 	function smn_can_create_multiselect_option_with_two_options(){
+		$this->signIn();
+		$module = $this->createBitrixModule();
 
+		$this->createPropOnForm($module, 0, [
+			'name'        => 'Ololo',
+			'code'        => 'ololo_from_test',
+			'type'        => 'multiselectbox',
+			'vals_key1'   => 'a',
+			'vals_value1' => 'b',
+			'vals_key2'   => 'g',
+			'vals_value2' => 'd',
+		]);
+
+		$optionsArr = $this->getPropsArrayFromFile($module);
+		$optionsLangArr = $this->getLangFileArray($module);
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$optionArrExpected = [
+			['ololo_from_test', "Loc::getMessage('".$module->lang_key."_OLOLO_FROM_TEST_TITLE')", '', ['multiselectbox', Array('a' => "Loc::getMessage('".$module->lang_key."_OLOLO_FROM_TEST_TITLE_".'A'."_TITLE')", 'g' => "Loc::getMessage('".$module->lang_key."_OLOLO_FROM_TEST_TITLE_".'G'."_TITLE')")]]
+		];
+		//dd($optionArrExpected);
+		$this->assertEquals($optionArrExpected, $optionsArr[0]['OPTIONS']);
+
+		$this->assertArraySubset([$module->lang_key.'_OLOLO_FROM_TEST_TITLE' => 'Ololo'], $optionsLangArr);
+		$this->assertArraySubset([$module->lang_key.'_OLOLO_FROM_TEST_TITLE_'.'A'.'_TITLE' => 'b'], $optionsLangArr);
+		$this->assertArraySubset([$module->lang_key.'_OLOLO_FROM_TEST_TITLE_'.'G'.'_TITLE' => 'd'], $optionsLangArr);
 	}
-	/** @test */ // todo
-	function smn_can_create_multiselect_option_with_iblock_types_list(){
 
-	}
-
-	/** @test */ // todo
+	/** @test */
 	function smn_can_create_multiselect_option_with_iblocks_list(){
+		$this->signIn();
+		$module = $this->createBitrixModule();
 
+		$this->createPropOnForm($module, 0, [
+			'name'      => 'Ololo',
+			'code'      => 'ololo_from_test',
+			'type'      => 'multiselectbox',
+			'vals_type' => 'iblocks_list',
+		]);
+
+		$optionsArr = $this->getPropsArrayFromFile($module);
+		$optionsLangArr = $this->getLangFileArray($module);
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$optionArrExpected = [
+			['ololo_from_test', "Loc::getMessage('".$module->lang_key."_OLOLO_FROM_TEST_TITLE')", '', ['multiselectbox', '$iblocks()']]
+		];
+		//dd($optionArrExpected);
+		$this->assertEquals($optionArrExpected, $optionsArr[0]['OPTIONS']);
+
+		$this->assertArraySubset([$module->lang_key.'_OLOLO_FROM_TEST_TITLE' => 'Ololo'], $optionsLangArr);
 	}
 
-	/** @test */ // todo
-	function smn_can_create_multiselect_option_with_iblock_cats_list(){
-
-	}
-
-	/** @test */ // todo
+	/** @test */
 	function smn_can_create_multiselect_option_with_iblock_elements_list(){
+		$this->signIn();
+		$module = $this->createBitrixModule();
 
+		$this->createPropOnForm($module, 0, [
+			'name'      => 'Ololo',
+			'code'      => 'ololo_from_test',
+			'type'      => 'multiselectbox',
+			'vals_type' => 'iblock_items_list',
+		]);
+
+		$optionsArr = $this->getPropsArrayFromFile($module);
+		$optionsLangArr = $this->getLangFileArray($module);
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$optionArrExpected = [
+			['ololo_from_test', "Loc::getMessage('".$module->lang_key."_OLOLO_FROM_TEST_TITLE')", '', ['multiselectbox', '$iblock_items()']]
+		];
+		//dd($optionArrExpected);
+		$this->assertEquals($optionArrExpected, $optionsArr[0]['OPTIONS']);
+
+		$this->assertArraySubset([$module->lang_key.'_OLOLO_FROM_TEST_TITLE' => 'Ololo'], $optionsLangArr);
 	}
 
-	/** @test */ // todo
+	/** @test */
 	function smn_can_create_multiselect_option_with_iblock_props_list(){
+		$this->signIn();
+		$module = $this->createBitrixModule();
 
+		$this->createPropOnForm($module, 0, [
+			'name'      => 'Ololo',
+			'code'      => 'ololo_from_test',
+			'type'      => 'multiselectbox',
+			'vals_type' => 'iblock_props_list',
+			'iblock'    => 'COption::GetOptionString("aristov.test", "iblock")',
+		]);
+
+		$optionsArr = $this->getPropsArrayFromFile($module);
+		$optionsLangArr = $this->getLangFileArray($module);
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$optionArrExpected = [
+			['ololo_from_test', "Loc::getMessage('".$module->lang_key."_OLOLO_FROM_TEST_TITLE')", '', ['multiselectbox', '$iblock_props(COption::GetOptionString("aristov.test", "iblock"))']]
+		];
+		//dd($optionArrExpected);
+		$this->assertEquals($optionArrExpected, $optionsArr[0]['OPTIONS']);
+
+		$this->assertArraySubset([$module->lang_key.'_OLOLO_FROM_TEST_TITLE' => 'Ololo'], $optionsLangArr);
 	}
 }
 
