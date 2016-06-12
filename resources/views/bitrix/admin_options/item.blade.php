@@ -28,7 +28,6 @@
         <a href="#" class="btn btn-default btn-block" data-toggle="modal"
            data-target="#admin_options_dop_settings_window_{{$i}}">{{ trans('bitrix_admin_options.additional_settings_button') }}
         </a>
-        @include('bitrix.admin_options.dop_settings_window', ['option' => $option, 'i' => $i])
     </div>
     <div class="col-md-1">
         @if ($option)
@@ -39,3 +38,4 @@
         @endif
     </div>
 </div>
+@include('bitrix.admin_options.dop_settings_window', ['option' => $option, 'i' => $i])

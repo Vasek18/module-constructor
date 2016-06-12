@@ -1,9 +1,9 @@
 # показ модального окна с доп. настройками
-$('.option .modal').on 'show.bs.modal', (event) ->
+$('.options .modal').on 'show.bs.modal', (event) ->
 	button = $(event.relatedTarget)
 	row = button.parents(".row.option")
 	type_id = row.find("[name *= _type]").val()
-	modal_form = row.find('.modal')
+	modal_form = row.next(button.attr('data-target'))
 
 	# скрываем все поля
 	modal_form.find('.form-group').hide()
@@ -21,7 +21,7 @@ $('.option .modal').on 'show.bs.modal', (event) ->
 
 
 # блокировка и разблокировка вариантов опшионов у свойств - списков
-$(document).on "change", ".option .modal .only-one [type=radio]", () ->
+$(document).on "change", ".options .modal .only-one [type=radio]", () ->
 	item = $(this).parents(".item")
 	items = $(".only-one .item")
 	items.each(() ->

@@ -26,16 +26,18 @@
             <div class="col-md-1">
             </div>
         </div>
-        <div class="draggable-container">
-            @foreach($options as $i => $option)
-                {{--{{dd($option)}}--}}
-                @include('bitrix.admin_options.item', ['option' => $option, 'i' => $i, 'module' => $module])
-            @endforeach
+        <div class="options">
+            <div class="draggable-container">
+                @foreach($options as $i => $option)
+                    {{--{{dd($option)}}--}}
+                    @include('bitrix.admin_options.item', ['option' => $option, 'i' => $i, 'module' => $module])
+                @endforeach
+            </div>
+            {{-- Дополнительно показываем ещё несколько пустых строк --}}
+            @for ($j = count($options); $j < count($options)+5; $j++)
+                @include('bitrix.admin_options.item', ['option' => null, 'i' => $j, 'module' => $module])
+            @endfor
         </div>
-        {{-- Дополнительно показываем ещё несколько пустых строк --}}
-        @for ($j = count($options); $j < count($options)+5; $j++)
-            @include('bitrix.admin_options.item', ['option' => null, 'i' => $j, 'module' => $module])
-        @endfor
         <div class="row overlast-row">
             <div class="col-md-12">
                 <p>
@@ -46,7 +48,8 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                <button class="btn btn-primary btn-block" name="save" type="submit">{{ trans('bitrix_admin_options.save') }}</button>
+                <button class="btn btn-primary btn-block" name="save"
+                        type="submit">{{ trans('bitrix_admin_options.save') }}</button>
             </div>
         </div>
     </form>

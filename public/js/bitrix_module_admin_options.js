@@ -1,10 +1,10 @@
 (function() {
-  $('.option .modal').on('show.bs.modal', function(event) {
+  $('.options .modal').on('show.bs.modal', function(event) {
     var button, modal_form, row, type_id;
     button = $(event.relatedTarget);
     row = button.parents(".row.option");
     type_id = row.find("[name *= _type]").val();
-    modal_form = row.find('.modal');
+    modal_form = row.next(button.attr('data-target'));
     modal_form.find('.form-group').hide();
     modal_form.find('[data-for_type_ids ~= "' + type_id + '"]').show();
     modal_form.find(".only-one input:not([type=radio])").prop("disabled", true);
@@ -15,7 +15,7 @@
     }
   });
 
-  $(document).on("change", ".option .modal .only-one [type=radio]", function() {
+  $(document).on("change", ".options .modal .only-one [type=radio]", function() {
     var item, items;
     item = $(this).parents(".item");
     items = $(".only-one .item");
