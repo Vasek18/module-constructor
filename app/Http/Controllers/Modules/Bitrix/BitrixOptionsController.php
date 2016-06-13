@@ -43,7 +43,7 @@ class BitrixOptionsController extends Controller{
 	}
 
 	public function store(Bitrix $module, Request $request){
-		//dd($request->option_0_vals_key);
+		//dd($request->all());
 
 		// перебираем все строки полей
 		// todo я могу без цикла и перебирания полей обойтись

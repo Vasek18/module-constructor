@@ -5,7 +5,6 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Helpers\vArrParse;
 
 class BitrixAdminOptionsFormFilesTest extends TestCase{
-	// todo доп параметры у уже созданных селектов
 	// todo доп параметры у уже созданных настроек
 	// todo удаление настройки
 	// todo удаление опшионов у селекта
@@ -665,6 +664,44 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 		$this->assertEquals($optionArrExpected, $optionsArr[0]['OPTIONS']);
 
 		$this->assertArraySubset([$module->lang_key.'_OLOLO_FROM_TEST_TITLE' => 'Ololo'], $optionsLangArr);
+	}
+
+	/** @test */ // todo я не понимаю почему, но этот тест не падает, хотя при ручном тестировании всё ломается
+	function if_we_create_select_option_with_options_and_then_create_another_select_option_thrn_the_first_would_still_keep_its_options(){
+		$this->signIn();
+		$module = $this->createBitrixModule();
+
+		$this->createPropOnForm($module, 0, [
+			'name'        => 'Ololo',
+			'code'        => 'ololo_from_test',
+			'type'        => 'selectbox',
+			'vals_key0'   => 'a',
+			'vals_value0' => 'b',
+		]);
+
+		$this->createPropOnForm($module, 1, [
+			'name'        => 'Ololo_2',
+			'code'        => 'ololo_from_test_2',
+			'type'        => 'selectbox',
+			'vals_key0'   => 'c',
+			'vals_value0' => 'd',
+		]);
+
+		$optionsArr = $this->getPropsArrayFromFile($module);
+		$optionsLangArr = $this->getLangFileArray($module);
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$optionArrExpected = [
+			['ololo_from_test', "Loc::getMessage('".$module->lang_key."_OLOLO_FROM_TEST_TITLE')", '', ['selectbox', Array('a' => "Loc::getMessage('".$module->lang_key."_OLOLO_FROM_TEST_TITLE_".'A'."_TITLE')")]],
+			['ololo_from_test_2', "Loc::getMessage('".$module->lang_key."_OLOLO_FROM_TEST_2_TITLE')", '', ['selectbox', Array('c' => "Loc::getMessage('".$module->lang_key."_OLOLO_FROM_TEST_2_TITLE_".'C'."_TITLE')")]]
+		];
+		//dd($optionArrExpected);
+		$this->assertEquals($optionArrExpected, $optionsArr[0]['OPTIONS']);
+
+		$this->assertArraySubset([$module->lang_key.'_OLOLO_FROM_TEST_TITLE' => 'Ololo'], $optionsLangArr);
+		$this->assertArraySubset([$module->lang_key.'_OLOLO_FROM_TEST_TITLE_'.'A'.'_TITLE' => 'b'], $optionsLangArr);
+		$this->assertArraySubset([$module->lang_key.'_OLOLO_FROM_TEST_2_TITLE_'.'C'.'_TITLE' => 'd'], $optionsLangArr);
 	}
 
 	/** @test */

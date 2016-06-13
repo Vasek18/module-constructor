@@ -22,7 +22,7 @@
                     <div class="item">
                         <label>
                             <input type="radio" name="option_{{$i}}_vals_type" value="array"
-                                   @if ($option && $option->vals) checked
+                                   @if ($option && $option->spec_vals == 'array') checked
                                     @endif>
                             <b>{{ trans('bitrix_admin_options.specific_values') }}</b>
                         </label>

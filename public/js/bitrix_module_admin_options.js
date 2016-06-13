@@ -8,8 +8,8 @@
     modal_form.find('.form-group').hide();
     modal_form.find('[data-for_type_ids ~= "' + type_id + '"]').show();
     modal_form.find(".only-one input:not([type=radio])").prop("disabled", true);
-    if (!modal_form.find(".only-one input[type=radio]:checked")) {
-      modal_form.find(".only-one input[type=radio]:first").change();
+    if (!modal_form.find(".only-one input[type=radio]:checked").length) {
+      modal_form.find(".only-one input[type=radio]:first").click();
     } else {
       modal_form.find(".only-one input[type=radio]:checked").parents(".item").find("input:not([type=radio])").prop("disabled", false);
     }
