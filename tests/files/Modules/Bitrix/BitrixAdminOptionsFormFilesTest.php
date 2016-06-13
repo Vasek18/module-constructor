@@ -5,21 +5,23 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Helpers\vArrParse;
 
 class BitrixAdminOptionsFormFilesTest extends TestCase{
-	// todo доп параметры у уже созданных настроек
 	// todo удаление настройки
-	// todo удаление опшионов у селекта
-	// todo изменение опшионов у селекта
 	// todo значение по умолчанию
 
 	use DatabaseTransactions;
 
 	function createPropOnForm($module, $rowNumber, $params){
 		$this->visit('/my-bitrix/'.$module->id.'/admin_options');
-		$inputs = [
-			'option_name['.$rowNumber.']' => $params['name'],
-			'option_code['.$rowNumber.']' => $params['code'],
-			'option_type['.$rowNumber.']' => $params['type'],
-		];
+		$inputs = [];
+		if (isset($params['name'])){
+			$inputs['option_name['.$rowNumber.']'] = $params['name'];
+		}
+		if (isset($params['code'])){
+			$inputs['option_code['.$rowNumber.']'] = $params['code'];
+		}
+		if (isset($params['type'])){
+			$inputs['option_type['.$rowNumber.']'] = $params['type'];
+		}
 		if (isset($params['width'])){
 			$inputs['option_width['.$rowNumber.']'] = $params['width'];
 		}
@@ -667,7 +669,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 	}
 
 	/** @test */ // todo я не понимаю почему, но этот тест не падает, хотя при ручном тестировании всё ломается
-	function if_we_create_select_option_with_options_and_then_create_another_select_option_thrn_the_first_would_still_keep_its_options(){
+	function if_we_create_select_option_with_options_and_then_create_another_select_option_then_the_first_would_still_keep_its_options(){
 		$this->signIn();
 		$module = $this->createBitrixModule();
 
@@ -835,6 +837,198 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 			['ololo_from_test', "Loc::getMessage('".$module->lang_key."_OLOLO_FROM_TEST_TITLE')", '', ['multiselectbox', '$iblock_props(COption::GetOptionString("aristov.test", "iblock"))']]
 		];
 		//dd($optionArrExpected);
+		$this->assertEquals($optionArrExpected, $optionsArr[0]['OPTIONS']);
+
+		$this->assertArraySubset([$module->lang_key.'_OLOLO_FROM_TEST_TITLE' => 'Ololo'], $optionsLangArr);
+	}
+
+	/** @test */
+	function smn_can_change_name_of_string_option_with_dop_params(){
+		$this->signIn();
+		$module = $this->createBitrixModule();
+
+		$this->createPropOnForm($module, 0, [
+			'name'  => 'Ololo',
+			'code'  => 'ololo_from_test',
+			'type'  => 'text',
+			'width' => '10',
+		]);
+
+		$this->createPropOnForm($module, 0, [
+			'name' => 'Ololo trololo',
+		]);
+
+		$optionsArr = $this->getPropsArrayFromFile($module);
+		$optionsLangArr = $this->getLangFileArray($module);
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$optionArrExpected = [['ololo_from_test', "Loc::getMessage('".$module->lang_key."_OLOLO_FROM_TEST_TITLE')", '', ['text', 10]]];
+		$this->assertEquals($optionArrExpected, $optionsArr[0]['OPTIONS']);
+
+		$this->assertArraySubset([$module->lang_key.'_OLOLO_FROM_TEST_TITLE' => 'Ololo trololo'], $optionsLangArr);
+	}
+
+	/** @test */
+	function smn_can_change_name_of_textarea_option_with_dop_params(){
+		$this->signIn();
+		$module = $this->createBitrixModule();
+
+		$this->createPropOnForm($module, 0, [
+			'name'   => 'Ololo',
+			'code'   => 'ololo_from_test',
+			'type'   => 'textarea',
+			'height' => '30',
+			'width'  => '20',
+		]);
+
+		$this->createPropOnForm($module, 0, [
+			'name' => 'Ololo2',
+		]);
+
+		$optionsArr = $this->getPropsArrayFromFile($module);
+		$optionsLangArr = $this->getLangFileArray($module);
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$optionArrExpected = [['ololo_from_test', "Loc::getMessage('".$module->lang_key."_OLOLO_FROM_TEST_TITLE')", '', ['textarea', 30, 20]]];
+		$this->assertEquals($optionArrExpected, $optionsArr[0]['OPTIONS']);
+
+		$this->assertArraySubset([$module->lang_key.'_OLOLO_FROM_TEST_TITLE' => 'Ololo2'], $optionsLangArr);
+	}
+
+	/** @test */
+	function smn_can_change_name_of_select_option_with_one_options(){
+		$this->signIn();
+		$module = $this->createBitrixModule();
+
+		$this->createPropOnForm($module, 0, [
+			'name'        => 'Ololo',
+			'code'        => 'ololo_from_test',
+			'type'        => 'selectbox',
+			'vals_key0'   => 'a',
+			'vals_value0' => 'b',
+		]);
+		$this->createPropOnForm($module, 0, [
+			'name' => 'Ololosko',
+		]);
+
+		$optionsArr = $this->getPropsArrayFromFile($module);
+		$optionsLangArr = $this->getLangFileArray($module);
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$optionArrExpected = [['ololo_from_test', "Loc::getMessage('".$module->lang_key."_OLOLO_FROM_TEST_TITLE')", '', ['selectbox', Array('a' => "Loc::getMessage('".$module->lang_key."_OLOLO_FROM_TEST_TITLE_".'A'."_TITLE')")]]];
+		//dd($optionArrExpected);
+		$this->assertEquals($optionArrExpected, $optionsArr[0]['OPTIONS']);
+
+		$this->assertArraySubset([$module->lang_key.'_OLOLO_FROM_TEST_TITLE' => 'Ololosko'], $optionsLangArr);
+		$this->assertArraySubset([$module->lang_key.'_OLOLO_FROM_TEST_TITLE_'.'A'.'_TITLE' => 'b'], $optionsLangArr);
+	}
+
+	/** @test */
+	function smn_can_change_name_of_multiselect_option_with_one_options(){
+		$this->signIn();
+		$module = $this->createBitrixModule();
+
+		$this->createPropOnForm($module, 0, [
+			'name'        => 'Ololo',
+			'code'        => 'ololo_from_test',
+			'type'        => 'multiselectbox',
+			'vals_key0'   => 'a',
+			'vals_value0' => 'b',
+		]);
+		$this->createPropOnForm($module, 0, [
+			'name' => 'Ololoskos',
+		]);
+
+		$optionsArr = $this->getPropsArrayFromFile($module);
+		$optionsLangArr = $this->getLangFileArray($module);
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$optionArrExpected = [['ololo_from_test', "Loc::getMessage('".$module->lang_key."_OLOLO_FROM_TEST_TITLE')", '', ['multiselectbox', Array('a' => "Loc::getMessage('".$module->lang_key."_OLOLO_FROM_TEST_TITLE_".'A'."_TITLE')")]]];
+		//dd($optionArrExpected);
+		$this->assertEquals($optionArrExpected, $optionsArr[0]['OPTIONS']);
+
+		$this->assertArraySubset([$module->lang_key.'_OLOLO_FROM_TEST_TITLE' => 'Ololoskos'], $optionsLangArr);
+		$this->assertArraySubset([$module->lang_key.'_OLOLO_FROM_TEST_TITLE_'.'A'.'_TITLE' => 'b'], $optionsLangArr);
+	}
+
+	/** @test */
+	function smn_can_change_name_of_checkbox_option(){
+		$this->signIn();
+		$module = $this->createBitrixModule();
+
+		$this->createPropOnForm($module, 0, [
+			'name' => 'Ololo',
+			'code' => 'ololo_from_test',
+			'type' => 'checkbox',
+		]);
+		$this->createPropOnForm($module, 0, [
+			'name' => 'Olologa',
+		]);
+
+		$optionsArr = $this->getPropsArrayFromFile($module);
+		$optionsLangArr = $this->getLangFileArray($module);
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$optionArrExpected = [['ololo_from_test', "Loc::getMessage('".$module->lang_key."_OLOLO_FROM_TEST_TITLE')", '', ['checkbox', 'Y']]];
+		$this->assertEquals($optionArrExpected, $optionsArr[0]['OPTIONS']);
+
+		$this->assertArraySubset([$module->lang_key.'_OLOLO_FROM_TEST_TITLE' => 'Olologa'], $optionsLangArr);
+	}
+
+	/** @test */
+	function smn_can_change_width_of_string_option_with_dop_params(){
+		$this->signIn();
+		$module = $this->createBitrixModule();
+
+		$this->createPropOnForm($module, 0, [
+			'name'  => 'Ololo',
+			'code'  => 'ololo_from_test',
+			'type'  => 'text',
+			'width' => '10',
+		]);
+
+		$this->createPropOnForm($module, 0, [
+			'width' => '20',
+		]);
+
+		$optionsArr = $this->getPropsArrayFromFile($module);
+		$optionsLangArr = $this->getLangFileArray($module);
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$optionArrExpected = [['ololo_from_test', "Loc::getMessage('".$module->lang_key."_OLOLO_FROM_TEST_TITLE')", '', ['text', 20]]];
+		$this->assertEquals($optionArrExpected, $optionsArr[0]['OPTIONS']);
+
+		$this->assertArraySubset([$module->lang_key.'_OLOLO_FROM_TEST_TITLE' => 'Ololo'], $optionsLangArr);
+	}
+	/** @test */
+	function smn_can_change_string_option_with_dop_params_to_textarea_option(){
+		$this->signIn();
+		$module = $this->createBitrixModule();
+
+		$this->createPropOnForm($module, 0, [
+			'name'  => 'Ololo',
+			'code'  => 'ololo_from_test',
+			'type'  => 'text',
+			'width' => '10',
+		]);
+
+		$this->createPropOnForm($module, 0, [
+			'type' => 'textarea',
+			'height' => '30',
+		]);
+
+		$optionsArr = $this->getPropsArrayFromFile($module);
+		$optionsLangArr = $this->getLangFileArray($module);
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$optionArrExpected = [['ololo_from_test', "Loc::getMessage('".$module->lang_key."_OLOLO_FROM_TEST_TITLE')", '', ['textarea', 30, 10]]];
 		$this->assertEquals($optionArrExpected, $optionsArr[0]['OPTIONS']);
 
 		$this->assertArraySubset([$module->lang_key.'_OLOLO_FROM_TEST_TITLE' => 'Ololo'], $optionsLangArr);
