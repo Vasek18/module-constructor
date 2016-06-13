@@ -32,8 +32,10 @@
     <div class="col-md-1">
         @if ($option)
             <a href="{{ action('Modules\Bitrix\BitrixOptionsController@destroy', [$module->id, $option->id]) }}"
-               class="btn btn-danger">
+               class="btn btn-danger"
+            id="delete_option_{{$option->id}}">
                 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                <span class="sr-only">{{ trans('bitrix_admin_options.delete') }}</span>
             </a>
         @endif
     </div>

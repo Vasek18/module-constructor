@@ -33,11 +33,10 @@ class BitrixAdminOptions extends Model{
 
 	// сохраняем настройки в папку модуля
 	static public function saveOptionFile(Bitrix $module){
+		$optionsString = '';
+		Bitrix::changeVarsInModuleFileAndSave('bitrix/lang/ru/options.php', $module->id);
 		if ($module->options()->count()){
-
 			$options = $module->options()->orderBy('sort', 'asc')->get();
-			$optionsString = '';
-			Bitrix::changeVarsInModuleFileAndSave('bitrix/lang/ru/options.php', $module->id); // todo нужно лишь для создания файла
 
 			foreach ($options as $option){
 				$field_params_string = $option->getParamsStringForFile($option->type);
@@ -57,9 +56,9 @@ class BitrixAdminOptions extends Model{
 					}
 				}
 			}
-
-			Bitrix::changeVarsInModuleFileAndSave('bitrix/options.php', $module->id, Array("{OPTIONS}"), Array($optionsString));
 		}
+
+		Bitrix::changeVarsInModuleFileAndSave('bitrix/options.php', $module->id, Array("{OPTIONS}"), Array($optionsString));
 	}
 
 	public function getParamsStringForFile($option_type){

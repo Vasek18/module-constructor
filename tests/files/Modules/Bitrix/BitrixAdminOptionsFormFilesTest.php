@@ -1,12 +1,12 @@
 <?php
 
-use App\Models\Modules\Bitrix\Bitrix;
+use App\Models\Modules\Bitrix\BitrixAdminOptions;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Helpers\vArrParse;
 
 class BitrixAdminOptionsFormFilesTest extends TestCase{
-	// todo удаление настройки
 	// todo значение по умолчанию
+	// todo подстановка чужих айдишников
 
 	use DatabaseTransactions;
 
@@ -52,6 +52,17 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 		}
 		//dd($inputs);
 		$this->submitForm('save', $inputs);
+
+		if (isset($params['code'])){
+			return BitrixAdminOptions::where('code', $params['code'])->first();
+		}
+
+		return true;
+	}
+
+	function deletePropOnForm($module, $option){
+		$this->visit('/my-bitrix/'.$module->id.'/admin_options');
+		$this->click('delete_option_'.$option->id);
 	}
 
 	function getPropsArrayFromFile($module){
@@ -1006,6 +1017,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 
 		$this->assertArraySubset([$module->lang_key.'_OLOLO_FROM_TEST_TITLE' => 'Ololo'], $optionsLangArr);
 	}
+
 	/** @test */
 	function smn_can_change_string_option_with_dop_params_to_textarea_option(){
 		$this->signIn();
@@ -1019,7 +1031,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 		]);
 
 		$this->createPropOnForm($module, 0, [
-			'type' => 'textarea',
+			'type'   => 'textarea',
 			'height' => '30',
 		]);
 
@@ -1032,6 +1044,120 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 		$this->assertEquals($optionArrExpected, $optionsArr[0]['OPTIONS']);
 
 		$this->assertArraySubset([$module->lang_key.'_OLOLO_FROM_TEST_TITLE' => 'Ololo'], $optionsLangArr);
+	}
+
+	/** @test */
+	function smn_can_delete_string_option(){
+		$this->signIn();
+		$module = $this->createBitrixModule();
+
+		$option = $this->createPropOnForm($module, 0, [
+			'name' => 'Ololo',
+			'code' => 'ololo_from_test',
+			'type' => 'text',
+		]);
+
+		$this->deletePropOnForm($module, $option);
+
+		$optionsArr = $this->getPropsArrayFromFile($module);
+		$optionsLangArr = $this->getLangFileArray($module);
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$optionArrExpected = [];
+		$this->assertEquals($optionArrExpected, $optionsArr[0]['OPTIONS']);
+
+		$this->assertArrayNotHasKey($module->lang_key.'_OLOLO_FROM_TEST_TITLE', $optionsLangArr);
+	}
+
+	/** @test */
+	function smn_can_delete_one_string_option_of_two(){
+		$this->signIn();
+		$module = $this->createBitrixModule();
+
+		$option = $this->createPropOnForm($module, 0, [
+			'name' => 'Ololo',
+			'code' => 'ololo_from_test',
+			'type' => 'text',
+		]);
+
+		$option2 = $this->createPropOnForm($module, 1, [
+			'name' => 'Ololo2',
+			'code' => 'ololo_from_test2',
+			'type' => 'text',
+		]);
+
+		$this->deletePropOnForm($module, $option);
+
+		$optionsArr = $this->getPropsArrayFromFile($module);
+		$optionsLangArr = $this->getLangFileArray($module);
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$optionArrExpected = [['ololo_from_test2', "Loc::getMessage('".$module->lang_key."_OLOLO_FROM_TEST2_TITLE')", '', ['text', 0]]];
+		$this->assertEquals($optionArrExpected, $optionsArr[0]['OPTIONS']);
+
+		$this->assertArraySubset([$module->lang_key.'_OLOLO_FROM_TEST2_TITLE' => 'Ololo2'], $optionsLangArr);
+		$this->assertArrayNotHasKey($module->lang_key.'_OLOLO_FROM_TEST_TITLE', $optionsLangArr);
+	}
+
+	/** @test */
+	function smn_can_delete_two_string_options_of_two(){
+		$this->signIn();
+		$module = $this->createBitrixModule();
+
+		$option = $this->createPropOnForm($module, 0, [
+			'name' => 'Ololo',
+			'code' => 'ololo_from_test',
+			'type' => 'text',
+		]);
+
+		$option2 = $this->createPropOnForm($module, 1, [
+			'name' => 'Ololo2',
+			'code' => 'ololo_from_test2',
+			'type' => 'text',
+		]);
+
+		$this->deletePropOnForm($module, $option);
+		$this->deletePropOnForm($module, $option2);
+
+		$optionsArr = $this->getPropsArrayFromFile($module);
+		$optionsLangArr = $this->getLangFileArray($module);
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$optionArrExpected = [];
+		$this->assertEquals($optionArrExpected, $optionsArr[0]['OPTIONS']);
+
+		$this->assertArrayNotHasKey($module->lang_key.'_OLOLO_FROM_TEST_TITLE', $optionsLangArr);
+		$this->assertArrayNotHasKey($module->lang_key.'_OLOLO_FROM_TEST2_TITLE', $optionsLangArr);
+	}
+
+	/** @test */
+	function smn_can_delete_select_option_with_one_option(){
+		$this->signIn();
+		$module = $this->createBitrixModule();
+
+		$option = $this->createPropOnForm($module, 0, [
+			'name'        => 'Ololo',
+			'code'        => 'ololo_from_test',
+			'type'        => 'selectbox',
+			'vals_key0'   => 'a',
+			'vals_value0' => 'b',
+		]);
+		$this->deletePropOnForm($module, $option);
+
+		$optionsArr = $this->getPropsArrayFromFile($module);
+		$optionsLangArr = $this->getLangFileArray($module);
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$optionArrExpected = [];
+
+		$this->assertEquals($optionArrExpected, $optionsArr[0]['OPTIONS']);
+
+		$this->assertArrayNotHasKey($module->lang_key.'_OLOLO_FROM_TEST_TITLE', $optionsLangArr);
+		$this->assertArrayNotHasKey($module->lang_key.'_OLOLO_FROM_TEST_TITLE_'.'A'.'_TITLE', $optionsLangArr);
 	}
 }
 
