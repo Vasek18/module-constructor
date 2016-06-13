@@ -78,6 +78,9 @@
                     <input class="form-control" type="text" name="default_value[]" id="option_{{$i}}_default_value"
                            @if ($option) value="{{$option->default_value}}" @endif>
                 </div>
+                <div class="form-group" data-for_type_ids="checkbox">
+                    <p>{{ trans('bitrix_admin_options.no_additional_params') }}</p>
+                </div>
             </div>
         </div>
     </div>

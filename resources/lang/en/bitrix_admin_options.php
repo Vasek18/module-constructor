@@ -37,4 +37,5 @@ return [
 	'selectbox_type'             => 'Select',
 	'text_type'                  => 'String',
 	'textarea_type'              => 'Textarea',
+	'no_additional_params'       => 'No additional fields',
 ];

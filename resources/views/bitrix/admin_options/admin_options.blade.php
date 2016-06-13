@@ -37,6 +37,9 @@
             @for ($j = count($options); $j < count($options)+5; $j++)
                 @include('bitrix.admin_options.item', ['option' => null, 'i' => $j, 'module' => $module])
             @endfor
+            <div class="hidden template-for-js">
+                @include('bitrix.admin_options.item', ['option' => null, 'i' => '__change_me_i_am_number__', 'module' => $module])
+            </div>
         </div>
         <div class="row overlast-row">
             <div class="col-md-12">

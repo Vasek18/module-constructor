@@ -70,7 +70,7 @@ class BitrixOptionsController extends Controller{
 			$prop["height"] = $request['option_height'][$i];
 			$prop["width"] = $request['option_width'][$i];
 			$prop["spec_vals"] = $request['option_'.$i.'_vals_type'];
-			
+
 			if ($request['option_'.$i.'_spec_args'] && is_array($request['option_'.$i.'_spec_args'])){
 				$prop["spec_vals_args"] = '';
 				foreach ($request['option_'.$i.'_spec_args'] as $arg){
@@ -152,5 +152,4 @@ class BitrixOptionsController extends Controller{
 
 		return back();
 	}
-
 }
