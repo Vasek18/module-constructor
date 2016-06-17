@@ -104,13 +104,78 @@ class BitrixInfoblockFormInterfaceTest extends TestCase{
 			'code' => 'trololo'
 		]);
 
+		$this->deleteFolder($this->standartModuleCode);
+
 		$this->see('Ololo');
 		$this->see('trololo');
 		$this->seePageIs('/my-bitrix/'.$module->id.'/data_storage/ib/'.$ib->id);
-
-		$this->deleteFolder($this->standartModuleCode);
 	}
 
+	/** @test */
+	function it_returns_an_error_when_there_is_no_code(){
+		$this->signIn();
+		$module = $this->createBitrixModule();
+
+		$ib = $this->createIblockOnForm($module, [
+			'name' => 'Ololo',
+			'code' => ''
+		]);
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$this->see('Поле "Код" обязательно');
+		$this->seePageIs('/my-bitrix/'.$module->id.'/data_storage/ib/');
+	}
+
+	/** @test */
+	function it_returns_an_error_when_there_is_no_name(){
+		$this->signIn();
+		$module = $this->createBitrixModule();
+
+		$ib = $this->createIblockOnForm($module, [
+			'name' => '',
+			'code' => 'trololo'
+		]);
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$this->see('Поле "Название" обязательно');
+		$this->seePageIs('/my-bitrix/'.$module->id.'/data_storage/ib/');
+	}
+
+	/** @test */
+	function it_returns_an_error_when_there_is_no_code_en(){
+		$this->signIn();
+		$this->setLang('en');
+		$module = $this->createBitrixModule();
+
+		$ib = $this->createIblockOnForm($module, [
+			'name' => 'Ololo',
+			'code' => ''
+		]);
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$this->see('The "Code" field is required');
+		$this->seePageIs('/my-bitrix/'.$module->id.'/data_storage/ib/');
+	}
+
+	/** @test */
+	function it_returns_an_error_when_there_is_no_name_en(){
+		$this->signIn();
+		$this->setLang('en');
+		$module = $this->createBitrixModule();
+
+		$ib = $this->createIblockOnForm($module, [
+			'name' => '',
+			'code' => 'trololo'
+		]);
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$this->see('The "Name" field is required');
+		$this->seePageIs('/my-bitrix/'.$module->id.'/data_storage/ib/');
+	}
 }
 
 ?>

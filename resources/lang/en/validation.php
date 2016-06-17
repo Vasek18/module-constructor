@@ -90,6 +90,13 @@ return [
 	*/
 
 	'custom' => [
+		'NAME'           => [
+			'required' => 'The "Name" field is required',
+		],
+		'CODE'           => [
+			'required' => 'The "Code" field is required',
+			'unique'   => 'This code is already taken',
+		],
 		'MODULE_NAME'    => [
 			'required' => 'The "Module name" field is required',
 		],

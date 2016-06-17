@@ -47,7 +47,7 @@ class BitrixDataStorageController extends Controller{
 		return view("bitrix.data_storage.add_ib", $data);
 	}
 
-	public function store_ib(Bitrix $module, Request $request){
+	public function store_ib(Bitrix $module, Requests\InfoblockFormRequest $request){
 		$params = $request->all();
 		unset($params['_token']);
 
@@ -91,7 +91,7 @@ class BitrixDataStorageController extends Controller{
 		return redirect(action('Modules\Bitrix\BitrixDataStorageController@detail_ib', [$module->id, $iblock->id]));
 	}
 
-	public function save_ib(Bitrix $module, BitrixInfoblocks $iblock, Request $request){
+	public function save_ib(Bitrix $module, BitrixInfoblocks $iblock, Requests\InfoblockFormRequest $request){
 		$params = $request->all();
 		unset($params['_token']);
 
