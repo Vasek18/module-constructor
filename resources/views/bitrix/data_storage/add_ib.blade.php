@@ -1,7 +1,7 @@
 @extends('bitrix.internal_template')
 
 @section('h1')
-    Добавить инфоблок
+    {{ trans('bitrix_iblocks_form.h1') }}
 @stop
 
 @section('page')
@@ -11,32 +11,31 @@
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active">
                 <a href="#infoblok" aria-controls="infoblok" role="tab"
-                   data-toggle="tab">Инфоблок</a>
+                   data-toggle="tab">{{ trans('bitrix_iblocks_form.tab_iblock_title') }}</a>
             </li>
             <li role="presentation">
-                <a href="#seo" aria-controls="seo" role="tab" data-toggle="tab">Seo</a>
+                <a href="#seo" aria-controls="seo" role="tab" data-toggle="tab">{{ trans('bitrix_iblocks_form.tab_seo_title') }}</a>
             </li>
             <li role="presentation">
-                <a href="#fields" aria-controls="fields" role="tab" data-toggle="tab">Поля</a>
+                <a href="#fields" aria-controls="fields" role="tab" data-toggle="tab">{{ trans('bitrix_iblocks_form.tab_fields_title') }}</a>
             </li>
             <li role="presentation">
-                <a href="#properties" aria-controls="properties" role="tab" data-toggle="tab">Свойства</a>
+                <a href="#properties" aria-controls="properties" role="tab" data-toggle="tab">{{ trans('bitrix_iblocks_form.tab_properties_title') }}</a>
             </li>
             <li role="presentation">
-                <a href="#sections_fields" aria-controls="sections_fields" role="tab" data-toggle="tab">Поля
-                    разделов</a>
+                <a href="#sections_fields" aria-controls="sections_fields" role="tab" data-toggle="tab">{{ trans('bitrix_iblocks_form.tab_section_fields_title') }}</a>
             </li>
             <li role="presentation">
-                <a href="#shop_catalog" aria-controls="shop_catalog" role="tab" data-toggle="tab">Торговый каталог</a>
+                <a href="#shop_catalog" aria-controls="shop_catalog" role="tab" data-toggle="tab">{{ trans('bitrix_iblocks_form.tab_shop_catalog_title') }}</a>
             </li>
             <li role="presentation">
-                <a href="#permissions" aria-controls="permissions" role="tab" data-toggle="tab">Права доступа</a>
+                <a href="#permissions" aria-controls="permissions" role="tab" data-toggle="tab">{{ trans('bitrix_iblocks_form.tab_permissions_title') }}</a>
             </li>
             <li role="presentation">
-                <a href="#captions" aria-controls="captions" role="tab" data-toggle="tab">Подписи</a>
+                <a href="#captions" aria-controls="captions" role="tab" data-toggle="tab">{{ trans('bitrix_iblocks_form.tab_captions_title') }}</a>
             </li>
             <li role="presentation">
-                <a href="#event_log" aria-controls="event_log" role="tab" data-toggle="tab">Журнал событий</a>
+                <a href="#event_log" aria-controls="event_log" role="tab" data-toggle="tab">{{ trans('bitrix_iblocks_form.tab_event_log_title') }}</a>
             </li>
         </ul>
         <div class="tab-content">
