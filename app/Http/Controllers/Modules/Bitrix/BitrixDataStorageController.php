@@ -36,10 +36,6 @@ class BitrixDataStorageController extends Controller{
 	}
 
 	public function add_ib(Bitrix $module, Request $request){
-		if (!$this->userCreatedModule($module->id)){
-			return $this->unauthorized($request);
-		}
-
 		$data = [
 			'module'           => $module,
 			'iblock'           => null,
@@ -52,10 +48,6 @@ class BitrixDataStorageController extends Controller{
 	}
 
 	public function store_ib(Bitrix $module, Request $request){
-		if (!$this->userCreatedModule($module->id)){
-			return $this->unauthorized($request);
-		}
-
 		$params = $request->all();
 		unset($params['_token']);
 
@@ -100,9 +92,6 @@ class BitrixDataStorageController extends Controller{
 	}
 
 	public function save_ib(Bitrix $module, BitrixInfoblocks $iblock, Request $request){
-		if (!$this->userCreatedModule($module->id)){
-			return $this->unauthorized($request);
-		}
 		$params = $request->all();
 		unset($params['_token']);
 
@@ -160,10 +149,6 @@ class BitrixDataStorageController extends Controller{
 	}
 
 	public function detail_ib(Bitrix $module, BitrixInfoblocks $iblock, Request $request){
-		if (!$this->userCreatedModule($module->id)){
-			return $this->unauthorized($request);
-		}
-
 		$data = [
 			'module'           => $module,
 			'iblock'           => $iblock,
