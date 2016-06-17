@@ -1,83 +1,64 @@
 <table class="table">
     <tr>
-        <th>Значения свойств
-            хранятся:
+        <th>{{ trans('bitrix_iblocks_form.param_property_values_are_stored') }}:
         </th>
         <td>
             <label>
                 <input type="radio" name="VERSION" value="1" checked="">
-                в общей таблице (по
-                умолчанию)
+                {{ trans('bitrix_iblocks_form.in_a_common_data_table') }}
             </label>
             <br>
             <label>
                 <input type="radio" name="VERSION" value="2">
-                в отдельной таблице для данного
-                информационного блока
+                {{ trans('bitrix_iblocks_form.in_a_separate_table') }}
             </label>
         </td>
     </tr>
     <tr>
-        <th>
-            <label for="ACTIVE">Информационный блок активен:</label>
-        </th>
+        <th>{{ trans('bitrix_iblocks_form.param_code') }}:</th>
         <td>
-            <input type="checkbox" id="ACTIVE" name="ACTIVE" value="Y" checked="">
-            <label for="ACTIVE" title=""></label>
+            <input type="text" class="form-control" id="CODE" name="CODE" size="50" maxlength="50"
+                   value="{{isset($iblock)?$iblock->params->CODE:''}}" data-translit_from="NAME" required>
         </td>
     </tr>
     <tr>
-        <th>Символьный код:</th>
+        <th>{{ trans('bitrix_iblocks_form.param_name') }}:</th>
         <td>
-            <input type="text" class="form-control" name="CODE" size="50" maxlength="50"
-                   value="{{isset($iblock)?$iblock->params->CODE:''}}" required>
-        </td>
-    </tr>
-    <tr>
-        <th>Сайты:</th>
-        <td>
-            <input type="text" class="form-control" name="LID" value="{{isset($iblock)?$iblock->params->LID:'s1'}}">
-        </td>
-    </tr>
-    <tr>
-        <th>Название:</th>
-        <td>
-            <input type="text" class="form-control" name="NAME" size="55" maxlength="255"
+            <input type="text" class="form-control" id="NAME" name="NAME" size="55" maxlength="255"
                    value="{{isset($iblock)?$iblock->params->NAME:''}}" required>
         </td>
     </tr>
     <tr>
-        <th>Сортировка:</th>
+        <th>{{ trans('bitrix_iblocks_form.param_sort') }}:</th>
         <td>
             <input type="text" class="form-control" name="SORT" size="10" maxlength="10" value="500">
         </td>
     </tr>
     <tr>
-        <th>URL страницы информационного блока:</th>
+        <th>{{ trans('bitrix_iblocks_form.param_index_url') }}:</th>
         <td>
             <input type="text" class="form-control" name="LIST_PAGE_URL" id="LIST_PAGE_URL" size="55" maxlength="255"
-                   value="#SITE_DIR#/vregions/index.php?ID=#IBLOCK_ID#">
+                   value="#SITE_DIR#/{{$module->code}}/index.php?ID=#IBLOCK_ID#">
         </td>
     </tr>
     <tr>
-        <th>URL страницы раздела:</th>
+        <th>{{ trans('bitrix_iblocks_form.param_section_url') }}:</th>
         <td>
             <input type="text" class="form-control" name="SECTION_PAGE_URL" id="SECTION_PAGE_URL" size="55"
                    maxlength="255"
-                   value="#SITE_DIR#/vregions/list.php?SECTION_ID=#SECTION_ID#">
+                   value="#SITE_DIR#/{{$module->code}}/list.php?SECTION_ID=#SECTION_ID#">
         </td>
     </tr>
     <tr>
-        <th>URL страницы детального просмотра:</th>
+        <th>{{ trans('bitrix_iblocks_form.param_element_url') }}:</th>
         <td>
             <input type="text" class="form-control" name="DETAIL_PAGE_URL" id="DETAIL_PAGE_URL" size="55"
                    maxlength="255"
-                   value="#SITE_DIR#/vregions/detail.php?ID=#ELEMENT_ID#">
+                   value="#SITE_DIR#/{{$module->code}}/detail.php?ID=#ELEMENT_ID#">
         </td>
     </tr>
     <tr>
-        <th>Канонический URL элемента:<br>(необходимо указать
-            протокол, адрес сервера и путь на сайте)
+        <th>{{ trans('bitrix_iblocks_form.param_canonic_url') }}:
         </th>
         <td>
             <input type="text" class="form-control" name="CANONICAL_PAGE_URL" id="CANONICAL_PAGE_URL" size="55"
@@ -86,8 +67,7 @@
     </tr>
     <tr>
         <th>
-            <label for="INDEX_SECTION">Индексировать разделы для
-                модуля поиска:
+            <label for="INDEX_SECTION">{{ trans('bitrix_iblocks_form.param_index_section') }}:
             </label>
         </th>
         <td>
@@ -99,8 +79,7 @@
     </tr>
     <tr>
         <th>
-            <label for="INDEX_ELEMENT">Индексировать элементы для
-                модуля поиска:
+            <label for="INDEX_ELEMENT">{{ trans('bitrix_iblocks_form.param_index_element') }}:
             </label>
         </th>
         <td>
@@ -110,59 +89,39 @@
                     for="INDEX_ELEMENT" title=""></label>
         </td>
     </tr>
-    <tr>
-        <th>Участвует в документообороте или бизнес процессах</th>
-        <td>
-            <select class="form-control" name="WF_TYPE">
-                <option value="N" selected="">нет</option>
-                <option value="WF">документооборот</option>
-                <option value="BP">бизнес процессы</option>
-            </select>
-        </td>
-    </tr>
-    <tr>
-        <th>Интерфейс привязки элемента к разделам:</th>
-        <td>
-            <select class="form-control" name="SECTION_CHOOSER">
-                <option value="L" selected="">Список множественного выбора</option>
-                <option value="D">Выпадающие списки</option>
-                <option value="P">Окно поиска</option>
-            </select>
-        </td>
-    </tr>
-    <tr>
-        <th>Режим просмотра разделов и элементов:</th>
-        <td>
-            <select class="form-control" name="LIST_MODE">
-                <option value="">из настроек модуля</option>
-                <option value="S">раздельный</option>
-                <option value="C">совместный</option>
-            </select>
-        </td>
-    </tr>
-    <tr>
-        <th>Изображение:</th>
-        <td>
-            <a href="#" class="btn btn-primary">Добавить файл</a>
-        </td>
-    </tr>
-    <tr>
-        <td colspan="2">
-            <label for="bxed_DESCRIPTION_text">
-                <input checked="checked" type="radio"
-                       name="DESCRIPTION_TYPE"
-                       id="bxed_DESCRIPTION_text"
-                       value="text">
-                Текст
-            </label>
-            <label for="bxed_DESCRIPTION_html">
-                <input type="radio" name="DESCRIPTION_TYPE"
-                       id="bxed_DESCRIPTION_html"
-                       value="html">
-                HTML
-            </label>
-            <textarea class="form-control" style="height:450px;" name="DESCRIPTION"
-                      id="bxed_DESCRIPTION" wrap="virtual"></textarea>
-        </td>
-    </tr>
+    {{--<tr>--}}
+        {{--<th>Участвует в документообороте или бизнес процессах</th>--}}
+        {{--<td>--}}
+            {{--<select class="form-control" name="WF_TYPE">--}}
+                {{--<option value="N" selected="">нет</option>--}}
+                {{--<option value="WF">документооборот</option>--}}
+                {{--<option value="BP">бизнес процессы</option>--}}
+            {{--</select>--}}
+        {{--</td>--}}
+    {{--</tr>--}}
+    {{--<tr>--}}
+        {{--<th>Изображение:</th>--}}
+        {{--<td>--}}
+            {{--<a href="#" class="btn btn-primary">Добавить файл</a>--}}
+        {{--</td>--}}
+    {{--</tr>--}}
+    {{--<tr>--}}
+        {{--<td colspan="2">--}}
+            {{--<label for="bxed_DESCRIPTION_text">--}}
+                {{--<input checked="checked" type="radio"--}}
+                       {{--name="DESCRIPTION_TYPE"--}}
+                       {{--id="bxed_DESCRIPTION_text"--}}
+                       {{--value="text">--}}
+                {{--Текст--}}
+            {{--</label>--}}
+            {{--<label for="bxed_DESCRIPTION_html">--}}
+                {{--<input type="radio" name="DESCRIPTION_TYPE"--}}
+                       {{--id="bxed_DESCRIPTION_html"--}}
+                       {{--value="html">--}}
+                {{--HTML--}}
+            {{--</label>--}}
+            {{--<textarea class="form-control" style="height:450px;" name="DESCRIPTION"--}}
+                      {{--id="bxed_DESCRIPTION" wrap="virtual"></textarea>--}}
+        {{--</td>--}}
+    {{--</tr>--}}
 </table>

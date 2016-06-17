@@ -67,7 +67,7 @@
 {{--                @include('bitrix.data_storage.iblock_tabs.event_log')--}}
             </div>
         </div>
-        <button class="btn btn-primary">Сохранить</button>
+        <button class="btn btn-primary">{{ trans('bitrix_iblocks_form.button_save') }}</button>
     </form>
 
 @stop
