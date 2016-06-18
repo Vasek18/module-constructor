@@ -5,18 +5,21 @@ namespace App\Helpers;
 // todo не работает, если в значении есть запятая
 class vArrParse{
 
-	public static function parseFromFile($file, $arrayName){
+	public static function parseFromFile($file, $arrayName = ''){
 		$fileContent = file_get_contents($file);
 
 		return static::parseFromText($fileContent, $arrayName);
 	}
 
-	public static function parseFromText($text, $arrayName){
+	public static function parseFromText($text, $arrayName = ''){
 		$text = static::normalizeText($text);
-		$arrayName = static::validateArrayName($arrayName);
-		$text = static::transformAllPartsOfArrToANormalAndJointForm($text, $arrayName);
-		//dd($text);
+		if ($arrayName){
+			$arrayName = static::validateArrayName($arrayName);
+			$text = static::transformAllPartsOfArrToANormalAndJointForm($text, $arrayName);
+			//dd($text);
+		}
 		$arrString = static::getStringWithOnlyArrayBody($text, $arrayName);
+		//dd($arrString);
 		$array = static::parseArrayFromPreparedString($arrString);
 
 		return $array;
@@ -55,6 +58,9 @@ class vArrParse{
 	public static function getStringWithOnlyArrayBody($text, $arrayName = '', $sub = false){
 		//echo $text;
 		$varEnding = ';';
+		if (strpos($text, $varEnding) === false){ // на случай поиска массива, например, в вызове функции
+			$varEnding = '';
+		}
 		if ($sub){ // если вложенный массив
 			$varEnding = '';
 		}
@@ -62,6 +68,7 @@ class vArrParse{
 		if ($arrayName){
 			preg_match('/'.$arrayName.'\s*\=\s*(?:array|Array)\(([^\;]+)\)'.$varEnding.'/is', $text, $matches);
 		}else{
+			//dd($text);
 			preg_match('/(?:array|Array)\((.+)\)'.$varEnding.'/is', $text, $matches);
 		}
 

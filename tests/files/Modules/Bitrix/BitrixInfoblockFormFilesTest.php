@@ -12,15 +12,44 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 	function createIblockOnForm($module, $params){
 		$this->visit('/my-bitrix/'.$module->id.'/data_storage/ib');
 		$inputs = [];
-		if (isset($params['name'])){
-			$inputs['NAME'] = $params['name'];
+		if (isset($params['NAME'])){
+			$inputs['NAME'] = $params['NAME'];
 		}
-		if (isset($params['code'])){
-			$inputs['CODE'] = $params['code'];
+		if (isset($params['CODE'])){
+			$inputs['CODE'] = $params['CODE'];
 		}
-		if (isset($params['sort'])){
-			$inputs['SORT'] = $params['sort'];
+		if (isset($params['SORT'])){
+			$inputs['SORT'] = $params['SORT'];
 		}
+		if (isset($params['VERSION'])){
+			$inputs['VERSION'] = $params['VERSION'];
+		}
+		if (isset($params['LIST_PAGE_URL'])){
+			$inputs['LIST_PAGE_URL'] = $params['LIST_PAGE_URL'];
+		}
+		if (isset($params['SECTION_PAGE_URL'])){
+			$inputs['SECTION_PAGE_URL'] = $params['SECTION_PAGE_URL'];
+		}
+		if (isset($params['DETAIL_PAGE_URL'])){
+			$inputs['DETAIL_PAGE_URL'] = $params['DETAIL_PAGE_URL'];
+		}
+		if (isset($params['CANONICAL_PAGE_URL'])){
+			$inputs['CANONICAL_PAGE_URL'] = $params['CANONICAL_PAGE_URL'];
+		}
+		//if (isset($params['INDEX_SECTION'])){ // todo
+		//	$inputs['INDEX_SECTION'] = $params['INDEX_SECTION'];
+		//}
+		//else{
+		//	$this->uncheck('INDEX_SECTION');
+		//}
+		//if (isset($params['INDEX_ELEMENT'])){ // todo
+		//	$inputs['INDEX_ELEMENT'] = $params['INDEX_ELEMENT'];
+		//}
+		//else{
+		//	$this->uncheck('INDEX_SECTION');
+		//}
+
+		//dd($params);
 
 		$this->submitForm('save', $inputs);
 
@@ -44,8 +73,14 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 		$module = $this->createBitrixModule();
 
 		$ib = $this->createIblockOnForm($module, [
-			'name' => 'Ololo',
-			'code' => 'trololo'
+			'VERSION'             => '2',
+			'NAME'             => 'Ololo',
+			'CODE'             => 'trololo',
+			"SORT"             => "555",
+			"LIST_PAGE_URL"    => "#SITE_DIR#/".$module->code."/index.php?ID=#IBLOCK_ID##hi",
+			"SECTION_PAGE_URL" => "#SITE_DIR#/".$module->code."/list.php?SECTION_ID=#SECTION_ID##hi",
+			"DETAIL_PAGE_URL"  => "#SITE_DIR#/".$module->code."/detail.php?ID=#ELEMENT_ID##hi",
+			"CANONICAL_PAGE_URL"  => "test",
 		]);
 
 		$installationFileContent = file_get_contents($module->getFolder(true).'/install/index.php');
@@ -57,14 +92,14 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 
 		$expectedInstallationFuncCodeArray = [
 			"IBLOCK_TYPE_ID"     => '$iblockType',
-			"VERSION"            => "1",
+			"VERSION"            => "2",
 			"CODE"               => "trololo",
 			"NAME"               => 'Loc::getMessage("'.$module->lang_key.'_IBLOCK_TROLOLO_NAME")',
-			"SORT"               => "500",
-			"LIST_PAGE_URL"      => "#SITE_DIR#/".$module->code."/index.php?ID=#IBLOCK_ID#",
-			"SECTION_PAGE_URL"   => "#SITE_DIR#/".$module->code."/list.php?SECTION_ID=#SECTION_ID#",
-			"DETAIL_PAGE_URL"    => "#SITE_DIR#/".$module->code."/detail.php?ID=#ELEMENT_ID#",
-			"CANONICAL_PAGE_URL" => "",
+			"SORT"               => "555",
+			"LIST_PAGE_URL"      => "#SITE_DIR#/".$module->code."/index.php?ID=#IBLOCK_ID##hi",
+			"SECTION_PAGE_URL"   => "#SITE_DIR#/".$module->code."/list.php?SECTION_ID=#SECTION_ID##hi",
+			"DETAIL_PAGE_URL"    => "#SITE_DIR#/".$module->code."/detail.php?ID=#ELEMENT_ID##hi",
+			"CANONICAL_PAGE_URL" => "test",
 			"INDEX_SECTION"      => "Y",
 			"INDEX_ELEMENT"      => "Y",
 			"GROUP_ID"           => [
