@@ -24,4 +24,23 @@ return [
 	'param_canonic_url'                => 'Канонический URL элемента',
 	'param_index_section'              => 'Индексировать разделы для модуля поиска',
 	'param_index_element'              => 'Индексировать элементы для модуля поиска',
+
+	'sections_seo_params_group_title'                   => 'Настройки для разделов',
+	'elements_seo_params_group_title'                   => 'Настройки для элементов',
+	'sections_announce_pictures_seo_params_group_title' => 'Настройки для изображений разделов',
+	'sections_detail_pictures_seo_params_group_title'   => 'Настройки для детальных картинок разделов',
+	'elements_announce_pictures_seo_params_group_title' => 'Настройки для картинок анонса элементов',
+	'elements_detail_pictures_seo_params_group_title'   => '
+Настройки для детальных картинок элементов',
+	'param_meta_title_template'                         => 'Шаблон META TITLE',
+	'param_meta_keywords_template'                      => 'Шаблон META KEYWORDS',
+	'param_meta_description_template'                   => 'Шаблон META DESCRIPTION',
+	'param_section_page_title'                          => 'Заголовок раздела',
+	'param_element_page_title'                          => 'Заголовок товара',
+	'param_picture_alt_template'                        => 'Шаблон ALT',
+	'param_picture_title_template'                      => 'Шаблон TITLE',
+	'param_picture_file_name_template'                  => 'Шаблон имени файла',
+	'param_transform_to_lower_case'                     => 'Привести к нижнему регистру',
+	'param_transliterate'                               => 'Транслитерировать',
+	'param_transliterate_whitespace_replacement'           => 'Замена для пробельных символов после транслитерации',
 ];

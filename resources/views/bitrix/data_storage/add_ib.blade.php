@@ -60,7 +60,7 @@
                 @include('bitrix.data_storage.iblock_tabs.infoblok')
             </div>
             <div role="tabpanel" class="tab-pane" id="seo">
-                {{--                @include('bitrix.data_storage.iblock_tabs.seo')--}}
+                @include('bitrix.data_storage.iblock_tabs.seo')
             </div>
             <div role="tabpanel" class="tab-pane" id="fields">
                 {{--                @include('bitrix.data_storage.iblock_tabs.fields')--}}

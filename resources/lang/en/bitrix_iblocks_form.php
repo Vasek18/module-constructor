@@ -24,4 +24,23 @@ return [
 	'param_canonic_url'                => 'Element canonical URL',
 	'param_index_section'              => 'Index sections gor search',
 	'param_index_element'              => 'Index element for search',
+
+	'sections_seo_params_group_title'                   => 'Section settings',
+	'elements_seo_params_group_title'                   => 'Elements settings',
+	'sections_announce_pictures_seo_params_group_title' => 'Section pictures settings',
+	'sections_detail_pictures_seo_params_group_title'   => 'Section detail pictures settings',
+	'elements_announce_pictures_seo_params_group_title' => 'Elements announcement pictures settings',
+	'elements_detail_pictures_seo_params_group_title'   => '
+Elements detail pictures settings',
+	'param_meta_title_template'                         => 'Template of META TITLE',
+	'param_meta_keywords_template'                      => 'Template of META KEYWORDS',
+	'param_meta_description_template'                   => 'Template of META DESCRIPTION',
+	'param_section_page_title'                          => 'Section title',
+	'param_element_page_title'                          => 'Element title',
+	'param_picture_alt_template'                        => 'Template of ALT',
+	'param_picture_title_template'                      => 'Template of TITLE',
+	'param_picture_file_name_template'                  => 'Template of filename',
+	'param_transform_to_lower_case'                     => 'Transform to lower case',
+	'param_transliterate'                               => 'Transliterate',
+	'param_transliterate_whitespace_replacement'           => 'Replacement for of whitespace after transliteration',
 ];

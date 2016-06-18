@@ -60,6 +60,13 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 		return true;
 	}
 
+	function getLangFileArray($module, $lang = 'ru'){
+		$optionsFileContent = $this->disk()->get($module->module_folder.'/lang/'.$lang.'/install/index.php');
+		$optionsArr = vArrParse::parseFromText($optionsFileContent, 'MESS');
+
+		return $optionsArr;
+	}
+
 	//function getPropsArrayFromFile($module){
 	//	$optionsFileContent = $this->disk()->get($module->module_folder.'/options.php');
 	//	$optionsArr = vArrParse::parseFromText($optionsFileContent, 'aTabs');
@@ -84,6 +91,7 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 		]);
 
 		$installationFileContent = file_get_contents($module->getFolder(true).'/install/index.php');
+		$optionsLangArr = $this->getLangFileArray($module);
 		$module->deleteFolder();
 
 		$gottenInstallationFuncCode = vFuncParse::parseFromText($installationFileContent, 'createNecessaryIblocks');
@@ -109,8 +117,8 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 
 		$this->assertEquals(1, substr_count($gottenInstallationFuncCode, 'createNecessaryIblocks'));
 		$this->assertEquals($expectedInstallationFuncCodeArray, $gottenInstallationFuncCodeArray);
+		$this->assertArraySubset([$module->lang_key.'_IBLOCK_TROLOLO_NAME' => 'Ololo'], $optionsLangArr);
 	}
-
 }
 
 ?>

@@ -1,5 +1,6 @@
 <h3>{{trans('personal_index.bitrix')}}
-    <a href="{{ action('Modules\Bitrix\BitrixController@create') }}" class="btn btn-success pull-right">        {{trans('personal_index.create_bitrix_module')}}</a>
+    <a href="{{ action('Modules\Bitrix\BitrixController@create') }}"
+       class="btn btn-success pull-right">        {{trans('personal_index.create_bitrix_module')}}</a>
 </h3>
 @if ( !$bitrix_modules->isEmpty())
     @foreach($bitrix_modules as $module)
@@ -104,7 +105,7 @@
                                 <ul>
                                     @foreach($module->infoblocks as $infoblock)
                                         <li>
-                                            {{$infoblock->name}}
+                                            <a href="{{ action('Modules\Bitrix\BitrixDataStorageController@detail_ib', [$module->id, $infoblock->id]) }}">{{$infoblock->name}}</a>
                                         </li>
                                     @endforeach
                                 </ul>
@@ -112,14 +113,15 @@
                                 <p>Никакие данные не хранятся</p>
                             @endif
                             <p>
-                                <a class="btn btn-primary"
+                                <a class=" btn btn-primary
+                                            "
                                    href="{{ route('bitrix_module_data_storage', $module->id) }}">Перейти
                                     в раздел "Хранение данных"
                                 </a>
                             </p>
                             <hr>
-                                <h3>Почтовые события</h3>
-                                @if (count($module->mailEvents))
+                            <h3>Почтовые события</h3>
+                            @if (count($module->mailEvents))
                                 <ul>
                                     @foreach($module->mailEvents as $mail_event)
                                         <li>
