@@ -1,25 +1,28 @@
 <?php
 
-// todo не работает
-
 namespace App\Helpers;
 
 class vFuncParse{
 
-	public function parseFromFile($file, $funcName){
+	public static function parseFromFile($file, $funcName){
 		$fileContent = file_get_contents($file);
 
-		return $this->parseFromText($fileContent, $funcName);
+		return static::parseFromText($fileContent, $funcName);
 	}
 
-	public function parseFromText($text, $funcName){
-		$funcBeginning = $this->getBeginningOfFunction($text, $funcName);
-		$funcBeginningPos = $this->getBeginningPosOfFunction($text, $funcBeginning);
-		$funcEndingPos = $this->getEndingPosOfFunction($text, $funcBeginning, $funcBeginningPos);
-		dd($funcEndingPos);
+	public static function parseFromText($text, $funcName){
+		$funcBeginning = static::getBeginningOfFunction($text, $funcName);
+		//dd($funcBeginning);
+		$funcBeginningPos = static::getBeginningPosOfFunction($text, $funcBeginning);
+		//dd($funcBeginningPos);
+		$funcEndingPos = static::getEndingPosOfFunction($text, $funcBeginning, $funcBeginningPos);
+		//dd($funcEndingPos);
+		$functionString = static::extractFuncString($text, $funcBeginningPos, $funcEndingPos);
+
+		return $functionString;
 	}
 
-	protected function getBeginningOfFunction($text, $funcName){
+	protected static function getBeginningOfFunction($text, $funcName){
 		preg_match('/(function\s+'.$funcName.'\s*\([^\{]*\){)/is', $text, $matches);
 		if (isset($matches[1])){
 			return $matches[1];
@@ -28,7 +31,7 @@ class vFuncParse{
 		return false;
 	}
 
-	protected function getBeginningPosOfFunction($text, $funcBeginning){
+	protected static function getBeginningPosOfFunction($text, $funcBeginning){
 		$beginning = strpos($text, $funcBeginning);
 		if ($beginning !== false){
 			return $beginning;
@@ -37,26 +40,36 @@ class vFuncParse{
 		return false;
 	}
 
-	protected function getEndingPosOfFunction($text, $funcBeginning, $funcBeginningPos){
+	protected static function getEndingPosOfFunction($text, $funcBeginning, $funcBeginningPos){
 		$text = substr($text, $funcBeginningPos + strlen($funcBeginning));
+		//dd($text);
 
 		$openBracketsC = 0;
 		$endingBracketsC = 0;
 		$pos = 0;
+		$substr = '';
 		while ($openBracketsC >= $endingBracketsC){
-			$pos = strpos($text, '}', $pos);
+			$pos = strpos($text, '}', strlen($substr));
+			//dd($pos);
+
 			$substr = substr($text, 0, $pos + 1);
-			if ($pos > 203){
-				dd($pos."  ###  ".$substr);
-			}
+			//echo $substr;
+			//echo '<br>';
+
 			$openBracketsC = substr_count($substr, '{');
 			$endingBracketsC = substr_count($substr, '}');
-			//dd($openBracketsC." ".$endingBracketsC);
+			//	//dd($openBracketsC." ".$endingBracketsC);
 		}
-		dd($substr);
-		echo "<br>";
+		//dd($pos);
+		//echo "<br>";
 
-		dd($text);
+		//dd($text);
+
+		return $pos + $funcBeginningPos + strlen($funcBeginning);
+	}
+
+	protected static function extractFuncString($text, $funcBeginningPos, $funcEndingPos){
+		return substr($text, $funcBeginningPos, $funcEndingPos - $funcBeginningPos + 1);
 	}
 
 }

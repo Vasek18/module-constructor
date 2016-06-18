@@ -324,6 +324,17 @@ class vArrParseTest extends TestCase{
 
 		$this->assertEquals($expectedArr, $gottenArr);
 	}
+
+	/** @test */
+	function it_parses_unnamed_ass_array(){
+		$string = "Array('ololo' => 'trololo', 'a' => 'b')";
+		$expectedArr = ['ololo' => 'trololo', 'a' => 'b'];
+
+		$gottenArr = vArrParse::parseFromText($string);
+		//dd($gottenArr);
+
+		$this->assertEquals($expectedArr, $gottenArr);
+	}
 }
 
 ?>

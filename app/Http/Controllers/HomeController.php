@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Models\Modules\Bitrix\Bitrix;
-use App\vArrParse;
+use App\Helpers\vFuncParse;
+use App\Helpers\vArrParse;
 
 class HomeController extends Controller{
 	/**
@@ -15,16 +16,6 @@ class HomeController extends Controller{
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index(){
-//		$vArrParse = new vArrParse;
-//		dd($vArrParse->parseFromText('$arTypesEx = Array();
-//$db_iblock_type = CIBlockType::GetList(Array("SORT"=>"ASC"));
-//while($arRes = $db_iblock_type->Fetch())
-//{
-//	if($arIBType = CIBlockType::GetByIDLang($arRes["ID"], LANG))
-//	{
-//		$arTypesEx[$arRes["ID"]] = $arIBType["NAME"];
-//	}
-//}', '$arTypesEx'));
 		$countModules = Bitrix::count();
 		$modulesEnding = 'ей';
 		if (substr($countModules, -1, 1) == '1'){
@@ -34,7 +25,7 @@ class HomeController extends Controller{
 			$modulesEnding = 'я';
 		}
 		$data = [
-			'countModules' => $countModules,
+			'countModules'  => $countModules,
 			'modulesEnding' => $modulesEnding,
 		];
 

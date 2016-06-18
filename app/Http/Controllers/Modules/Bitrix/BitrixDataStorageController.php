@@ -50,6 +50,7 @@ class BitrixDataStorageController extends Controller{
 	public function store_ib(Bitrix $module, Requests\InfoblockFormRequest $request){
 		$params = $request->all();
 		unset($params['_token']);
+		unset($params['save']);
 
 		$properties = $params["properties"];
 		unset($params["properties"]);
