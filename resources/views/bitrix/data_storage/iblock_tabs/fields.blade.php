@@ -36,7 +36,7 @@
         </td>
         <td>
             <select class="form-control" name="FIELDS[ACTIVE_FROM][DEFAULT_VALUE]">
-                <option>Не задано</option>
+                <option value="">Не задано</option>
                 <option value="=now">Текущие дата и время</option>
                 <option value="=today">Текущая дата</option>
             </select>
@@ -125,14 +125,14 @@
                 <div>
                     <input type="checkbox" value="resample"
                            id="FIELDS[PREVIEW_PICTURE][DEFAULT_VALUE][METHOD]"
-                           name="FIELDS[PREVIEW_PICTURE][DEFAULT_VALUE][METHOD]" checked>
+                           name="FIELDS[PREVIEW_PICTURE][DEFAULT_VALUE][METHOD]">
                     <label for="FIELDS[PREVIEW_PICTURE][DEFAULT_VALUE][METHOD]">Сохранять качество при
                         масштабировании (требует больше ресурсов на сервере)
                     </label>
                 </div>
                 <div>
                     Качество (только для JPEG, 1-100, по умолчанию около 75):
-                    <input name="FIELDS[PREVIEW_PICTURE][DEFAULT_VALUE][COMPRESSION]" type="text" value="95"
+                    <input name="FIELDS[PREVIEW_PICTURE][DEFAULT_VALUE][COMPRESSION]" type="text" placeholder="95"
                            class="form-control">
                     <input type="checkbox" value="Y"
                            id="FIELDS[PREVIEW_PICTURE][DEFAULT_VALUE][USE_WATERMARK_FILE]"
@@ -158,6 +158,7 @@
                     <select class="form-control"
                             name="FIELDS[PREVIEW_PICTURE][DEFAULT_VALUE][WATERMARK_FILE_POSITION]"
                             id="FIELDS[PREVIEW_PICTURE][DEFAULT_VALUE][WATERMARK_FILE_POSITION]">
+                        <option value="">Выберите</option>
                         <option value="tl">Сверху слева</option>
                         <option value="tc">Сверху по центру</option>
                         <option value="tr">Сверху справа</option>
@@ -203,6 +204,7 @@
                     <select class="form-control"
                             name="FIELDS[PREVIEW_PICTURE][DEFAULT_VALUE][WATERMARK_TEXT_POSITION]"
                             id="FIELDS[PREVIEW_PICTURE][DEFAULT_VALUE][WATERMARK_TEXT_POSITION]">
+                        <option value="">Выберите</option>
                         <option value="tl">Сверху слева</option>
                         <option value="tc">Сверху по центру</option>
                         <option value="tr">Сверху справа</option>
@@ -275,14 +277,14 @@
                 <div>
                     <input type="checkbox" value="resample"
                            id="FIELDS[DETAIL_PICTURE][DEFAULT_VALUE][METHOD]"
-                           name="FIELDS[DETAIL_PICTURE][DEFAULT_VALUE][METHOD]" checked>
+                           name="FIELDS[DETAIL_PICTURE][DEFAULT_VALUE][METHOD]">
                     <label for="FIELDS[DETAIL_PICTURE][DEFAULT_VALUE][METHOD]">Сохранять качество при
                         масштабировании (требует больше ресурсов на сервере)
                     </label>
                 </div>
                 <div>
                     Качество (только для JPEG, 1-100, по умолчанию около 75):
-                    <input name="FIELDS[DETAIL_PICTURE][DEFAULT_VALUE][COMPRESSION]" type="text" value="95"
+                    <input name="FIELDS[DETAIL_PICTURE][DEFAULT_VALUE][COMPRESSION]" type="text" placeholder="95"
                            class="form-control">
                     <input type="checkbox" value="Y"
                            id="FIELDS[DETAIL_PICTURE][DEFAULT_VALUE][USE_WATERMARK_FILE]"
@@ -308,6 +310,7 @@
                     <select class="form-control"
                             name="FIELDS[DETAIL_PICTURE][DEFAULT_VALUE][WATERMARK_FILE_POSITION]"
                             id="FIELDS[DETAIL_PICTURE][DEFAULT_VALUE][WATERMARK_FILE_POSITION]">
+                        <option value="">Выберите</option>
                         <option value="tl">Сверху слева</option>
                         <option value="tc">Сверху по центру</option>
                         <option value="tr">Сверху справа</option>
@@ -353,6 +356,7 @@
                     <select class="form-control"
                             name="FIELDS[DETAIL_PICTURE][DEFAULT_VALUE][WATERMARK_TEXT_POSITION]"
                             id="FIELDS[DETAIL_PICTURE][DEFAULT_VALUE][WATERMARK_TEXT_POSITION]">
+                        <option value="">Выберите</option>
                         <option value="tl">Сверху слева</option>
                         <option value="tc">Сверху по центру</option>
                         <option value="tr">Сверху справа</option>

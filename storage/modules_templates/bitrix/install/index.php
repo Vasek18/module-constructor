@@ -127,11 +127,11 @@ Class {MODULE_CLASS_NAME} extends CModule{
 
 	public function createNecessaryIblocks(){
 		return true;
-	} // createNecessaryIblocks
+	}
 
 	public function deleteNecessaryIblocks(){
 		return true;
-	} // deleteNecessaryIblocks
+	}
 
 	public function createIblockType(){
 		global $DB, $APPLICATION;

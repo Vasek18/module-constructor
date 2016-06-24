@@ -98,6 +98,7 @@ class BitrixDataStorageController extends Controller{
 
 		$properties = $params["properties"];
 		unset($params["properties"]);
+		unset($params['save']);
 
 		//dd($params);
 

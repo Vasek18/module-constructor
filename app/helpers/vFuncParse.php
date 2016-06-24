@@ -1,5 +1,7 @@
 <?php
 
+// todo брать также public, static, ...
+
 namespace App\Helpers;
 
 class vFuncParse{

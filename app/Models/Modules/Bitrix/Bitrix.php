@@ -240,26 +240,6 @@ class Bitrix extends Model{
 		return in_array($this->module_folder, $this->disk()->directories());
 	}
 
-	public function generateInfoblocksCreationFunctionCode(){
-		$code = "\t".'public function createNecessaryIblocks(){'.PHP_EOL;
-		$code .= "\t\t".'$iblockType = $this->createIblockType();'.PHP_EOL;
-
-		$iblocks = $this->infoblocks()->get();
-		foreach ($iblocks as $iblock){
-			$code .= $iblock->generateCreationCode();
-		}
-
-		$code .= "\t".'} // createNecessaryIblocks'.PHP_EOL;
-
-		return $code;
-	}
-
-	public function generateInfoblocksDeletionFunctionCode(){
-		return "\t".'public function deleteNecessaryIblocks(){'.PHP_EOL.
-		"\t"."\t".'$this->removeIblockType();'.PHP_EOL.
-		"\t".'} // createNecessaryIblocks';
-	}
-
 	public function writeInfoblocksLangInfoInFile(){
 		$module_folder = $this->module_folder;
 		$path = $module_folder.'/lang/ru/install/index.php';
