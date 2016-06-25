@@ -125,15 +125,15 @@ Class {MODULE_CLASS_NAME} extends CModule{
 		}
 	}
 
-	public function createNecessaryIblocks(){
+	function createNecessaryIblocks(){
 		return true;
 	}
 
-	public function deleteNecessaryIblocks(){
+	function deleteNecessaryIblocks(){
 		return true;
 	}
 
-	public function createIblockType(){
+	function createIblockType(){
 		global $DB, $APPLICATION;
 		CModule::IncludeModule("iblock");
 
@@ -183,7 +183,7 @@ Class {MODULE_CLASS_NAME} extends CModule{
 		$DB->Commit();
 	}
 
-	public function createIblock($params){
+	function createIblock($params){
 		global $APPLICATION;
 		CModule::IncludeModule("iblock");
 
@@ -209,11 +209,11 @@ Class {MODULE_CLASS_NAME} extends CModule{
 		return $ibp->Add($arFieldsProp);
 	}
 
-	public function createNecessaryMailEvents(){
+	function createNecessaryMailEvents(){
 		return true;
 	} // createNecessaryMailEvents
 
-	public function deleteNecessaryMailEvents(){
+	function deleteNecessaryMailEvents(){
 		return true;
 	} // deleteNecessaryMailEvents
 
@@ -260,11 +260,11 @@ Class {MODULE_CLASS_NAME} extends CModule{
 		$et->Delete($code);
 	}
 
-	public function isVersionD7(){
+	function isVersionD7(){
 		return CheckVersion(\Bitrix\Main\ModuleManager::getVersion('main'), '14.00.00');
 	}
 
-	public function GetPath($notDocumentRoot = false){
+	function GetPath($notDocumentRoot = false){
 		if ($notDocumentRoot){
 			return str_ireplace(Application::getDocumentRoot(), '', dirname(__DIR__));
 		}else{

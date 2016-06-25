@@ -31,38 +31,36 @@
     <tr>
         <th>{{ trans('bitrix_iblocks_form.param_sort') }}:</th>
         <td>
-            <input type="text" class="form-control" name="SORT" size="10" maxlength="10" value="500">
+            <input type="text" class="form-control" name="SORT" value="{{isset($iblock)?$iblock->params->SORT:'500'}}">
         </td>
     </tr>
     <tr>
         <th>{{ trans('bitrix_iblocks_form.param_index_url') }}:</th>
         <td>
-            <input type="text" class="form-control" name="LIST_PAGE_URL" id="LIST_PAGE_URL" size="55" maxlength="255"
-                   value="#SITE_DIR#/{{$module->code}}/index.php?ID=#IBLOCK_ID#">
+            <input type="text" class="form-control" name="LIST_PAGE_URL" id="LIST_PAGE_URL"
+                   value="{{isset($iblock)?$iblock->params->LIST_PAGE_URL:'#SITE_DIR#/'.$module->code.'/index.php?ID=#IBLOCK_ID#'}}">
         </td>
     </tr>
     <tr>
         <th>{{ trans('bitrix_iblocks_form.param_section_url') }}:</th>
         <td>
-            <input type="text" class="form-control" name="SECTION_PAGE_URL" id="SECTION_PAGE_URL" size="55"
-                   maxlength="255"
-                   value="#SITE_DIR#/{{$module->code}}/list.php?SECTION_ID=#SECTION_ID#">
+            <input type="text" class="form-control" name="SECTION_PAGE_URL" id="SECTION_PAGE_URL"
+                   value="{{isset($iblock)?$iblock->params->SECTION_PAGE_URL:'#SITE_DIR#/'.$module->code.'/list.php?SECTION_ID=#SECTION_ID#'}}">
         </td>
     </tr>
     <tr>
         <th>{{ trans('bitrix_iblocks_form.param_element_url') }}:</th>
         <td>
-            <input type="text" class="form-control" name="DETAIL_PAGE_URL" id="DETAIL_PAGE_URL" size="55"
-                   maxlength="255"
-                   value="#SITE_DIR#/{{$module->code}}/detail.php?ID=#ELEMENT_ID#">
+            <input type="text" class="form-control" name="DETAIL_PAGE_URL" id="DETAIL_PAGE_URL"
+                   value="{{isset($iblock)?$iblock->params->DETAIL_PAGE_URL:'#SITE_DIR#/'.$module->code.'/detail.php?ID=#ELEMENT_ID#'}}">
         </td>
     </tr>
     <tr>
         <th>{{ trans('bitrix_iblocks_form.param_canonic_url') }}:
         </th>
         <td>
-            <input type="text" class="form-control" name="CANONICAL_PAGE_URL" id="CANONICAL_PAGE_URL" size="55"
-                   maxlength="255" value="">
+            <input type="text" class="form-control" name="CANONICAL_PAGE_URL" id="CANONICAL_PAGE_URL"
+                   value="{{isset($iblock)?$iblock->params->CANONICAL_PAGE_URL:''}}">
         </td>
     </tr>
     <tr>
@@ -71,10 +69,8 @@
             </label>
         </th>
         <td>
-            <input type="checkbox" id="INDEX_SECTION" name="INDEX_SECTION" value="Y" checked=""
-                    >
-            <label
-                    for="INDEX_SECTION" title=""></label>
+            <input type="checkbox" id="INDEX_SECTION" name="INDEX_SECTION" value="Y" checked="">
+            <label for="INDEX_SECTION"></label>
         </td>
     </tr>
     <tr>
@@ -83,45 +79,43 @@
             </label>
         </th>
         <td>
-            <input type="checkbox" id="INDEX_ELEMENT" name="INDEX_ELEMENT" value="Y" checked=""
-                    >
-            <label
-                    for="INDEX_ELEMENT" title=""></label>
+            <input type="checkbox" id="INDEX_ELEMENT" name="INDEX_ELEMENT" value="Y" checked="">
+            <label for="INDEX_ELEMENT"></label>
         </td>
     </tr>
     {{--<tr>--}}
-        {{--<th>Участвует в документообороте или бизнес процессах</th>--}}
-        {{--<td>--}}
-            {{--<select class="form-control" name="WF_TYPE">--}}
-                {{--<option value="N" selected="">нет</option>--}}
-                {{--<option value="WF">документооборот</option>--}}
-                {{--<option value="BP">бизнес процессы</option>--}}
-            {{--</select>--}}
-        {{--</td>--}}
+    {{--<th>Участвует в документообороте или бизнес процессах</th>--}}
+    {{--<td>--}}
+    {{--<select class="form-control" name="WF_TYPE">--}}
+    {{--<option value="N" selected="">нет</option>--}}
+    {{--<option value="WF">документооборот</option>--}}
+    {{--<option value="BP">бизнес процессы</option>--}}
+    {{--</select>--}}
+    {{--</td>--}}
     {{--</tr>--}}
     {{--<tr>--}}
-        {{--<th>Изображение:</th>--}}
-        {{--<td>--}}
-            {{--<a href="#" class="btn btn-primary">Добавить файл</a>--}}
-        {{--</td>--}}
+    {{--<th>Изображение:</th>--}}
+    {{--<td>--}}
+    {{--<a href="#" class="btn btn-primary">Добавить файл</a>--}}
+    {{--</td>--}}
     {{--</tr>--}}
     {{--<tr>--}}
-        {{--<td colspan="2">--}}
-            {{--<label for="bxed_DESCRIPTION_text">--}}
-                {{--<input checked="checked" type="radio"--}}
-                       {{--name="DESCRIPTION_TYPE"--}}
-                       {{--id="bxed_DESCRIPTION_text"--}}
-                       {{--value="text">--}}
-                {{--Текст--}}
-            {{--</label>--}}
-            {{--<label for="bxed_DESCRIPTION_html">--}}
-                {{--<input type="radio" name="DESCRIPTION_TYPE"--}}
-                       {{--id="bxed_DESCRIPTION_html"--}}
-                       {{--value="html">--}}
-                {{--HTML--}}
-            {{--</label>--}}
-            {{--<textarea class="form-control" style="height:450px;" name="DESCRIPTION"--}}
-                      {{--id="bxed_DESCRIPTION" wrap="virtual"></textarea>--}}
-        {{--</td>--}}
+    {{--<td colspan="2">--}}
+    {{--<label for="bxed_DESCRIPTION_text">--}}
+    {{--<input checked="checked" type="radio"--}}
+    {{--name="DESCRIPTION_TYPE"--}}
+    {{--id="bxed_DESCRIPTION_text"--}}
+    {{--value="text">--}}
+    {{--Текст--}}
+    {{--</label>--}}
+    {{--<label for="bxed_DESCRIPTION_html">--}}
+    {{--<input type="radio" name="DESCRIPTION_TYPE"--}}
+    {{--id="bxed_DESCRIPTION_html"--}}
+    {{--value="html">--}}
+    {{--HTML--}}
+    {{--</label>--}}
+    {{--<textarea class="form-control" style="height:450px;" name="DESCRIPTION"--}}
+    {{--id="bxed_DESCRIPTION" wrap="virtual"></textarea>--}}
+    {{--</td>--}}
     {{--</tr>--}}
 </table>

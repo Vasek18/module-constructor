@@ -84,6 +84,8 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 
 		$expectedInstallationFuncCodeArray = [
 			"IBLOCK_TYPE_ID"     => '$iblockType',
+			"ACTIVE"             => "Y",
+			"LID"                => "s1",
 			"VERSION"            => "2",
 			"CODE"               => "trololo",
 			"NAME"               => 'Loc::getMessage("'.$module->lang_key.'_IBLOCK_TROLOLO_NAME")',
@@ -160,7 +162,7 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 			"IPROPERTY_TEMPLATES[SECTION_DETAIL_PICTURE_FILE_ALT][TEMPLATE]"    => "test",
 			"IPROPERTY_TEMPLATES[SECTION_DETAIL_PICTURE_FILE_TITLE][TEMPLATE]"  => "test",
 			"IPROPERTY_TEMPLATES[SECTION_DETAIL_PICTURE_FILE_NAME][TEMPLATE]"   => "test",
-			"IPROPERTY_TEMPLATES[SECTION_DETAIL_PICTURE_FILE_NAME][SPACE]"     => "test",
+			"IPROPERTY_TEMPLATES[SECTION_DETAIL_PICTURE_FILE_NAME][SPACE]"      => "test",
 			"IPROPERTY_TEMPLATES[ELEMENT_PREVIEW_PICTURE_FILE_ALT][TEMPLATE]"   => "test",
 			"IPROPERTY_TEMPLATES[ELEMENT_PREVIEW_PICTURE_FILE_TITLE][TEMPLATE]" => "test",
 			"IPROPERTY_TEMPLATES[ELEMENT_PREVIEW_PICTURE_FILE_NAME][TEMPLATE]"  => "test",
@@ -178,6 +180,8 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 
 		$expectedInstallationFuncCodeArray = [
 			"IBLOCK_TYPE_ID"      => '$iblockType',
+			"ACTIVE"              => "Y",
+			"LID"                 => "s1",
 			"VERSION"             => "2",
 			"CODE"                => "trololo",
 			"NAME"                => 'Loc::getMessage("'.$module->lang_key.'_IBLOCK_TROLOLO_NAME")',
