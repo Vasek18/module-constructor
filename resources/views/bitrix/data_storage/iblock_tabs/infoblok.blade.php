@@ -69,7 +69,9 @@
             </label>
         </th>
         <td>
-            <input type="checkbox" id="INDEX_SECTION" name="INDEX_SECTION" value="Y" checked="">
+            <input type="hidden" name="INDEX_SECTION" value="N">
+            <input type="checkbox" id="INDEX_SECTION" name="INDEX_SECTION"
+                   value="Y" {{(isset($iblock) && isset($iblock->params->INDEX_SECTION) && $iblock->params->INDEX_SECTION == 'Y') || (!isset($iblock) || !isset($iblock->params->INDEX_SECTION))?'checked':''}}>
             <label for="INDEX_SECTION"></label>
         </td>
     </tr>
@@ -79,7 +81,9 @@
             </label>
         </th>
         <td>
-            <input type="checkbox" id="INDEX_ELEMENT" name="INDEX_ELEMENT" value="Y" checked="">
+            <input type="hidden" name="INDEX_ELEMENT" value="N">
+            <input type="checkbox" id="INDEX_ELEMENT" name="INDEX_ELEMENT"
+                   value="Y" {{(isset($iblock) && isset($iblock->params->INDEX_ELEMENT) && $iblock->params->INDEX_ELEMENT == 'Y') || (!isset($iblock) || !isset($iblock->params->INDEX_ELEMENT))?'checked':''}}>
             <label for="INDEX_ELEMENT"></label>
         </td>
     </tr>
