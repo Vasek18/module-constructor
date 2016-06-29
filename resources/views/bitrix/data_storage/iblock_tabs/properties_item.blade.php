@@ -58,11 +58,12 @@
                value="{{$property?$property->code:''}}">
     </td>
     <td>
-        <a href="#"
+        {{--<a href="#"
            class="btn btn-default"
            data-toggle="modal"
            data-target="#infoblok_prop_dop_settings_window_{{$i}}">...
         </a>
+        @include('bitrix.data_storage.iblock_tabs.properties_item_dop_settings_window', ['property' => $property, 'i' => $i])--}}
     </td>
     <td>
         @if($property)
@@ -73,4 +74,4 @@
             </a>
         @endif
     </td>
-</tr>@include('bitrix.data_storage.iblock_tabs.properties_item_dop_settings_window', ['property' => $property, 'i' => $i])
+</tr>

@@ -19,7 +19,7 @@ class vArrParse{
 			//dd($text);
 		}
 		$arrString = static::getStringWithOnlyArrayBody($text, $arrayName);
-		//dd($arrString);
+		// dd($arrString);
 		$array = static::parseArrayFromPreparedString($arrString);
 
 		return $array;
@@ -56,6 +56,14 @@ class vArrParse{
 	}
 
 	public static function getStringWithOnlyArrayBody($text, $arrayName = '', $sub = false){
+		// проверка на лишние закрывающие скобочки
+		$openParenthesisCount = substr_count($text, '(');
+		$closeParenthesisCount = substr_count($text, ')');
+		if ($closeParenthesisCount > $openParenthesisCount){
+			$text = substr($text, 0, strripos($text, ')'));
+			static::getStringWithOnlyArrayBody($text, $arrayName, $sub);
+		}
+
 		//echo $text;
 		$varEnding = ';';
 		if (strpos($text, $varEnding) === false){ // на случай поиска массива, например, в вызове функции
@@ -76,7 +84,8 @@ class vArrParse{
 
 		if (isset($matches[1])){
 			$arrString = $matches[1];
-			if ($sub){
+
+			if ($sub || !$arrayName){
 				if ($closingParenthesisPos = strpos($arrString, ')') !== false){
 					$closingParenthesisPos = intval(strpos($arrString, ')'));
 					if ((strpos($arrString, '(') === false) || (intval(strpos($arrString, '(')) > intval($closingParenthesisPos))){ // случай когда мы захватили сестринский массив
