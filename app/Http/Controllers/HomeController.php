@@ -29,6 +29,8 @@ class HomeController extends Controller{
 			'modulesEnding' => $modulesEnding,
 		];
 
+		// dd(vArrParse::parseFromText('Array("ololo" => func(14),"trololo" => "a"))'));
+
 		return view("index", $data);
 	}
 

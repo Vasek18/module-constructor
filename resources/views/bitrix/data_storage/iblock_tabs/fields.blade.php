@@ -348,7 +348,7 @@ $WATERMARK_FILE_POSITION = [
                    value="Y"
                    id="FIELDS[PREVIEW_TEXT_TYPE_ALLOW_CHANGE][DEFAULT_VALUE]"
                    name="FIELDS[PREVIEW_TEXT_TYPE_ALLOW_CHANGE][DEFAULT_VALUE]"
-                    {{(isset($iblock) && isset($iblock->params->FIELDS->PREVIEW_TEXT_TYPE_ALLOW_CHANGE->DEFAULT_VALUE) && $iblock->params->FIELDS->PREVIEW_TEXT_TYPE_ALLOW_CHANGE->DEFAULT_VALUE == 'Y') || (!isset($iblock) || !isset($iblock->params->FIELDS->PREVIEW_TEXT_TYPE_ALLOW_CHANGE->DEFAULT_VALUE))?'checked':''}}
+                    {{(isset($iblock) && isset($iblock->params->FIELDS->PREVIEW_TEXT_TYPE_ALLOW_CHANGE->DEFAULT_VALUE) && $iblock->params->FIELDS->PREVIEW_TEXT_TYPE_ALLOW_CHANGE->DEFAULT_VALUE == 'Y')?'checked':''}}
             >
             <label for="FIELDS[PREVIEW_TEXT_TYPE_ALLOW_CHANGE][DEFAULT_VALUE]">Разрешить переключаться между text и
                 html.
@@ -552,7 +552,7 @@ $WATERMARK_FILE_POSITION = [
                    value="Y"
                    id="FIELDS[DETAIL_TEXT_TYPE_ALLOW_CHANGE][DEFAULT_VALUE]"
                    name="FIELDS[DETAIL_TEXT_TYPE_ALLOW_CHANGE][DEFAULT_VALUE]"
-                    {{(isset($iblock) && isset($iblock->params->FIELDS->DETAIL_TEXT_TYPE_ALLOW_CHANGE->DEFAULT_VALUE) && $iblock->params->FIELDS->DETAIL_TEXT_TYPE_ALLOW_CHANGE->DEFAULT_VALUE == 'Y') || (!isset($iblock) || !isset($iblock->params->FIELDS->DETAIL_TEXT_TYPE_ALLOW_CHANGE->DEFAULT_VALUE))?'checked':''}}
+                    {{(isset($iblock) && isset($iblock->params->FIELDS->DETAIL_TEXT_TYPE_ALLOW_CHANGE->DEFAULT_VALUE) && $iblock->params->FIELDS->DETAIL_TEXT_TYPE_ALLOW_CHANGE->DEFAULT_VALUE == 'Y')?'checked':''}}
             >
             <label for="FIELDS[DETAIL_TEXT_TYPE_ALLOW_CHANGE][DEFAULT_VALUE]">Разрешить переключаться между text и html.
             </label>
@@ -627,7 +627,7 @@ $WATERMARK_FILE_POSITION = [
                     Приведение к регистру:
                     <select class="form-control"
                             name="FIELDS[CODE][DEFAULT_VALUE][TRANS_CASE]">
-                        <option>сохранить</option>
+                        <option value="">сохранить</option>
                         <option value="L"
                                 {{isset($iblock) && isset($iblock->params->FIELDS->CODE->DEFAULT_VALUE) && $iblock->params->FIELDS->CODE->DEFAULT_VALUE->TRANS_CASE == 'L'?'selected':''}}
                         >
@@ -660,10 +660,8 @@ $WATERMARK_FILE_POSITION = [
                            value="Y"
                            id="FIELDS[CODE][DEFAULT_VALUE][TRANS_EAT]"
                            name="FIELDS[CODE][DEFAULT_VALUE][TRANS_EAT]"
-
                             {{isset($iblock) && isset($iblock->params->FIELDS->CODE->DEFAULT_VALUE->TRANS_EAT) && $iblock->params->FIELDS->CODE->DEFAULT_VALUE->TRANS_EAT == 'Y'?'checked':''}}>
-                    <label for="FIELDS[CODE][DEFAULT_VALUE][TRANS_EAT]"
-                    >Удалять лишние символы замены.
+                    <label for="FIELDS[CODE][DEFAULT_VALUE][TRANS_EAT]">Удалять лишние символы замены.
                     </label>
                 </div>
                 <div>

@@ -335,6 +335,28 @@ class vArrParseTest extends TestCase{
 
 		$this->assertEquals($expectedArr, $gottenArr);
 	}
+
+	/** @test */
+	function it_parses_unnamed_ass_array_from_string_with_extra_parenthesis(){
+		$string = 'Array("ololo" => "trololo"));';
+		$expectedArr = ['ololo' => 'trololo'];
+
+		$gottenArr = vArrParse::parseFromText($string);
+		//dd($gottenArr);
+
+		$this->assertEquals($expectedArr, $gottenArr);
+	}
+
+	/** @test */
+	function it_parses_unnamed_ass_array_that_contains_parenthesis_from_string_with_extra_parenthesis(){
+		$string = 'Array("ololo" => func(14),"trololo" => "a"))';
+		$expectedArr = ['ololo' => 'func(14)', "trololo" => "a"];
+
+		$gottenArr = vArrParse::parseFromText($string);
+		//dd($gottenArr);
+
+		$this->assertEquals($expectedArr, $gottenArr);
+	}
 }
 
 ?>
