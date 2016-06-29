@@ -13,6 +13,7 @@ var elixir = require('laravel-elixir');
 
 elixir(function(mix){
 	mix.sass('app.scss')
+		.sass('iblock_form.scss')
 		.coffee('app.coffee')
 		.coffee('a.you-can-change.coffee')
 		.coffee('bitrix_module_admin_options.coffee')

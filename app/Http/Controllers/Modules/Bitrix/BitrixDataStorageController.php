@@ -158,7 +158,7 @@ class BitrixDataStorageController extends Controller{
 			'properties_types' => BitrixIblocksProps::$types
 		];
 
-		return view("bitrix.data_storage.detail_ib", $data);
+		return view("bitrix.data_storage.add_ib", $data);
 	}
 
 	public function delete_prop(Bitrix $module, BitrixIblocksProps $prop, Request $request){

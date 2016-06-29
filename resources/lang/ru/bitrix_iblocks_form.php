@@ -1,17 +1,20 @@
 <?php
 
 return [
-	'h1'                               => 'Добавить инфоблок',
-	'button_save'                      => 'Сохранить',
-	'tab_iblock_title'                 => 'Инфоблок',
-	'tab_seo_title'                    => 'Seo',
-	'tab_fields_title'                 => 'Поля',
-	'tab_properties_title'             => 'Свойства',
-	'tab_section_fields_title'         => 'Поля разделов',
-	'tab_shop_catalog_title'           => 'Торговый каталог',
-	'tab_permissions_title'            => 'Права доступа',
-	'tab_captions_title'               => 'Подписи',
-	'tab_event_log_title'              => 'Журнал событий',
+	'add_h1'                   => 'Добавить инфоблок',
+	'edit_h1'                  => 'Редактировать инфоблок',
+	'button_save'              => 'Сохранить',
+	'tab_iblock_title'         => 'Инфоблок',
+	'tab_seo_title'            => 'Seo',
+	'tab_fields_title'         => 'Поля',
+	'tab_properties_title'     => 'Свойства',
+	'tab_section_fields_title' => 'Поля разделов',
+	'tab_shop_catalog_title'   => 'Торговый каталог',
+	'tab_permissions_title'    => 'Права доступа',
+	'tab_captions_title'       => 'Подписи',
+	'tab_event_log_title'      => 'Журнал событий',
+	'tab_test_data_title'      => 'Тестовые данные',
+
 	'param_property_values_are_stored' => 'Значения свойств хранятся',
 	'in_a_common_data_table'           => 'в общей таблице (по умолчанию)',
 	'in_a_separate_table'              => 'в отдельной таблице для данного информационного блока',
@@ -42,5 +45,5 @@ return [
 	'param_picture_file_name_template'                  => 'Шаблон имени файла',
 	'param_transform_to_lower_case'                     => 'Привести к нижнему регистру',
 	'param_transliterate'                               => 'Транслитерировать',
-	'param_transliterate_whitespace_replacement'           => 'Замена для пробельных символов после транслитерации',
+	'param_transliterate_whitespace_replacement'        => 'Замена для пробельных символов после транслитерации',
 ];

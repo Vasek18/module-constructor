@@ -7,6 +7,7 @@
     <title>{{trans('app.site_name')}}</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/app.css">
+    @stack('styles')
     <link href='https://fonts.googleapis.com/css?family=Lato:100,400,700,900' rel='stylesheet'>
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
