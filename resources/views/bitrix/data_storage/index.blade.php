@@ -14,7 +14,7 @@
         <ul>
             @foreach($infoblocks as $infoblock)
                 <li>
-                    Инфоблок {{$infoblock->name}} ({{$infoblock->code}})
+                    Инфоблок "{{$infoblock->name}}" ({{$infoblock->code}})
                     <a href="{{ action('Modules\Bitrix\BitrixDataStorageController@detail_ib', [$module->id, $infoblock->id]) }}"
                        class="btn btn-primary">
                         <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>

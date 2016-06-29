@@ -1,7 +1,7 @@
 <?php
 
 return [
-	'h1'                       => 'Add infoblock',
+	'add_h1'                       => 'Add infoblock',
 	'edit_h1'                  => 'Edit infoblock',
 	'button_save'              => 'Save',
 	'tab_iblock_title'         => 'Infoblock',

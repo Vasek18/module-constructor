@@ -155,6 +155,7 @@ class BitrixDataStorageController extends Controller{
 			'module'           => $module,
 			'iblock'           => $iblock,
 			'properties'       => $iblock->properties()->orderBy('sort', 'asc')->get(),
+			'elements'         => $iblock->elements()->orderBy('sort', 'asc')->get(),
 			'properties_types' => BitrixIblocksProps::$types
 		];
 
@@ -168,5 +169,17 @@ class BitrixDataStorageController extends Controller{
 		BitrixInfoblocks::writeInFile($module);
 
 		return back();
+	}
+
+	public function element_create(Bitrix $module, BitrixInfoblocks $iblock, Request $request){
+		$data = [
+			'module'     => $module,
+			'iblock'     => $iblock,
+			'properties' => $iblock->properties()->orderBy('sort', 'asc')->get(),
+		];
+
+		//dd($data);
+
+		return view("bitrix.data_storage.iblock_tabs.test_data_element_edit", $data);
 	}
 }
