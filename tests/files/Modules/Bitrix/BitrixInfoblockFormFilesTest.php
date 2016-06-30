@@ -44,10 +44,25 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 		$installationFileContent = file_get_contents($module->getFolder(true).'/install/index.php');
 		$gottenInstallationFuncCode = vFuncParse::parseFromText($installationFileContent, 'createNecessaryIblocks');
 		// dd($installationFileContent);
-		$gottenInstallationFuncCodeParts = preg_split('/(\$this\-\>createIblock\(|\$this\-\>createIblockProp\()/is', $gottenInstallationFuncCode);
-		// dd($gottenInstallationFuncCodeParts);
-		unset($gottenInstallationFuncCodeParts[0]);
-		foreach ($gottenInstallationFuncCodeParts as $gottenInstallationFuncCodePart){
+
+		preg_match_all('/(\$this\-\>createIblock\([^\;]+\);)/is', $gottenInstallationFuncCode, $matches);
+
+		foreach ($matches[1] as $gottenInstallationFuncCodePart){
+			$answer[] = vArrParse::parseFromText($gottenInstallationFuncCodePart);
+		}
+
+		return $answer;
+	}
+	// берёт сразу все свойства и записывает их в массивы, то есть возвращается не массив установки, а массив массивов установки
+	function getIblockPropsCreationFuncCallParamsArray($module){
+		$answer = [];
+		$installationFileContent = file_get_contents($module->getFolder(true).'/install/index.php');
+		$gottenInstallationFuncCode = vFuncParse::parseFromText($installationFileContent, 'createNecessaryIblocks');
+		// dd($installationFileContent);
+
+		preg_match_all('/\$this\-\>createIblockProp\(([^\;]+)\);/is', $gottenInstallationFuncCode, $matches);
+		// dd($matches[1]);
+		foreach ($matches[1] as $gottenInstallationFuncCodePart){
 			$answer[] = vArrParse::parseFromText($gottenInstallationFuncCodePart);
 		}
 
@@ -455,6 +470,7 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 		);
 
 		$gottenInstallationFuncCodeArray = $this->getIblockCreationFuncCallParamsArray($module);
+		$gottenInstallationPropsFuncCodeArray = $this->getIblockPropsCreationFuncCallParamsArray($module);
 		$optionsLangArr = $this->getLangFileArray($module);
 		$module->deleteFolder();
 
@@ -496,9 +512,9 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 			"IS_REQUIRED"   => "N",
 		];
 
-		$this->assertEquals(2, count($gottenInstallationFuncCodeArray));
+		$this->assertEquals(1, count($gottenInstallationFuncCodeArray));
 		$this->assertEquals($expectedInstallationFuncCodeArray, $gottenInstallationFuncCodeArray[0]);
-		$this->assertEquals($expectedPropCreationCodeArray, $gottenInstallationFuncCodeArray[1], 'Prop array doesnt match');
+		$this->assertEquals($expectedPropCreationCodeArray, $gottenInstallationPropsFuncCodeArray[0], 'Prop array doesnt match');
 		$this->assertArraySubset([$module->lang_key.'_IBLOCK_TROLOLO_NAME' => 'Ololo'], $optionsLangArr);
 		$this->assertArraySubset([$module->lang_key.'_IBLOCK_TROLOLO_PARAM_TEST_NAME' => 'Тест'], $optionsLangArr);
 	}
@@ -523,6 +539,7 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 		);
 
 		$gottenInstallationFuncCodeArray = $this->getIblockCreationFuncCallParamsArray($module);
+		$gottenInstallationPropsFuncCodeArray = $this->getIblockPropsCreationFuncCallParamsArray($module);
 		$optionsLangArr = $this->getLangFileArray($module);
 		$module->deleteFolder();
 
@@ -564,9 +581,9 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 			"IS_REQUIRED"   => "N",
 		];
 
-		$this->assertEquals(2, count($gottenInstallationFuncCodeArray));
+		$this->assertEquals(1, count($gottenInstallationFuncCodeArray));
 		$this->assertEquals($expectedInstallationFuncCodeArray, $gottenInstallationFuncCodeArray[0]);
-		$this->assertEquals($expectedPropCreationCodeArray, $gottenInstallationFuncCodeArray[1], 'Prop array doesnt match');
+		$this->assertEquals($expectedPropCreationCodeArray, $gottenInstallationPropsFuncCodeArray[0], 'Prop array doesnt match');
 		$this->assertArraySubset([$module->lang_key.'_IBLOCK_TROLOLO_NAME' => 'Ololo'], $optionsLangArr);
 		$this->assertArraySubset([$module->lang_key.'_IBLOCK_TROLOLO_PARAM_TEST_NAME' => 'Тест'], $optionsLangArr);
 	}
@@ -591,6 +608,7 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 		);
 
 		$gottenInstallationFuncCodeArray = $this->getIblockCreationFuncCallParamsArray($module);
+		$gottenInstallationPropsFuncCodeArray = $this->getIblockPropsCreationFuncCallParamsArray($module);
 		$optionsLangArr = $this->getLangFileArray($module);
 		$module->deleteFolder();
 
@@ -632,9 +650,9 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 			"IS_REQUIRED"   => "Y",
 		];
 
-		$this->assertEquals(2, count($gottenInstallationFuncCodeArray));
+		$this->assertEquals(1, count($gottenInstallationFuncCodeArray));
 		$this->assertEquals($expectedInstallationFuncCodeArray, $gottenInstallationFuncCodeArray[0]);
-		$this->assertEquals($expectedPropCreationCodeArray, $gottenInstallationFuncCodeArray[1], 'Prop array doesnt match');
+		$this->assertEquals($expectedPropCreationCodeArray, $gottenInstallationPropsFuncCodeArray[0], 'Prop array doesnt match');
 		$this->assertArraySubset([$module->lang_key.'_IBLOCK_TROLOLO_NAME' => 'Ololo'], $optionsLangArr);
 		$this->assertArraySubset([$module->lang_key.'_IBLOCK_TROLOLO_PARAM_TEST_NAME' => 'Тест'], $optionsLangArr);
 	}
