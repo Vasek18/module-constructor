@@ -95,8 +95,9 @@
                                             @if ($property->type == 'S')
                                                 <input type="text"
                                                        id="{{$property->code}}"
-                                                       name="{{$property->code}}"
+                                                       name="props[{{$property->code}}]"
                                                        class="form-control"
+                                                       value="{{isset($props_vals[$property->code]) ? $props_vals[$property->code] : ''}}"
                                                         {{ $property->is_required ? 'required' : '' }}
                                                 >
                                             @endif
@@ -104,19 +105,21 @@
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <input type="text"
-                                                               id="{{$property->code}}"
-                                                               name="{{$property->code}}"
+                                                               id="{{$property->code}}0"
+                                                               name="props[{{$property->code}}][]"
                                                                class="form-control"
                                                                placeholder="Широта"
+                                                               value="{{isset($props_vals[$property->code]) ? $props_vals[$property->code][0] : ''}}"
                                                                 {{ $property->is_required ? 'required' : '' }}
                                                         >
                                                     </div>
                                                     <div class="col-md-6">
                                                         <input type="text"
-                                                               id="{{$property->code}}"
-                                                               name="{{$property->code}}"
+                                                               id="{{$property->code}}1"
+                                                               name="props[{{$property->code}}][]"
                                                                class="form-control"
                                                                placeholder="Долгота"
+                                                               value="{{isset($props_vals[$property->code]) ? $props_vals[$property->code][1] : ''}}"
                                                                 {{ $property->is_required ? 'required' : '' }}
                                                         >
                                                     </div>

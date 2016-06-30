@@ -20,4 +20,8 @@ class BitrixIblocksElements extends Model{
 	public function iblock(){
 		return $this->belongsTo('App\Models\Modules\Bitrix\BitrixInfoblocks');
 	}
+
+	public function props(){
+		return $this->belongsToMany('App\Models\Modules\Bitrix\BitrixIblocksProps', 'bitrix_infoblocks_elements_props', 'element_id', 'prop_id')->withPivot('value');
+	}
 }

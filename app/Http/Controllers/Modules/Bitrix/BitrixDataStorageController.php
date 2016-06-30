@@ -193,14 +193,42 @@ class BitrixDataStorageController extends Controller{
 			'active'    => $request['ACTIVE'] == 'Y' ? true : false,
 		]);
 
+		$attachArr = [];
+		foreach ($request->props as $code => $val){
+			if (!$val){
+				continue;
+			}
+			$prop = BitrixIblocksProps::where('iblock_id', $iblock->id)->where('code', $code)->first();
+			if (!$prop){
+				continue;
+			}
+			if (is_array($val)){
+				$val = implode('_###_', $val);
+			}
+
+			$attachArr[$prop->id] = ['value' => $val];
+		}
+		$element->props()->sync($attachArr);
+
 		return redirect(action('Modules\Bitrix\BitrixDataStorageController@show_element', [$module->id, $iblock->id, $element->id]));
 	}
 
 	public function show_element(Bitrix $module, BitrixInfoblocks $iblock, BitrixIblocksElements $element, Request $request){
+
+		$props_vals = [];
+		foreach ($element->props as $prop){
+			$val = $prop->pivot->value;
+			if (strpos($val, '_###_') !== false){
+				$val = explode('_###_', $val);
+			}
+			$props_vals[$prop->code] = $val;
+		}
+
 		$data = [
 			'module'     => $module,
 			'iblock'     => $iblock,
 			'element'    => $element,
+			'props_vals' => $props_vals,
 			'properties' => $iblock->properties()->orderBy('sort', 'asc')->get(),
 		];
 
@@ -210,12 +238,34 @@ class BitrixDataStorageController extends Controller{
 	}
 
 	public function save_element(Bitrix $module, BitrixInfoblocks $iblock, BitrixIblocksElements $element, Request $request){
+
+		// dd($request->all());
+
 		$element->update([
 			'name'   => $request['NAME'],
 			'code'   => $request['CODE'], // todo проверка на уникальность, если она нужна в этом ИБ
 			'sort'   => $request['SORT'],
 			'active' => $request['ACTIVE'] == 'Y' ? true : false,
 		]);
+
+		$attachArr = [];
+		if ($request->props){
+			foreach ($request->props as $code => $val){
+				if (!$val){
+					continue;
+				}
+				$prop = BitrixIblocksProps::where('iblock_id', $iblock->id)->where('code', $code)->first();
+				if (!$prop){
+					continue;
+				}
+				if (is_array($val)){
+					$val = implode('_###_', $val);
+				}
+
+				$attachArr[$prop->id] = ['value' => $val];
+			}
+			$element->props()->sync($attachArr);
+		}
 
 		return back();
 	}
