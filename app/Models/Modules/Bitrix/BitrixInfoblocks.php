@@ -102,11 +102,33 @@ class BitrixInfoblocks extends Model{
 					}
 				}else{
 					// dd($val);
-					$subVal = $this->getParamCodeForCreationArray($val, $indents + 1, $code);
-					if (!$subVal){
-						continue;
+					$val = (array)$val;
+					if (isset($val["TEMPLATE"]) && $val["TEMPLATE"]){ // гигантский костыль для вкладки SEO Битрикса
+						$modifiers = '';
+						if (isset($val["LOWER"]) && $val["LOWER"] == 'Y'){
+							$modifiers .= 'l';
+						}
+						if (isset($val["TRANSLIT"]) && $val["TRANSLIT"] == 'Y'){
+							$modifiers .= 't';
+							if (isset($val["SPACE"])){
+								$modifiers .= $val["SPACE"];
+							}
+						}
+						$modifiers = $modifiers ? '/'.$modifiers : $modifiers;
+						$val = '"'.$val["TEMPLATE"].$modifiers.'"';
+					}else{
+						if (isset($val["LOWER"])){
+							continue;
+						}
+						if (isset($val["TRANSLIT"])){
+							continue;
+						}
+						$subVal = $this->getParamCodeForCreationArray($val, $indents + 1, $code);
+						if (!$subVal){
+							continue;
+						}
+						$val = 'Array('.PHP_EOL.$subVal.str_repeat("\t", $indents).')';
 					}
-					$val = 'Array('.PHP_EOL.$subVal.str_repeat("\t", $indents).')';
 				}
 			}
 

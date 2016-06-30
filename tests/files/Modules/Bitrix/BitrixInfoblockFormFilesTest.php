@@ -43,6 +43,7 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 		$answer = [];
 		$installationFileContent = file_get_contents($module->getFolder(true).'/install/index.php');
 		$gottenInstallationFuncCode = vFuncParse::parseFromText($installationFileContent, 'createNecessaryIblocks');
+		// dd($installationFileContent);
 		$gottenInstallationFuncCodeParts = preg_split('/(\$this\-\>createIblock\(|\$this\-\>createIblockProp\()/is', $gottenInstallationFuncCode);
 		// dd($gottenInstallationFuncCodeParts);
 		unset($gottenInstallationFuncCodeParts[0]);
@@ -123,36 +124,36 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 			"LIST_PAGE_URL"                                                     => "#SITE_DIR#/".$module->code."/index.php?ID=#IBLOCK_ID##hi",
 			"SECTION_PAGE_URL"                                                  => "#SITE_DIR#/".$module->code."/list.php?SECTION_ID=#SECTION_ID##hi",
 			"DETAIL_PAGE_URL"                                                   => "#SITE_DIR#/".$module->code."/detail.php?ID=#ELEMENT_ID##hi",
-			"IPROPERTY_TEMPLATES[SECTION_META_TITLE][TEMPLATE]"                 => "test",
-			"IPROPERTY_TEMPLATES[SECTION_META_KEYWORDS][TEMPLATE]"              => "test",
-			"IPROPERTY_TEMPLATES[SECTION_META_DESCRIPTION][TEMPLATE]"           => "test",
-			"IPROPERTY_TEMPLATES[SECTION_PAGE_TITLE][TEMPLATE]"                 => "test",
-			"IPROPERTY_TEMPLATES[ELEMENT_META_TITLE][TEMPLATE]"                 => "test",
-			"IPROPERTY_TEMPLATES[ELEMENT_META_KEYWORDS][TEMPLATE]"              => "test",
-			"IPROPERTY_TEMPLATES[ELEMENT_META_DESCRIPTION][TEMPLATE]"           => "test",
-			"IPROPERTY_TEMPLATES[ELEMENT_PAGE_TITLE][TEMPLATE]"                 => "test",
-			"IPROPERTY_TEMPLATES[SECTION_PICTURE_FILE_ALT][TEMPLATE]"           => "test",
-			"IPROPERTY_TEMPLATES[SECTION_PICTURE_FILE_TITLE][TEMPLATE]"         => "test",
-			"IPROPERTY_TEMPLATES[SECTION_PICTURE_FILE_NAME][TEMPLATE]"          => "test",
+			"IPROPERTY_TEMPLATES[SECTION_META_TITLE][TEMPLATE]"                 => "test1",
+			"IPROPERTY_TEMPLATES[SECTION_META_KEYWORDS][TEMPLATE]"              => "test2",
+			"IPROPERTY_TEMPLATES[SECTION_META_DESCRIPTION][TEMPLATE]"           => "test3",
+			"IPROPERTY_TEMPLATES[SECTION_PAGE_TITLE][TEMPLATE]"                 => "test4",
+			"IPROPERTY_TEMPLATES[ELEMENT_META_TITLE][TEMPLATE]"                 => "test5",
+			"IPROPERTY_TEMPLATES[ELEMENT_META_KEYWORDS][TEMPLATE]"              => "test6",
+			"IPROPERTY_TEMPLATES[ELEMENT_META_DESCRIPTION][TEMPLATE]"           => "test7",
+			"IPROPERTY_TEMPLATES[ELEMENT_PAGE_TITLE][TEMPLATE]"                 => "test8",
+			"IPROPERTY_TEMPLATES[SECTION_PICTURE_FILE_ALT][TEMPLATE]"           => "test9",
+			"IPROPERTY_TEMPLATES[SECTION_PICTURE_FILE_TITLE][TEMPLATE]"         => "test10",
+			"IPROPERTY_TEMPLATES[SECTION_PICTURE_FILE_NAME][TEMPLATE]"          => "test11",
 			"IPROPERTY_TEMPLATES[SECTION_PICTURE_FILE_NAME][TRANSLIT]"          => "Y",
 			"IPROPERTY_TEMPLATES[SECTION_PICTURE_FILE_NAME][LOWER]"             => "Y",
-			"IPROPERTY_TEMPLATES[SECTION_PICTURE_FILE_NAME][SPACE]"             => "test",
-			"IPROPERTY_TEMPLATES[SECTION_DETAIL_PICTURE_FILE_ALT][TEMPLATE]"    => "test",
-			"IPROPERTY_TEMPLATES[SECTION_DETAIL_PICTURE_FILE_TITLE][TEMPLATE]"  => "test",
-			"IPROPERTY_TEMPLATES[SECTION_DETAIL_PICTURE_FILE_NAME][TEMPLATE]"   => "test",
-			"IPROPERTY_TEMPLATES[SECTION_DETAIL_PICTURE_FILE_NAME][SPACE]"      => "test",
+			"IPROPERTY_TEMPLATES[SECTION_PICTURE_FILE_NAME][SPACE]"             => "_",
+			"IPROPERTY_TEMPLATES[SECTION_DETAIL_PICTURE_FILE_ALT][TEMPLATE]"    => "test13",
+			"IPROPERTY_TEMPLATES[SECTION_DETAIL_PICTURE_FILE_TITLE][TEMPLATE]"  => "test14",
+			"IPROPERTY_TEMPLATES[SECTION_DETAIL_PICTURE_FILE_NAME][TEMPLATE]"   => "test15",
+			"IPROPERTY_TEMPLATES[SECTION_DETAIL_PICTURE_FILE_NAME][SPACE]"      => "_",
 			"IPROPERTY_TEMPLATES[SECTION_DETAIL_PICTURE_FILE_NAME][TRANSLIT]"   => "Y",
 			"IPROPERTY_TEMPLATES[SECTION_DETAIL_PICTURE_FILE_NAME][LOWER]"      => "Y",
-			"IPROPERTY_TEMPLATES[ELEMENT_PREVIEW_PICTURE_FILE_ALT][TEMPLATE]"   => "test",
-			"IPROPERTY_TEMPLATES[ELEMENT_PREVIEW_PICTURE_FILE_TITLE][TEMPLATE]" => "test",
-			"IPROPERTY_TEMPLATES[ELEMENT_PREVIEW_PICTURE_FILE_NAME][TEMPLATE]"  => "test",
-			"IPROPERTY_TEMPLATES[ELEMENT_PREVIEW_PICTURE_FILE_NAME][SPACE]"     => "test",
+			"IPROPERTY_TEMPLATES[ELEMENT_PREVIEW_PICTURE_FILE_ALT][TEMPLATE]"   => "test17",
+			"IPROPERTY_TEMPLATES[ELEMENT_PREVIEW_PICTURE_FILE_TITLE][TEMPLATE]" => "test18",
+			"IPROPERTY_TEMPLATES[ELEMENT_PREVIEW_PICTURE_FILE_NAME][TEMPLATE]"  => "test19",
+			"IPROPERTY_TEMPLATES[ELEMENT_PREVIEW_PICTURE_FILE_NAME][SPACE]"     => "_",
 			"IPROPERTY_TEMPLATES[ELEMENT_PREVIEW_PICTURE_FILE_NAME][TRANSLIT]"  => "Y",
 			"IPROPERTY_TEMPLATES[ELEMENT_PREVIEW_PICTURE_FILE_NAME][LOWER]"     => "Y",
-			"IPROPERTY_TEMPLATES[ELEMENT_DETAIL_PICTURE_FILE_ALT][TEMPLATE]"    => "test",
-			"IPROPERTY_TEMPLATES[ELEMENT_DETAIL_PICTURE_FILE_TITLE][TEMPLATE]"  => "test",
-			"IPROPERTY_TEMPLATES[ELEMENT_DETAIL_PICTURE_FILE_NAME][TEMPLATE]"   => "test",
-			"IPROPERTY_TEMPLATES[ELEMENT_DETAIL_PICTURE_FILE_NAME][SPACE]"      => "test",
+			"IPROPERTY_TEMPLATES[ELEMENT_DETAIL_PICTURE_FILE_ALT][TEMPLATE]"    => "test21",
+			"IPROPERTY_TEMPLATES[ELEMENT_DETAIL_PICTURE_FILE_TITLE][TEMPLATE]"  => "test22",
+			"IPROPERTY_TEMPLATES[ELEMENT_DETAIL_PICTURE_FILE_NAME][TEMPLATE]"   => "test23",
+			"IPROPERTY_TEMPLATES[ELEMENT_DETAIL_PICTURE_FILE_NAME][SPACE]"      => "_",
 			"IPROPERTY_TEMPLATES[ELEMENT_DETAIL_PICTURE_FILE_NAME][TRANSLIT]"   => "Y",
 			"IPROPERTY_TEMPLATES[ELEMENT_DETAIL_PICTURE_FILE_NAME][LOWER]"      => "Y",
 
@@ -174,78 +175,26 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 			"SECTION_PAGE_URL"    => "#SITE_DIR#/".$module->code."/list.php?SECTION_ID=#SECTION_ID##hi",
 			"DETAIL_PAGE_URL"     => "#SITE_DIR#/".$module->code."/detail.php?ID=#ELEMENT_ID##hi",
 			"IPROPERTY_TEMPLATES" => Array(
-				"SECTION_META_TITLE"                 => Array(
-					"TEMPLATE" => "test",
-				),
-				"SECTION_META_KEYWORDS"              => Array(
-					"TEMPLATE" => "test",
-				),
-				"SECTION_META_DESCRIPTION"           => Array(
-					"TEMPLATE" => "test",
-				),
-				"SECTION_PAGE_TITLE"                 => Array(
-					"TEMPLATE" => "test",
-				),
-				"ELEMENT_META_TITLE"                 => Array(
-					"TEMPLATE" => "test",
-				),
-				"ELEMENT_META_KEYWORDS"              => Array(
-					"TEMPLATE" => "test",
-				),
-				"ELEMENT_META_DESCRIPTION"           => Array(
-					"TEMPLATE" => "test",
-				),
-				"ELEMENT_PAGE_TITLE"                 => Array(
-					"TEMPLATE" => "test",
-				),
-				"SECTION_PICTURE_FILE_ALT"           => Array(
-					"TEMPLATE" => "test",
-				),
-				"SECTION_PICTURE_FILE_TITLE"         => Array(
-					"TEMPLATE" => "test",
-				),
-				"SECTION_PICTURE_FILE_NAME"          => Array(
-					"TEMPLATE" => "test",
-					"SPACE"    => "test",
-					"LOWER"    => "Y",
-					"TRANSLIT" => "Y",
-				),
-				"SECTION_DETAIL_PICTURE_FILE_ALT"    => Array(
-					"TEMPLATE" => "test",
-				),
-				"SECTION_DETAIL_PICTURE_FILE_TITLE"  => Array(
-					"TEMPLATE" => "test",
-				),
-				"SECTION_DETAIL_PICTURE_FILE_NAME"   => Array(
-					"TEMPLATE" => "test",
-					"SPACE"    => "test",
-					"LOWER"    => "Y",
-					"TRANSLIT" => "Y",
-				),
-				"ELEMENT_PREVIEW_PICTURE_FILE_ALT"   => Array(
-					"TEMPLATE" => "test",
-				),
-				"ELEMENT_PREVIEW_PICTURE_FILE_TITLE" => Array(
-					"TEMPLATE" => "test",
-				),
-				"ELEMENT_PREVIEW_PICTURE_FILE_NAME"  => Array(
-					"TEMPLATE" => "test",
-					"SPACE"    => "test",
-					"LOWER"    => "Y",
-					"TRANSLIT" => "Y",
-				),
-				"ELEMENT_DETAIL_PICTURE_FILE_ALT"    => Array(
-					"TEMPLATE" => "test",
-				),
-				"ELEMENT_DETAIL_PICTURE_FILE_TITLE"  => Array(
-					"TEMPLATE" => "test",
-				),
-				"ELEMENT_DETAIL_PICTURE_FILE_NAME"   => Array(
-					"TEMPLATE" => "test",
-					"SPACE"    => "test",
-					"LOWER"    => "Y",
-					"TRANSLIT" => "Y",
-				),
+				"SECTION_META_TITLE"                 => "test1",
+				"SECTION_META_KEYWORDS"              => "test2",
+				"SECTION_META_DESCRIPTION"           => "test3",
+				"SECTION_PAGE_TITLE"                 => "test4",
+				"ELEMENT_META_TITLE"                 => "test5",
+				"ELEMENT_META_KEYWORDS"              => "test6",
+				"ELEMENT_META_DESCRIPTION"           => "test7",
+				"ELEMENT_PAGE_TITLE"                 => "test8",
+				"SECTION_PICTURE_FILE_ALT"           => "test9",
+				"SECTION_PICTURE_FILE_TITLE"         => "test10",
+				"SECTION_PICTURE_FILE_NAME"          => "test11/lt_",
+				"SECTION_DETAIL_PICTURE_FILE_ALT"    => "test13",
+				"SECTION_DETAIL_PICTURE_FILE_TITLE"  => "test14",
+				"SECTION_DETAIL_PICTURE_FILE_NAME"   => "test15/lt_",
+				"ELEMENT_PREVIEW_PICTURE_FILE_ALT"   => "test17",
+				"ELEMENT_PREVIEW_PICTURE_FILE_TITLE" => "test18",
+				"ELEMENT_PREVIEW_PICTURE_FILE_NAME"  => "test19/lt_",
+				"ELEMENT_DETAIL_PICTURE_FILE_ALT"    => "test21",
+				"ELEMENT_DETAIL_PICTURE_FILE_TITLE"  => "test22",
+				"ELEMENT_DETAIL_PICTURE_FILE_NAME"   => "test23/lt_",
 			),
 			"FIELDS"              => Array(
 				"ACTIVE"            => Array(
