@@ -10,6 +10,7 @@ use App\Models\Modules\Bitrix\Bitrix;
 use App\Http\Controllers\Traits\UserOwnModule;
 use App\Models\Modules\Bitrix\BitrixInfoblocks;
 use App\Models\Modules\Bitrix\BitrixIblocksProps;
+use App\Models\Modules\Bitrix\BitrixIblocksElements;
 
 class BitrixDataStorageController extends Controller{
 	use UserOwnModule;
@@ -171,7 +172,7 @@ class BitrixDataStorageController extends Controller{
 		return back();
 	}
 
-	public function element_create(Bitrix $module, BitrixInfoblocks $iblock, Request $request){
+	public function create_element(Bitrix $module, BitrixInfoblocks $iblock, Request $request){
 		$data = [
 			'module'     => $module,
 			'iblock'     => $iblock,
@@ -181,5 +182,41 @@ class BitrixDataStorageController extends Controller{
 		//dd($data);
 
 		return view("bitrix.data_storage.iblock_tabs.test_data_element_edit", $data);
+	}
+
+	public function store_element(Bitrix $module, BitrixInfoblocks $iblock, Request $request){
+		$element = BitrixIblocksElements::create([
+			'iblock_id' => $iblock->id,
+			'name'      => $request['NAME'],
+			'code'      => $request['CODE'], // todo проверка на уникальность, если она нужна в этом ИБ
+			'sort'      => $request['SORT'],
+			'active'    => $request['ACTIVE'] == 'Y' ? true : false,
+		]);
+
+		return redirect(action('Modules\Bitrix\BitrixDataStorageController@show_element', [$module->id, $iblock->id, $element->id]));
+	}
+
+	public function show_element(Bitrix $module, BitrixInfoblocks $iblock, BitrixIblocksElements $element, Request $request){
+		$data = [
+			'module'     => $module,
+			'iblock'     => $iblock,
+			'element'    => $element,
+			'properties' => $iblock->properties()->orderBy('sort', 'asc')->get(),
+		];
+
+		//dd($data);
+
+		return view("bitrix.data_storage.iblock_tabs.test_data_element_edit", $data);
+	}
+
+	public function save_element(Bitrix $module, BitrixInfoblocks $iblock, BitrixIblocksElements $element, Request $request){
+		$element->update([
+			'name'   => $request['NAME'],
+			'code'   => $request['CODE'], // todo проверка на уникальность, если она нужна в этом ИБ
+			'sort'   => $request['SORT'],
+			'active' => $request['ACTIVE'] == 'Y' ? true : false,
+		]);
+
+		return back();
 	}
 }

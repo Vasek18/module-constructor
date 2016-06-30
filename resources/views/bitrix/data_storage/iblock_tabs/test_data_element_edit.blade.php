@@ -30,89 +30,106 @@
         <div role="tabpanel"
              class="tab-pane active"
              id="element">
-            <form action="">
-                <div class="col-md-offset-2 col-md-8">
-                    <div class="form-group">
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox"
-                                       name="ACTIVE"
-                                       value="Y"
-                                       checked>
-                                Активность
-                            </label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="NAME">Название
-                        </label>
-                        <input type="text"
-                               id="NAME"
-                               name="NAME"
-                               class="form-control"
-                               required>
-                    </div>
-                    <div class="form-group">
-                        <label for="CODE">Символьный код
-                        </label>
-                        <input type="text"
-                               id="CODE"
-                               name="CODE"
-                               class="form-control"
-                                {{--todo может быть обязательным--}}>
-                    </div>
-                    <div class="form-group">
-                        <label for="SORT">Сортировка
-                        </label>
-                        <input type="text"
-                               id="SORT"
-                               name="SORT"
-                               class="form-control"
-                               value="500"
-                                {{--todo может быть обязательным--}}>
-                    </div>
-                    @if (count($properties))
-                        <hr>
-                        <h2>Значения свойств</h2>
-                        <hr>
-                        @foreach($properties as $i => $property)
-                            <div class="form-group">
-                                <label for="{{$property->code}}">{{$property->name}}</label>
-                                @if ($property->type == 'S')
-                                    <input type="text"
-                                           id="{{$property->code}}"
-                                           name="{{$property->code}}"
-                                           class="form-control"
-                                            {{ $property->is_required ? 'required' : '' }}
-                                    >
-                                @endif
-                                @if ($property->type == 'S:map_google')
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <input type="text"
-                                                   id="{{$property->code}}"
-                                                   name="{{$property->code}}"
-                                                   class="form-control"
-                                                   placeholder="Широта"
-                                                    {{ $property->is_required ? 'required' : '' }}
+            @if (isset($element))
+                <form action="{{ action('Modules\Bitrix\BitrixDataStorageController@save_element', [$module->id, $iblock->id, $element->id]) }}"
+                      method="post">
+                    @else
+                        <form action="{{ action('Modules\Bitrix\BitrixDataStorageController@store_element', [$module->id, $iblock->id]) }}"
+                              method="post">
+                            @endif
+
+                            {{ csrf_field() }}
+                            <div class="col-md-offset-2 col-md-8">
+                                <div class="form-group">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox"
+                                                   name="ACTIVE"
+                                                   value="Y"
+                                                    {{!isset($element) || $element->active ? 'checked' : ''}}
                                             >
-                                        </div>
-                                        <div class="col-md-6">
-                                            <input type="text"
-                                                   id="{{$property->code}}"
-                                                   name="{{$property->code}}"
-                                                   class="form-control"
-                                                   placeholder="Долгота"
-                                                    {{ $property->is_required ? 'required' : '' }}
-                                            >
-                                        </div>
+                                            Активность
+                                        </label>
                                     </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="NAME">Название
+                                    </label>
+                                    <input type="text"
+                                           id="NAME"
+                                           name="NAME"
+                                           class="form-control"
+                                           value="{{isset($element) ? $element->name : ''}}"
+                                           required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="CODE">Символьный код
+                                    </label>
+                                    <input type="text"
+                                           id="CODE"
+                                           name="CODE"
+                                           class="form-control"
+                                           data-translit_from="NAME"
+                                           value="{{isset($element) ? $element->code : ''}}"
+                                            {{isset($iblock->params->FIELDS->CODE->IS_REQUIRED) && $iblock->params->FIELDS->CODE->IS_REQUIRED == 'Y'?'required':''}}
+                                    >
+                                </div>
+                                <div class="form-group">
+                                    <label for="SORT">Сортировка
+                                    </label>
+                                    <input type="text"
+                                           id="SORT"
+                                           name="SORT"
+                                           class="form-control"
+                                           value="{{isset($element) ? $element->sort : '500'}}"
+                                            {{isset($iblock->params->FIELDS->SORT->IS_REQUIRED) && $iblock->params->FIELDS->SORT->IS_REQUIRED == 'Y'?'required':''}}
+                                    >
+                                </div>
+                                @if (count($properties))
+                                    <hr>
+                                    <h2>Значения свойств</h2>
+                                    <hr>
+                                    @foreach($properties as $i => $property)
+                                        <div class="form-group">
+                                            <label for="{{$property->code}}">{{$property->name}}</label>
+                                            @if ($property->type == 'S')
+                                                <input type="text"
+                                                       id="{{$property->code}}"
+                                                       name="{{$property->code}}"
+                                                       class="form-control"
+                                                        {{ $property->is_required ? 'required' : '' }}
+                                                >
+                                            @endif
+                                            @if ($property->type == 'S:map_google')
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <input type="text"
+                                                               id="{{$property->code}}"
+                                                               name="{{$property->code}}"
+                                                               class="form-control"
+                                                               placeholder="Широта"
+                                                                {{ $property->is_required ? 'required' : '' }}
+                                                        >
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <input type="text"
+                                                               id="{{$property->code}}"
+                                                               name="{{$property->code}}"
+                                                               class="form-control"
+                                                               placeholder="Долгота"
+                                                                {{ $property->is_required ? 'required' : '' }}
+                                                        >
+                                                    </div>
+                                                </div>
+                                            @endif
+                                        </div>
+                                    @endforeach
                                 @endif
+                                <div class="form-group">
+                                    <button class="btn btn-primary">Сохранить</button>
+                                </div>
                             </div>
-                        @endforeach
-                    @endif
-                </div>
-            </form>
+                        </form>
         </div>
     </div>
 @stop

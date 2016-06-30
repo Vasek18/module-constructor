@@ -1,7 +1,7 @@
 @if (isset($iblock))
     <div class="panel panel-default">
         <div class="panel-heading">
-            <a href="{{action('Modules\Bitrix\BitrixDataStorageController@element_create', [$module, $iblock])}}"
+            <a href="{{action('Modules\Bitrix\BitrixDataStorageController@create_element', [$module, $iblock])}}"
                class="btn btn-success">Добавить элемент {{--todo подпись из настроек иб--}}
             </a>
             {{-- <a href="#"
