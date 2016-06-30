@@ -11,19 +11,18 @@
     <br>
     <br>
     @if (count($infoblocks))
-        <ul>
+        <div class="list-group">
             @foreach($infoblocks as $infoblock)
-                <li>
-                    Инфоблок "{{$infoblock->name}}" ({{$infoblock->code}})
-                    <a href="{{ action('Modules\Bitrix\BitrixDataStorageController@detail_ib', [$module->id, $infoblock->id]) }}"
-                       class="btn btn-primary">
-                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                <div class="list-group-item clearfix infoblock">
+                    <a href="{{ action('Modules\Bitrix\BitrixDataStorageController@detail_ib', [$module->id, $infoblock->id]) }}">
+                        Инфоблок "{{$infoblock->name}}" ({{$infoblock->code}})
                     </a>
-                    <a class="btn btn-danger"
-                       href="{{ action('Modules\Bitrix\BitrixDataStorageController@delete_ib', [$module->id, $infoblock->id]) }}">
+                    <a href="{{ action('Modules\Bitrix\BitrixDataStorageController@delete_ib', [$module->id, $infoblock->id]) }}"
+                       class="btn btn-danger pull-right">
                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                    </a></li>
+                    </a>
+                </div>
             @endforeach
-        </ul>
+        </div>
     @endif
 @stop

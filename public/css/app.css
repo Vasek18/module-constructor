@@ -126,3 +126,7 @@ a.you-can-change:hover {
 .badge.success {
   background-color: #3c763d;
 }
+
+.list-group-item {
+  line-height: 34px;
+}

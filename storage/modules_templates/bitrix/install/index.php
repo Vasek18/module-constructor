@@ -209,6 +209,17 @@ Class {MODULE_CLASS_NAME} extends CModule{
 		return $ibp->Add($arFieldsProp);
 	}
 
+	function createIblockElement($arFields){
+		CModule::IncludeModule("iblock");
+		$el = new CIBlockElement;
+
+		if ($PRODUCT_ID = $el->Add($arFields)){
+			return $PRODUCT_ID;
+		}
+
+		return false;
+	}
+
 	function createNecessaryMailEvents(){
 		return true;
 	} // createNecessaryMailEvents

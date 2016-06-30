@@ -210,6 +210,8 @@ class BitrixDataStorageController extends Controller{
 		}
 		$element->props()->sync($attachArr);
 
+		BitrixInfoblocks::writeInFile($module);
+
 		return redirect(action('Modules\Bitrix\BitrixDataStorageController@show_element', [$module->id, $iblock->id, $element->id]));
 	}
 
@@ -266,6 +268,16 @@ class BitrixDataStorageController extends Controller{
 			}
 			$element->props()->sync($attachArr);
 		}
+
+		BitrixInfoblocks::writeInFile($module);
+
+		return back();
+	}
+
+	public function delete_element(Bitrix $module, BitrixInfoblocks $iblock, BitrixIblocksElements $element, Request $request){
+		$element->delete();
+
+		BitrixInfoblocks::writeInFile($module);
 
 		return back();
 	}

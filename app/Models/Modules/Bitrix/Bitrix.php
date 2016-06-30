@@ -240,36 +240,6 @@ class Bitrix extends Model{
 		return in_array($this->module_folder, $this->disk()->directories());
 	}
 
-	public function writeInfoblocksLangInfoInFile(){
-		$module_folder = $this->module_folder;
-		$path = $module_folder.'/lang/ru/install/index.php';
-		$file = $this->disk()->get($path);
-
-		$iblocks = $this->infoblocks()->get();
-		foreach ($iblocks as $iblock){
-			$search = static::findTemplateToReplaceInLangFile($file, $iblock->lang_key."_NAME");
-			$replace = '$MESS["'.$iblock->lang_key."_NAME".'"] = "'.$iblock->name.'";'.PHP_EOL;
-			if ($search == '?>'){
-				$replace .= '?>';
-			}
-			$file = str_replace($search, $replace, $file);
-
-			foreach ($iblock->properties as $property){
-				$search = static::findTemplateToReplaceInLangFile($file, $property->lang_key."_NAME");
-				$replace = '$MESS["'.$property->lang_key."_NAME".'"] = "'.$property->name.'";'.PHP_EOL;
-				if ($search == '?>'){
-					$replace .= '?>';
-				}
-				$file = str_replace($search, $replace, $file);
-			}
-
-		}
-
-		$this->disk()->put($path, $file);
-
-		return true;
-	}
-
 	public function storeMailEventsInModuleFolder(){
 		$this->writeMailEventsCreationCode();
 		$this->writeMailEventsDeletionCode();

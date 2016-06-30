@@ -15,16 +15,24 @@
                     <th>Код</th>
                     <th>Активность</th>
                     <th>Сортировка</th>
+                    <th></th>
                 </tr>
                 @if ($iblock)
                     @foreach($elements as $i => $element)
                         <tr>
                             <td>
-                                <a href="#">{{$element->name}}</a>
+                                <a href="{{action('Modules\Bitrix\BitrixDataStorageController@show_element', [$module, $iblock, $element])}}">{{$element->name}}</a>
                             </td>
                             <td>{{$element->code}}</td>
                             <td>{{$element->active ? 'Y' : 'N'}}</td>
                             <td>{{$element->sort}}</td>
+                            <td>
+                                <a href="{{action('Modules\Bitrix\BitrixDataStorageController@delete_element', [$module, $iblock, $element])}}"
+                                   class="btn btn-danger pull-right">
+                                    <span class="glyphicon glyphicon-trash"
+                                          aria-hidden="true"></span>
+                                </a>
+                            </td>
                         </tr>
                     @endforeach
                 @endif

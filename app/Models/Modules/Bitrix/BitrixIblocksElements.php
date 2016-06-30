@@ -11,6 +11,53 @@ class BitrixIblocksElements extends Model{
 	public $timestamps = false;
 
 	public function generateCreationCode(){
+		$code = '';
+		$code .= "\t\t".'$this->createIblockElement('.PHP_EOL;
+		$code .= "\t\t\t".'Array('.PHP_EOL;
+		$code .= "\t\t\t\t".'"IBLOCK_ID"'." => ".'$iblockID,'.PHP_EOL;
+		$code .= "\t\t\t\t".'"ACTIVE"'." => ".'"Y",'.PHP_EOL;
+		$code .= "\t\t\t\t".'"SORT"'." => ".'"'.$this->sort.'",'.PHP_EOL;
+		$code .= "\t\t\t\t".'"CODE"'." => ".'"'.$this->code.'",'.PHP_EOL;
+		$code .= "\t\t\t\t".'"NAME"'." => ".'Loc::getMessage("'.$this->lang_key.'_NAME"),'.PHP_EOL;
+		$code .= $this->generatePropsArrayCode();
+		$code .= "\t\t\t".')'.PHP_EOL;
+		$code .= "\t\t".');'.PHP_EOL;
+
+		return $code;
+	}
+
+	public function generatePropsArrayCode(){
+		$propsCode = '';
+		$code = '';
+		if ($this->props){
+			foreach ($this->props as $prop){
+				$val = $prop->pivot->value;
+
+				if (strpos($val, '_###_') !== false){
+					$val = explode('_###_', $val);
+					if ($prop->type == 'S:map_google'){
+						if (!$val[0] || !$val[1]){
+							continue;
+						}
+						$val = implode(',', $val);
+					}
+				}
+
+				if (!$val){
+					continue;
+				}
+
+				$propsCode .= "\t\t\t\t\t".'"'.$prop->code.'"'." => ".'Loc::getMessage("'.$this->lang_key.'_PROP_'.$prop->code.'_VALUE"),'.PHP_EOL;
+			}
+		}
+
+		if (strlen($propsCode)){
+			$code .= "\t\t\t\t".'"PROPERTY_VALUES" => Array('.PHP_EOL;
+			$code .= $propsCode;
+			$code .= "\t\t\t\t".'),'.PHP_EOL;
+		}
+
+		return $code;
 	}
 
 	public function getLangKeyAttribute(){
