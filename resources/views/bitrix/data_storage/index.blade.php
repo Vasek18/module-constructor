@@ -7,21 +7,23 @@
 @section('page')
 
     <h2>{{ trans('bitrix_data_storage.iblocks') }}</h2>
-    <a href="{{action('Modules\Bitrix\BitrixDataStorageController@add_ib', [$module->id])}}" class="btn btn-primary">{{ trans('bitrix_data_storage.add_iblock_button') }}</a>
+    <a href="{{action('Modules\Bitrix\BitrixDataStorageController@add_ib', [$module->id])}}"
+       class="btn btn-primary">{{ trans('bitrix_data_storage.add_iblock_button') }}</a>
     <br>
     <br>
     @if (count($infoblocks))
-        <div class="list-group">
+        <div class="list-group deletion_wrapper">
             @foreach($infoblocks as $infoblock)
                 <div class="list-group-item clearfix infoblock">
                     <a href="{{ action('Modules\Bitrix\BitrixDataStorageController@detail_ib', [$module->id, $infoblock->id]) }}">
                         Инфоблок "{{$infoblock->name}}" ({{$infoblock->code}})
                     </a>
                     <a href="{{ action('Modules\Bitrix\BitrixDataStorageController@delete_ib', [$module->id, $infoblock->id]) }}"
-                       class="btn btn-danger pull-right"
-                    id="delete_iblock_{{$infoblock->id}}"
-                    >
-                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                       class="btn btn-danger pull-right human_ajax_deletion"
+                       data-method="get"
+                       id="delete_iblock_{{$infoblock->id}}">
+                        <span class="glyphicon glyphicon-trash"
+                              aria-hidden="true"></span>
                     </a>
                 </div>
             @endforeach

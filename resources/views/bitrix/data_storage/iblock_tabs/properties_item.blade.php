@@ -1,4 +1,4 @@
-<tr>
+<tr class="deletion_wrapper">
     <td>
         <input type="text"
                class="form-control"
@@ -68,7 +68,9 @@
     <td>
         @if($property)
             <a href="{{ action('Modules\Bitrix\BitrixDataStorageController@delete_prop', [$module->id, $property]) }}"
-               class="btn btn-danger">
+               class="btn btn-danger human_ajax_deletion"
+               data-method="get"
+               id="delete_prop_{{$property->id}}">
                 <span class="glyphicon glyphicon-trash"
                       aria-hidden="true"></span>
             </a>

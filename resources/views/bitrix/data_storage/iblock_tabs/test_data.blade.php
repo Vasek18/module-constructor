@@ -19,7 +19,7 @@
                 </tr>
                 @if ($iblock)
                     @foreach($elements as $i => $element)
-                        <tr>
+                        <tr class="deletion_wrapper">
                             <td>
                                 <a href="{{action('Modules\Bitrix\BitrixDataStorageController@show_element', [$module, $iblock, $element])}}">{{$element->name}}</a>
                             </td>
@@ -28,7 +28,9 @@
                             <td>{{$element->sort}}</td>
                             <td>
                                 <a href="{{action('Modules\Bitrix\BitrixDataStorageController@delete_element', [$module, $iblock, $element])}}"
-                                   class="btn btn-danger pull-right">
+                                   class="btn btn-danger pull-right human_ajax_deletion"
+                                   data-method="get"
+                                   id="delete_element_{{$element->id}}">
                                     <span class="glyphicon glyphicon-trash"
                                           aria-hidden="true"></span>
                                 </a>
