@@ -129,7 +129,7 @@
                                     @endforeach
                                 @endif
                                 <div class="form-group">
-                                    <button class="btn btn-primary">Сохранить</button>
+                                    <button class="btn btn-primary" name="save">Сохранить</button>
                                 </div>
                             </div>
                         </form>

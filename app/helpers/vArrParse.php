@@ -208,10 +208,8 @@ class vArrParse{
 		$items = [];
 
 		while (strlen($arrString)){
-			$pos = strpos($arrString, ','); // находим разделитель
-			if (!$pos){ // если не нашли разделитель, то это всё один элемент
-				$pos = strlen($arrString);
-			}
+			$pos = static::findNextDelimiter($arrString); // находим разделитель
+			// dd($pos);
 			$substr = substr($arrString, 0, $pos); // считаем элементом, всё что до разделителя
 			while (static::isSubArrOpened($substr)){
 				if ($pos >= strlen($arrString)){ // если произошло переполнение, то просто берём всю строку // todo этого быть не должно
@@ -219,7 +217,7 @@ class vArrParse{
 					$substr = $arrString;
 					break;
 				}
-				$pos = strpos($arrString, ',', $pos + 1);
+				$pos = static::findNextDelimiter($arrString, ',', $pos + 1);
 				if (!$pos){ // если не нашли разделитель, то это всё один элемент
 					$pos = strlen($arrString);
 					$substr = $arrString;
@@ -243,6 +241,24 @@ class vArrParse{
 		}
 
 		return false;
+	}
+
+	protected static function findNextDelimiter($string, $delimiter = ',', $offset = 0){
+		$pos = strpos($string, $delimiter, $offset); // находим разделитель
+		$dquotes = substr_count(substr($string, 0, $pos), '"'); // считаем кавычки слева
+		$quotes = substr_count(substr($string, 0, $pos), "'"); // считаем кавычки слева
+
+		while ($dquotes % 2 != 0 || $quotes % 2 != 0){ // если разделитель часть значения
+			$pos = strpos($string, $delimiter, $pos + 1); // находим следующий разделитель
+			$dquotes = substr_count(substr($string, 0, $pos), '"'); // считаем кавычки слева
+			$quotes = substr_count(substr($string, 0, $pos), "'"); // считаем кавычки слева
+		}
+
+		if (!$pos){ // если не нашли разделитель, то это всё один элемент
+			$pos = strlen($string);
+		}
+
+		return $pos;
 	}
 
 }

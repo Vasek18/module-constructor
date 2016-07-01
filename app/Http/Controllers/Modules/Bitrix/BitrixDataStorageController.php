@@ -193,22 +193,24 @@ class BitrixDataStorageController extends Controller{
 			'active'    => $request['ACTIVE'] == 'Y' ? true : false,
 		]);
 
-		$attachArr = [];
-		foreach ($request->props as $code => $val){
-			if (!$val){
-				continue;
-			}
-			$prop = BitrixIblocksProps::where('iblock_id', $iblock->id)->where('code', $code)->first();
-			if (!$prop){
-				continue;
-			}
-			if (is_array($val)){
-				$val = implode('_###_', $val);
-			}
+		if ($request->props){
+			$attachArr = [];
+			foreach ($request->props as $code => $val){
+				if (!$val){
+					continue;
+				}
+				$prop = BitrixIblocksProps::where('iblock_id', $iblock->id)->where('code', $code)->first();
+				if (!$prop){
+					continue;
+				}
+				if (is_array($val)){
+					$val = implode('_###_', $val);
+				}
 
-			$attachArr[$prop->id] = ['value' => $val];
+				$attachArr[$prop->id] = ['value' => $val];
+			}
+			$element->props()->sync($attachArr);
 		}
-		$element->props()->sync($attachArr);
 
 		BitrixInfoblocks::writeInFile($module);
 
