@@ -357,6 +357,39 @@ class vArrParseTest extends TestCase{
 
 		$this->assertEquals($expectedArr, $gottenArr);
 	}
+
+	/** @test */
+	function it_parses_unnamed_ass_array_that_contains_comma_in_value(){
+		$string = 'Array("ololo" => "1,2")';
+		$expectedArr = ['ololo' => '1,2'];
+
+		$gottenArr = vArrParse::parseFromText($string);
+		//dd($gottenArr);
+
+		$this->assertEquals($expectedArr, $gottenArr);
+	}
+
+	/** @test */
+	function it_parses_unnamed_ass_array_that_contains_two_comma_in_value(){
+		$string = 'Array("ololo" => "1,2,3")';
+		$expectedArr = ['ololo' => '1,2,3'];
+
+		$gottenArr = vArrParse::parseFromText($string);
+		//dd($gottenArr);
+
+		$this->assertEquals($expectedArr, $gottenArr);
+	}
+
+	/** @test */
+	function it_parses_unnamed_ass_array_that_contains_two_comma_in_value_values_surrounded_by_single_quotes(){
+		$string = "Array('ololo' => '1,2,3')";
+		$expectedArr = ['ololo' => '1,2,3'];
+
+		$gottenArr = vArrParse::parseFromText($string);
+		//dd($gottenArr);
+
+		$this->assertEquals($expectedArr, $gottenArr);
+	}
 }
 
 ?>
