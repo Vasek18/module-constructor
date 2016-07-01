@@ -144,6 +144,8 @@ class BitrixDataStorageController extends Controller{
 	}
 
 	public function delete_ib(Bitrix $module, BitrixInfoblocks $iblock, Request $request){
+		$iblock->cleanLangFromYourself();
+
 		BitrixInfoblocks::destroy($iblock->id);
 
 		BitrixInfoblocks::writeInFile($module);

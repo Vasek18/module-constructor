@@ -18,7 +18,9 @@
                         Инфоблок "{{$infoblock->name}}" ({{$infoblock->code}})
                     </a>
                     <a href="{{ action('Modules\Bitrix\BitrixDataStorageController@delete_ib', [$module->id, $infoblock->id]) }}"
-                       class="btn btn-danger pull-right">
+                       class="btn btn-danger pull-right"
+                    id="delete_iblock_{{$infoblock->id}}"
+                    >
                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                     </a>
                 </div>

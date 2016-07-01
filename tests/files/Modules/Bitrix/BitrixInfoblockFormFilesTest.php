@@ -112,6 +112,11 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 		return $answer;
 	}
 
+	function removeIblock($module, $iblock){
+		$this->visit('/my-bitrix/'.$module->id.'/data_storage/');
+		$this->click('delete_iblock_'.$iblock->id);
+	}
+
 	/** @test */
 	function it_writes_creation_code_with_all_the_params_from_infoblock_tab(){
 		$this->signIn();
@@ -940,8 +945,8 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 			"properties[TYPE][0]" => "S:map_google",
 		]);
 		$this->createIblockElementOnForm($module, $ib, [
-			'NAME'        => 'Trololo',
-			'CODE'        => 'trololo',
+			'NAME'           => 'Trololo',
+			'CODE'           => 'trololo',
 			'props[TEST][0]' => '1',
 			'props[TEST][1]' => '2',
 		]);
@@ -995,6 +1000,139 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 		$this->assertArraySubset([$module->lang_key.'_IBLOCK_TROLOLO_NAME' => 'Ololo'], $optionsLangArr);
 		$this->assertArraySubset([$ib->lang_key.'_ELEMENT_TROLOLO_NAME' => 'Trololo'], $optionsLangArr);
 		$this->assertArraySubset([$ib->lang_key.'_ELEMENT_TROLOLO_PROP_TEST_VALUE' => "1,2"], $optionsLangArr);
+	}
+
+	/** @test */
+	function it_removes_creation_code_when_there_is_no_iblock(){
+		$this->signIn();
+		$module = $this->createBitrixModule();
+
+		$iblock = $this->createIblockOnForm($module, [
+			"properties[NAME][0]" => "Тест",
+			"properties[CODE][0]" => "TEST",
+			"properties[TYPE][0]" => "S:map_google",
+		]);
+		$this->removeIblock($module, $iblock);
+
+		$installationFileContent = file_get_contents($module->getFolder(true).'/install/index.php');
+		$optionsLangArr = $this->getLangFileArray($module);
+		$module->deleteFolder();
+
+		$gottenInstallationFuncCode = vFuncParse::parseFromText($installationFileContent, 'createNecessaryIblocks');
+		$gottenDeletionFuncCode = vFuncParse::parseFromText($installationFileContent, 'deleteNecessaryIblocks');
+
+		$this->assertRegExp('/function createNecessaryIblocks\(\){\s*return true;\s*}/is', $gottenInstallationFuncCode);
+		$this->assertRegExp('/function deleteNecessaryIblocks\(\){\s*return true;\s*}/is', $gottenDeletionFuncCode);
+		$this->assertArrayNotHasKey($module->lang_key.'_IBLOCK_TROLOLO_NAME', $optionsLangArr);
+		$this->assertArrayNotHasKey($module->lang_key.'_IBLOCK_TROLOLO_PARAM_TEST_NAME', $optionsLangArr);
+	}
+
+	/** @test */
+	function it_removes_creation_code_when_there_is_no_iblock_but_was_with_element(){
+		$this->signIn();
+		$module = $this->createBitrixModule();
+
+		$iblock = $this->createIblockOnForm($module);
+		$this->createIblockElementOnForm($module, $iblock, [
+			'NAME' => 'Trololo',
+			'CODE' => 'trololo',
+		]);
+		$this->visit('/my-bitrix/'.$module->id.'/data_storage/');
+		$this->click('delete_iblock_'.$iblock->id);
+
+		$installationFileContent = file_get_contents($module->getFolder(true).'/install/index.php');
+		$optionsLangArr = $this->getLangFileArray($module);
+		$module->deleteFolder();
+
+		$gottenInstallationFuncCode = vFuncParse::parseFromText($installationFileContent, 'createNecessaryIblocks');
+		$gottenDeletionFuncCode = vFuncParse::parseFromText($installationFileContent, 'deleteNecessaryIblocks');
+
+		$this->assertRegExp('/function createNecessaryIblocks\(\){\s*return true;\s*}/is', $gottenInstallationFuncCode);
+		$this->assertRegExp('/function deleteNecessaryIblocks\(\){\s*return true;\s*}/is', $gottenDeletionFuncCode);
+		$this->assertArrayNotHasKey($module->lang_key.'_IBLOCK_TROLOLO_NAME', $optionsLangArr);
+		$this->assertArrayNotHasKey($module->lang_key.'_ELEMENT_TROLOLO_NAME', $optionsLangArr);
+	}
+
+	/** @test */
+	function it_removes_creation_code_when_there_is_no_iblock_but_was_with_element_with_prop(){
+		$this->signIn();
+		$module = $this->createBitrixModule();
+
+		$iblock = $this->createIblockOnForm($module, [
+			"properties[NAME][0]" => "Тест",
+			"properties[CODE][0]" => "TEST",
+		]);
+		$this->createIblockElementOnForm($module, $iblock, [
+			'NAME'        => 'Trololo',
+			'CODE'        => 'trololo',
+			'props[TEST]' => 'test',
+		]);
+		$this->removeIblock($module, $iblock);
+
+		$installationFileContent = file_get_contents($module->getFolder(true).'/install/index.php');
+		$optionsLangArr = $this->getLangFileArray($module);
+		$module->deleteFolder();
+
+		$gottenInstallationFuncCode = vFuncParse::parseFromText($installationFileContent, 'createNecessaryIblocks');
+		$gottenDeletionFuncCode = vFuncParse::parseFromText($installationFileContent, 'deleteNecessaryIblocks');
+
+		$this->assertRegExp('/function createNecessaryIblocks\(\){\s*return true;\s*}/is', $gottenInstallationFuncCode);
+		$this->assertRegExp('/function deleteNecessaryIblocks\(\){\s*return true;\s*}/is', $gottenDeletionFuncCode);
+		$this->assertArrayNotHasKey($module->lang_key.'_IBLOCK_TROLOLO_NAME', $optionsLangArr);
+		$this->assertArrayNotHasKey($module->lang_key.'_IBLOCK_TROLOLO_PARAM_TEST_NAME', $optionsLangArr);
+		$this->assertArrayNotHasKey($module->lang_key.'_ELEMENT_TROLOLO_NAME', $optionsLangArr);
+		$this->assertArrayNotHasKey($iblock->lang_key.'_ELEMENT_TROLOLO_PROP_TEST_VALUE', $optionsLangArr);
+	}
+
+	/** @test */
+	function it_save_the_creation_code_of_ib_when_the_second_was_deleted(){
+		$this->signIn();
+		$module = $this->createBitrixModule();
+
+		$iblock = $this->createIblockOnForm($module);
+
+		$iblock2 = $this->createIblockOnForm($module, [
+			'NAME' => 'Ololo_i',
+			'CODE' => 'trololo_i',
+		]);
+
+		$this->removeIblock($module, $iblock2);
+
+		$gottenInstallationFuncCodeArray = $this->getIblockCreationFuncCallParamsArray($module);
+		$optionsLangArr = $this->getLangFileArray($module);
+		$module->deleteFolder();
+
+		$expectedInstallationFuncCodeArray = [
+			"IBLOCK_TYPE_ID"   => '$iblockType',
+			"ACTIVE"           => "Y",
+			"LID"              => "s1",
+			"VERSION"          => "2",
+			"CODE"             => "trololo",
+			"NAME"             => 'Loc::getMessage("'.$module->lang_key.'_IBLOCK_TROLOLO_NAME")',
+			"SORT"             => "555",
+			"LIST_PAGE_URL"    => "#SITE_DIR#/".$module->code."/index.php?ID=#IBLOCK_ID##hi",
+			"SECTION_PAGE_URL" => "#SITE_DIR#/".$module->code."/list.php?SECTION_ID=#SECTION_ID##hi",
+			"DETAIL_PAGE_URL"  => "#SITE_DIR#/".$module->code."/detail.php?ID=#ELEMENT_ID##hi",
+			"FIELDS"           => Array(
+				"ACTIVE"            => Array(
+					"DEFAULT_VALUE" => "Y",
+				),
+				"PREVIEW_TEXT_TYPE" => Array(
+					"DEFAULT_VALUE" => "text",
+				),
+				"DETAIL_TEXT_TYPE"  => Array(
+					"DEFAULT_VALUE" => "text",
+				),
+			),
+			"GROUP_ID"         => [
+				2 => "R"
+			]
+		];
+
+		$this->assertEquals(1, count($gottenInstallationFuncCodeArray));
+		$this->assertEquals($expectedInstallationFuncCodeArray, $gottenInstallationFuncCodeArray[0]);
+		$this->assertArraySubset([$module->lang_key.'_IBLOCK_TROLOLO_NAME' => 'Ololo'], $optionsLangArr);
+		$this->assertArrayNotHasKey($module->lang_key.'_IBLOCK_TROLOLO_I_NAME', $optionsLangArr);
 	}
 }
 

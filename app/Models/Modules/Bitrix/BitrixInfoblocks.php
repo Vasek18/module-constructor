@@ -20,7 +20,7 @@ class BitrixInfoblocks extends Model{
 		$iblocksCreationFunctionCode = static::generateInfoblocksCreationFunctionCode($module);
 
 		$iblocksDeletionFunctionCodeTemplate = vFuncParse::parseFromFile($module->getFolder(true).'/install/index.php', 'deleteNecessaryIblocks');
-		$iblocksDeletionFunctionCode = static::generateInfoblocksDeletionFunctionCode();
+		$iblocksDeletionFunctionCode = static::generateInfoblocksDeletionFunctionCode($module);
 
 		$search = [$iblocksCreationFunctionCodeTemplate, $iblocksDeletionFunctionCodeTemplate];
 		$replace = [$iblocksCreationFunctionCode, $iblocksDeletionFunctionCode];
@@ -34,22 +34,32 @@ class BitrixInfoblocks extends Model{
 	}
 
 	public static function generateInfoblocksCreationFunctionCode($module){
-		$code = "\t".'function createNecessaryIblocks(){'.PHP_EOL;
-		$code .= "\t\t".'$iblockType = $this->createIblockType();'.PHP_EOL;
+		$code = 'function createNecessaryIblocks(){'.PHP_EOL;
+		if ($module->infoblocks()->count()){
+			$code .= "\t\t".'$iblockType = $this->createIblockType();'.PHP_EOL;
 
-		foreach ($module->infoblocks as $iblock){
-			$code .= $iblock->generateCreationCode();
+			foreach ($module->infoblocks as $iblock){
+				$code .= $iblock->generateCreationCode();
+			}
+
+		}else{
+			$code .= "\t"."\t".'return true;'.PHP_EOL;
 		}
-
 		$code .= "\t".'}';
 
 		return $code;
 	}
 
-	public static function generateInfoblocksDeletionFunctionCode(){
-		return "\t".'function deleteNecessaryIblocks(){'.PHP_EOL.
-		"\t"."\t".'$this->removeIblockType();'.PHP_EOL.
-		"\t".'}';
+	public static function generateInfoblocksDeletionFunctionCode($module){
+		$code = 'function deleteNecessaryIblocks(){'.PHP_EOL;
+		if ($module->infoblocks()->count()){
+			$code .= "\t"."\t".'$this->removeIblockType();'.PHP_EOL;
+		}else{
+			$code .= "\t"."\t".'return true;'.PHP_EOL;
+		}
+		$code .= "\t".'}';
+
+		return $code;
 	}
 
 	public static function writeInLangFile(Bitrix $module){
@@ -85,17 +95,6 @@ class BitrixInfoblocks extends Model{
 
 		return true;
 	}
-
-	// todo есть замена в виде findFunctionCodeInTextUsingCommentOnEnd, а вообще надо на vFuncParse перейти
-	// protected static function findInfoblockCreationAndDeletionCodeInInstallFile($file, $functionName){
-	// 	$beginningCode = "\t".'public function '.$functionName.'(){';
-	// 	$beginningPosition = strpos($file, $beginningCode);
-	// 	$endingCode = "\t".'} // '.$functionName;
-	// 	$endingPosition = strpos($file, $endingCode);
-	// 	$codeLength = $endingPosition - $beginningPosition + strlen($endingCode);
-	//
-	// 	return substr($file, $beginningPosition, $codeLength);
-	// }
 
 	public function generateCreationCode(){
 		$code = '';
@@ -169,6 +168,22 @@ class BitrixInfoblocks extends Model{
 		}
 
 		return $answer;
+	}
+
+	public function cleanLangFromYourself(){
+		$this->module()->first()->changeVarInLangFile($this->lang_key."_NAME", "", '/lang/ru/install/index.php');
+
+		foreach ($this->properties as $property){
+			$this->module()->first()->changeVarInLangFile($property->lang_key."_NAME", "", '/lang/ru/install/index.php');
+		}
+
+		foreach ($this->elements as $element){
+			$this->module()->first()->changeVarInLangFile($element->lang_key."_NAME", "", '/lang/ru/install/index.php');
+
+			foreach ($element->props as $prop){
+				$this->module()->first()->changeVarInLangFile($element->lang_key.'_PROP_'.$prop->code.'_VALUE', "", '/lang/ru/install/index.php');
+			}
+		}
 	}
 
 	public function getLangKeyAttribute(){
