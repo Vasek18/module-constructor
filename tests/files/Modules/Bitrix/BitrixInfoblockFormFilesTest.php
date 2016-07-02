@@ -363,7 +363,6 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 			"FIELDS[DETAIL_PICTURE][DEFAULT_VALUE][WATERMARK_TEXT_POSITION]"  => "br",
 			"FIELDS[DETAIL_TEXT_TYPE][DEFAULT_VALUE]"                         => "html",
 			"FIELDS[CODE][DEFAULT_VALUE][TRANS_CASE]"                         => "U",
-
 		]);
 
 		$gottenInstallationFuncCodeArray = $this->getIblockCreationFuncCallParamsArray($module);
@@ -698,13 +697,6 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 		$module = $this->createBitrixModule();
 
 		$ib = $this->createIblockOnForm($module, [
-			'VERSION'          => '2',
-			'NAME'             => 'Ololo',
-			'CODE'             => 'trololo',
-			"SORT"             => "555",
-			"LIST_PAGE_URL"    => "#SITE_DIR#/".$module->code."/index.php?ID=#IBLOCK_ID##hi",
-			"SECTION_PAGE_URL" => "#SITE_DIR#/".$module->code."/list.php?SECTION_ID=#SECTION_ID##hi",
-			"DETAIL_PAGE_URL"  => "#SITE_DIR#/".$module->code."/detail.php?ID=#ELEMENT_ID##hi",
 			"GROUP_ID"         => "Array('2' => 'X')",
 		]);
 
