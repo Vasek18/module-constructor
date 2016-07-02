@@ -22,15 +22,22 @@
     <tr>
         <th>{{ trans('bitrix_iblocks_form.param_code') }}:</th>
         <td>
-            <input type="text"
-                   class="form-control"
-                   id="CODE"
-                   name="CODE"
-                   size="50"
-                   maxlength="50"
-                   value="{{isset($iblock)?$iblock->params->CODE:''}}"
-                   data-translit_from="NAME"
-                   required>
+            @if (isset($iblock))
+                <input type="hidden"
+                       name="CODE"
+                       value="{{isset($iblock)?$iblock->params->CODE:''}}">
+                <p>{{isset($iblock)?$iblock->params->CODE:''}}</p>
+            @else
+                <input type="text"
+                       class="form-control"
+                       id="CODE"
+                       name="CODE"
+                       size="50"
+                       maxlength="50"
+                       value="{{isset($iblock)?$iblock->params->CODE:''}}"
+                       data-translit_from="NAME"
+                       required>
+            @endif
         </td>
     </tr>
     <tr>

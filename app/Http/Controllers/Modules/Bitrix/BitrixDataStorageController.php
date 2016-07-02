@@ -105,7 +105,6 @@ class BitrixDataStorageController extends Controller{
 
 		$iblock->update([
 			'name'   => $params['NAME'],
-			'code'   => $params['CODE'],
 			'params' => json_encode($params, JSON_FORCE_OBJECT) // предыдущие пару параметров дублируются здесь специально, чтобы можно было создавать массив по одному лишь params
 		]);
 
