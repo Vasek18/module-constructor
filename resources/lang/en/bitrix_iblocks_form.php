@@ -144,4 +144,13 @@ Elements detail pictures settings',
 	"prop_type_S:UserID"         => 'Link to user',
 	"prop_type_E:EAutocomplete"  => 'Link-to-element autocomplete text box',
 	"prop_type_S:video"          => 'Video',
+
+	'default_access_permissions' => 'Default Access Permissions',
+	'for_everyone'               => 'For Everyone',
+	"access_type_d"              => 'Deny',
+	"access_type_r"              => 'Read',
+	"access_type_s"              => 'View in Control Panel',
+	"access_type_t"              => 'Create in Control Panel',
+	"access_type_w"              => 'Write',
+	"access_type_x"              => 'Full access (incl. managing access rights)',
 ];

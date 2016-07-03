@@ -147,4 +147,12 @@ return [
 	"prop_type_S:directory"      => 'Справочник',
 	"prop_type_N:Sequence"       => 'Счетчик',
 
+	'default_access_permissions' => 'Доступ по умолчанию',
+	'for_everyone'               => 'Для всех пользователей',
+	"access_type_d"              => 'Нет доступа',
+	"access_type_r"              => 'Чтение',
+	"access_type_s"              => 'Просмотр в панели',
+	"access_type_t"              => 'Добавление в панели',
+	"access_type_w"              => 'Изменение',
+	"access_type_x"              => 'Полный доступ (изменение прав доступа)',
 ];
