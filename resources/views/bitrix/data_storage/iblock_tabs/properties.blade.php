@@ -1,13 +1,13 @@
 <table class="table">
     <tr>
-        <th>Название</th>
-        <th>Тип</th>
-        <th>Множ.</th>
-        <th>Обяз.</th>
-        <th>Сорт.</th>
-        <th>Код</th>
-        <th>Изм.</th>
-        <th>Удал.</th>
+        <th>{{ trans('bitrix_iblocks_form.props_tab_name') }}</th>
+        <th>{{ trans('bitrix_iblocks_form.props_tab_type') }}</th>
+        <th>{{ trans('bitrix_iblocks_form.props_tab_plural') }}</th>
+        <th>{{ trans('bitrix_iblocks_form.props_tab_require') }}</th>
+        <th>{{ trans('bitrix_iblocks_form.props_tab_sort') }}</th>
+        <th>{{ trans('bitrix_iblocks_form.props_tab_code') }}</th>
+        <th>{{ trans('bitrix_iblocks_form.props_tab_change') }}</th>
+        <th>{{ trans('bitrix_iblocks_form.props_tab_delete') }}</th>
     </tr>
     @if ($iblock)
         @foreach($properties as $i => $property)

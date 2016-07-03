@@ -13,9 +13,9 @@
                 name="properties[TYPE][{{$i}}]"
                 id="IB_PROPERTY_n{{$i}}_PROPERTY_TYPE">
             @foreach($properties_types as $properties_type_group)
-                <optgroup label="{{$properties_type_group['label']}}">
+                <optgroup label="{{ trans('bitrix_iblocks_form.prop_type_'.$properties_type_group['code']) }}">
                     @foreach($properties_type_group['props'] as $properties_type)
-                        <option value="{{$properties_type['code']}}" {{$property && $property->type == $properties_type['code'] ? 'selected' : ''}}>{{$properties_type['name']}}</option>
+                        <option value="{{$properties_type['code']}}" {{$property && $property->type == $properties_type['code'] ? 'selected' : ''}}>{{ trans('bitrix_iblocks_form.prop_type_'.$properties_type['code']) }}</option>
                     @endforeach
                 </optgroup>
             @endforeach

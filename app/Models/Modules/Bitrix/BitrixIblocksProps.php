@@ -12,6 +12,7 @@ class BitrixIblocksProps extends Model{
 
 	public static $types = [
 		['label' => "Базовые типы",
+		 'code'  => "base_types_group",
 		 'props' => [
 			 ['code' => "S", 'name' => 'Строка'],
 			 ['code' => "N", 'name' => 'Число'],
@@ -22,6 +23,7 @@ class BitrixIblocksProps extends Model{
 		 ]
 		],
 		['label' => "Пользовательские типы",
+		 'code'  => "user_types_group",
 		 'props' => [
 			 ['code' => "S:HTML", 'name' => 'HTML/текст'],
 			 ['code' => "S:video", 'name' => 'Видео'],
