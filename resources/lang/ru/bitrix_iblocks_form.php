@@ -155,4 +155,16 @@ return [
 	"access_type_t"              => 'Добавление в панели',
 	"access_type_w"              => 'Изменение',
 	"access_type_x"              => 'Полный доступ (изменение прав доступа)',
+
+	'add_element_button'             => 'Добавить элемент',
+	'test_data_tab_name'             => 'Название',
+	'test_data_tab_code'             => 'Код',
+	'test_data_tab_active'           => 'Активность',
+	'test_data_tab_sort'             => 'Сортировка',
+	'tab_require_iblock'             => 'Вкладка будет доступна после создания инфоблока',
+	'add_element_page_title'         => 'Добавление тестового элемента инфоблока',
+	'edit_element_page_title'        => 'Редактирование тестового элемента инфоблока',
+	'back_to_iblock'                 => 'Вернуться к редактированию инфоблока',
+	'test_element_element_tab_title' => 'Элемент',
+	'test_element_props_values'      => 'Значения свойств',
 ];

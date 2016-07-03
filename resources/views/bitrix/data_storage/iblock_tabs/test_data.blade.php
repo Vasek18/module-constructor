@@ -2,7 +2,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <a href="{{action('Modules\Bitrix\BitrixDataStorageController@create_element', [$module, $iblock])}}"
-               class="btn btn-success">Добавить элемент {{--todo подпись из настроек иб--}}
+               class="btn btn-success">{{ trans('bitrix_iblocks_form.add_element_button') }} {{--todo подпись из настроек иб--}}
             </a>
             {{-- <a href="#"
                 class="btn btn-default">Добавить раздел --}}{{--todo подпись из настроек иб--}}{{--
@@ -11,10 +11,10 @@
         <div class="panel-body">
             <table class="table table-bordered">
                 <tr> {{--todo возможность настраивать--}}
-                    <th>Название</th>
-                    <th>Код</th>
-                    <th>Активность</th>
-                    <th>Сортировка</th>
+                    <th>{{ trans('bitrix_iblocks_form.test_data_tab_name') }}</th>
+                    <th>{{ trans('bitrix_iblocks_form.test_data_tab_code') }}</th>
+                    <th>{{ trans('bitrix_iblocks_form.test_data_tab_active') }}</th>
+                    <th>{{ trans('bitrix_iblocks_form.test_data_tab_sort') }}</th>
                     <th></th>
                 </tr>
                 @if ($iblock)
@@ -42,5 +42,5 @@
         </div>
     </div>
 @else
-    <p>Вкладка будет доступна после создания инфоблока</p>
+    <p>{{ trans('bitrix_iblocks_form.tab_require_iblock') }}</p>
 @endif

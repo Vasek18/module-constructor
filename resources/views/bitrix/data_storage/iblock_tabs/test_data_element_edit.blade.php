@@ -2,9 +2,9 @@
 
 @section('h1')
     @if (isset($element))
-        Редактирование тестового элемента инфоблока
+        {{ trans('bitrix_iblocks_form.edit_element_page_title') }}
     @else
-        Добавление тестового элемента инфоблока
+        {{ trans('bitrix_iblocks_form.add_element_page_title') }}
     @endif
 @stop
 
@@ -12,7 +12,7 @@
     <p>
         <a class="btn btn-primary"
            href="{{ action('Modules\Bitrix\BitrixDataStorageController@detail_ib', [$module->id, $iblock->id]) }}">
-            Вернуться к редактированию инфоблока
+            {{ trans('bitrix_iblocks_form.back_to_iblock') }}
         </a>
     </p>
     <ul class="nav nav-tabs"
@@ -22,7 +22,7 @@
             <a href="#element"
                aria-controls="element"
                role="tab"
-               data-toggle="tab">Элемент
+               data-toggle="tab">{{ trans('bitrix_iblocks_form.test_element_element_tab_title') }}
             </a>
         </li>
     </ul>
@@ -48,12 +48,12 @@
                                                    value="Y"
                                                     {{!isset($element) || $element->active ? 'checked' : ''}}
                                             >
-                                            Активность
+                                            {{ trans('bitrix_iblocks_form.test_data_tab_active') }}
                                         </label>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="NAME">Название
+                                    <label for="NAME">{{ trans('bitrix_iblocks_form.test_data_tab_name') }}
                                     </label>
                                     <input type="text"
                                            id="NAME"
@@ -63,7 +63,7 @@
                                            required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="CODE">Символьный код
+                                    <label for="CODE">{{ trans('bitrix_iblocks_form.test_data_tab_code') }}
                                     </label>
                                     <input type="text"
                                            id="CODE"
@@ -75,7 +75,7 @@
                                     >
                                 </div>
                                 <div class="form-group">
-                                    <label for="SORT">Сортировка
+                                    <label for="SORT">{{ trans('bitrix_iblocks_form.test_data_tab_sort') }}
                                     </label>
                                     <input type="text"
                                            id="SORT"
@@ -87,7 +87,7 @@
                                 </div>
                                 @if (count($properties))
                                     <hr>
-                                    <h2>Значения свойств</h2>
+                                    <h2>{{ trans('bitrix_iblocks_form.test_element_props_values') }}</h2>
                                     <hr>
                                     @foreach($properties as $i => $property)
                                         <div class="form-group">
@@ -129,7 +129,9 @@
                                     @endforeach
                                 @endif
                                 <div class="form-group">
-                                    <button class="btn btn-primary" name="save">Сохранить</button>
+                                    <button class="btn btn-primary"
+                                            name="save">{{ trans('bitrix_iblocks_form.button_save') }}
+                                    </button>
                                 </div>
                             </div>
                         </form>
