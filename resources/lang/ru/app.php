@@ -8,5 +8,7 @@ return [
 	'link_to_personal_title' => 'Личный кабинет',
 	'link_to_logout_title'   => 'Выйти',
 	'bitrix_module'          => 'Модуль',
-	'error'                  => 'Ошибка!',
+
+	'error'  => 'Ошибка!',
+	'select' => 'Выберите',
 ];

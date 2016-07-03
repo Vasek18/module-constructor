@@ -9,4 +9,5 @@ return [
 	'link_to_logout_title'   => 'Logout',
 	'bitrix_module'          => 'Module',
 	'error'                  => 'Error!',
+	'select'                 => 'Select',
 ];
