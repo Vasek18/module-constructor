@@ -1,7 +1,7 @@
 @extends('bitrix.internal_template')
 
 @section('h1')
-    Создание компонента
+    Создание почтового события
 @stop
 
 @push('scripts')

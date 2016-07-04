@@ -401,6 +401,10 @@ class Bitrix extends Model{
 		return $this->hasMany('App\Models\Modules\Bitrix\BitrixArbitraryFiles', 'module_id');
 	}
 
+	public function adminMenuPages(){
+		return $this->hasMany('App\Models\Modules\Bitrix\BitrixAdminMenuItems', 'module_id');
+	}
+
 	public function ownedBy(User $user){
 		return $this->user_id == $user->id;
 	}

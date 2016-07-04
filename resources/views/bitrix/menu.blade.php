@@ -26,6 +26,9 @@
                 <li class="{!! classActiveSegment(3, 'events_handlers') !!}">
                     <a href="{{ route('bitrix_module_events_handlers', $module->id) }}">{{ trans('bitrix_top_menu.events_handlers') }}</a>
                 </li>
+                <li class="{!! classActiveSegment(3, 'admin_menu') !!}">
+                    <a href="{{ route('bitrix_module_admin_menu', $module->id) }}">{{ trans('bitrix_top_menu.admin_menu') }}</a>
+                </li>
                 <li class="{!! classActiveSegment(3, 'arbitrary_files') !!}">
                     <a href="{{ route('bitrix_module_arbitrary_files', $module->id) }}">{{ trans('bitrix_top_menu.arbitrary_files') }}</a>
                 </li>

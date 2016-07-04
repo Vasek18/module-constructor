@@ -152,6 +152,16 @@ Route::group(['prefix' => 'my-bitrix', 'middleware' => 'bitrix.owner'], function
 		Route::get('{mail_event}/vars/{var}/delete', ['uses' => 'Modules\Bitrix\BitrixMailEventsController@destroy_var']);
 		Route::post('{mail_event}/vars/create', ['uses' => 'Modules\Bitrix\BitrixMailEventsController@add_var']);
 	});
+
+	// почтовые события
+	Route::group(['prefix' => '{module}/admin_menu'], function (){
+		Route::get('', ['as' => 'bitrix_module_admin_menu', 'uses' => 'Modules\Bitrix\BitrixAdminMenuController@index']);
+		Route::get('create', ['uses' => 'Modules\Bitrix\BitrixAdminMenuController@create']);
+		Route::post('', 'Modules\Bitrix\BitrixAdminMenuController@store');
+		Route::get('{admin_menu_page}', ['uses' => 'Modules\Bitrix\BitrixAdminMenuController@show']);
+		Route::put('{admin_menu_page}', 'Modules\Bitrix\BitrixAdminMenuController@update');
+		Route::get('{admin_menu_page}/delete', 'Modules\Bitrix\BitrixAdminMenuController@destroy');
+	});
 });
 //Route::post('my/bitrix/{bitrix}/download', 'Modules\Bitrix\BitrixController@download_zip');
 //Route::resource('my/bitrix', 'Modules\Bitrix\BitrixController', [
