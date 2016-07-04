@@ -109,6 +109,15 @@
                       class="form-control">{{ isset($admin_menu_page) ? $admin_menu_page->php_code : "" }}</textarea>
         </div>
         <div class="form-group">
+            <label class="control-label"
+                   for="text">Код ланга
+            </label>
+            <textarea name="lang_code"
+                      id="lang_code"
+                      rows="10"
+                      class="form-control">{{ isset($admin_menu_page) ? $admin_menu_page->lang_code : "" }}</textarea>
+        </div>
+        <div class="form-group">
             <button type="submit"
                     class="btn btn-primary"
                     name="create">

@@ -48,8 +48,9 @@ class BitrixAdminMenuController extends Controller{
 				'code'        => $request->code,
 				'parent_menu' => $request->parent_menu,
 				'sort'        => $request->sort,
-				'text'        => $request->text,
+				'text'        => $request->text ? $request->text : $request->name,
 				'php_code'    => $request->php_code,
+				'lang_code'   => $request->lang_code,
 			]
 		);
 
@@ -78,8 +79,9 @@ class BitrixAdminMenuController extends Controller{
 				'code'        => $request->code,
 				'parent_menu' => $request->parent_menu,
 				'sort'        => $request->sort,
-				'text'        => $request->text,
+				'text'        => $request->text ? $request->text : $request->name,
 				'php_code'    => $request->php_code,
+				'lang_code'   => $request->lang_code,
 			]
 		);
 

@@ -310,10 +310,14 @@ class Bitrix extends Model{
 			$pathToLangFile = '/'.$pathToLangFile;
 		}
 		$path = $this->module_folder.$pathToLangFile;
-		$langFile = $this->disk()->get($path);
 
-		$vArrParse = new vArrParse;
-		$langArr = $vArrParse->parseFromText($langFile, 'MESS');
+		if ($this->disk()->exists($path)){
+			$langFile = $this->disk()->get($path);
+			$vArrParse = new vArrParse;
+			$langArr = $vArrParse->parseFromText($langFile, 'MESS');
+		}else{
+			$langArr = [];
+		}
 
 		// записываем переменую
 		$langArr[$key] = $var;

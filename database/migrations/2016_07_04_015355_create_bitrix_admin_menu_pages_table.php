@@ -23,6 +23,7 @@ class CreateBitrixAdminMenuPagesTable extends Migration{
 			$table->string("text");
 			$table->string("title")->nullable();
 			$table->longText("php_code")->nullable();
+			$table->longText("lang_code")->nullable();
 		});
 	}
 
