@@ -61,7 +61,7 @@ Class {MODULE_CLASS_NAME} extends CModule{
 				while (false !== $item = readdir($dir)){
 					if (in_array($item, $this->exclusionAdminFiles))
 						continue;
-					file_put_contents($_SERVER['DOCUMENT_ROOT'].'/bitrix/admin/'.$this->MODULE_ID.'_'.$item,
+					file_put_contents($_SERVER['DOCUMENT_ROOT'].'/bitrix/admin/'.$item,
 						'<'.'? require($_SERVER["DOCUMENT_ROOT"]."'.$this->GetPath(true).'/admin/'.$item.'");?'.'>');
 				}
 				closedir($dir);
