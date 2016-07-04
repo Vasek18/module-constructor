@@ -53,6 +53,8 @@ class BitrixAdminMenuController extends Controller{
 			]
 		);
 
+		BitrixAdminMenuItems::storeInModuleFolder($module);
+
 		return redirect(action('Modules\Bitrix\BitrixAdminMenuController@show', [$module->id, $admin_menu_page->id]));
 	}
 
@@ -81,11 +83,15 @@ class BitrixAdminMenuController extends Controller{
 			]
 		);
 
+		BitrixAdminMenuItems::storeInModuleFolder($module);
+
 		return redirect(action('Modules\Bitrix\BitrixAdminMenuController@show', [$module->id, $admin_menu_page->id]));
 	}
 
 	public function destroy(Bitrix $module, BitrixAdminMenuItems $admin_menu_page, Request $request){
 		$admin_menu_page->delete();
+
+		BitrixAdminMenuItems::storeInModuleFolder($module);
 
 		return redirect(action('Modules\Bitrix\BitrixAdminMenuController@index', [$module->id]));
 	}
