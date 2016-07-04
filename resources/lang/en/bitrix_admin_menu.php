@@ -1,7 +1,7 @@
 <?php
 
 return [
-	'h1'         => 'Adminpanel menu',
+	'h1'         => 'Admin menu page',
 	'button_add' => 'Add page',
 	'pages'      => 'Pages',
 

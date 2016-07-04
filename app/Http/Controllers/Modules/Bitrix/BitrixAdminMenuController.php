@@ -35,7 +35,7 @@ class BitrixAdminMenuController extends Controller{
 		return view("bitrix.admin_menu.edit_form", $data);
 	}
 
-	public function store(Bitrix $module, Request $request){
+	public function store(Bitrix $module, Requests\AdminPageFormRequest $request){
 		$admin_menu_page = BitrixAdminMenuItems::updateOrCreate(
 			[
 				'module_id' => $module->id,
@@ -73,7 +73,7 @@ class BitrixAdminMenuController extends Controller{
 		//
 	}
 
-	public function update(Bitrix $module, BitrixAdminMenuItems $admin_menu_page, Request $request){
+	public function update(Bitrix $module, BitrixAdminMenuItems $admin_menu_page, Requests\AdminPageFormRequest $request){
 		$admin_menu_page->update([
 				'name'        => $request->name,
 				'code'        => $request->code,

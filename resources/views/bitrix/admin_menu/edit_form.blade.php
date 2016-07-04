@@ -8,10 +8,6 @@
     @endif
 @stop
 
-@push('scripts')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/ace.js"></script>
-@endpush
-
 @section('page')
     @if (count($errors) > 0)
         <div class="alert alert-danger">
@@ -125,7 +121,7 @@
         <div class="form-group">
             <button type="submit"
                     class="btn btn-primary"
-                    name="create">
+                    name="save">
                 {{ trans('app.save') }}
             </button>
         </div>

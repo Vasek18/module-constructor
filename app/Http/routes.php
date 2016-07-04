@@ -153,8 +153,8 @@ Route::group(['prefix' => 'my-bitrix', 'middleware' => 'bitrix.owner'], function
 		Route::post('{mail_event}/vars/create', ['uses' => 'Modules\Bitrix\BitrixMailEventsController@add_var']);
 	});
 
-	// почтовые события
-	Route::group(['prefix' => '{module}/admin_menu'], function (){
+	// страницы административного меню
+	Route::group(['prefix' => '{module}/admin_menu', 'middleware' => 'auth'], function (){
 		Route::get('', ['as' => 'bitrix_module_admin_menu', 'uses' => 'Modules\Bitrix\BitrixAdminMenuController@index']);
 		Route::get('create', ['uses' => 'Modules\Bitrix\BitrixAdminMenuController@create']);
 		Route::post('', 'Modules\Bitrix\BitrixAdminMenuController@store');

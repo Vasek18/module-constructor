@@ -19,7 +19,8 @@
                     </a>
                     <a href="{{ action('Modules\Bitrix\BitrixAdminMenuController@destroy', [$module->id, $admin_menu_page->id]) }}"
                        class="btn btn-danger pull-right human_ajax_deletion"
-                       data-method="get">
+                       data-method="get"
+                       id="delete_amp_{{$admin_menu_page->id}}">
                         <span class="glyphicon glyphicon-trash"
                               aria-hidden="true"></span>
                     </a>
