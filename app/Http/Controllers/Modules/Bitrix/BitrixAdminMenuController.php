@@ -32,11 +32,11 @@ class BitrixAdminMenuController extends Controller{
 			'parent_menu_vars' => BitrixAdminMenuItems::$parent_menu_vars
 		];
 
-		return view("bitrix.admin_menu.new", $data);
+		return view("bitrix.admin_menu.edit_form", $data);
 	}
 
 	public function store(Bitrix $module, Request $request){
-		$mail_event = BitrixAdminMenuItems::updateOrCreate(
+		$admin_menu_page = BitrixAdminMenuItems::updateOrCreate(
 			[
 				'module_id' => $module->id,
 				'name'      => $request->name,
@@ -53,11 +53,17 @@ class BitrixAdminMenuController extends Controller{
 			]
 		);
 
-		return redirect(action('Modules\Bitrix\BitrixAdminMenuController@index', [$module->id]));
-		// return redirect(action('Modules\Bitrix\BitrixMailEventsController@show', [$module->id, $mail_event->id]));
+		return redirect(action('Modules\Bitrix\BitrixAdminMenuController@show', [$module->id, $admin_menu_page->id]));
 	}
 
 	public function show(Bitrix $module, BitrixAdminMenuItems $admin_menu_page, Request $request){
+		$data = [
+			'module'           => $module,
+			'parent_menu_vars' => BitrixAdminMenuItems::$parent_menu_vars,
+			'admin_menu_page'  => $admin_menu_page
+		];
+
+		return view("bitrix.admin_menu.edit_form", $data);
 	}
 
 	public function edit($id){
@@ -65,9 +71,23 @@ class BitrixAdminMenuController extends Controller{
 	}
 
 	public function update(Bitrix $module, BitrixAdminMenuItems $admin_menu_page, Request $request){
+		$admin_menu_page->update([
+				'name'        => $request->name,
+				'code'        => $request->code,
+				'parent_menu' => $request->parent_menu,
+				'sort'        => $request->sort,
+				'text'        => $request->text,
+				'php_code'    => $request->php_code,
+			]
+		);
+
+		return redirect(action('Modules\Bitrix\BitrixAdminMenuController@show', [$module->id, $admin_menu_page->id]));
 	}
 
 	public function destroy(Bitrix $module, BitrixAdminMenuItems $admin_menu_page, Request $request){
+		$admin_menu_page->delete();
+
+		return redirect(action('Modules\Bitrix\BitrixAdminMenuController@index', [$module->id]));
 	}
 
 }

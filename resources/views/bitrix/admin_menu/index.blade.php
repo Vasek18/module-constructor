@@ -13,12 +13,13 @@
         <h2>Страницы</h2>
         <div class="list-group">
             @foreach($admin_menu_pages as $admin_menu_page)
-                <div class="list-group-item clearfix component">
+                <div class="list-group-item clearfix deletion_wrapper">
                     <a href="{{ action('Modules\Bitrix\BitrixAdminMenuController@show', [$module->id, $admin_menu_page->id]) }}">
                         "{{$admin_menu_page->name}}" ({{$admin_menu_page->parent_menu}})
                     </a>
                     <a href="{{ action('Modules\Bitrix\BitrixAdminMenuController@destroy', [$module->id, $admin_menu_page->id]) }}"
-                       class="btn btn-danger pull-right">
+                       class="btn btn-danger pull-right human_ajax_deletion"
+                       data-method="get">
                         <span class="glyphicon glyphicon-trash"
                               aria-hidden="true"></span>
                     </a>

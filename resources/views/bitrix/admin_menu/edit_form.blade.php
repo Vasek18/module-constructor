@@ -22,8 +22,9 @@
     <form class="col-md-8 col-md-offset-2"
           role="form"
           method="POST"
-          action="{{ action('Modules\Bitrix\BitrixAdminMenuController@store', $module->id) }}">
+          action="{{ isset($admin_menu_page) ? action('Modules\Bitrix\BitrixAdminMenuController@update', [$module->id, $admin_menu_page->id]) : action('Modules\Bitrix\BitrixAdminMenuController@store', $module->id) }}">
         {{ csrf_field() }}
+        {{ isset($admin_menu_page) ? method_field('PUT') : '' }}
         <div class="form-group">
             <label class="control-label"
                    for="name">Название в системе
@@ -31,7 +32,7 @@
             <input type="text"
                    class="form-control"
                    name="name"
-                   value=""
+                   value="{{ isset($admin_menu_page) ? $admin_menu_page->name : "" }}"
                    required
                    aria-describedby="name_help"
                    id="name">
@@ -45,7 +46,7 @@
             <input type="text"
                    class="form-control"
                    name="code"
-                   value=""
+                   value="{{ isset($admin_menu_page) ? $admin_menu_page->code : "" }}"
                    required
                    aria-describedby="code_help"
                    data-translit_from="name"
@@ -60,7 +61,7 @@
             <input type="text"
                    class="form-control"
                    name="sort"
-                   value=""
+                   value="{{ isset($admin_menu_page) ? $admin_menu_page->sort : "500" }}"
                    aria-describedby="sort_help"
                    id="sort">
                 <span class="help-block"
@@ -73,7 +74,7 @@
             <input type="text"
                    class="form-control"
                    name="text"
-                   value=""
+                   value="{{ isset($admin_menu_page) ? $admin_menu_page->text : "" }}"
                    aria-describedby="text_help"
                    id="text">
                 <span class="help-block"
@@ -90,7 +91,9 @@
                     required>
                 <option value="">Выберите</option>
                 @foreach($parent_menu_vars as $parent_menu_var)
-                    <option value="{{$parent_menu_var}}">{{$parent_menu_var}}</option>
+                    <option value="{{$parent_menu_var}}"
+                            {{ isset($admin_menu_page) && $admin_menu_page->parent_menu == $parent_menu_var ? "selected" : "" }}
+                    >{{$parent_menu_var}}</option>
                 @endforeach
             </select>
                 <span class="help-block"
@@ -100,30 +103,16 @@
             <label class="control-label"
                    for="text">Код страницы
             </label>
-            <div id="editor"
-                 style="height: 500px"></div>
-            @push('scripts')
-            <script>
-                var editor = ace.edit("editor");
-                editor.getSession().setMode("ace/mode/php");
-                {{--editor.setValue("{!!$handler?$handler->php_code:''!!}");--}}
-                editor.getSession().on('change', function(e){
-                    var text = editor.getSession().getValue();
-                    console.log(text)
-                    $("#php_code").val(text);
-                });
-            </script>
-            @endpush
-            <input type="hidden"
-                   name="php_code"
-                   id="php_code"
-                   value="">
+            <textarea name="php_code"
+                      id="php_code"
+                      rows="10"
+                      class="form-control">{{ isset($admin_menu_page) ? $admin_menu_page->php_code : "" }}</textarea>
         </div>
         <div class="form-group">
             <button type="submit"
                     class="btn btn-primary"
                     name="create">
-                Создать
+                Сохранить
             </button>
         </div>
     </form>
