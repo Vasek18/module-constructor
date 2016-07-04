@@ -22,7 +22,7 @@ class BitrixAdminMenuItems extends Model{
 			$funcName = 'global_menu_'.$module->class_name;
 
 			// подготавливаем функцию для обработчика меню
-			$menuArrString = 'function global_menu_aristov_vregions(&$aGlobalMenu, &$aModuleMenu){'.PHP_EOL;
+			$menuArrString = 'function global_menu_'.$module->class_name.'(&$aGlobalMenu, &$aModuleMenu){'.PHP_EOL;
 			foreach ($module->adminMenuPages()->get() as $admin_menu_page){
 				// подготавливаем строчки с массивами
 				$menuArrString .= "\t".'$aModuleMenu[] = array('.PHP_EOL;
@@ -31,8 +31,8 @@ class BitrixAdminMenuItems extends Model{
 				$menuArrString .= "\t"."\t".'"page_icon"   => "'.($admin_menu_page->page_icon ? $admin_menu_page->page_icon : 'default_page_icon').'",'.PHP_EOL;
 				$menuArrString .= "\t"."\t".'"text"        => Loc::getMessage("'.$admin_menu_page->lang_key.'_TEXT"),'.PHP_EOL;
 				$menuArrString .= "\t"."\t".'"title"       => Loc::getMessage("'.$admin_menu_page->lang_key.'_TITLE"),'.PHP_EOL;
-				$menuArrString .= "\t"."\t".'"url"         => "'.$admin_menu_page->file_name.'?lang=".LANGUAGE_ID,'.PHP_EOL;
-				$menuArrString .= "\t".');';
+				$menuArrString .= "\t"."\t".'"url"         => "'.$admin_menu_page->file_name.'",'.PHP_EOL;
+				$menuArrString .= "\t".');'.PHP_EOL.PHP_EOL;
 
 				// сохраняем файл с кодом страницы
 				$module->disk()->put($module->module_folder.'/admin/'.$admin_menu_page->file_name, $admin_menu_page->php_code);
