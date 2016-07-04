@@ -1,16 +1,21 @@
 @extends('bitrix.internal_template')
 
 @section('h1')
-    Создание страницы административного меню
+    @if (isset($admin_menu_page))
+        {{ trans('bitrix_admin_menu.edit_h1') }}
+    @else
+        {{ trans('bitrix_admin_menu.add_h1') }}
+    @endif
 @stop
 
 @push('scripts')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/ace.js"></script>@endpush
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/ace.js"></script>
+@endpush
 
 @section('page')
     @if (count($errors) > 0)
         <div class="alert alert-danger">
-            <strong>Ошибка!</strong> При заполнение формы возникли ошибки<br><br>
+            <strong>{{ trans('validation.error') }}</strong> {{ trans('validation.there_occur_errors') }}<br><br>
             <ul>
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -27,7 +32,7 @@
         {{ isset($admin_menu_page) ? method_field('PUT') : '' }}
         <div class="form-group">
             <label class="control-label"
-                   for="name">Название в системе
+                   for="name">{{ trans('bitrix_admin_menu.name') }}
             </label>
             <input type="text"
                    class="form-control"
@@ -41,7 +46,7 @@
         </div>
         <div class="form-group">
             <label class="control-label"
-                   for="code">Символьный код
+                   for="code">{{ trans('bitrix_admin_menu.code') }}
             </label>
             <input type="text"
                    class="form-control"
@@ -56,7 +61,7 @@
         </div>
         <div class="form-group">
             <label class="control-label"
-                   for="sort">Сортировка
+                   for="sort">{{ trans('bitrix_admin_menu.sort') }}
             </label>
             <input type="text"
                    class="form-control"
@@ -69,7 +74,7 @@
         </div>
         <div class="form-group">
             <label class="control-label"
-                   for="text">Текст пункта меню
+                   for="text">{{ trans('bitrix_admin_menu.text') }}
             </label>
             <input type="text"
                    class="form-control"
@@ -82,18 +87,18 @@
         </div>
         <div class="form-group">
             <label class="control-label"
-                   for="parent_menu">Родительский раздел
+                   for="parent_menu">{{ trans('bitrix_admin_menu.parent_menu') }}
             </label>
             <select class="form-control"
                     name="parent_menu"
                     aria-describedby="parent_menu_help"
                     id="parent_menu"
                     required>
-                <option value="">Выберите</option>
+                <option value="">{{ trans('app.select') }}</option>
                 @foreach($parent_menu_vars as $parent_menu_var)
                     <option value="{{$parent_menu_var}}"
                             {{ isset($admin_menu_page) && $admin_menu_page->parent_menu == $parent_menu_var ? "selected" : "" }}
-                    >{{$parent_menu_var}}</option>
+                    >{{ trans('bitrix_admin_menu.'.$parent_menu_var) }}</option>
                 @endforeach
             </select>
                 <span class="help-block"
@@ -101,7 +106,7 @@
         </div>
         <div class="form-group">
             <label class="control-label"
-                   for="text">Код страницы
+                   for="text">{{ trans('bitrix_admin_menu.text') }}
             </label>
             <textarea name="php_code"
                       id="php_code"
@@ -110,7 +115,7 @@
         </div>
         <div class="form-group">
             <label class="control-label"
-                   for="text">Код ланга
+                   for="text">{{ trans('bitrix_admin_menu.text') }}
             </label>
             <textarea name="lang_code"
                       id="lang_code"
@@ -121,7 +126,7 @@
             <button type="submit"
                     class="btn btn-primary"
                     name="create">
-                Сохранить
+                {{ trans('app.save') }}
             </button>
         </div>
     </form>

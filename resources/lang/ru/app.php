@@ -9,6 +9,6 @@ return [
 	'link_to_logout_title'   => 'Выйти',
 	'bitrix_module'          => 'Модуль',
 
-	'error'  => 'Ошибка!',
-	'select' => 'Выберите',
+	'select'            => 'Выберите',
+	'save'              => 'Сохранить',
 ];
