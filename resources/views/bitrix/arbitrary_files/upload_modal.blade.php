@@ -43,11 +43,13 @@
                                 class="form-control"
                                 id="location">
                             <option value="">{{ trans('app.select') }}</option>
-                            <option value="in_module">{{ trans('bitrix_arbitrary_files.in_module') }}</option>
-                            <option value="on_site" selected>{{ trans('bitrix_arbitrary_files.on_site') }}</option>
+                            <option value="in_module"
+                                    selected>{{ trans('bitrix_arbitrary_files.in_module') }}</option>
+                            <option value="on_site">{{ trans('bitrix_arbitrary_files.on_site') }}</option>
                         </select>
                     </div>
-                    <button class="btn btn-primary">{{ trans('bitrix_arbitrary_files.button_upload') }}</button>
+                    <button class="btn btn-primary"
+                            name="upload">{{ trans('bitrix_arbitrary_files.button_upload') }}</button>
                 </form>
             </div>
         </div>

@@ -74,8 +74,7 @@ class BitrixArbitraryFilesController extends Controller{
 		$path = $this->validatePath($request->path);
 		if (!$request->filename){
 			$filename = $file->filename;
-		}
-		else{
+		}else{
 			$filename = $request->filename;
 		}
 
@@ -84,16 +83,13 @@ class BitrixArbitraryFilesController extends Controller{
 
 		$file->update([
 			'filename' => $filename,
-			'path' => $path
+			'path'     => $path
 		]);
 
 		return back();
 	}
 
 	public function destroy(Bitrix $module, BitrixArbitraryFiles $file, Request $request){
-		if (!$this->userCreatedModule($module->id)){
-			return $this->unauthorized($request);
-		}
 		$file->delete();
 
 		$file->deleteFileFromModuleFolder();
