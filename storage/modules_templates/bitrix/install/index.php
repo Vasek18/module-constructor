@@ -19,8 +19,8 @@ Class {MODULE_CLASS_NAME} extends CModule{
 		$this->MODULE_NAME = Loc::getMessage("{LANG_KEY}_MODULE_NAME");
 		$this->MODULE_DESCRIPTION = Loc::getMessage("{LANG_KEY}_MODULE_DESC");
 
-		$this->PARTNER_NAME = Loc::getMessage("{LANG_KEY}_PARTNER_NAME");
-		$this->PARTNER_URI = Loc::getMessage("{LANG_KEY}_PARTNER_URI");
+		$this->PARTNER_NAME = getMessage("{LANG_KEY}_PARTNER_NAME");
+		$this->PARTNER_URI = getMessage("{LANG_KEY}_PARTNER_URI");
 
 		$this->exclusionAdminFiles=array(
 			'..',

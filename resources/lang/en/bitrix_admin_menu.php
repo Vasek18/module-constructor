@@ -13,7 +13,7 @@ return [
 	'text'        => 'Menu item text',
 	'parent_menu' => 'Parent section',
 	'php_code'    => 'Page code',
-	'lanc_code'   => 'Langfile code',
+	'lang_code'   => 'Langfile code',
 
 	'global_menu_services' => 'Services section',
 	'global_menu_settings' => 'Settings section',

@@ -13,7 +13,7 @@ return [
 	'text'        => 'Текст пункта меню',
 	'parent_menu' => 'Родительский раздел',
 	'php_code'    => 'Код страницы',
-	'lanc_code'   => 'Код ланга',
+	'lang_code'   => 'Код ланга',
 
 	'global_menu_services' => 'Раздел сервисов',
 	'global_menu_settings' => 'Раздел настроек',

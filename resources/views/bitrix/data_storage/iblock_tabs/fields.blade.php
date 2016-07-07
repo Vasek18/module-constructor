@@ -614,7 +614,7 @@ $WATERMARK_FILE_POSITION = [
                         <option value="U"
                                 {{isset($iblock) && isset($iblock->params->FIELDS->CODE->DEFAULT_VALUE) && $iblock->params->FIELDS->CODE->DEFAULT_VALUE->TRANS_CASE == 'U'?'selected':''}}
                         >
-                            {{ trans('bitrix_iblocks_form.lower') }}
+                            {{ trans('bitrix_iblocks_form.upper') }}
                         </option>
                     </select>
                 </div>

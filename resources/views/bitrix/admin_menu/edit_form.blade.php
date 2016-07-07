@@ -102,7 +102,7 @@
         </div>
         <div class="form-group">
             <label class="control-label"
-                   for="text">{{ trans('bitrix_admin_menu.text') }}
+                   for="php_code">{{ trans('bitrix_admin_menu.php_code') }}
             </label>
             <textarea name="php_code"
                       id="php_code"
@@ -111,7 +111,7 @@
         </div>
         <div class="form-group">
             <label class="control-label"
-                   for="text">{{ trans('bitrix_admin_menu.text') }}
+                   for="lang_code">{{ trans('bitrix_admin_menu.lang_code') }}
             </label>
             <textarea name="lang_code"
                       id="lang_code"
