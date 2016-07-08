@@ -30,6 +30,9 @@ class BitrixArbitraryFilesController extends Controller{
 	}
 
 	protected function validatePath($path){
+		if (!in_array(substr($path, 0, 1), ['/', '\\'])){
+			$path = '/'.$path;
+		}
 		if (!in_array(substr($path, -1), ['/', '\\'])){
 			$path .= '/';
 		}
@@ -42,6 +45,9 @@ class BitrixArbitraryFilesController extends Controller{
 
 	public function store(Bitrix $module, Request $request){
 		$file = $request->file('file');
+		if (!$file){
+			return back();
+		}
 		$path = $this->validatePath($request->path);
 
 		$aFile = BitrixArbitraryFiles::updateOrCreate( // todo мб другой метод, ведь если файл есть, то мы ничего не обновляем

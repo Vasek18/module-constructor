@@ -158,7 +158,7 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 		$expectedInstallationFuncCodeArray = [
 			"IBLOCK_TYPE_ID"     => '$iblockType',
 			"ACTIVE"             => "Y",
-			"LID"                => "s1",
+			"LID"                => '$this->getSitesIdsArray()',
 			"VERSION"            => "2",
 			"CODE"               => "trololo",
 			"NAME"               => 'Loc::getMessage("'.$module->lang_key.'_IBLOCK_TROLOLO_NAME")',
@@ -237,7 +237,7 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 		$expectedInstallationFuncCodeArray = [
 			"IBLOCK_TYPE_ID"      => '$iblockType',
 			"ACTIVE"              => "Y",
-			"LID"                 => "s1",
+			"LID"                 => '$this->getSitesIdsArray()',
 			"VERSION"             => "2",
 			"CODE"                => "trololo",
 			"NAME"                => 'Loc::getMessage("'.$module->lang_key.'_IBLOCK_TROLOLO_NAME")',
@@ -285,7 +285,8 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 
 		$this->assertEquals(1, count($gottenInstallationFuncCodeArray));
 		$this->assertEquals($expectedInstallationFuncCodeArray, $gottenInstallationFuncCodeArray[0]);
-		$this->assertArraySubset([$module->lang_key.'_IBLOCK_TROLOLO_NAME' => 'Ololo'], $installFileLangArr);
+		$this->assertArrayHasKey($module->lang_key.'_IBLOCK_TROLOLO_NAME', $installFileLangArr);
+		$this->assertEquals($installFileLangArr[$module->lang_key.'_IBLOCK_TROLOLO_NAME'], 'Ololo');
 	}
 
 	/** @test */
@@ -372,7 +373,7 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 		$expectedInstallationFuncCodeArray = [
 			"IBLOCK_TYPE_ID"   => '$iblockType',
 			"ACTIVE"           => "Y",
-			"LID"              => "s1",
+			"LID"              => '$this->getSitesIdsArray()',
 			"VERSION"          => "2",
 			"CODE"             => "trololo",
 			"NAME"             => 'Loc::getMessage("'.$module->lang_key.'_IBLOCK_TROLOLO_NAME")',
@@ -518,7 +519,7 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 		$expectedInstallationFuncCodeArray = [
 			"IBLOCK_TYPE_ID"   => '$iblockType',
 			"ACTIVE"           => "Y",
-			"LID"              => "s1",
+			"LID"              => '$this->getSitesIdsArray()',
 			"VERSION"          => "2",
 			"CODE"             => "trololo",
 			"NAME"             => 'Loc::getMessage("'.$module->lang_key.'_IBLOCK_TROLOLO_NAME")',
@@ -587,7 +588,7 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 		$expectedInstallationFuncCodeArray = [
 			"IBLOCK_TYPE_ID"   => '$iblockType',
 			"ACTIVE"           => "Y",
-			"LID"              => "s1",
+			"LID"              => '$this->getSitesIdsArray()',
 			"VERSION"          => "2",
 			"CODE"             => "trololo",
 			"NAME"             => 'Loc::getMessage("'.$module->lang_key.'_IBLOCK_TROLOLO_NAME")',
@@ -649,7 +650,7 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 		$expectedInstallationFuncCodeArray = [
 			"IBLOCK_TYPE_ID"   => '$iblockType',
 			"ACTIVE"           => "Y",
-			"LID"              => "s1",
+			"LID"              => '$this->getSitesIdsArray()',
 			"VERSION"          => "2",
 			"CODE"             => "trololo",
 			"NAME"             => 'Loc::getMessage("'.$module->lang_key.'_IBLOCK_TROLOLO_NAME")',
@@ -697,7 +698,7 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 		$module = $this->createBitrixModule();
 
 		$ib = $this->createIblockOnForm($module, [
-			"GROUP_ID"         => "Array('2' => 'X')",
+			"GROUP_ID" => "Array('2' => 'X')",
 		]);
 
 		$gottenInstallationFuncCodeArray = $this->getIblockCreationFuncCallParamsArray($module);
@@ -707,7 +708,7 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 		$expectedInstallationFuncCodeArray = [
 			"IBLOCK_TYPE_ID"   => '$iblockType',
 			"ACTIVE"           => "Y",
-			"LID"              => "s1",
+			"LID"              => '$this->getSitesIdsArray()',
 			"VERSION"          => "2",
 			"CODE"             => "trololo",
 			"NAME"             => 'Loc::getMessage("'.$module->lang_key.'_IBLOCK_TROLOLO_NAME")',
@@ -755,7 +756,7 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 		$expectedInstallationFuncCodeArray = [
 			"IBLOCK_TYPE_ID"   => '$iblockType',
 			"ACTIVE"           => "Y",
-			"LID"              => "s1",
+			"LID"              => '$this->getSitesIdsArray()',
 			"VERSION"          => "2",
 			"CODE"             => "trololo",
 			"NAME"             => 'Loc::getMessage("'.$module->lang_key.'_IBLOCK_TROLOLO_NAME")',
@@ -816,7 +817,7 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 		$expectedInstallationFuncCodeArray = [
 			"IBLOCK_TYPE_ID"   => '$iblockType',
 			"ACTIVE"           => "Y",
-			"LID"              => "s1",
+			"LID"              => '$this->getSitesIdsArray()',
 			"VERSION"          => "2",
 			"CODE"             => "trololo",
 			"NAME"             => 'Loc::getMessage("'.$module->lang_key.'_IBLOCK_TROLOLO_NAME")',
@@ -878,7 +879,7 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 		$expectedInstallationFuncCodeArray = [
 			"IBLOCK_TYPE_ID"   => '$iblockType',
 			"ACTIVE"           => "Y",
-			"LID"              => "s1",
+			"LID"              => '$this->getSitesIdsArray()',
 			"VERSION"          => "2",
 			"CODE"             => "trololo",
 			"NAME"             => 'Loc::getMessage("'.$module->lang_key.'_IBLOCK_TROLOLO_NAME")',
@@ -946,7 +947,7 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 		$expectedInstallationFuncCodeArray = [
 			"IBLOCK_TYPE_ID"   => '$iblockType',
 			"ACTIVE"           => "Y",
-			"LID"              => "s1",
+			"LID"              => '$this->getSitesIdsArray()',
 			"VERSION"          => "2",
 			"CODE"             => "trololo",
 			"NAME"             => 'Loc::getMessage("'.$module->lang_key.'_IBLOCK_TROLOLO_NAME")',
@@ -1091,7 +1092,7 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 		$expectedInstallationFuncCodeArray = [
 			"IBLOCK_TYPE_ID"   => '$iblockType',
 			"ACTIVE"           => "Y",
-			"LID"              => "s1",
+			"LID"              => '$this->getSitesIdsArray()',
 			"VERSION"          => "2",
 			"CODE"             => "trololo",
 			"NAME"             => 'Loc::getMessage("'.$module->lang_key.'_IBLOCK_TROLOLO_NAME")',
@@ -1143,7 +1144,7 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 		$expectedInstallationFuncCodeArray = [
 			"IBLOCK_TYPE_ID"   => '$iblockType',
 			"ACTIVE"           => "Y",
-			"LID"              => "s1",
+			"LID"              => '$this->getSitesIdsArray()',
 			"VERSION"          => "2",
 			"CODE"             => "trololo",
 			"NAME"             => 'Loc::getMessage("'.$module->lang_key.'_IBLOCK_TROLOLO_NAME")',
@@ -1195,7 +1196,7 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 		$expectedInstallationFuncCodeArray = [
 			"IBLOCK_TYPE_ID"   => '$iblockType',
 			"ACTIVE"           => "Y",
-			"LID"              => "s1",
+			"LID"              => '$this->getSitesIdsArray()',
 			"VERSION"          => "2",
 			"CODE"             => "trololo",
 			"NAME"             => 'Loc::getMessage("'.$module->lang_key.'_IBLOCK_TROLOLO_NAME")',
@@ -1254,7 +1255,7 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 		$expectedInstallationFuncCodeArray = [
 			"IBLOCK_TYPE_ID"     => '$iblockType',
 			"ACTIVE"             => "Y",
-			"LID"                => "s1",
+			"LID"                => '$this->getSitesIdsArray()',
 			"VERSION"            => "1",
 			"CODE"               => "trololo",
 			"NAME"               => 'Loc::getMessage("'.$module->lang_key.'_IBLOCK_TROLOLO_NAME")',
@@ -1335,7 +1336,7 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 		$expectedInstallationFuncCodeArray = [
 			"IBLOCK_TYPE_ID"      => '$iblockType',
 			"ACTIVE"              => "Y",
-			"LID"                 => "s1",
+			"LID"                 => '$this->getSitesIdsArray()',
 			"VERSION"             => "1",
 			"CODE"                => "trololo",
 			"NAME"                => 'Loc::getMessage("'.$module->lang_key.'_IBLOCK_TROLOLO_NAME")',
@@ -1472,7 +1473,7 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 		$expectedInstallationFuncCodeArray = [
 			"IBLOCK_TYPE_ID"   => '$iblockType',
 			"ACTIVE"           => "Y",
-			"LID"              => "s1",
+			"LID"              => '$this->getSitesIdsArray()',
 			"VERSION"          => "1",
 			"CODE"             => "trololo",
 			"NAME"             => 'Loc::getMessage("'.$module->lang_key.'_IBLOCK_TROLOLO_NAME")',
@@ -1619,7 +1620,7 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 		$expectedInstallationFuncCodeArray = [
 			"IBLOCK_TYPE_ID"   => '$iblockType',
 			"ACTIVE"           => "Y",
-			"LID"              => "s1",
+			"LID"              => '$this->getSitesIdsArray()',
 			"VERSION"          => "1",
 			"CODE"             => "trololo",
 			"NAME"             => 'Loc::getMessage("'.$module->lang_key.'_IBLOCK_TROLOLO_NAME")',

@@ -3,7 +3,7 @@
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Models\Modules\Bitrix\BitrixArbitraryFiles;
 
-class BitrixArbitraryFilesInterfaceTest extends TestCase{
+class BitrixArbitraryFilesFilesTest extends TestCase{
 
 	use DatabaseTransactions;
 
@@ -58,69 +58,15 @@ class BitrixArbitraryFilesInterfaceTest extends TestCase{
 	}
 
 	/** @test */
-	function author_can_get_to_this_page(){
-
-		$this->visit('/my-bitrix/'.$this->module->id.$this->path);
-
-		$this->seePageIs('/my-bitrix/'.$this->module->id.$this->path);
-
-		$this->deleteFolder($this->standartModuleCode);
-	}
-
-	/** @test */
-	function this_is_definitely_page_about_arbitrary_files(){
-
-		$this->visit('/my-bitrix/'.$this->module->id.$this->path);
-
-		$this->see('Произвольные файлы');
-
-		$this->deleteFolder($this->standartModuleCode);
-	}
-
-	/** @test */
-	function this_is_definitely_page_about_arbitrary_files_en(){
-		$this->setLang('en');
-
-		$this->visit('/my-bitrix/'.$this->module->id.$this->path);
-
-		$this->see('Arbitrary files');
-
-		$this->deleteFolder($this->standartModuleCode);
-	}
-
-	/** @test */
-	function unauthorized_cannot_get_to_this_page(){
-
-		$this->logOut();
-
-		$this->visit('/my-bitrix/'.$this->module->id.$this->path);
-
-		$this->seePageIs('/personal/auth');
-
-		$this->deleteFolder($this->standartModuleCode);
-	}
-
-	/** @test */
-	function not_author_cannot_get_to_this_page_of_anothers_module(){
-		$this->signIn(factory(App\Models\User::class)->create());
-
-		$this->visit('/my-bitrix/'.$this->module->id.$this->path);
-
-		$this->seePageIs('/personal');
-
-		$this->deleteFolder($this->standartModuleCode);
-	}
-
-	/** @test */
-	function it_returns_file_in_list(){
+	function it_uploads_file(){
 		$file = $this->uploadOnForm($this->module, [
-			'path'     => 'test',
 			'location' => 'on_site'
 		]);
 
-		$this->deleteFolder($this->standartModuleCode);
+		$this->assertFileExists($this->module->getFolder().'/install/files/ololo.php');
+		$this->assertStringEqualsFile($this->module->getFolder().'/install/files/ololo.php', 'ololo');
 
-		$this->see('/test/ololo.php');
+		$this->deleteFolder($this->standartModuleCode);
 	}
 
 	/** @test */
@@ -130,10 +76,27 @@ class BitrixArbitraryFilesInterfaceTest extends TestCase{
 			'location' => 'on_site'
 		]);
 
+		$this->assertFileExists($this->module->getFolder().'/install/files/ololo.php');
+		$this->assertStringEqualsFile($this->module->getFolder().'/install/files/ololo.php', 'ololo');
+
 		$this->deleteFolder($this->standartModuleCode);
 
-		$this->see('/ololo.php');
 	}
+
+	/** @test */
+	function it_deletes_dots_in_path(){
+		$file = $this->uploadOnForm($this->module, [
+			'path'     => '/../',
+			'location' => 'on_site'
+		]);
+
+		$this->assertFileNotExists($this->module->getFolder().'/install/ololo.php');
+		$this->assertFileExists($this->module->getFolder().'/install/files/ololo.php');
+		$this->assertStringEqualsFile($this->module->getFolder().'/install/files/ololo.php', 'ololo');
+
+		$this->deleteFolder($this->standartModuleCode);
+	}
+
 }
 
 ?>
