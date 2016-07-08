@@ -50,20 +50,24 @@ class BitrixArbitraryFilesController extends Controller{
 		}
 		$path = $this->validatePath($request->path);
 
+		// dd($request->all());
+
 		$aFile = BitrixArbitraryFiles::updateOrCreate( // todo мб другой метод, ведь если файл есть, то мы ничего не обновляем
 			[
 				'module_id' => $module->id,
 				'path'      => $path,
-				'filename'  => $file->getClientOriginalName()
+				'filename'  => $file->getClientOriginalName(),
+				'location'  => $request->location
 			],
 			[
 				'module_id' => $module->id,
 				'path'      => $path,
-				'filename'  => $file->getClientOriginalName()
+				'filename'  => $file->getClientOriginalName(),
+				'location'  => $request->location
 			]
 		);
 
-		$aFile->putFileInModuleFolder($path, $file);
+		$aFile->putFileInModuleFolder($path, $file, $request->location);
 
 		return back();
 	}
@@ -85,11 +89,12 @@ class BitrixArbitraryFilesController extends Controller{
 		}
 
 		$file->deleteFileFromModuleFolder();
-		$module->disk()->put($file->getFullPath(false, $path).$filename, $request->code);
+		$module->disk()->put($file->getFullPath(false, $path, $request->location).$filename, $request->code);
 
 		$file->update([
 			'filename' => $filename,
-			'path'     => $path
+			'path'     => $path,
+			'location' => $request->location
 		]);
 
 		return back();

@@ -7,11 +7,11 @@ use Auth;
 
 class BitrixArbitraryFiles extends Model{
 	protected $table = 'bitrix_arbitrary_files';
-	protected $fillable = ['module_id', 'path', 'filename'];
+	protected $fillable = ['module_id', 'path', 'filename', 'location'];
 	public $timestamps = false;
 
-	public function putFileInModuleFolder($path, $file){
-		$file->move($this->getFullPath(true, $path), $file->getClientOriginalName());
+	public function putFileInModuleFolder($path, $file, $location = 'on_site'){
+		$file->move($this->getFullPath(true, $path, $location), $file->getClientOriginalName());
 	}
 
 	public function deleteFileFromModuleFolder(){
@@ -21,13 +21,21 @@ class BitrixArbitraryFiles extends Model{
 		}
 	}
 
-	public function getFullPath($full = false, $path = null){
+	public function getFullPath($full = false, $path = null, $location = null){
 		if (!$path){
 			$path = $this->path;
 		}
+		if (!$location){
+			$location = $this->location;
+		}
 		$moduleFolder = $this->module->getFolder($full);
 
-		return $moduleFolder.'/install/files'.$path;
+		if ($location == 'in_module'){
+			return $moduleFolder.''.$path;
+		}
+		if ($location == 'on_site'){
+			return $moduleFolder.'/install/files'.$path;
+		}
 	}
 
 	public function getCodeAttribute(){

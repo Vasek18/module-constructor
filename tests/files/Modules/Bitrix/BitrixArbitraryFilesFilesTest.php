@@ -97,6 +97,20 @@ class BitrixArbitraryFilesFilesTest extends TestCase{
 		$this->deleteFolder($this->standartModuleCode);
 	}
 
+	/** @test */
+	function it_can_save_file_that_will_be_not_installed_on_site_but_exist_in_module_folder(){
+		$file = $this->uploadOnForm($this->module, [
+			'path'     => '/lib/',
+			'location' => 'in_module'
+		]);
+
+		$this->assertFileNotExists($this->module->getFolder().'/install/files/lib/ololo.php');
+		$this->assertFileExists($this->module->getFolder().'/lib/ololo.php');
+		$this->assertStringEqualsFile($this->module->getFolder().'/lib/ololo.php', 'ololo');
+
+		$this->deleteFolder($this->standartModuleCode);
+	}
+
 }
 
 ?>

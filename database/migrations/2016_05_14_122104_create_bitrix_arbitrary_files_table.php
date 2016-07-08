@@ -16,6 +16,7 @@ class CreateBitrixArbitraryFilesTable extends Migration{
 			$table->foreign('module_id')->references('id')->on('bitrixes')->onDelete('cascade');
 			$table->string('filename');
 			$table->string('path');
+			$table->string('location')->default('in_module');
 		});
 	}
 
