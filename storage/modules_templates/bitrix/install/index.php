@@ -283,6 +283,16 @@ Class {MODULE_CLASS_NAME} extends CModule{
 		}
 	}
 
+	function getSitesIdsArray(){
+		$ids = Array();
+		$rsSites = CSite::GetList($by = "sort", $order = "desc");
+		while ($arSite = $rsSites->Fetch()){
+			$ids[] = $arSite["LID"];
+		}
+
+		return $ids;
+	}
+
 	function DoInstall(){
 
 		global $APPLICATION;

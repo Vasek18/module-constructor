@@ -102,7 +102,7 @@ class BitrixInfoblocks extends Model{
 		$code .= "\t\t\t".'Array('.PHP_EOL;
 		$code .= "\t\t\t\t".'"IBLOCK_TYPE_ID" => $iblockType,'.PHP_EOL;
 		$code .= "\t\t\t\t".'"ACTIVE" => "Y",'.PHP_EOL;
-		$code .= "\t\t\t\t".'"LID" => "s1",'.PHP_EOL; // todo фактические сайты
+		$code .= "\t\t\t\t".'"LID" => $this->getSitesIdsArray(),'.PHP_EOL;
 		// dd($this->params);
 		$code .= $this->getParamCodeForCreationArray($this->params, 4);
 		$code .= "\t\t\t".')'.PHP_EOL;
