@@ -346,6 +346,21 @@ class Bitrix extends Model{
 		}
 	}
 
+	// удаление пустых подпапок
+	public function removeEmptySubFolders($path = null){
+		if (!$path){
+			$path = $this->getFolder(true);
+		}
+
+		// dd($path);
+		$empty = true;
+		foreach (glob($path.DIRECTORY_SEPARATOR."*") as $file){
+			$empty &= is_dir($file) && $this->removeEmptySubFolders($file);
+		}
+
+		return $empty && rmdir($path);
+	}
+
 	public function getCanDownloadAttribute(){
 		$user = User::find(Auth::id());
 

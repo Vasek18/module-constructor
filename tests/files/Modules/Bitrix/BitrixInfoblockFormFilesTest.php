@@ -187,7 +187,9 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 
 		$this->assertEquals(1, count($gottenInstallationFuncCodeArray));
 		$this->assertEquals($expectedInstallationFuncCodeArray, $gottenInstallationFuncCodeArray[0]);
-		$this->assertArraySubset([$module->lang_key.'_IBLOCK_TROLOLO_NAME' => 'Ololo'], $installFileLangArr);
+		$this->assertArrayHasKey($module->lang_key.'_IBLOCK_TROLOLO_NAME', $installFileLangArr);
+		$this->assertEquals($installFileLangArr[$module->lang_key.'_IBLOCK_TROLOLO_NAME'], 'Ololo');
+
 	}
 
 	/** @test */
@@ -790,8 +792,10 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 		$this->assertEquals(1, count($gottenInstallationFuncCodeArray));
 		$this->assertEquals($expectedInstallationFuncCodeArray, $gottenInstallationFuncCodeArray[0]);
 		$this->assertEquals($expectedInstallationElementsFuncCodeArray, $gottenInstallationElementsFuncCodeArray[0]);
-		$this->assertArraySubset([$module->lang_key.'_IBLOCK_TROLOLO_NAME' => 'Ololo'], $installFileLangArr);
-		$this->assertArraySubset([$ib->lang_key.'_ELEMENT_TROLOLO_NAME' => 'Trololo'], $installFileLangArr);
+		$this->assertArrayHasKey($module->lang_key.'_IBLOCK_TROLOLO_NAME', $installFileLangArr);
+		$this->assertEquals($installFileLangArr[$module->lang_key.'_IBLOCK_TROLOLO_NAME'], 'Ololo');
+		$this->assertArrayHasKey($ib->lang_key.'_ELEMENT_TROLOLO_NAME', $installFileLangArr);
+		$this->assertEquals($installFileLangArr[$ib->lang_key.'_ELEMENT_TROLOLO_NAME'], 'Trololo');
 	}
 
 	/** @test */
@@ -851,8 +855,10 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 		$this->assertEquals(1, count($gottenInstallationFuncCodeArray));
 		$this->assertEquals($expectedInstallationFuncCodeArray, $gottenInstallationFuncCodeArray[0]);
 		$this->assertEquals($expectedInstallationElementsFuncCodeArray, $gottenInstallationElementsFuncCodeArray[0]);
-		$this->assertArraySubset([$module->lang_key.'_IBLOCK_TROLOLO_NAME' => 'Ololo'], $installFileLangArr);
-		$this->assertArraySubset([$ib->lang_key.'_ELEMENT_TROLOLO_NAME' => 'Trololo'], $installFileLangArr);
+		$this->assertArrayHasKey($module->lang_key.'_IBLOCK_TROLOLO_NAME', $installFileLangArr);
+		$this->assertEquals($installFileLangArr[$module->lang_key.'_IBLOCK_TROLOLO_NAME'], 'Ololo');
+		$this->assertArrayHasKey($ib->lang_key.'_ELEMENT_TROLOLO_NAME', $installFileLangArr);
+		$this->assertEquals($installFileLangArr[$ib->lang_key.'_ELEMENT_TROLOLO_NAME'], 'Trololo');
 	}
 
 	/** @test */
@@ -984,9 +990,12 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 		$this->assertEquals(1, count($gottenInstallationFuncCodeArray));
 		$this->assertEquals($expectedInstallationFuncCodeArray, $gottenInstallationFuncCodeArray[0]);
 		$this->assertEquals($expectedInstallationElementsFuncCodeArray, $gottenInstallationElementsFuncCodeArray[0]);
-		$this->assertArraySubset([$module->lang_key.'_IBLOCK_TROLOLO_NAME' => 'Ololo'], $installFileLangArr);
-		$this->assertArraySubset([$ib->lang_key.'_ELEMENT_TROLOLO_NAME' => 'Trololo'], $installFileLangArr);
-		$this->assertArraySubset([$ib->lang_key.'_ELEMENT_TROLOLO_PROP_TEST_VALUE' => "1,2"], $installFileLangArr);
+		$this->assertArrayHasKey($module->lang_key.'_IBLOCK_TROLOLO_NAME', $installFileLangArr);
+		$this->assertEquals($installFileLangArr[$module->lang_key.'_IBLOCK_TROLOLO_NAME'], 'Ololo');
+		$this->assertArrayHasKey($ib->lang_key.'_ELEMENT_TROLOLO_NAME', $installFileLangArr);
+		$this->assertEquals($installFileLangArr[$ib->lang_key.'_ELEMENT_TROLOLO_NAME'], 'Trololo');
+		$this->assertArrayHasKey($ib->lang_key.'_ELEMENT_TROLOLO_PROP_TEST_VALUE', $installFileLangArr);
+		$this->assertEquals($installFileLangArr[$ib->lang_key.'_ELEMENT_TROLOLO_PROP_TEST_VALUE'], '1,2');
 	}
 
 	/** @test */
@@ -1037,7 +1046,7 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 		$this->assertRegExp('/function createNecessaryIblocks\(\){\s*return true;\s*}/is', $gottenInstallationFuncCode);
 		$this->assertRegExp('/function deleteNecessaryIblocks\(\){\s*return true;\s*}/is', $gottenDeletionFuncCode);
 		$this->assertArrayNotHasKey($module->lang_key.'_IBLOCK_TROLOLO_NAME', $installFileLangArr);
-		$this->assertArrayNotHasKey($module->lang_key.'_ELEMENT_TROLOLO_NAME', $installFileLangArr);
+		$this->assertArrayNotHasKey($iblock->lang_key.'_ELEMENT_TROLOLO_NAME', $installFileLangArr);
 	}
 
 	/** @test */

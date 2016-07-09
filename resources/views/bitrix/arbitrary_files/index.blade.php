@@ -20,16 +20,16 @@
                 <div class="list-group-item clearfix file deletion_wrapper">
                     <a href="#"
                        data-toggle="modal"
-                       data-target="#edit-file_{{$i}}i">{{$file->path}}{{$file->filename}}</a>
+                       data-target="#edit-file_{{$i}}{{$file->id}}">{{$file->path}}{{$file->filename}}</a>
                     <a href="{{ action('Modules\Bitrix\BitrixArbitraryFilesController@destroy', [$module->id, $file->id]) }}"
                        class="btn btn-danger pull-right human_ajax_deletion"
                        data-method="get"
-                       id="delete_iblock_{{$file->id}}">
+                       id="delete_af_{{$file->id}}">
                     <span class="glyphicon glyphicon-trash"
                           aria-hidden="true"></span>
                     </a>
                 </div>
-                @include('bitrix.arbitrary_files.edit_modal', ['file' => $file, 'i' => $i.'i'])
+                @include('bitrix.arbitrary_files.edit_modal', ['file' => $file, 'i' => $i.$file->id])
             @endforeach
         </div>
     @endif
@@ -40,16 +40,16 @@
                 <div class="list-group-item clearfix file deletion_wrapper">
                     <a href="#"
                        data-toggle="modal"
-                       data-target="#edit-file_{{$i}}o">{{$file->path}}{{$file->filename}}</a>
+                       data-target="#edit-file_{{$i}}{{$file->id}}">{{$file->path}}{{$file->filename}}</a>
                     <a href="{{ action('Modules\Bitrix\BitrixArbitraryFilesController@destroy', [$module->id, $file->id]) }}"
                        class="btn btn-danger pull-right human_ajax_deletion"
                        data-method="get"
-                       id="delete_iblock_{{$file->id}}">
+                       id="delete_af_{{$file->id}}">
                     <span class="glyphicon glyphicon-trash"
                           aria-hidden="true"></span>
                     </a>
                 </div>
-                @include('bitrix.arbitrary_files.edit_modal', ['file' => $file, 'i' => $i.'o'])
+                @include('bitrix.arbitrary_files.edit_modal', ['file' => $file, 'i' => $i.$file->id])
             @endforeach
         </div>
     @endif

@@ -52,6 +52,23 @@ class BitrixArbitraryFilesInterfaceTest extends TestCase{
 		return true;
 	}
 
+	function changeFile($module, $file, $inputs){
+		$this->visit('/my-bitrix/'.$module->id.$this->path);
+		if (isset($inputs['filename'])){
+			$this->type($inputs['filename'], 'filename_'.$file->id);
+		}
+		if (isset($inputs['location'])){
+			$this->select($inputs['location'], 'location_'.$file->id);
+		}
+		if (isset($inputs['path'])){
+			$this->type($inputs['path'], 'path_'.$file->id);
+		}
+		if (isset($inputs['code'])){
+			$this->type($inputs['code'], 'code_'.$file->id);
+		}
+		$this->press('save_'.$file->id);
+	}
+
 	function removeFile($module, $amp){
 		$this->visit('/my-bitrix/'.$module->id.$this->path);
 		$this->click('delete_amp_'.$amp->id);
@@ -133,6 +150,28 @@ class BitrixArbitraryFilesInterfaceTest extends TestCase{
 		$this->deleteFolder($this->standartModuleCode);
 
 		$this->see('/ololo.php');
+	}
+
+	/** @test */
+	function it_returns_changed_params_and_content_of_file(){
+		$file = $this->uploadOnForm($this->module, [
+			'path'     => '/lib/',
+			'location' => 'in_module'
+		]);
+
+		$this->changeFile($this->module, $file, [
+			'filename' => 'vasya.php',
+			'code'     => 'Vasya the creator',
+			'path'     => 'testpath',
+			'location' => 'on_site',
+		]);
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$this->seeInField('filename_'.$file->id, 'vasya.php');
+		$this->seeInField('path_'.$file->id, '/testpath/');
+		$this->seeIsSelected('location_'.$file->id, 'on_site');
+		$this->seeInField('code_'.$file->id, 'Vasya the creator');
 	}
 }
 

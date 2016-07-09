@@ -19,6 +19,8 @@ class BitrixArbitraryFiles extends Model{
 		if (file_exists($file)){
 			unlink($file);
 		}
+
+		$this->module()->first()->removeEmptySubFolders();
 	}
 
 	public function getFullPath($full = false, $path = null, $location = null){

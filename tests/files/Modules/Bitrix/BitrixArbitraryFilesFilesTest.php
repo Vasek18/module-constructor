@@ -52,9 +52,26 @@ class BitrixArbitraryFilesFilesTest extends TestCase{
 		return true;
 	}
 
+	function changeFile($module, $file, $inputs){
+		$this->visit('/my-bitrix/'.$module->id.$this->path);
+		if (isset($inputs['filename'])){
+			$this->type($inputs['filename'], 'filename_'.$file->id);
+		}
+		if (isset($inputs['location'])){
+			$this->select($inputs['location'], 'location_'.$file->id);
+		}
+		if (isset($inputs['path'])){
+			$this->type($inputs['path'], 'path_'.$file->id);
+		}
+		if (isset($inputs['code'])){
+			$this->type($inputs['code'], 'code_'.$file->id);
+		}
+		$this->press('save_'.$file->id);
+	}
+
 	function removeFile($module, $amp){
 		$this->visit('/my-bitrix/'.$module->id.$this->path);
-		$this->click('delete_amp_'.$amp->id);
+		$this->click('delete_af_'.$amp->id);
 	}
 
 	/** @test */
@@ -111,6 +128,77 @@ class BitrixArbitraryFilesFilesTest extends TestCase{
 		$this->deleteFolder($this->standartModuleCode);
 	}
 
+	/** @test */
+	function you_can_change_params_and_content_of_file(){
+		$file = $this->uploadOnForm($this->module, [
+			'path'     => '/lib/',
+			'location' => 'in_module'
+		]);
+
+		$this->changeFile($this->module, $file, [
+			'filename' => 'vasya.php',
+			'code'     => 'Vasya the creator',
+			'path'     => 'testpath',
+			'location' => 'on_site',
+		]);
+
+		$this->assertFileExists($this->module->getFolder().'/install/files/testpath/vasya.php');
+		$this->assertFileNotExists($this->module->getFolder().'/lib/ololo.php');
+		$this->assertStringEqualsFile($this->module->getFolder().'/install/files/testpath/vasya.php', 'Vasya the creator');
+
+		$this->deleteFolder($this->standartModuleCode);
+	}
+
+	/** @test */
+	function you_can_delete_file(){
+		$file = $this->uploadOnForm($this->module, [
+			'path'     => '/lib/',
+			'location' => 'in_module'
+		]);
+
+		$this->removeFile($this->module, $file);
+
+		$this->assertFileNotExists($this->module->getFolder().'/lib/ololo.php');
+
+		$this->deleteFolder($this->standartModuleCode);
+	}
+
+	/** @test */
+	function it_rewrites_content_of_file_in_case_of_conflict(){
+		$file = $this->uploadOnForm($this->module, [
+			'path'     => '/lib/',
+			'location' => 'in_module'
+		]);
+
+		$this->changeFile($this->module, $file, [
+			'code' => 'Vasya the creator',
+		]);
+
+		$this->uploadOnForm($this->module, [
+			'path'     => '/lib/',
+			'location' => 'in_module'
+		]);
+
+		$this->assertFileExists($this->module->getFolder().'/lib/ololo.php');
+		$this->assertStringEqualsFile($this->module->getFolder().'/lib/ololo.php', 'ololo');
+
+		$this->deleteFolder($this->standartModuleCode);
+	}
+
+	/** @test */
+	function it_clears_empty_folders(){
+		$file = $this->uploadOnForm($this->module, [
+			'path'     => '/my_files/',
+			'location' => 'in_module'
+		]);
+
+		$this->removeFile($this->module, $file);
+
+		$this->assertFileNotExists($this->module->getFolder().'/my_files/ololo.php');
+		$this->assertFalse(is_dir($this->module->getFolder().'/my_files/'));
+
+		$this->deleteFolder($this->standartModuleCode);
+	}
 }
 
 ?>

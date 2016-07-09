@@ -82,20 +82,20 @@ class BitrixArbitraryFilesController extends Controller{
 	}
 
 	public function update(Bitrix $module, BitrixArbitraryFiles $file, Request $request){
-		$path = $this->validatePath($request->path);
-		if (!$request->filename){
-			$filename = $file->filename;
+		$path = $this->validatePath($request['path_'.$file->id]);
+		if (!$request['filename_'.$file->id]){
+			$filename = $file['filename_'.$file->id];
 		}else{
-			$filename = $request->filename;
+			$filename = $request['filename_'.$file->id];
 		}
 
 		$file->deleteFileFromModuleFolder();
-		$module->disk()->put($file->getFullPath(false, $path, $request->location).$filename, $request->code);
+		$module->disk()->put($file->getFullPath(false, $path, $request['location_'.$file->id]).$filename, $request['code_'.$file->id]);
 
 		$file->update([
 			'filename' => $filename,
 			'path'     => $path,
-			'location' => $request->location
+			'location' => $request['location_'.$file->id]
 		]);
 
 		return back();

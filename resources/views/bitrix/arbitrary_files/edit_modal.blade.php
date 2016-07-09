@@ -20,28 +20,28 @@
                            name="_token"
                            value="{{ csrf_token() }}">
                     <div class="form-group">
-                        <label for="filename">{{ trans('bitrix_arbitrary_files.field_name') }}</label>
+                        <label for="filename_{{$file->id}}">{{ trans('bitrix_arbitrary_files.field_name') }}</label>
                         <input class="form-control"
                                type="text"
-                               name="filename"
-                               id="filename"
+                               name="filename_{{$file->id}}"
+                               id="filename_{{$file->id}}"
                                value="{{$file->filename}}"
                                required>
                     </div>
                     <div class="form-group">
-                        <label for="path">{{ trans('bitrix_arbitrary_files.field_path') }}</label>
+                        <label for="path_{{$file->id}}">{{ trans('bitrix_arbitrary_files.field_path') }}</label>
                         <input class="form-control"
                                type="text"
-                               name="path"
-                               id="path"
+                               name="path_{{$file->id}}"
+                               id="path_{{$file->id}}"
                                value="{{$file->path}}"
                                required>
                     </div>
                     <div class="form-group">
-                        <label for="location">{{ trans('bitrix_arbitrary_files.field_location') }}</label>
-                        <select name="location"
+                        <label for="location_{{$file->id}}">{{ trans('bitrix_arbitrary_files.field_location') }}</label>
+                        <select name="location_{{$file->id}}"
                                 class="form-control"
-                                id="location">
+                                id="location_{{$file->id}}">
                             <option value="in_module"
                                     @if ($file->location == 'in_module') selected @endif>{{ trans('bitrix_arbitrary_files.in_module') }}</option>
                             <option value="on_site"
@@ -49,25 +49,26 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <div id="editor_{{$i}}"
+                        <div id="editor_{{$file->id}}"
                              style="height: 500px">{{ html_entity_decode($file->code) }}</div>
                         @push('scripts')
                         <script>
-                            var editor_{{$i}}   = ace.edit("editor_{{$i}}");
-                            editor_{{$i}}.getSession().setMode("ace/mode/php");
-                            editor_{{$i}}.getSession().on('change', function(e){
-                                var text = editor_{{$i}}.getSession().getValue();
+                            var editor_{{$file->id}}   = ace.edit("editor_{{$file->id}}");
+                            editor_{{$file->id}}.getSession().setMode("ace/mode/php");
+                            editor_{{$file->id}}.getSession().on('change', function(){
+                                var text = editor_{{$file->id}}.getSession().getValue();
 //                                console.log(text);
-                                $("#code_{{$i}}").val(text);
+                                $("#code_{{$file->id}}").val(text);
                             });
                         </script>
                         @endpush
                         <input type="hidden"
-                               name="code"
-                               id="code_{{$i}}"
+                               name="code_{{$file->id}}"
+                               id="code_{{$file->id}}"
                                value="{{ html_entity_decode($file->code) }}">
                     </div>
-                    <button class="btn btn-primary">{{ trans('app.save') }}</button>
+                    <button class="btn btn-primary"
+                            name="save_{{$file->id}}">{{ trans('app.save') }}</button>
                 </form>
             </div>
         </div>
