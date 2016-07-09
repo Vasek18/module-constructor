@@ -18,8 +18,9 @@ class BitrixArbitraryFilesController extends Controller{
 		$files = $module->arbitraryFiles()->get();
 
 		$data = [
-			'module' => $module,
-			'files'  => $files
+			'module'           => $module,
+			'files_for_module' => $module->arbitraryFiles()->where('location', 'in_module')->get(),
+			'files_for_site'   => $module->arbitraryFiles()->where('location', 'on_site')->get(),
 		];
 
 		return view("bitrix.arbitrary_files.index", $data);

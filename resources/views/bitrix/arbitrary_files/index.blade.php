@@ -13,23 +13,49 @@
            data-target="#upload-file">{{ trans('bitrix_arbitrary_files.button_add_file') }}
         </a>
     </p>
-    <div class="list-group">
-        @foreach($files as $i => $file)
-            <div class="list-group-item clearfix file deletion_wrapper">
-                <a href="#"
-                   data-toggle="modal"
-                   data-target="#edit-file_{{$i}}">{{$file->path}}{{$file->filename}}</a>
-                <a href="{{ action('Modules\Bitrix\BitrixArbitraryFilesController@destroy', [$module->id, $file->id]) }}"
-                   class="btn btn-danger pull-right human_ajax_deletion"
-                   data-method="get"
-                   id="delete_iblock_{{$file->id}}">
+    @if (count($files_for_module))
+        <h2>{{ trans('bitrix_arbitrary_files.in_module_files') }}</h2>
+        <div class="list-group">
+            @foreach($files_for_module as $i => $file)
+                <div class="list-group-item clearfix file deletion_wrapper">
+                    <a href="#"
+                       data-toggle="modal"
+                       data-target="#edit-file_{{$i}}i">{{$file->path}}{{$file->filename}}</a>
+                    <a href="{{ action('Modules\Bitrix\BitrixArbitraryFilesController@destroy', [$module->id, $file->id]) }}"
+                       class="btn btn-danger pull-right human_ajax_deletion"
+                       data-method="get"
+                       id="delete_iblock_{{$file->id}}">
                     <span class="glyphicon glyphicon-trash"
                           aria-hidden="true"></span>
-                </a>
-            </div>
-            @include('bitrix.arbitrary_files.edit_modal', ['file' => $file, 'i' => $i])
-        @endforeach
-    </div>
+                    </a>
+                </div>
+                @include('bitrix.arbitrary_files.edit_modal', ['file' => $file, 'i' => $i.'i'])
+            @endforeach
+        </div>
+    @endif
+    @if (count($files_for_site))
+        <h2>{{ trans('bitrix_arbitrary_files.on_site_files') }}</h2>
+        <div class="list-group">
+            @foreach($files_for_site as $i => $file)
+                <div class="list-group-item clearfix file deletion_wrapper">
+                    <a href="#"
+                       data-toggle="modal"
+                       data-target="#edit-file_{{$i}}o">{{$file->path}}{{$file->filename}}</a>
+                    <a href="{{ action('Modules\Bitrix\BitrixArbitraryFilesController@destroy', [$module->id, $file->id]) }}"
+                       class="btn btn-danger pull-right human_ajax_deletion"
+                       data-method="get"
+                       id="delete_iblock_{{$file->id}}">
+                    <span class="glyphicon glyphicon-trash"
+                          aria-hidden="true"></span>
+                    </a>
+                </div>
+                @include('bitrix.arbitrary_files.edit_modal', ['file' => $file, 'i' => $i.'o'])
+            @endforeach
+        </div>
+    @endif
 
     @include('bitrix.arbitrary_files.upload_modal')
+
+    <hr>
+    <p class="description">{!! trans('bitrix_arbitrary_files.description') !!}</p>
 @stop

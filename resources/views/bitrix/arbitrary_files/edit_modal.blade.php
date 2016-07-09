@@ -42,7 +42,6 @@
                         <select name="location"
                                 class="form-control"
                                 id="location">
-                            <option value="">{{ trans('app.select') }}</option>
                             <option value="in_module"
                                     @if ($file->location == 'in_module') selected @endif>{{ trans('bitrix_arbitrary_files.in_module') }}</option>
                             <option value="on_site"
