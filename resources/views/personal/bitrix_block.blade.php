@@ -138,6 +138,25 @@
                                     в раздел "Почтовые события"
                                 </a>
                             </p>
+                            <hr>
+                            <h3>Произвольные файлы</h3>
+                            @if (count($module->arbitraryFiles))
+                                <ul>
+                                    @foreach($module->arbitraryFiles as $af)
+                                        <li>
+                                            <a href="{{ route('bitrix_module_arbitrary_files', $module->id) }}">{{$af->path}}{{$af->filename}}</a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @else
+                                <p>Только самые необходимые файлы присутствуют</p>
+                            @endif
+                            <p>
+                                <a class="btn btn-primary"
+                                   href="{{ route('bitrix_module_arbitrary_files', $module->id) }}">Перейти
+                                    в раздел "Почтовые события"
+                                </a>
+                            </p>
                         </div>
                     </div>
                 </div>

@@ -82,5 +82,9 @@
         <dd>
             <a href="{{ route('bitrix_module_mail_events', $module->id) }}">{{$module->mailEvents()->count()}}</a>
         </dd>
+        <dt>Произвольных файлов:</dt>
+        <dd>
+            <a href="{{ route('bitrix_module_arbitrary_files', $module->id) }}">{{$module->arbitraryFiles()->count()}}</a>
+        </dd>
     </dl>
 @stop
