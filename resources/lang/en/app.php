@@ -8,7 +8,13 @@ return [
 	'link_to_personal_title' => 'Personal',
 	'link_to_logout_title'   => 'Logout',
 	'bitrix_module'          => 'Module',
-	
-	'select' => 'Select',
-	'save'   => 'Save',
+
+	'yes'      => 'Yes',
+	'no'       => 'No',
+	'menu'     => 'Menu',
+	'select'   => 'Select',
+	'save'     => 'Save',
+	'download' => 'Download',
+	'upload'   => 'Upload',
+	'delete'   => 'Delete',
 ];

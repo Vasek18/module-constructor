@@ -1,7 +1,7 @@
 @extends('bitrix.internal_template')
 
 @section('h1')
-    Путь в визуальном редакторе | Компонент {{ $component->name }} ({{ $component->code }})
+    {{ trans('bitrix_components.visual_path_h1') }} | {{ trans('bitrix_components.component') }} {{ $component->name }} ({{ $component->code }})
 @stop
 
 @section('page')
@@ -15,52 +15,84 @@
                 {{ csrf_field() }}
                 <div class="row">
                     <div class="item col-md-3">
-                        <h3>Уровень 1</h3>
+                        <h3>{{ trans('bitrix_components.level') }} 1</h3>
                         <div class="form-group">
-                            <input type="text" class="form-control" name="path_id_1" placeholder="Идентификатор"
-                                   value="{{isset($path_items[0]) ? $path_items[0]->code : ''}}" required>
+                            <input type="text"
+                                   class="form-control"
+                                   name="path_id_1"
+                                   placeholder="{{ trans('bitrix_components.visual_path_field_id') }}"
+                                   value="{{isset($path_items[0]) ? $path_items[0]->code : ''}}"
+                                   required>
                         </div>
                         <div class="form-group">
-                            <input type="text" class="form-control" name="path_name_1" placeholder="Название"
-                                   value="{{isset($path_items[0]) ? $path_items[0]->name : ''}}" required>
+                            <input type="text"
+                                   class="form-control"
+                                   name="path_name_1"
+                                   placeholder="{{ trans('bitrix_components.visual_path_field_name') }}"
+                                   value="{{isset($path_items[0]) ? $path_items[0]->name : ''}}"
+                                   required>
                         </div>
                         <div class="form-group">
-                            <input type="text" class="form-control" name="path_sort_1" placeholder="Сортировка"
-                                   value="{{isset($path_items[0]) ? $path_items[0]->sort : ''}}" required>
+                            <input type="text"
+                                   class="form-control"
+                                   name="path_sort_1"
+                                   placeholder="{{ trans('bitrix_components.visual_path_field_sort') }}"
+                                   value="{{isset($path_items[0]) ? $path_items[0]->sort : ''}}"
+                                   required>
                         </div>
                     </div>
                     <div class="item col-md-3">
-                        <h3>Уровень 2</h3>
+                        <h3>{{ trans('bitrix_components.level') }} 2</h3>
                         <div class="form-group">
-                            <input type="text" class="form-control" name="path_id_2" placeholder="Идентификатор"
+                            <input type="text"
+                                   class="form-control"
+                                   name="path_id_2"
+                                   placeholder="{{ trans('bitrix_components.visual_path_field_id') }}"
                                    value="{{isset($path_items[1]) ? $path_items[1]->code : ''}}">
                         </div>
                         <div class="form-group">
-                            <input type="text" class="form-control" name="path_name_2" placeholder="Название"
+                            <input type="text"
+                                   class="form-control"
+                                   name="path_name_2"
+                                   placeholder="{{ trans('bitrix_components.visual_path_field_name') }}"
                                    value="{{isset($path_items[1]) ? $path_items[1]->name : ''}}">
                         </div>
                         <div class="form-group">
-                            <input type="text" class="form-control" name="path_sort_2" placeholder="Сортировка"
+                            <input type="text"
+                                   class="form-control"
+                                   name="path_sort_2"
+                                   placeholder="{{ trans('bitrix_components.visual_path_field_sort') }}"
                                    value="{{isset($path_items[1]) ? $path_items[1]->sort : ''}}">
                         </div>
                     </div>
                     <div class="item col-md-3">
-                        <h3>Уровень 3</h3>
+                        <h3>{{ trans('bitrix_components.level') }} 3</h3>
                         <div class="form-group">
-                            <input type="text" class="form-control" name="path_id_3" placeholder="Идентификатор"
+                            <input type="text"
+                                   class="form-control"
+                                   name="path_id_3"
+                                   placeholder="{{ trans('bitrix_components.visual_path_field_id') }}"
                                    value="{{isset($path_items[2]) ? $path_items[2]->code : ''}}">
                         </div>
                         <div class="form-group">
-                            <input type="text" class="form-control" name="path_name_3" placeholder="Название"
+                            <input type="text"
+                                   class="form-control"
+                                   name="path_name_3"
+                                   placeholder="{{ trans('bitrix_components.visual_path_field_name') }}"
                                    value="{{isset($path_items[2]) ? $path_items[2]->name : ''}}">
                         </div>
                         <div class="form-group">
-                            <input type="text" class="form-control" name="path_sort_3" placeholder="Сортировка"
+                            <input type="text"
+                                   class="form-control"
+                                   name="path_sort_3"
+                                   placeholder="{{ trans('bitrix_components.visual_path_field_sort') }}"
                                    value="{{isset($path_items[2]) ? $path_items[2]->sort : ''}}">
                         </div>
                     </div>
                 </div>
-                <button class="btn btn-primary" name="store_path">Сохранить путь</button>
+                <button class="btn btn-primary"
+                        name="store_path">{{ trans('bitrix_components.visual_path_button_save') }}
+                </button>
             </form>
         </div>
     </div>

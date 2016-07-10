@@ -9,6 +9,12 @@ return [
 	'link_to_logout_title'   => 'Выйти',
 	'bitrix_module'          => 'Модуль',
 
-	'select'            => 'Выберите',
-	'save'              => 'Сохранить',
+	'yes'      => 'Да',
+	'no'       => 'Нет',
+	'menu'     => 'Меню',
+	'select'   => 'Выберите',
+	'save'     => 'Сохранить',
+	'download' => 'Скачать',
+	'upload'   => 'Загрузить',
+	'delete'   => 'Удалить',
 ];
