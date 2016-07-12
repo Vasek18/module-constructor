@@ -83,6 +83,18 @@
             </div>
         </div>
         <div class="form-group">
+            <label class="col-md-4 control-label">{{ trans('bitrix_components.field_component_namespace') }}</label>
+            <div class="col-md-6">
+                <input type="text"
+                       name="COMPONENT_NAMESPACE"
+                       class="form-control"
+                       aria-describedby="COMPONENT_NAMESPACE_help"
+                       value="{{ $module->module_full_id }}">
+                <span class="help-block"
+                      id="COMPONENT_NAMESPACE_help">{{ trans('bitrix_components.field_component_namespace_help') }}</span>
+            </div>
+        </div>
+        <div class="form-group">
             <div class="col-md-6 col-md-offset-4">
                 <button type="submit"
                         class="btn btn-primary"

@@ -20,6 +20,8 @@ return [
 	'field_component_desc_help' => 'It is shown during editing the component parameters when you hover over a button with the \'i\'. But in any case, it will not be superfluous',
 	'field_component_sort'      => 'Sorting weight',
 	'field_component_sort_help' => 'It is necessary to sort the list of components within a group when editing the page',
+	'field_component_namespace'      => 'Namespace',
+	'field_component_namespace_help' => 'The folder in which the components are stored',
 	'button_create_component'   => 'Create component',
 
 	'menu_title_main_info'     => 'Main info',
