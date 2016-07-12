@@ -10,7 +10,7 @@
                class="form-control"
                name="param_name[]"
                id="param_{{$i}}_name"
-               placeholder="Название"
+               placeholder="{{ trans('bitrix_components.params_field_name') }}"
                value="{{$param ? $param->name : ''}}">
     </div>
     <div class="col-md-2">
@@ -20,7 +20,7 @@
                class="form-control"
                name="param_code[]"
                id="param_{{$i}}_id"
-               placeholder="Код"
+               placeholder="{{ trans('bitrix_components.params_field_code') }}"
                value="{{$param ? $param->code : ''}}"
                @unless ($param) data-translit_from="param_{{$i}}_name" @endif>
     </div>
@@ -33,7 +33,7 @@
             @foreach($params_types as $type)
                 <option @if ($param && $param->type == $type->form_type) selected @endif
                 @if ((!$param || !$param->type) && $type->form_type == 'STRING') selected @endif
-                value="{{$type->form_type}}">{{$type->name_ru}}</option>
+                value="{{$type->form_type}}">{{ trans('bitrix_components.params_type_'.$type->form_type) }}</option>
             @endforeach
         </select>
     </div>
@@ -46,7 +46,7 @@
             @foreach($params_groups as $group)
                 <option value="{{$group->id}}"
                         @if ($param && $param->group_id == $group->id) selected @endif
-                >{{$group->name?$group->name:$group->code}}</option>
+                >{{ trans('bitrix_components.params_group_'.$group->code) }}</option>
             @endforeach
         </select>
     </div>

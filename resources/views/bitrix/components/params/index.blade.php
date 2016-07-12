@@ -60,7 +60,7 @@
         </div>
     </div>
 
-    <p>или</p>
+    <p>{{ trans('bitrix_components.params_dop_or' ) }}</p>
 
     <form role="form"
           method="POST"

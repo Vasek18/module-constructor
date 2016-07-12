@@ -1,7 +1,7 @@
 @extends('bitrix.internal_template')
 
 @section('h1')
-    Component.php | Компонент {{ $component->name }} ({{ $component->code }})
+    Component.php | {{ trans('bitrix_components.component') }} {{ $component->name }} ({{ $component->code }})
 @stop
 
 @section('page')
@@ -26,7 +26,7 @@
         {{ csrf_field() }}
     <input type="hidden" name="component_php" id="component_php"
            value="{{$component->component_php}}">
-        <button class="btn btn-primary">Сохранить</button>
+        <button class="btn btn-primary">{{ trans('app.save') }}</button>
     </form>
 
 @stop

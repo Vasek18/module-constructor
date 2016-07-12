@@ -1,7 +1,7 @@
 @extends('bitrix.internal_template')
 
 @section('h1')
-    Шаблоны | Компонент {{ $component->name }} ({{ $component->code }})
+    {{ trans('bitrix_components.templates_h1') }} | {{ trans('bitrix_components.component') }} {{ $component->name }} ({{ $component->code }})
 @stop
 
 @section('page')
@@ -11,7 +11,7 @@
     @include('bitrix.components.templates.create_modal')
 
     @if ($templates)
-        <h2>Шаблоны</h2>
+        <h2>{{ trans('bitrix_components.templates_list') }}</h2>
         <div class="list-group">
             @foreach($templates as $template)
                 <div class="list-group-item clearfix template">

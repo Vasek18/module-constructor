@@ -1,32 +1,32 @@
 @extends('bitrix.internal_template')
 
 @section('h1')
-    Прочие файлы компонента | Компонент {{ $component->name }} ({{ $component->code }})
+    {{ trans('bitrix_components.arbitrary_files_h1') }} | {{ trans('bitrix_components.component') }} {{ $component->name }} ({{ $component->code }})
 @stop
 
 @section('page')
 
     @include('bitrix.components.progress_way_menu')
 
-    <h2>Добавить файл</h2>
+    <h2>{{ trans('bitrix_components.arbitrary_files_form_title') }}</h2>
     <form action="{{ action('Modules\Bitrix\BitrixComponentsArbitraryFilesController@store', [$module->id, $component->id]) }}"
           method="post"
           enctype="multipart/form-data">
         {{ csrf_field() }}
         <div class="form-group">
-            <label for="path">Путь</label>
+            <label for="path">{{ trans('bitrix_components.arbitrary_files_field_path') }}</label>
             <input class="form-control" type="text" name="path" id="path" value="/" required>
         </div>
         <div class="form-group">
-            <label for="file">Имя</label>
+            <label for="file">{{ trans('bitrix_components.arbitrary_files_field_file') }}</label>
             <input class="form-control" type="file" name="new_file" id="file" required>
         </div>
         <div class="form-group">
-            <button class="btn btn-primary">Добавить</button>
+            <button class="btn btn-primary">{{ trans('bitrix_components.arbitrary_files_button_add_file') }}</button>
         </div>
     </form>
     @if (count($files))
-        <h3>Список файлов</h3>
+        <h3>{{ trans('bitrix_components.arbitrary_files_list') }}</h3>
         <div class="list-group">
             @foreach($files as $i => $file)
                 <div class="list-group-item clearfix file">
