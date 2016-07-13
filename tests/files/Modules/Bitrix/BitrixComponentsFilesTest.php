@@ -24,6 +24,14 @@ class BitrixComponentsFilesTest extends TestCase{
 
 	function createOnForm($module, $inputs = []){
 		$this->visit('/my-bitrix/'.$module->id.$this->path.'/create');
+
+		if (!isset($inputs['name'])){
+			$inputs['name'] = 'ololo';
+		}
+		if (!isset($inputs['code'])){
+			$inputs['code'] = 'trololo';
+		}
+
 		$this->submitForm('create_component', $inputs);
 
 		if (isset($inputs['code'])){
@@ -31,6 +39,16 @@ class BitrixComponentsFilesTest extends TestCase{
 		}
 
 		return true;
+	}
+
+	function deleteComponentFromList($component){
+		$this->visit('/my-bitrix/'.$this->module->id.$this->path);
+		$this->click('delete_component_'.$component->id);
+	}
+
+	function deleteComponentFromDetail($component){
+		$this->visit('/my-bitrix/'.$this->module->id.$this->path.'/'.$component->id);
+		$this->click('delete');
 	}
 
 	/** @test */
@@ -48,7 +66,7 @@ class BitrixComponentsFilesTest extends TestCase{
 
 		$this->deleteFolder($this->standartModuleCode);
 
-		$this->assertTrue(in_array($this->module->module_folder.'/install/components/'.$component->namespace.'/'.$component->code, $dirs), 'No module folder');
+		$this->assertTrue(in_array($this->module->module_folder.'/install/components/'.$component->namespace.'/'.$component->code, $dirs), 'No component folder');
 		$this->assertEquals('Heh', $description_lang_arr[$component->lang_key."_COMPONENT_NAME"]);
 		$this->assertEquals('HelloWorld', $description_lang_arr[$component->lang_key."_COMPONENT_DESCRIPTION"]);
 		$this->assertEquals('334', $description_arr["SORT"]);
@@ -69,7 +87,7 @@ class BitrixComponentsFilesTest extends TestCase{
 
 		$this->deleteFolder($this->standartModuleCode);
 
-		$this->assertTrue(in_array($this->module->module_folder.'/install/components/'.$component->namespace.'/'.$component->code, $dirs), 'No module folder');
+		$this->assertTrue(in_array($this->module->module_folder.'/install/components/'.$component->namespace.'/'.$component->code, $dirs), 'No component folder');
 		$this->assertEquals('Heh', $description_lang_arr[$component->lang_key."_COMPONENT_NAME"]);
 		$this->assertEquals('334', $description_arr["SORT"]);
 	}
@@ -89,7 +107,7 @@ class BitrixComponentsFilesTest extends TestCase{
 
 		$this->deleteFolder($this->standartModuleCode);
 
-		$this->assertTrue(in_array($this->module->module_folder.'/install/components/'.$component->namespace.'/'.$component->code, $dirs), 'No module folder');
+		$this->assertTrue(in_array($this->module->module_folder.'/install/components/'.$component->namespace.'/'.$component->code, $dirs), 'No component folder');
 		$this->assertEquals('Heh', $description_lang_arr[$component->lang_key."_COMPONENT_NAME"]);
 		$this->assertEquals('500', $description_arr["SORT"]);
 		$this->assertEquals(array(
@@ -99,6 +117,30 @@ class BitrixComponentsFilesTest extends TestCase{
 		), $description_arr["PATH"]);
 		$this->assertEquals('<? $this->IncludeComponentTemplate(); ?>', $component_php);
 		$this->assertEquals('Hello World', $default_template_php);
+	}
+
+	/** @test */
+	function it_can_delete_component(){
+		$component = $this->createOnForm($this->module);
+
+		$this->deleteComponentFromList($component);
+
+		$dirs = $this->disk()->directories($this->module->module_folder.'/install/components/'.$component->namespace);
+		$this->assertFalse(in_array($this->module->module_folder.'/install/components/'.$component->namespace.'/'.$component->code, $dirs), 'There is component folder');
+
+		$this->deleteFolder($this->standartModuleCode);
+	}
+
+	/** @test */
+	function it_can_delete_component_from_detail(){
+		$component = $this->createOnForm($this->module);
+
+		$this->deleteComponentFromDetail($component);
+
+		$dirs = $this->disk()->directories($this->module->module_folder.'/install/components/'.$component->namespace);
+		$this->assertFalse(in_array($this->module->module_folder.'/install/components/'.$component->namespace.'/'.$component->code, $dirs), 'There is component folder');
+
+		$this->deleteFolder($this->standartModuleCode);
 	}
 }
 

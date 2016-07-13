@@ -23,6 +23,14 @@ class BitrixComponentsInterfaceTest extends TestCase{
 
 	function createOnForm($module, $inputs = []){
 		$this->visit('/my-bitrix/'.$module->id.$this->path.'/create');
+
+		if (!isset($inputs['name'])){
+			$inputs['name'] = 'ololo';
+		}
+		if (!isset($inputs['code'])){
+			$inputs['code'] = 'trololo';
+		}
+
 		$this->submitForm('create_component', $inputs);
 
 		if (isset($inputs['code'])){
@@ -32,9 +40,14 @@ class BitrixComponentsInterfaceTest extends TestCase{
 		return true;
 	}
 
-	function removeComponent($module, $amp){
-		$this->visit('/my-bitrix/'.$module->id.$this->path);
-		$this->click('delete_amp_'.$amp->id);
+	function deleteComponentFromList($component){
+		$this->visit('/my-bitrix/'.$this->module->id.$this->path);
+		$this->click('delete_component_'.$component->id);
+	}
+
+	function deleteComponentFromDetail($component){
+		$this->visit('/my-bitrix/'.$this->module->id.$this->path.'/'.$component->id);
+		$this->click('delete');
 	}
 
 	/** @test */
@@ -135,6 +148,19 @@ class BitrixComponentsInterfaceTest extends TestCase{
 		$this->see('.default (Дефолтный)');
 
 		$this->deleteFolder($this->standartModuleCode);
+	}
+
+	/** @test */
+	function it_can_delete_component_from_detail(){
+		$component = $this->createOnForm($this->module);
+
+		$this->deleteComponentFromDetail($component);
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$this->seePageIs('/my-bitrix/'.$this->module->id.$this->path);
+
+		// todo проверка на отсутствие компонента
 	}
 }
 

@@ -63,7 +63,8 @@
         </p>
         <p>
             <a href="{{ action('Modules\Bitrix\BitrixComponentsController@destroy', [$module->id, $component->id]) }}"
-               class="btn btn-sm btn-danger">
+               class="btn btn-sm btn-danger"
+               id="delete">
                 <span class="glyphicon glyphicon-trash"
                       aria-hidden="true"></span>
                 {{ trans('app.delete') }}
