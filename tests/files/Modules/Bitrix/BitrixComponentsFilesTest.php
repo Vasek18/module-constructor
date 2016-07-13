@@ -51,6 +51,26 @@ class BitrixComponentsFilesTest extends TestCase{
 		$this->assertEquals('Heh', $description_lang_arr[$component->lang_key."_COMPONENT_NAME"]);
 		$this->assertEquals('334', $description_arr["SORT"]);
 	}
+
+	/** @test */
+	function it_creates_component_in_another_namespace(){
+		$component = $this->createOnForm($this->module, [
+			'name'      => 'Heh',
+			'sort'      => '334',
+			'code'      => 'ololo.trololo',
+			'namespace' => 'vregions',
+		]);
+
+		$dirs = $this->disk()->directories($this->module->module_folder.'/install/components/'.$component->namespace);
+		$description_lang_arr = vArrParse::parseFromText($this->disk()->get($component->getFolder().'/lang/ru/.description.php'), 'MESS');
+		$description_arr = vArrParse::parseFromText($this->disk()->get($component->getFolder().'/.description.php'), '$arComponentDescription');
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$this->assertTrue(in_array($this->module->module_folder.'/install/components/'.$component->namespace.'/'.$component->code, $dirs), 'No module folder');
+		$this->assertEquals('Heh', $description_lang_arr[$component->lang_key."_COMPONENT_NAME"]);
+		$this->assertEquals('334', $description_arr["SORT"]);
+	}
 }
 
 ?>
