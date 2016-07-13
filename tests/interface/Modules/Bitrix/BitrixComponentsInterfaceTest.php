@@ -107,6 +107,36 @@ class BitrixComponentsInterfaceTest extends TestCase{
 		$this->see('My cool component');
 		$this->see('dummy');
 	}
+
+	/** @test */
+	function it_makes_hello_world_component_instead_of_empty(){
+		$component = $this->createOnForm($this->module, [
+			'name' => 'Heh',
+			'sort' => '1487',
+			'code' => 'trololo',
+			'desc' => 'My cool component',
+		]);
+
+		$this->seePageIs('/my-bitrix/'.$this->module->id.'/components/'.$component->id);
+		$this->see('Heh');
+		$this->see('1487');
+		$this->see('trololo');
+		$this->see('My cool component');
+
+		$this->visit('/my-bitrix/'.$this->module->id.'/components/'.$component->id.'/visual_path');
+		$this->seeInField('path_id_1', $this->module->PARTNER_CODE."_".$this->module->code."_components");
+		$this->seeInField('path_name_1', $this->module->name);
+		$this->seeInField('path_sort_1', '500');
+
+		$this->visit('/my-bitrix/'.$this->module->id.'/components/'.$component->id.'/component_php');
+		$this->seeInField('component_php', '<? $this->IncludeComponentTemplate(); ?>');
+
+		$this->visit('/my-bitrix/'.$this->module->id.'/components/'.$component->id.'/templates');
+		$this->see('.default (Дефолтный)');
+
+		$this->deleteFolder($this->standartModuleCode);
+	}
 }
 
 ?>
+
