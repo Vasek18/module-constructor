@@ -52,7 +52,20 @@ class BitrixComponentsController extends Controller{
 			return $this->unauthorized($request);
 		}
 
-		$component = BitrixComponent::store($module, $request);
+		$component = BitrixComponent::updateOrCreate(
+			[
+				'module_id' => $module->id,
+				'code'      => $request->code
+			],
+			[
+				'module_id' => $module->id,
+				'name'      => $request->name,
+				'code'      => $request->code,
+				'sort'      => $request->sort,
+				'desc'      => $request->desc,
+				'namespace' => $request->namespace,
+			]
+		);
 
 		$component->createFolder();
 		$component->createDefaultPath();

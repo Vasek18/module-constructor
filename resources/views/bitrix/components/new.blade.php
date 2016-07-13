@@ -28,13 +28,13 @@
             <div class="col-md-6">
                 <input type="text"
                        class="form-control"
-                       name="COMPONENT_NAME"
+                       name="name"
                        value=""
                        required
-                       aria-describedby="COMPONENT_NAME_help"
+                       aria-describedby="name_help"
                        id="component_name">
                 <span class="help-block"
-                      id="COMPONENT_NAME_help">{{ trans('bitrix_components.field_component_name_help') }}</span>
+                      id="name_help">{{ trans('bitrix_components.field_component_name_help') }}</span>
             </div>
         </div>
         <div class="form-group">
@@ -42,24 +42,24 @@
             <div class="col-md-6">
                 <input type="text"
                        class="form-control"
-                       name="COMPONENT_CODE"
+                       name="code"
                        value=""
                        required
-                       aria-describedby="COMPONENT_CODE_help"
+                       aria-describedby="code_help"
                        id="component_code"
                        data-translit_from="component_name">
                 <span class="help-block"
-                      id="COMPONENT_CODE_help">{{ trans('bitrix_components.field_component_code_help') }}</span>
+                      id="code_help">{{ trans('bitrix_components.field_component_code_help') }}</span>
             </div>
         </div>
         <div class="form-group">
             <label class="col-md-4 control-label">{{ trans('bitrix_components.field_component_desc') }}</label>
             <div class="col-md-6">
-                <textarea name="COMPONENT_DESCRIPTION"
+                <textarea name="desc"
                           class="form-control"
-                          aria-describedby="COMPONENT_DESCRIPTION_help"></textarea>
+                          aria-describedby="desc_help"></textarea>
                 <span class="help-block"
-                      id="COMPONENT_DESCRIPTION_help">{{ trans('bitrix_components.field_component_desc_help') }}</span>
+                      id="description_help">{{ trans('bitrix_components.field_component_desc_help') }}</span>
             </div>
         </div>
         {{--todo--}}
@@ -74,24 +74,24 @@
             <label class="col-md-4 control-label">{{ trans('bitrix_components.field_component_sort') }}</label>
             <div class="col-md-6">
                 <input type="text"
-                       name="COMPONENT_SORT"
+                       name="sort"
                        class="form-control"
-                       aria-describedby="COMPONENT_SORT_help"
+                       aria-describedby="sort_help"
                        value="500">
                 <span class="help-block"
-                      id="COMPONENT_SORT_help">{{ trans('bitrix_components.field_component_sort_help') }}</span>
+                      id="sort_help">{{ trans('bitrix_components.field_component_sort_help') }}</span>
             </div>
         </div>
         <div class="form-group">
             <label class="col-md-4 control-label">{{ trans('bitrix_components.field_component_namespace') }}</label>
             <div class="col-md-6">
                 <input type="text"
-                       name="COMPONENT_NAMESPACE"
+                       name="namespace"
                        class="form-control"
-                       aria-describedby="COMPONENT_NAMESPACE_help"
+                       aria-describedby="namespace_help"
                        value="{{ $module->module_full_id }}">
                 <span class="help-block"
-                      id="COMPONENT_NAMESPACE_help">{{ trans('bitrix_components.field_component_namespace_help') }}</span>
+                      id="namespace_help">{{ trans('bitrix_components.field_component_namespace_help') }}</span>
             </div>
         </div>
         <div class="form-group">

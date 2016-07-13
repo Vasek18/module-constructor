@@ -21,35 +21,12 @@ class BitrixComponentsInterfaceTest extends TestCase{
 		parent::tearDown();
 	}
 
-	function createOnForm($module, $params = []){
+	function createOnForm($module, $inputs = []){
 		$this->visit('/my-bitrix/'.$module->id.$this->path.'/create');
-		$inputs = [];
-
-		if (!isset($params['name'])){
-			$inputs['COMPONENT_NAME'] = 'Test';
-		}else{
-			$inputs['COMPONENT_NAME'] = $params['name'];
-		}
-		if (!isset($params['code'])){
-			$inputs['COMPONENT_CODE'] = 'ololo';
-			$params['code'] = 'ololo';
-		}else{
-			$inputs['COMPONENT_CODE'] = $params['code'];
-		}
-		if (isset($params['sort'])){
-			$inputs['COMPONENT_SORT'] = $params['sort'];
-		}
-		if (isset($params['desc'])){
-			$inputs['COMPONENT_DESCRIPTION'] = $params['desc'];
-		}
-		if (isset($params['namespace'])){
-			$inputs['COMPONENT_NAMESPACE'] = $params['namespace'];
-		}
-
 		$this->submitForm('create_component', $inputs);
 
-		if (isset($params['code'])){
-			return BitrixComponent::where('code', $params['code'])->where('module_id', $module->id)->first();
+		if (isset($inputs['code'])){
+			return BitrixComponent::where('code', $inputs['code'])->where('module_id', $module->id)->first();
 		}
 
 		return true;
@@ -128,7 +105,7 @@ class BitrixComponentsInterfaceTest extends TestCase{
 		$this->see('1487');
 		$this->see('trololo');
 		$this->see('My cool component');
-		// $this->see('dummy');
+		$this->see('dummy');
 	}
 }
 

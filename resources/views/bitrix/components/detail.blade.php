@@ -18,6 +18,10 @@
                 <p class="form-control-static">{{$component->code}}</p>
             </div>
             <div class="form-group">
+                <label>{{ trans('bitrix_components.field_component_namespace') }}</label>
+                <p class="form-control-static">{{$component->namespace}}</p>
+            </div>
+            <div class="form-group">
                 <label for="name">{{ trans('bitrix_components.field_component_name') }}</label>
                 <p class="form-control-static">
                     <a href="#"
