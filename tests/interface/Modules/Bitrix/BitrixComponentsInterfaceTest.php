@@ -162,6 +162,37 @@ class BitrixComponentsInterfaceTest extends TestCase{
 
 		// todo проверка на отсутствие компонента
 	}
+
+	/** @test */
+	function it_can_store_visual_path_form(){
+		$component = $this->createOnForm($this->module);
+
+		$this->visit('/my-bitrix/'.$this->module->id.'/components/'.$component->id.'/visual_path');
+
+		$this->submitForm('store_path', [
+			'path_id_1'   => 'ololo1',
+			'path_name_1' => 'ololo2',
+			'path_sort_1' => '500',
+			'path_id_2'   => 'trololo1',
+			'path_name_2' => 'trololo2',
+			'path_sort_2' => '1000',
+			'path_id_3'   => 'foo1',
+			'path_name_3' => 'foo2',
+			'path_sort_3' => '1500',
+		]);
+
+		$this->seeInField('path_id_1', 'ololo1');
+		$this->seeInField('path_name_1', 'ololo2');
+		$this->seeInField('path_sort_1', '500');
+		$this->seeInField('path_id_2', 'trololo1');
+		$this->seeInField('path_name_2', 'trololo2');
+		$this->seeInField('path_sort_2', '1000');
+		$this->seeInField('path_id_3', 'foo1');
+		$this->seeInField('path_name_3', 'foo2');
+		$this->seeInField('path_sort_3', '1500');
+
+		$this->deleteFolder($this->standartModuleCode);
+	}
 }
 
 ?>

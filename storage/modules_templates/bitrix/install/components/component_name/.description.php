@@ -9,7 +9,7 @@ $arComponentDescription = array(
 	"PATH" => array(
 		"ID" => "{MODULE_COMPONENTS_FOLDER_ID}",
 		"SORT" => {MODULE_COMPONENTS_FOLDER_SORT},
-		"NAME" => GetMessage("{LANG_KEY}_COMPONENTS_FOLDER_NAME"),
+		"NAME" => GetMessage("{COMPONENT_LANG_KEY}_COMPONENTS_FOLDER_NAME"),
 	),
 );
 
