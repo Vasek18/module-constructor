@@ -98,7 +98,7 @@
         @endfor
         <div class="row">
             <div class="col-md-12">
-                <button class="btn btn-primary btn-block">{{ trans('app.save') }}</button>
+                <button class="btn btn-primary btn-block" name="save">{{ trans('app.save') }}</button>
             </div>
         </div>
     </form>

@@ -378,6 +378,9 @@ class Bitrix extends Model{
 	public function getModuleFullIdAttribute(){
 		return $this->PARTNER_CODE.".".$this->code;
 	}
+	public function getFullIdAttribute(){
+		return $this->PARTNER_CODE.".".$this->code;
+	}
 
 	public function getLangKeyAttribute(){
 		return strtoupper($this->PARTNER_CODE."_".$this->code);

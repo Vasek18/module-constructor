@@ -284,6 +284,7 @@ class BitrixComponentsController extends Controller{
 		$component = new BitrixComponent;
 		$component->module_id = $module->id;
 		$component->code = $componentCode;
+		$component->namespace = $module->full_id;
 		$component->save();
 
 		return $component;

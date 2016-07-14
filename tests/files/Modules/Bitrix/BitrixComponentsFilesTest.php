@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Models\Modules\Bitrix\BitrixComponent;
 use App\Helpers\vArrParse;
+use App\Models\Modules\Bitrix\BitrixComponentsParams;
 
 class BitrixComponentsFilesTest extends TestCase{
 
@@ -49,6 +50,56 @@ class BitrixComponentsFilesTest extends TestCase{
 	function deleteComponentFromDetail($component){
 		$this->visit('/my-bitrix/'.$this->module->id.$this->path.'/'.$component->id);
 		$this->click('delete');
+	}
+
+	function createComponentParamOnForm($component, $rowNumber, $params){
+		$this->visit('/my-bitrix/'.$this->module->id.'/components/'.$component->id.'/params');
+		$inputs = [];
+		if (isset($params['name'])){
+			$inputs['param_name['.$rowNumber.']'] = $params['name'];
+		}
+		if (isset($params['code'])){
+			$inputs['param_code['.$rowNumber.']'] = $params['code'];
+		}
+		if (isset($params['type'])){
+			$inputs['param_type['.$rowNumber.']'] = $params['type'];
+		}
+		if (isset($params['width'])){
+			$inputs['param_width['.$rowNumber.']'] = $params['width'];
+		}
+		if (isset($params['height'])){
+			$inputs['option_height['.$rowNumber.']'] = $params['height'];
+		}
+		if (isset($params['vals_key0'])){
+			$inputs['option_'.($rowNumber).'_vals_type'] = 'array';
+			$inputs['option_'.($rowNumber).'_vals_key[0]'] = $params['vals_key0'];
+		}
+		if (isset($params['vals_value0'])){
+			$inputs['param_'.($rowNumber).'_vals_type'] = 'array';
+			$inputs['param_'.($rowNumber).'_vals_value[0]'] = $params['vals_value0'];
+		}
+		if (isset($params['vals_key1'])){
+			$inputs['param_'.($rowNumber).'_vals_type'] = 'array';
+			$inputs['param_'.($rowNumber).'_vals_key[1]'] = $params['vals_key1'];
+		}
+		if (isset($params['vals_value1'])){
+			$inputs['option_'.($rowNumber).'_vals_type'] = 'array';
+			$inputs['option_'.($rowNumber).'_vals_value[1]'] = $params['vals_value1'];
+		}
+		if (isset($params['vals_type'])){
+			$inputs['option_'.($rowNumber).'_vals_type'] = $params['vals_type'];
+		}
+		if (isset($params['iblock'])){
+			$inputs['param_'.($rowNumber).'_spec_args[0]'] = $params['iblock'];
+		}
+		//dd($inputs);
+		$this->submitForm('save', $inputs);
+
+		if (isset($params['code'])){
+			return BitrixComponentsParams::where('component_id', $component->id)->where('code', $params['code'])->first();
+		}
+
+		return true;
 	}
 
 	/** @test */
@@ -228,6 +279,31 @@ class BitrixComponentsFilesTest extends TestCase{
 		$this->deleteFolder($this->standartModuleCode);
 
 		$this->assertEquals('<? echo "Hi"; ?>', $savedFile);
+	}
+
+	/** @test */
+	function it_can_store_string_param_without_dop_params(){
+		$component = $this->createOnForm($this->module);
+
+		$this->createComponentParamOnForm($component, 0, [
+			'name' => 'Ololo',
+			'code' => 'trololo',
+			'type' => 'STRING',
+		]);
+
+		$params_arr = vArrParse::parseFromText($this->disk()->get($component->getFolder().'/.parameters.php'), '$arComponentParameters');
+		$params_lang_arr = vArrParse::parseFromText($this->disk()->get($component->getFolder().'/lang/ru/.parameters.php'), 'MESS');
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$paramArrExpected = [
+			"PARENT" => "BASE",
+			"NAME"   => 'GetMessage("'.$component->lang_key.'_PARAMS_TROLOLO")',
+			"TYPE"   => "STRING",
+		];
+		$this->assertEquals($paramArrExpected, $params_arr["PARAMETERS"]["TROLOLO"]);
+
+		$this->assertEquals('Ololo', $params_lang_arr[$component->lang_key.'_PARAMS_TROLOLO']);
 	}
 }
 
