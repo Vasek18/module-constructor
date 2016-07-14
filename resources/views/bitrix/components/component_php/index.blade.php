@@ -26,7 +26,7 @@
         {{ csrf_field() }}
     <input type="hidden" name="component_php" id="component_php"
            value="{{$component->component_php}}">
-        <button class="btn btn-primary">{{ trans('app.save') }}</button>
+        <button class="btn btn-primary" name="save">{{ trans('app.save') }}</button>
     </form>
 
 @stop

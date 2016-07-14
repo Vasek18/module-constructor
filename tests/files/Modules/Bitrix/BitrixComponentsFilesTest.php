@@ -192,6 +192,23 @@ class BitrixComponentsFilesTest extends TestCase{
 		$this->assertEquals('trololo2', $description_lang_arr[''.$component->lang_key.'_COMPONENTS_SUBFOLDER_NAME']);
 		$this->assertEquals('foo2', $description_lang_arr[''.$component->lang_key.'_COMPONENTS_SUBSUBFOLDER_NAME']);
 	}
+
+	/** @test */
+	function it_can_store_component_php(){
+		$component = $this->createOnForm($this->module);
+
+		$this->visit('/my-bitrix/'.$this->module->id.'/components/'.$component->id.'/component_php');
+
+		$this->submitForm('save', [
+			'component_php' => '<? echo "Hi"; ?>',
+		]);
+
+		$component_php = $this->disk()->get($component->getFolder().'/component.php');
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$this->assertEquals('<? echo "Hi"; ?>', $component_php);
+	}
 }
 
 ?>

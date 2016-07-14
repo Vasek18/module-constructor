@@ -193,6 +193,21 @@ class BitrixComponentsInterfaceTest extends TestCase{
 
 		$this->deleteFolder($this->standartModuleCode);
 	}
+
+	/** @test */
+	function it_can_store_component_php(){
+		$component = $this->createOnForm($this->module);
+
+		$this->visit('/my-bitrix/'.$this->module->id.'/components/'.$component->id.'/component_php');
+
+		$this->submitForm('save', [
+			'component_php' => '<? echo "Hi"; ?>',
+		]);
+
+		$this->seeInField('component_php', '<? echo "Hi"; ?>');
+
+		$this->deleteFolder($this->standartModuleCode);
+	}
 }
 
 ?>
