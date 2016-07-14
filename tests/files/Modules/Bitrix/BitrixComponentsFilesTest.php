@@ -209,6 +209,26 @@ class BitrixComponentsFilesTest extends TestCase{
 
 		$this->assertEquals('<? echo "Hi"; ?>', $component_php);
 	}
+
+	/** @test */
+	function it_can_store_arbitrary_file(){
+		$component = $this->createOnForm($this->module);
+
+		$this->visit('/my-bitrix/'.$this->module->id.'/components/'.$component->id.'/other_files');
+
+		$file = public_path().'/ololo.php';
+		file_put_contents($file, '<? echo "Hi"; ?>');
+
+		$this->type('/', 'path');
+		$this->attach($file, 'file');
+		$this->press('upload');
+
+		$savedFile = $this->disk()->get($component->getFolder().'/ololo.php');
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$this->assertEquals('<? echo "Hi"; ?>', $savedFile);
+	}
 }
 
 ?>

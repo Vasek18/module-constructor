@@ -19,10 +19,10 @@
         </div>
         <div class="form-group">
             <label for="file">{{ trans('bitrix_components.arbitrary_files_field_file') }}</label>
-            <input class="form-control" type="file" name="new_file" id="file" required>
+            <input class="form-control" type="file" name="file" id="file" required>
         </div>
         <div class="form-group">
-            <button class="btn btn-primary">{{ trans('bitrix_components.arbitrary_files_button_add_file') }}</button>
+            <button class="btn btn-primary" name="upload">{{ trans('bitrix_components.arbitrary_files_button_add_file') }}</button>
         </div>
     </form>
     @if (count($files))

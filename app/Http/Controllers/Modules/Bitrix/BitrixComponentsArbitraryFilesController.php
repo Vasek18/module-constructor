@@ -30,7 +30,7 @@ class BitrixComponentsArbitraryFilesController extends Controller{
 	}
 
 	public function store(Bitrix $module, BitrixComponent $component, Request $request){
-		$file = $request->file('new_file');
+		$file = $request->file('file');
 		$addPath = $this->validatePath($request->path);
 		//dd($request);
 		$file->move($component->getFolder(true).$addPath, $file->getClientOriginalName());

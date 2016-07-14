@@ -208,6 +208,22 @@ class BitrixComponentsInterfaceTest extends TestCase{
 
 		$this->deleteFolder($this->standartModuleCode);
 	}
+
+	/** @test */
+	function it_can_store_arbitrary_file(){
+		$component = $this->createOnForm($this->module);
+
+		$this->visit('/my-bitrix/'.$this->module->id.'/components/'.$component->id.'/other_files');
+
+		$file = public_path().'/ololo.php';
+		file_put_contents($file, '<? echo "Hi"; ?>');
+
+		$this->type('/ololo/', 'path');
+		$this->attach($file, 'file');
+		$this->press('upload');
+
+		$this->see('/ololo/ololo.php');
+	}
 }
 
 ?>
