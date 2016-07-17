@@ -35,16 +35,12 @@ class BitrixComponentsParamsController extends Controller{
 	}
 
 	public function store(Bitrix $module, BitrixComponent $component, Request $request){
+		// dd($request);
 		foreach ($request->param_code as $i => $code){
 			// обязательные поля
 			if (!$code){
 				continue;
 			}
-			if (!$request['param_name'][$i]){
-				continue;
-			}
-
-			//dd($request);
 
 			$paramArr = [
 				'component_id' => $component->id,
@@ -52,6 +48,9 @@ class BitrixComponentsParamsController extends Controller{
 			];
 			if (isset($request['param_name'][$i])){
 				$paramArr['name'] = $request['param_name'][$i];
+				if (!$request['param_name'][$i]){
+					$paramArr['name'] = BitrixComponentsParams::getSystemPropName($code);
+				}
 			}
 			if (isset($request['param_sort'][$i])){
 				$paramArr['sort'] = $request['param_sort'][$i];
@@ -102,13 +101,13 @@ class BitrixComponentsParamsController extends Controller{
 			//dd($paramArr);
 			//dd($request);
 
-				$param = BitrixComponentsParams::updateOrCreate(
-					[
-						'code'         => $code,
-						'component_id' => $component->id
-					],
-					$paramArr
-				);
+			$param = BitrixComponentsParams::updateOrCreate(
+				[
+					'code'         => $code,
+					'component_id' => $component->id
+				],
+				$paramArr
+			);
 
 			// сохранение опций
 			if (count($request['param_'.$i.'_vals_key']) && $request['param_'.$i.'_vals_type'] == "array"){
@@ -142,7 +141,8 @@ class BitrixComponentsParamsController extends Controller{
 		return back();
 	}
 
-	public function upload_params_files(Bitrix $module, BitrixComponent $component, Request $request){
+	public
+	function upload_params_files(Bitrix $module, BitrixComponent $component, Request $request){
 		$params_file = $request->file('params_file');
 		$params_lang_file = $request->file('params_lang_file');
 		$params_file->move($component->getFolder(true), $params_file->getClientOriginalName());
@@ -155,8 +155,8 @@ class BitrixComponentsParamsController extends Controller{
 		return back();
 	}
 
-	public function destroy(Bitrix $module, BitrixComponent $component, BitrixComponentsParams $param, Request $request){
-
+	public
+	function destroy(Bitrix $module, BitrixComponent $component, BitrixComponentsParams $param, Request $request){
 		if (!$this->userCreatedModule($module->id)){
 			return $this->unauthorized($request);
 		}

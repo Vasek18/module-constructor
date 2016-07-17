@@ -32,8 +32,10 @@
                 id="param_{{$i}}_type">
             @foreach($params_types as $type)
                 <option @if ($param && $param->type == $type->form_type) selected
-                        @endif@if ((!$param || !$param->type) && $type->form_type == 'STRING') selected
-                        @endifvalue="{{$type->form_type}}">{{ trans('bitrix_components.params_type_'.$type->form_type) }}</option>
+                        @endif
+                        @if ((!$param || !$param->type) && $type->form_type == 'STRING') selected
+                        @endif
+                        value="{{$type->form_type}}">{{ trans('bitrix_components.params_type_'.$type->form_type) }}</option>
             @endforeach
         </select>
     </div>
