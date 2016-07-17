@@ -2,6 +2,7 @@
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Models\Modules\Bitrix\BitrixComponent;
+use App\Models\Modules\Bitrix\BitrixComponentsParams;
 
 class BitrixComponentsInterfaceTest extends TestCase{
 
@@ -48,6 +49,68 @@ class BitrixComponentsInterfaceTest extends TestCase{
 	function deleteComponentFromDetail($component){
 		$this->visit('/my-bitrix/'.$this->module->id.$this->path.'/'.$component->id);
 		$this->click('delete');
+	}
+
+	function createComponentParamOnForm($component, $rowNumber, $params){
+		$this->visit('/my-bitrix/'.$this->module->id.'/components/'.$component->id.'/params');
+		$inputs = [];
+		if (isset($params['name'])){
+			$inputs['param_name['.$rowNumber.']'] = $params['name'];
+		}
+		if (isset($params['code'])){
+			$inputs['param_code['.$rowNumber.']'] = $params['code'];
+		}
+		if (isset($params['type'])){
+			$inputs['param_type['.$rowNumber.']'] = $params['type'];
+		}
+		if (isset($params['refresh'])){
+			$inputs['param_refresh['.$rowNumber.']'] = $params['refresh'];
+		}
+		if (isset($params['multiple'])){
+			$inputs['param_multiple['.$rowNumber.']'] = $params['multiple'];
+		}
+		if (isset($params['cols'])){
+			$inputs['param_cols['.$rowNumber.']'] = $params['cols'];
+		}
+		if (isset($params['size'])){
+			$inputs['param_size['.$rowNumber.']'] = $params['size'];
+		}
+		if (isset($params['default'])){
+			$inputs['param_default['.$rowNumber.']'] = $params['default'];
+		}
+		if (isset($params['additional_values'])){
+			$inputs['param_additional_values['.$rowNumber.']'] = $params['additional_values'];
+		}
+		if (isset($params['vals_key0'])){
+			$inputs['param_'.($rowNumber).'_vals_type'] = 'array';
+			$inputs['param_'.($rowNumber).'_vals_key[0]'] = $params['vals_key0'];
+		}
+		if (isset($params['vals_value0'])){
+			$inputs['param_'.($rowNumber).'_vals_type'] = 'array';
+			$inputs['param_'.($rowNumber).'_vals_value[0]'] = $params['vals_value0'];
+		}
+		if (isset($params['vals_key1'])){
+			$inputs['param_'.($rowNumber).'_vals_type'] = 'array';
+			$inputs['param_'.($rowNumber).'_vals_key[1]'] = $params['vals_key1'];
+		}
+		if (isset($params['vals_value1'])){
+			$inputs['param_'.($rowNumber).'_vals_type'] = 'array';
+			$inputs['param_'.($rowNumber).'_vals_value[1]'] = $params['vals_value1'];
+		}
+		if (isset($params['vals_type'])){
+			$inputs['param_'.($rowNumber).'_vals_type'] = $params['vals_type'];
+		}
+		if (isset($params['iblock'])){
+			$inputs['param_'.($rowNumber).'_spec_args[0]'] = $params['iblock'];
+		}
+		//dd($inputs);
+		$this->submitForm('save', $inputs);
+
+		if (isset($params['code'])){
+			return BitrixComponentsParams::where('component_id', $component->id)->where('code', $params['code'])->first();
+		}
+
+		return true;
 	}
 
 	/** @test */
@@ -223,6 +286,19 @@ class BitrixComponentsInterfaceTest extends TestCase{
 		$this->press('upload');
 
 		$this->see('/ololo/ololo.php');
+	}
+
+	/** @test */
+	function it_can_find_name_of_noname_system_param(){
+		$component = $this->createOnForm($this->module);
+
+		$this->createComponentParamOnForm($component, 0, [
+			'name' => '',
+			'code' => 'CACHE_TIME',
+			'type' => 'STRING',
+		]);
+
+		$this->see('Время кеширования (сек.)');
 	}
 }
 
