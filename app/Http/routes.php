@@ -99,6 +99,7 @@ Route::group(['prefix' => 'my-bitrix', 'middleware' => 'bitrix.owner'], function
 		Route::group(['prefix' => '{component}/templates'], function (){
 			Route::get('', ['as' => 'bitrix_component_templates', 'uses' => 'Modules\Bitrix\BitrixComponentsTemplatesController@index']);
 			Route::post('store', 'Modules\Bitrix\BitrixComponentsTemplatesController@store');
+			Route::get('{template}', ['uses' => 'Modules\Bitrix\BitrixComponentsTemplatesController@show']);
 			Route::get('{template}/delete', 'Modules\Bitrix\BitrixComponentsTemplatesController@destroy');
 		});
 	});

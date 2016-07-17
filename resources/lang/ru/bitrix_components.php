@@ -97,4 +97,12 @@ return [
 	'templates_field_code'    => 'Код',
 	'templates_field_name'    => 'Название',
 	'templates_field_files'   => 'Файлы',
+
+	'template'                                 => 'Шаблон',
+	'template_detail_title'                    => 'Редактирование шаблона',
+	'template_field_template_php_code'         => 'Файл шаблона',
+	'template_field_style_css_code'            => 'Стили',
+	'template_field_script_js_code'            => 'JS-скрипты',
+	'template_field_result_modifier_php_code'  => 'result_modifier.php',
+	'template_field_component_epilog_php_code' => 'component_epilog.php',
 ];

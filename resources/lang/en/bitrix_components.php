@@ -97,4 +97,12 @@ return [
 	'templates_field_code'    => 'Code',
 	'templates_field_name'    => 'Name',
 	'templates_field_files'   => 'Files',
+
+	'template'                                 => 'Template',
+	'template_detail_title'                    => 'Template edit',
+	'template_field_template_php_code'         => 'template.php',
+	'template_field_style_css_code'            => 'style.css',
+	'template_field_script_js_code'            => 'script.js',
+	'template_field_result_modifier_php_code'  => 'result_modifier.php',
+	'template_field_component_epilog_php_code' => 'component_epilog.php',
 ];

@@ -56,14 +56,6 @@ class BitrixComponentsTemplatesController extends Controller{
 	}
 
 	public function destroy(Bitrix $module, BitrixComponent $component, BitrixComponentsTemplates $template, Request $request){
-
-		if (!$this->userCreatedModule($module->id)){
-			return $this->unauthorized($request);
-		}
-		if (!$template->id){
-			return false;
-		}
-
 		if ($template->code == '.default'){
 			return redirect(route('bitrix_component_templates', ['module' => $module->id, 'component' => $component->id])); // todo возвращать ошибку
 		}
@@ -74,5 +66,14 @@ class BitrixComponentsTemplatesController extends Controller{
 		BitrixComponentsTemplates::destroy($template->id);
 
 		return back();
+	}
+	public function show(Bitrix $module, BitrixComponent $component, BitrixComponentsTemplates $template, Request $request){
+		$data = [
+			'module'     => $module,
+			'component'  => $component,
+			'template'  => $template,
+		];
+
+		return view("bitrix.components.templates.detail", $data);
 	}
 }

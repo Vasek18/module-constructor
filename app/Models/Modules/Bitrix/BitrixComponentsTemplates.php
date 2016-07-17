@@ -37,6 +37,36 @@ class BitrixComponentsTemplates extends Model{
 		return $component_folder.'\templates\\'.$this->code;
 	}
 
+	public function getTemplatePhpAttribute(){
+		$code = $this->component->module->disk()->get($this->getFolder().'\template.php');
+
+		return $code;
+	}
+
+	public function getStyleCssAttribute(){
+		$code = $this->component->module->disk()->get($this->getFolder().'\style.css');
+
+		return $code;
+	}
+
+	public function getScriptJsAttribute(){
+		$code = $this->component->module->disk()->get($this->getFolder().'\script.js');
+
+		return $code;
+	}
+
+	public function getResultModifierPhpAttribute(){
+		$code = $this->component->module->disk()->get($this->getFolder().'\result_modifier.php');
+
+		return $code;
+	}
+
+	public function getComponentEpilogPhpAttribute(){
+		$code = $this->component->module->disk()->get($this->getFolder().'\component_epilog.php');
+
+		return $code;
+	}
+
 	public function component(){
 		return $this->belongsTo('App\Models\Modules\Bitrix\BitrixComponent');
 	}
