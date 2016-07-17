@@ -15,7 +15,11 @@ class BitrixComponentsParams extends Model{
 	}
 
 	public function getSpecValsFunctionCallAttribute(){
-		return "$".$this->spec_vals."(".$this->spec_vals_args.")";
+		return $this->spec_vals ? "$".$this->spec_vals."(".$this->spec_vals_args.")" : '""';
+	}
+
+	public function getLangKeyAttribute(){
+		return strtoupper($this->component()->first()->lang_key.'_PARAM_'.$this->code);
 	}
 
 	public function component(){

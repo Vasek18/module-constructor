@@ -222,18 +222,19 @@ class BitrixComponent extends Model{
 		$groupsLangText = ''; // todo
 
 		$paramsText = '';
-		$paramsLangText = '';
+		$langFilePath = $this->getFolder().'\lang\ru\.parameters.php';
+
 		foreach ($params as $param){
 			//dd($param);
 			if ($param->group_id){
 				$parentCode = BitrixComponentsParamsGroups::find($param->group_id)->code;
 			}
-			$langKeyAttr = $this->getLangKeyAttribute()."_PARAMS_".strtoupper($param->code);
 
 			$paramText = '"'.strtoupper($param->code).'"  =>  Array(
 			"PARENT" => "'.$parentCode.'",
-			"NAME" => GetMessage("'.$langKeyAttr.'"),
+			"NAME" => GetMessage("'.$param->lang_key.'_NAME"),
 			"TYPE" => "'.$param->type.'",'.PHP_EOL;
+			$module->changeVarInLangFile($param->lang_key.'_NAME', $param->name, $langFilePath);
 			if ($param->refresh){
 				$paramText .= "\t\t\t".'"REFRESH" => "Y",'.PHP_EOL;
 			}
@@ -255,13 +256,16 @@ class BitrixComponent extends Model{
 
 			if ($param->type == 'LIST'){
 				if ($param->spec_vals == 'array'){
-					$paramText .= "\t\t\t".'"VALUES" => Array('.PHP_EOL;
+					$paramText .= "\t\t\t".'"VALUES" => Array(';
 					if (count($param->vals)){
+						$paramText .= PHP_EOL;
 						foreach ($param->vals as $val){
-							$paramText .= "\t\t\t\t".'"'.$val->key.'" => "'.$val->value.'",'.PHP_EOL;
+							$paramText .= "\t\t\t\t".'"'.$val->key.'" => GetMessage("'.$val->lang_key.'_VALUE"),'.PHP_EOL;
+							$module->changeVarInLangFile($val->lang_key.'_VALUE', $val->value, $langFilePath);
 						}
+						$paramText .= "\t\t\t";
 					}
-					$paramText .= "\t\t\t".'),'.PHP_EOL;
+					$paramText .= '),'.PHP_EOL;
 				}else{
 					$paramText .= "\t\t\t".'"VALUES" => '.$param->spec_vals_function_call.''.PHP_EOL;
 				}
@@ -270,18 +274,12 @@ class BitrixComponent extends Model{
 			$paramText .= "\t\t".'),'.PHP_EOL."\t\t";
 
 			$paramsText .= $paramText;
-
-			$paramsLangText .= '$MESS["'.$langKeyAttr.'"] = "'.$param->name.'";'.PHP_EOL;
 		}
 
 		$search = Array('{GROUPS}', '{PARAMS}');
 		$replace = Array($groupsText, $paramsText);
 
-		$searchLang = Array('{GROUPS_LANG}', '{PARAMS_LANG}');
-		$replaceLang = Array($groupsLangText, $paramsLangText);
-
 		Bitrix::changeVarsInModuleFileAndSave('bitrix\install\components\component_name\.parameters.php', $module->id, $search, $replace, $this->getFolder().'\.parameters.php');
-		Bitrix::changeVarsInModuleFileAndSave('bitrix\install\components\component_name\lang\ru\.parameters.php', $module->id, $searchLang, $replaceLang, $this->getFolder().'\lang\ru\.parameters.php');
 
 		return true;
 

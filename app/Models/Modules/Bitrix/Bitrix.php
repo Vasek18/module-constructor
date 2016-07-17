@@ -305,11 +305,13 @@ class Bitrix extends Model{
 
 	// мб в vArrParse перенести
 	// todo перенести работу с лангами всех сущностей Битрикса сюда
-	public function changeVarInLangFile($key, $var, $pathToLangFile){
-		if (substr($pathToLangFile, 0, 1) != '/'){
-			$pathToLangFile = '/'.$pathToLangFile;
+	public function changeVarInLangFile($key, $var, $path){
+		if (substr($path, 0, 1) != '/'){
+			$path = '/'.$path;
 		}
-		$path = $this->module_folder.$pathToLangFile;
+		if (strpos($path, '/'.$this->module_folder) !== 0){
+			$path = $this->module_folder.$path;
+		}
 
 		if ($this->disk()->exists($path)){
 			$langFile = $this->disk()->get($path);
@@ -378,6 +380,7 @@ class Bitrix extends Model{
 	public function getModuleFullIdAttribute(){
 		return $this->PARTNER_CODE.".".$this->code;
 	}
+
 	public function getFullIdAttribute(){
 		return $this->PARTNER_CODE.".".$this->code;
 	}

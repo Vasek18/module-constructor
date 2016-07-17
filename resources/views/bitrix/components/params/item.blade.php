@@ -1,4 +1,4 @@
-<div class="row option {{$param ? 'draggable' : ''}}">
+<div class="row option {{$param ? 'draggable' : ''}} deletion_wrapper">
     <input type="hidden"
            name="param_sort[]"
            class="sort-val"
@@ -31,9 +31,9 @@
                 name="param_type[]"
                 id="param_{{$i}}_type">
             @foreach($params_types as $type)
-                <option @if ($param && $param->type == $type->form_type) selected @endif
-                @if ((!$param || !$param->type) && $type->form_type == 'STRING') selected @endif
-                value="{{$type->form_type}}">{{ trans('bitrix_components.params_type_'.$type->form_type) }}</option>
+                <option @if ($param && $param->type == $type->form_type) selected
+                        @endif@if ((!$param || !$param->type) && $type->form_type == 'STRING') selected
+                        @endifvalue="{{$type->form_type}}">{{ trans('bitrix_components.params_type_'.$type->form_type) }}</option>
             @endforeach
         </select>
     </div>
@@ -61,7 +61,8 @@
     <div class="col-md-1">
         @if ($param)
             <a href="{{ action('Modules\Bitrix\BitrixComponentsParamsController@destroy', [$module->id, $component->id, $param->id]) }}"
-               class="btn btn-danger">
+               class="btn btn-danger human_ajax_deletion"
+               id="delete_param_{{$component->id}}">
                 <span class="glyphicon glyphicon-trash"
                       aria-hidden="true"></span>
             </a>

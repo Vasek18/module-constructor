@@ -64,15 +64,27 @@ class BitrixComponentsFilesTest extends TestCase{
 		if (isset($params['type'])){
 			$inputs['param_type['.$rowNumber.']'] = $params['type'];
 		}
-		if (isset($params['width'])){
-			$inputs['param_width['.$rowNumber.']'] = $params['width'];
+		if (isset($params['refresh'])){
+			$inputs['param_refresh['.$rowNumber.']'] = $params['refresh'];
 		}
-		if (isset($params['height'])){
-			$inputs['option_height['.$rowNumber.']'] = $params['height'];
+		if (isset($params['multiple'])){
+			$inputs['param_multiple['.$rowNumber.']'] = $params['multiple'];
+		}
+		if (isset($params['cols'])){
+			$inputs['param_cols['.$rowNumber.']'] = $params['cols'];
+		}
+		if (isset($params['size'])){
+			$inputs['param_size['.$rowNumber.']'] = $params['size'];
+		}
+		if (isset($params['default'])){
+			$inputs['param_default['.$rowNumber.']'] = $params['default'];
+		}
+		if (isset($params['additional_values'])){
+			$inputs['param_additional_values['.$rowNumber.']'] = $params['additional_values'];
 		}
 		if (isset($params['vals_key0'])){
-			$inputs['option_'.($rowNumber).'_vals_type'] = 'array';
-			$inputs['option_'.($rowNumber).'_vals_key[0]'] = $params['vals_key0'];
+			$inputs['param_'.($rowNumber).'_vals_type'] = 'array';
+			$inputs['param_'.($rowNumber).'_vals_key[0]'] = $params['vals_key0'];
 		}
 		if (isset($params['vals_value0'])){
 			$inputs['param_'.($rowNumber).'_vals_type'] = 'array';
@@ -83,11 +95,11 @@ class BitrixComponentsFilesTest extends TestCase{
 			$inputs['param_'.($rowNumber).'_vals_key[1]'] = $params['vals_key1'];
 		}
 		if (isset($params['vals_value1'])){
-			$inputs['option_'.($rowNumber).'_vals_type'] = 'array';
-			$inputs['option_'.($rowNumber).'_vals_value[1]'] = $params['vals_value1'];
+			$inputs['param_'.($rowNumber).'_vals_type'] = 'array';
+			$inputs['param_'.($rowNumber).'_vals_value[1]'] = $params['vals_value1'];
 		}
 		if (isset($params['vals_type'])){
-			$inputs['option_'.($rowNumber).'_vals_type'] = $params['vals_type'];
+			$inputs['param_'.($rowNumber).'_vals_type'] = $params['vals_type'];
 		}
 		if (isset($params['iblock'])){
 			$inputs['param_'.($rowNumber).'_spec_args[0]'] = $params['iblock'];
@@ -298,12 +310,133 @@ class BitrixComponentsFilesTest extends TestCase{
 
 		$paramArrExpected = [
 			"PARENT" => "BASE",
-			"NAME"   => 'GetMessage("'.$component->lang_key.'_PARAMS_TROLOLO")',
+			"NAME"   => 'GetMessage("'.$component->lang_key.'_PARAM_TROLOLO_NAME")',
 			"TYPE"   => "STRING",
 		];
 		$this->assertEquals($paramArrExpected, $params_arr["PARAMETERS"]["TROLOLO"]);
 
-		$this->assertEquals('Ololo', $params_lang_arr[$component->lang_key.'_PARAMS_TROLOLO']);
+		$this->assertEquals('Ololo', $params_lang_arr[$component->lang_key.'_PARAM_TROLOLO_NAME']);
+	}
+
+	/** @test */
+	function it_can_store_string_param_with_dop_params(){
+		$component = $this->createOnForm($this->module);
+
+		$this->createComponentParamOnForm($component, 0, [
+			'name'     => 'Ololo',
+			'code'     => 'trololo',
+			'type'     => 'STRING',
+			'multiple' => '1',
+			'cols'     => '20',
+			'default'  => 'vregions',
+		]);
+
+		$params_arr = vArrParse::parseFromText($this->disk()->get($component->getFolder().'/.parameters.php'), '$arComponentParameters');
+		$params_lang_arr = vArrParse::parseFromText($this->disk()->get($component->getFolder().'/lang/ru/.parameters.php'), 'MESS');
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$paramArrExpected = [
+			"PARENT"   => "BASE",
+			"NAME"     => 'GetMessage("'.$component->lang_key.'_PARAM_TROLOLO_NAME")',
+			"TYPE"     => "STRING",
+			'MULTIPLE' => 'Y',
+			'COLS'     => '20',
+			'DEFAULT'  => 'vregions',
+		];
+		$this->assertEquals($paramArrExpected, $params_arr["PARAMETERS"]["TROLOLO"]);
+
+		$this->assertEquals('Ololo', $params_lang_arr[$component->lang_key.'_PARAM_TROLOLO_NAME']);
+	}
+
+	/** @test */
+	function it_can_store_select_param_without_dop_params(){
+		$component = $this->createOnForm($this->module);
+
+		$this->createComponentParamOnForm($component, 0, [
+			'name' => 'Ololo',
+			'code' => 'trololo',
+			'type' => 'LIST',
+		]);
+
+		$params_arr = vArrParse::parseFromText($this->disk()->get($component->getFolder().'/.parameters.php'), '$arComponentParameters');
+		$params_lang_arr = vArrParse::parseFromText($this->disk()->get($component->getFolder().'/lang/ru/.parameters.php'), 'MESS');
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$paramArrExpected = [
+			"PARENT" => "BASE",
+			"NAME"   => 'GetMessage("'.$component->lang_key.'_PARAM_TROLOLO_NAME")',
+			"TYPE"   => "LIST",
+			"VALUES" => "",
+		];
+		$this->assertEquals($paramArrExpected, $params_arr["PARAMETERS"]["TROLOLO"]);
+
+		$this->assertEquals('Ololo', $params_lang_arr[$component->lang_key.'_PARAM_TROLOLO_NAME']);
+	}
+
+	/** @test */
+	function it_can_store_select_param_with_array_vals_type_but_without_options(){
+		$component = $this->createOnForm($this->module);
+
+		$this->createComponentParamOnForm($component, 0, [
+			'name'      => 'Ololo',
+			'code'      => 'trololo',
+			'type'      => 'LIST',
+			'vals_type' => 'array',
+		]);
+
+		$params_arr = vArrParse::parseFromText($this->disk()->get($component->getFolder().'/.parameters.php'), '$arComponentParameters');
+		$params_lang_arr = vArrParse::parseFromText($this->disk()->get($component->getFolder().'/lang/ru/.parameters.php'), 'MESS');
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$paramArrExpected = [
+			"PARENT" => "BASE",
+			"NAME"   => 'GetMessage("'.$component->lang_key.'_PARAM_TROLOLO_NAME")',
+			"TYPE"   => "LIST",
+			"VALUES" => "",
+			"VALUES" => Array(),
+		];
+		$this->assertEquals($paramArrExpected, $params_arr["PARAMETERS"]["TROLOLO"]);
+
+		$this->assertEquals('Ololo', $params_lang_arr[$component->lang_key.'_PARAM_TROLOLO_NAME']);
+	}
+
+	/** @test */
+	function it_can_store_select_param_with_options(){
+		$component = $this->createOnForm($this->module);
+
+		$this->createComponentParamOnForm($component, 0, [
+			'name'        => 'Ololo',
+			'code'        => 'trololo',
+			'type'        => 'LIST',
+			'vals_type'   => 'array',
+			'vals_key0'   => 'a',
+			'vals_value0' => 'b',
+			'vals_key1'   => 'c',
+			'vals_value1' => 'd',
+		]);
+
+		$params_arr = vArrParse::parseFromText($this->disk()->get($component->getFolder().'/.parameters.php'), '$arComponentParameters');
+		$params_lang_arr = vArrParse::parseFromText($this->disk()->get($component->getFolder().'/lang/ru/.parameters.php'), 'MESS');
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$paramArrExpected = [
+			"PARENT" => "BASE",
+			"NAME"   => 'GetMessage("'.$component->lang_key.'_PARAM_TROLOLO_NAME")',
+			"TYPE"   => "LIST",
+			"VALUES" => Array(
+				'a' => 'GetMessage("'.$component->lang_key.'_PARAM_TROLOLO_A_VALUE")',
+				'c' => 'GetMessage("'.$component->lang_key.'_PARAM_TROLOLO_C_VALUE")'
+			),
+		];
+		$this->assertEquals($paramArrExpected, $params_arr["PARAMETERS"]["TROLOLO"]);
+
+		$this->assertEquals('Ololo', $params_lang_arr[$component->lang_key.'_PARAM_TROLOLO_NAME']);
+		$this->assertEquals('b', $params_lang_arr[$component->lang_key.'_PARAM_TROLOLO_A_VALUE']);
+		$this->assertEquals('d', $params_lang_arr[$component->lang_key.'_PARAM_TROLOLO_C_VALUE']);
 	}
 }
 
