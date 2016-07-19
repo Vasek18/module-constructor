@@ -5,38 +5,47 @@
 @if ( !$bitrix_modules->isEmpty())
     @foreach($bitrix_modules as $module)
         <div class="panel panel-default">
-            <div class="panel-heading">Модуль "{{$module->name}}" ({{$module->PARTNER_CODE}}
-                .{{$module->code}}) | Версия {{$module->version}}
+            <div class="panel-heading">{{ trans('app.bitrix_module') }} "{{$module->name}}" ({{$module->PARTNER_CODE}}
+                .{{$module->code}}) | {{ trans('bitrix.field_version') }} {{$module->version}}
             </div>
             <div class="panel-body">
                 <div class="row">
                     <div class="sections-links col-md-10">
                         <dl>
-                            <dt>Описание</dt>
+                            <dt>{{ trans('bitrix.field_description') }}</dt>
                             @if($module->description)
                                 <dd>{{$module->description}}</dd>
                             @else
-                                <dd><span class="not-exist">Отсутствует</span></dd>
+                                <dd>
+                                    <span class="not-exist">{{ trans('app.not-exist') }}</span>
+                                </dd>
                             @endif
                         </dl>
                     </div>
                     <div class="actions col-md-2">
                         @if ($user->haveEnoughMoneyForDownload())
-                            <a data-toggle="modal" data-target="#modal_download_{{$module->id}}" href="#"
+                            <a data-toggle="modal"
+                               data-target="#modal_download_{{$module->id}}"
+                               href="#"
                                class="btn btn-sm btn-block btn-success">
-                                <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
-                                Скачать
+                                <span class="glyphicon glyphicon-download"
+                                      aria-hidden="true"></span>
+                                {{ trans('app.download') }}
                             </a>
                         @endif
                         <a href="{{ action('Modules\Bitrix\BitrixController@show', $module->id) }}"
                            class="btn btn-sm btn-block btn-primary">
-                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                            Редактировать
+                            <span class="glyphicon glyphicon-pencil"
+                                  aria-hidden="true"></span>
+                            {{ trans('app.edit') }}
                         </a>
-                        <a class="btn btn-sm btn-danger btn-block" data-toggle="modal"
-                           data-target="#modal_delete_{{$module->id}}" href="#">
-                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                            Удалить
+                        <a class="btn btn-sm btn-danger btn-block"
+                           data-toggle="modal"
+                           data-target="#modal_delete_{{$module->id}}"
+                           href="#">
+                            <span class="glyphicon glyphicon-trash"
+                                  aria-hidden="true"></span>
+                            {{ trans('app.delete') }}
                         </a>
                         @include('bitrix.download_modal', [ 'module' => $module])
                         @include('bitrix.delete_modal', [ 'module' => $module])
@@ -44,16 +53,20 @@
                 </div>
                 <hr>
                 <p>
-                    <a class="btn btn-info" role="button" data-toggle="collapse"
+                    <a class="btn btn-info"
+                       role="button"
+                       data-toggle="collapse"
                        href="#module_dop_indo_{{$module->id}}"
-                       aria-expanded="false" aria-controls="module_dop_indo_{{$module->id}}">
-                        Дополнительная информация
+                       aria-expanded="false"
+                       aria-controls="module_dop_indo_{{$module->id}}">
+                        {{ trans('bitrix.dop_info_title') }}
                     </a>
                 </p>
-                <div class="collapse" id="module_dop_indo_{{$module->id}}">
+                <div class="collapse"
+                     id="module_dop_indo_{{$module->id}}">
                     <div class="row">
                         <div class="sections-links col-md-10">
-                            <h3>Компоненты</h3>
+                            <h3>{{ trans('bitrix.components_list_title_in_bitrix_block') }}</h3>
                             @if (count($module->components))
                                 <ul>
                                     @foreach($module->components as $component)
@@ -63,16 +76,15 @@
                                     @endforeach
                                 </ul>
                             @else
-                                <p>Нет собственных компонент</p>
+                                <p>{{ trans('bitrix.no_components_in_bitrix_block') }}</p>
                             @endif
                             <p>
                                 <a class="btn btn-primary"
-                                   href="{{ route('bitrix_module_components', $module->id) }}">Перейти в раздел
-                                    "Компоненты"
+                                   href="{{ route('bitrix_module_components', $module->id) }}">{{ trans('bitrix.go_to_components_in_bitrix_block') }}
                                 </a>
                             </p>
                             <hr>
-                            <h3>Обработчики событий</h3>
+                            <h3>{{ trans('bitrix.events_handlers_list_title_in_bitrix_block') }}</h3>
                             @if (count($module->handlers))
                                 <ul>
                                     @foreach($module->handlers as $handlers)
@@ -82,25 +94,23 @@
                                     @endforeach
                                 </ul>
                             @else
-                                <p>Ни одного</p>
+                                <p>{{ trans('bitrix.no_events_handlers_in_bitrix_block') }}</p>
                             @endif
                             <p>
                                 <a class="btn btn-primary"
-                                   href="{{ route('bitrix_module_events_handlers', $module->id) }}">Перейти
-                                    в раздел "Обработчики событий"
+                                   href="{{ route('bitrix_module_events_handlers', $module->id) }}">{{ trans('bitrix.go_to_events_handlers_in_bitrix_block') }}
                                 </a>
                             </p>
                             <hr>
-                            <h3>Настройки модуля</h3>
-                            <p>{{count($module->options)}} настроек</p>
+                            <h3>{{ trans('bitrix.admin_options_list_title_in_bitrix_block') }}</h3>
+                            <p>{{count($module->options)}} {{ trans('bitrix.settings_in_bitrix_block') }}</p>
                             <p>
                                 <a class="btn btn-primary"
-                                   href="{{ route('bitrix_module_admin_options', $module->id) }}">Перейти
-                                    в раздел "Страница настроек"
+                                   href="{{ route('bitrix_module_admin_options', $module->id) }}">{{ trans('bitrix.go_to_admin_options_in_bitrix_block') }}
                                 </a>
                             </p>
                             <hr>
-                            <h3>Инфоблоки</h3>
+                            <h3>{{ trans('bitrix.infoblocks_list_title_in_bitrix_block') }}</h3>
                             @if (count($module->infoblocks))
                                 <ul>
                                     @foreach($module->infoblocks as $infoblock)
@@ -110,17 +120,16 @@
                                     @endforeach
                                 </ul>
                             @else
-                                <p>Никакие данные не хранятся</p>
+                                <p>{{ trans('bitrix.no_infoblocks_in_bitrix_block') }}</p>
                             @endif
                             <p>
                                 <a class=" btn btn-primary
                                             "
-                                   href="{{ route('bitrix_module_data_storage', $module->id) }}">Перейти
-                                    в раздел "Хранение данных"
+                                   href="{{ route('bitrix_module_data_storage', $module->id) }}">{{ trans('bitrix.go_to_infoblocks_in_bitrix_block') }}
                                 </a>
                             </p>
                             <hr>
-                            <h3>Почтовые события</h3>
+                            <h3>{{ trans('bitrix.mail_events_list_title_in_bitrix_block') }}</h3>
                             @if (count($module->mailEvents))
                                 <ul>
                                     @foreach($module->mailEvents as $mail_event)
@@ -130,16 +139,15 @@
                                     @endforeach
                                 </ul>
                             @else
-                                <p>Не работает с почтой</p>
+                                <p>{{ trans('bitrix.no_mail_events_in_bitrix_block') }}</p>
                             @endif
                             <p>
                                 <a class="btn btn-primary"
-                                   href="{{ route('bitrix_module_mail_events', $module->id) }}">Перейти
-                                    в раздел "Почтовые события"
+                                   href="{{ route('bitrix_module_mail_events', $module->id) }}">{{ trans('bitrix.go_to_mail_events_in_bitrix_block') }}
                                 </a>
                             </p>
                             <hr>
-                            <h3>Произвольные файлы</h3>
+                            <h3>{{ trans('bitrix.arbitrary_files_list_title_in_bitrix_block') }}</h3>
                             @if (count($module->arbitraryFiles))
                                 <ul>
                                     @foreach($module->arbitraryFiles as $af)
@@ -149,19 +157,36 @@
                                     @endforeach
                                 </ul>
                             @else
-                                <p>Только самые необходимые файлы присутствуют</p>
+                                <p>{{ trans('bitrix.no_arbitrary_files_in_bitrix_block') }}</p>
                             @endif
                             <p>
                                 <a class="btn btn-primary"
-                                   href="{{ route('bitrix_module_arbitrary_files', $module->id) }}">Перейти
-                                    в раздел "Почтовые события"
+                                   href="{{ route('bitrix_module_arbitrary_files', $module->id) }}">{{ trans('bitrix.go_to_arbitrary_files_in_bitrix_block') }}
+                                </a>
+                            </p>
+                            <hr>
+                            <h3>{{ trans('bitrix.admin_menu_pages_list_title_in_bitrix_block') }}</h3>
+                            @if (count($module->adminMenuPages))
+                                <ul>
+                                    @foreach($module->adminMenuPages as $amp)
+                                        <li>
+                                            <a href="{{ action('Modules\Bitrix\BitrixAdminMenuController@show', [$module->id, $amp->id]) }}">{{$amp->name}}</a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @else
+                                <p>{{ trans('bitrix.no_admin_menu_pages_in_bitrix_block') }}</p>
+                            @endif
+                            <p>
+                                <a class="btn btn-primary"
+                                   href="{{ route('bitrix_module_admin_menu', $module->id) }}">{{ trans('bitrix.go_to_admin_menu_pages_in_bitrix_block') }}
                                 </a>
                             </p>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="panel-footer">Изменён: {{$module->updated_at}}</div>
+            <div class="panel-footer">{{ trans('bitrix.updated_at') }}: {{$module->updated_at}}</div>
         </div>
     @endforeach
 
