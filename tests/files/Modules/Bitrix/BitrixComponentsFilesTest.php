@@ -4,6 +4,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Models\Modules\Bitrix\BitrixComponent;
 use App\Helpers\vArrParse;
 use App\Models\Modules\Bitrix\BitrixComponentsParams;
+use App\Models\Modules\Bitrix\BitrixComponentsTemplates;
 
 class BitrixComponentsFilesTest extends TestCase{
 
@@ -109,6 +110,18 @@ class BitrixComponentsFilesTest extends TestCase{
 
 		if (isset($params['code'])){
 			return BitrixComponentsParams::where('component_id', $component->id)->where('code', $params['code'])->first();
+		}
+
+		return true;
+	}
+
+	function createTemplateOnForm($module, $component, $inputs = []){
+		$this->visit('/my-bitrix/'.$module->id.'/components/'.$component->id.'/templates/create');
+
+		$this->submitForm('save', $inputs);
+
+		if (isset($inputs['code'])){
+			return BitrixComponentsTemplates::where('code', $inputs['code'])->where('component_id', $component->id)->first();
 		}
 
 		return true;
@@ -437,6 +450,71 @@ class BitrixComponentsFilesTest extends TestCase{
 		$this->assertEquals('Ololo', $params_lang_arr[$component->lang_key.'_PARAM_TROLOLO_NAME']);
 		$this->assertEquals('b', $params_lang_arr[$component->lang_key.'_PARAM_TROLOLO_A_VALUE']);
 		$this->assertEquals('d', $params_lang_arr[$component->lang_key.'_PARAM_TROLOLO_C_VALUE']);
+	}
+
+	/** @test */
+	function it_can_store_template(){
+		$component = $this->createOnForm($this->module);
+		$template = $this->createTemplateOnForm($this->module, $component, [
+			'name'                 => 'Test',
+			'code'                 => 'ololo',
+			'template_php'         => '<? echo "HW"; ?>',
+			'style_css'            => '123',
+			'script_js'            => '234',
+			'result_modifier_php'  => '345',
+			'component_epilog_php' => '<? ?>',
+		]);
+
+		$template_php = $this->disk()->get($template->getFolder().'/template.php');
+		$style_css = $this->disk()->get($template->getFolder().'/style.css');
+		$script_js = $this->disk()->get($template->getFolder().'/script.js');
+		$result_modifier_php = $this->disk()->get($template->getFolder().'/result_modifier.php');
+		$component_epilog_php = $this->disk()->get($template->getFolder().'/component_epilog.php');
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$this->assertEquals('<? echo "HW"; ?>', $template_php);
+		$this->assertEquals('123', $style_css);
+		$this->assertEquals('234', $script_js);
+		$this->assertEquals('345', $result_modifier_php);
+		$this->assertEquals('<? ?>', $component_epilog_php);
+	}
+
+	/** @test */
+	function it_can_update_template(){
+		$component = $this->createOnForm($this->module);
+		$template = $this->createTemplateOnForm($this->module, $component, [
+			'name'                 => 'Test2',
+			'code'                 => 'ololo',
+			'template_php'         => '<? echo "ololo"; ?>',
+			'style_css'            => '.ololo{color: #fff;}',
+			'script_js'            => 'console.log("ololo")',
+			'result_modifier_php'  => '',
+			'component_epilog_php' => '',
+		]);
+
+		$this->submitForm('save', [
+			'name'                 => 'Test',
+			'template_php'         => '<? echo "HW"; ?>',
+			'style_css'            => '123',
+			'script_js'            => '234',
+			'result_modifier_php'  => '345',
+			'component_epilog_php' => '<? ?>',
+		]);
+
+		$template_php = $this->disk()->get($template->getFolder().'/template.php');
+		$style_css = $this->disk()->get($template->getFolder().'/style.css');
+		$script_js = $this->disk()->get($template->getFolder().'/script.js');
+		$result_modifier_php = $this->disk()->get($template->getFolder().'/result_modifier.php');
+		$component_epilog_php = $this->disk()->get($template->getFolder().'/component_epilog.php');
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$this->assertEquals('<? echo "HW"; ?>', $template_php);
+		$this->assertEquals('123', $style_css);
+		$this->assertEquals('234', $script_js);
+		$this->assertEquals('345', $result_modifier_php);
+		$this->assertEquals('<? ?>', $component_epilog_php);
 	}
 }
 

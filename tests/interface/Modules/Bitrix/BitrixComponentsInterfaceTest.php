@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Models\Modules\Bitrix\BitrixComponent;
 use App\Models\Modules\Bitrix\BitrixComponentsParams;
+use App\Models\Modules\Bitrix\BitrixComponentsTemplates;
 
 class BitrixComponentsInterfaceTest extends TestCase{
 
@@ -108,6 +109,18 @@ class BitrixComponentsInterfaceTest extends TestCase{
 
 		if (isset($params['code'])){
 			return BitrixComponentsParams::where('component_id', $component->id)->where('code', $params['code'])->first();
+		}
+
+		return true;
+	}
+
+	function createTemplateOnForm($module, $component, $inputs = []){
+		$this->visit('/my-bitrix/'.$module->id.'/components/'.$component->id.'/templates/create');
+
+		$this->submitForm('save', $inputs);
+
+		if (isset($inputs['code'])){
+			return BitrixComponentsTemplates::where('code', $inputs['code'])->where('component_id', $component->id)->first();
 		}
 
 		return true;
@@ -267,9 +280,10 @@ class BitrixComponentsInterfaceTest extends TestCase{
 			'component_php' => '<? echo "Hi"; ?>',
 		]);
 
+		$this->deleteFolder($this->standartModuleCode);
+
 		$this->seeInField('component_php', '<? echo "Hi"; ?>');
 
-		$this->deleteFolder($this->standartModuleCode);
 	}
 
 	/** @test */
@@ -280,6 +294,8 @@ class BitrixComponentsInterfaceTest extends TestCase{
 
 		$file = public_path().'/ololo.php';
 		file_put_contents($file, '<? echo "Hi"; ?>');
+
+		$this->deleteFolder($this->standartModuleCode);
 
 		$this->type('/ololo/', 'path');
 		$this->attach($file, 'file');
@@ -298,7 +314,66 @@ class BitrixComponentsInterfaceTest extends TestCase{
 			'type' => 'STRING',
 		]);
 
+		$this->deleteFolder($this->standartModuleCode);
+
 		$this->see('Время кеширования (сек.)');
+	}
+
+	/** @test */
+	function it_can_store_template(){
+		$component = $this->createOnForm($this->module);
+		$template = $this->createTemplateOnForm($this->module, $component, [
+			'name'                 => 'Test',
+			'code'                 => 'ololo',
+			'template_php'         => '<? echo "HW"; ?>',
+			'style_css'            => '123',
+			'script_js'            => '234',
+			'result_modifier_php'  => '345',
+			'component_epilog_php' => '<? ?>',
+		]);
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$this->seePageIs('/my-bitrix/'.$this->module->id.'/components/'.$component->id.'/templates/'.$template->id);
+		$this->seeInField('name', 'Test');
+		$this->seeInField('template_php', '<? echo "HW"; ?>');
+		$this->seeInField('style_css', '123');
+		$this->seeInField('script_js', '234');
+		$this->seeInField('result_modifier_php', '345');
+		$this->seeInField('component_epilog_php', '<? ?>');
+	}
+
+	/** @test */
+	function it_can_update_template(){
+		$component = $this->createOnForm($this->module);
+		$template = $this->createTemplateOnForm($this->module, $component, [
+			'name'                 => 'Test2',
+			'code'                 => 'ololo',
+			'template_php'         => '<? echo "ololo"; ?>',
+			'style_css'            => '.ololo{color: #fff;}',
+			'script_js'            => 'console.log("ololo")',
+			'result_modifier_php'  => '',
+			'component_epilog_php' => '',
+		]);
+
+		$this->submitForm('save', [
+			'name'                 => 'Test',
+			'template_php'         => '<? echo "HW"; ?>',
+			'style_css'            => '123',
+			'script_js'            => '234',
+			'result_modifier_php'  => '345',
+			'component_epilog_php' => '<? ?>',
+		]);
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$this->seePageIs('/my-bitrix/'.$this->module->id.'/components/'.$component->id.'/templates/'.$template->id);
+		$this->seeInField('name', 'Test');
+		$this->seeInField('template_php', '<? echo "HW"; ?>');
+		$this->seeInField('style_css', '123');
+		$this->seeInField('script_js', '234');
+		$this->seeInField('result_modifier_php', '345');
+		$this->seeInField('component_epilog_php', '<? ?>');
 	}
 }
 

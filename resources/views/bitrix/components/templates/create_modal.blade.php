@@ -1,6 +1,6 @@
 <button class="btn btn-primary"
         data-toggle="modal"
-        data-target="#create-template-modal">{{ trans('bitrix_components.templates_button_create') }}
+        data-target="#create-template-modal">{{ trans('bitrix_components.templates_button_upload') }}
 </button>
 <div class="modal fade"
      id="create-template-modal"
@@ -8,7 +8,7 @@
      role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form action="{{action('Modules\Bitrix\BitrixComponentsTemplatesController@store', [$module->id, $component->id])}}"
+            <form action="{{action('Modules\Bitrix\BitrixComponentsTemplatesController@upload', [$module->id, $component->id])}}"
                   method="post"
                   enctype="multipart/form-data">
                 {{ csrf_field() }}
@@ -18,7 +18,7 @@
                             data-dismiss="modal"
                             aria-label="Close"><span aria-hidden="true">&times;</span>
                     </button>
-                    <h4 class="modal-title">{{ trans('bitrix_components.templates_create_title') }}</h4>
+                    <h4 class="modal-title">{{ trans('bitrix_components.templates_upload_title') }}</h4>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">

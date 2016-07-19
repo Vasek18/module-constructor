@@ -29,7 +29,51 @@ class BitrixComponentsTemplatesController extends Controller{
 		return view("bitrix.components.templates.index", $data);
 	}
 
+	public function create(Bitrix $module, BitrixComponent $component, Request $request){
+		$data = [
+			'module'    => $module,
+			'component' => $component,
+			'template'  => null,
+		];
+
+		return view("bitrix.components.templates.detail", $data);
+	}
+
 	public function store(Bitrix $module, BitrixComponent $component, Request $request){
+		$templateCode = strtolower($request->code);
+		$template = BitrixComponentsTemplates::updateOrCreate(
+			[
+				'component_id' => $component->id,
+				'code'         => $templateCode,
+			],
+			[
+				'component_id' => $component->id,
+				'code'         => $templateCode,
+				'name'         => $request->name
+			]
+		);
+		$disk = $module->disk();
+
+		if ($request->template_php){
+			$disk->put($template->getFolder().'\template.php', $request->template_php);
+		}
+		if ($request->style_css){
+			$disk->put($template->getFolder().'\style.css', $request->style_css);
+		}
+		if ($request->script_js){
+			$disk->put($template->getFolder().'\script.js', $request->script_js);
+		}
+		if ($request->result_modifier_php){
+			$disk->put($template->getFolder().'\result_modifier.php', $request->result_modifier_php);
+		}
+		if ($request->component_epilog_php){
+			$disk->put($template->getFolder().'\component_epilog.php', $request->component_epilog_php);
+		}
+
+		return redirect(action('Modules\Bitrix\BitrixComponentsTemplatesController@show', [$module->id, $component->id, $template->id]));
+	}
+
+	public function upload(Bitrix $module, BitrixComponent $component, Request $request){
 		$templateCode = strtolower($request->template_code);
 		$template = BitrixComponentsTemplates::updateOrCreate(
 			[
@@ -55,6 +99,45 @@ class BitrixComponentsTemplatesController extends Controller{
 		return back();
 	}
 
+	public function show(Bitrix $module, BitrixComponent $component, BitrixComponentsTemplates $template, Request $request){
+		$data = [
+			'module'    => $module,
+			'component' => $component,
+			'template'  => $template,
+		];
+
+		return view("bitrix.components.templates.detail", $data);
+	}
+
+	public function update(Bitrix $module, BitrixComponent $component, BitrixComponentsTemplates $template, Request $request){
+		$disk = $module->disk();
+
+		$template->update(
+			[
+				'component_id' => $component->id,
+				'name'         => $request->name
+			]
+		);
+
+		if ($request->template_php){
+			$disk->put($template->getFolder().'\template.php', $request->template_php);
+		}
+		if ($request->style_css){
+			$disk->put($template->getFolder().'\style.css', $request->style_css);
+		}
+		if ($request->script_js){
+			$disk->put($template->getFolder().'\script.js', $request->script_js);
+		}
+		if ($request->result_modifier_php){
+			$disk->put($template->getFolder().'\result_modifier.php', $request->result_modifier_php);
+		}
+		if ($request->component_epilog_php){
+			$disk->put($template->getFolder().'\component_epilog.php', $request->component_epilog_php);
+		}
+
+		return back();
+	}
+
 	public function destroy(Bitrix $module, BitrixComponent $component, BitrixComponentsTemplates $template, Request $request){
 		if ($template->code == '.default'){
 			return redirect(route('bitrix_component_templates', ['module' => $module->id, 'component' => $component->id])); // todo возвращать ошибку
@@ -65,15 +148,6 @@ class BitrixComponentsTemplatesController extends Controller{
 		// удаляем запись из БД
 		BitrixComponentsTemplates::destroy($template->id);
 
-		return back();
-	}
-	public function show(Bitrix $module, BitrixComponent $component, BitrixComponentsTemplates $template, Request $request){
-		$data = [
-			'module'     => $module,
-			'component'  => $component,
-			'template'  => $template,
-		];
-
-		return view("bitrix.components.templates.detail", $data);
+		return redirect(route('bitrix_component_templates', [$module->id, $component->id]));
 	}
 }

@@ -98,8 +98,11 @@ Route::group(['prefix' => 'my-bitrix', 'middleware' => 'bitrix.owner'], function
 		// шаблоны
 		Route::group(['prefix' => '{component}/templates'], function (){
 			Route::get('', ['as' => 'bitrix_component_templates', 'uses' => 'Modules\Bitrix\BitrixComponentsTemplatesController@index']);
+			Route::post('upload', 'Modules\Bitrix\BitrixComponentsTemplatesController@upload');
 			Route::post('store', 'Modules\Bitrix\BitrixComponentsTemplatesController@store');
+			Route::get('create', ['uses' => 'Modules\Bitrix\BitrixComponentsTemplatesController@create']);
 			Route::get('{template}', ['uses' => 'Modules\Bitrix\BitrixComponentsTemplatesController@show']);
+			Route::post('{template}/update', 'Modules\Bitrix\BitrixComponentsTemplatesController@update');
 			Route::get('{template}/delete', 'Modules\Bitrix\BitrixComponentsTemplatesController@destroy');
 		});
 	});
