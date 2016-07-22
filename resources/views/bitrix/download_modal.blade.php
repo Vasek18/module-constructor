@@ -28,6 +28,15 @@
                                required
                                value="{{upgradeVersionNumber($module->version)}}">
                     </div>
+                    <div class="form-group">
+                        <label for="version">{{ trans('app.files_encoding') }}</label>
+                        <select class="form-control"
+                                name="files_encoding"
+                                id="files_encoding">
+                            <option value="utf-8">UTF-8</option>
+                            <option value="windows-1251">windows-1251</option>
+                        </select>
+                    </div>
                     <button type="submit"
                             class="btn btn-primary"
                             name="module_download">{{ trans('app.download') }}

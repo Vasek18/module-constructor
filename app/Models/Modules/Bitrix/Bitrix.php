@@ -9,6 +9,8 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use App\Helpers\vArrParse;
+use Illuminate\Filesystem\Filesystem;
+use PhpParser\Node\Scalar\MagicConst\File;
 
 class Bitrix extends Model{
 	/**
@@ -181,25 +183,55 @@ class Bitrix extends Model{
 
 	// создаёт архив модуля для скачивания
 	// todo проверки на успех
-	public function generateZip(){
+	// todo если это первое скачивание, архив должен называться last_version
+	public function generateZip($encoding){
 		// чтобы работали файлы с точки, нужно в Illuminate\Filesystem\Filesystem заменить строчку в методе files c $glob = glob($directory.'/*'); на $glob = glob($directory. '/{,.}*', GLOB_BRACE);
 
-		$archiveName = $this->PARTNER_CODE."_".$this->code.".zip";
+		$path = $this->copyToPublicAndEncode($encoding);
 
+		$archiveName = $this->version.".zip";
 		$zipper = new \Chumper\Zipper\Zipper;
-		$zipper->make($archiveName)->folder($this->module_folder)->add($this->getFolder(true))->close();
+		$zipper->make($archiveName)->add($path)->close();
+
+		$Filesystem = new Filesystem;
+		$Filesystem->deleteDirectory($path);
 
 		return $archiveName;
 	}
 
+	public function copyToPublicAndEncode($encoding = 'UTF-8'){
+		$fromFolder = $this->getFolder(true);
+		$toFolder = time().rand(0, 100);
+
+		mkdir(public_path().'/'.$toFolder);
+
+		$dirIterator = new \RecursiveDirectoryIterator($fromFolder, \RecursiveDirectoryIterator::SKIP_DOTS);
+		$iterator = new \RecursiveIteratorIterator($dirIterator, \RecursiveIteratorIterator::SELF_FIRST);
+		foreach ($iterator as $object){
+			if (!$object->isDir()){
+				$absolutePath = $object->getPath();
+				$relativePath = str_replace($fromFolder, "", $absolutePath);
+				$fileName = $object->getFilename();
+				$content = mb_convert_encoding(file_get_contents($object->getRealPath()), $encoding, 'UTF-8');
+
+				file_put_contents(public_path().'/'.$toFolder.'/'.$relativePath.'/'.$fileName, $content);
+			}else{
+				$relativePath = str_replace($fromFolder, "", $object->getRealPath());
+				if ($relativePath){
+					mkdir(public_path().'/'.$toFolder.'/'.$relativePath);
+				}
+			}
+		}
+
+		return public_path().'/'.$toFolder;
+	}
+
 	// изменение номера версии у модуля
-	public static function upgradeVersion($id, $version){
-		$module = Bitrix::find($id);
+	public function upgradeVersion($version){
+		$this->VERSION = $version;
+		$this->save();
 
-		$module->VERSION = $version;
-		$module->save();
-
-		$module->changeVarsInModuleFileAndSave('bitrix/install/version.php', $module->id);
+		Bitrix::changeVarsInModuleFileAndSave('bitrix/install/version.php', $this->id);
 
 		return true;
 	}

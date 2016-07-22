@@ -88,15 +88,17 @@ class BitrixController extends Controller{
 	// кнопка скачивания зип архива
 	// todo нельзя указать версию ниже нынешней
 	// todo нельзя указать последнюю версию, если были произведены изменения
-	public function download_zip(Bitrix $module){
+	public function download_zip(Bitrix $module, Request $request){
 
 		$user = User::find(Auth::id());
 
+		// dd($request);
+
 		if ($user->haveEnoughMoneyForDownload()){
-			Bitrix::upgradeVersion($module->id, $this->request->version);
+			$module->upgradeVersion($this->request->version);
 			Bitrix::updateDownloadCount($module->id);
 
-			if ($pathToZip = $module->generateZip()){
+			if ($pathToZip = $module->generateZip($request->files_encoding)){
 				$response = Response::download($pathToZip)->deleteFileAfterSend(true);
 				ob_end_clean(); // без этого архив скачивается поверждённым
 

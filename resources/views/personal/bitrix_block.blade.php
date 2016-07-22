@@ -5,8 +5,7 @@
 @if ( !$bitrix_modules->isEmpty())
     @foreach($bitrix_modules as $module)
         <div class="panel panel-default">
-            <div class="panel-heading">{{ trans('app.bitrix_module') }} "{{$module->name}}" ({{$module->PARTNER_CODE}}
-                .{{$module->code}}) | {{ trans('bitrix.field_version') }} {{$module->version}}
+            <div class="panel-heading">{{ trans('app.bitrix_module') }} "{{$module->name}}" ({{$module->PARTNER_CODE.'.'.$module->code}}) | {{ trans('bitrix.field_version') }} {{$module->version}}
             </div>
             <div class="panel-body">
                 <div class="row">
