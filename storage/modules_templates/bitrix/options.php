@@ -69,7 +69,7 @@ $aTabs = array(
 );
 #Сохранение
 
-if ($request->isPost() && $request['Update'] && check_bitrix_sessid()){
+if ($request->isPost() && $request['Apply'] && check_bitrix_sessid()){
 
 	foreach ($aTabs as $aTab){
 		foreach ($aTab['OPTIONS'] as $arOption){

@@ -24,7 +24,7 @@
                            name="_token"
                            value="{{ csrf_token() }}">
                     {{ method_field('DELETE') }}
-                    <button class="btn btn-danger">{{ trans('app.delete') }}</button>
+                    <button class="btn btn-danger" name="delete">{{ trans('app.delete') }}</button>
                 </form>
             </div>
         </div>

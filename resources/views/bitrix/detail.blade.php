@@ -68,6 +68,7 @@
             <a class="btn btn-sm btn-danger btn-block"
                data-toggle="modal"
                data-target="#modal_delete_{{$module->id}}"
+               id="delete_{{$module->id}}"
                href="#">
                 <span class="glyphicon glyphicon-trash"
                       aria-hidden="true"></span>
