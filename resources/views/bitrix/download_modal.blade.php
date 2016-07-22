@@ -33,8 +33,8 @@
                         <select class="form-control"
                                 name="download_as"
                                 id="download_as">
-                            <option value="new">{{ trans('bitrix.download_as_new') }}</option>
                             <option value="update">{{ trans('bitrix.download_as_update') }}</option>
+                            <option value="new">{{ trans('bitrix.download_as_new') }}</option>
                         </select>
                     </div>
                     <div class="form-group">

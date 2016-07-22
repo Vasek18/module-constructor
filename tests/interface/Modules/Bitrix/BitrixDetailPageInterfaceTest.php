@@ -65,12 +65,12 @@ class BitrixDetailPageInterfaceTest extends TestCase{
 		$this->seePageIs('/personal');
 	}
 
-	/** @test */
-	function smn_can_download_zip(){
-		$this->visit('/my-bitrix/'.$this->module->id);
-		$this->submitForm('module_download');
-		$this->assertResponseOk();
-	}
+	// /** @test */ // поскольку в тестах у меня нет скачки, этот тест бессмысленный
+	// function smn_can_download_zip(){
+	// 	$this->visit('/my-bitrix/'.$this->module->id);
+	// 	$this->submitForm('module_download');
+	// 	$this->assertResponseOk();
+	// }
 }
 
 ?>

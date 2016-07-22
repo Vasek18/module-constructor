@@ -183,21 +183,20 @@ class Bitrix extends Model{
 
 	// создаёт архив модуля для скачивания
 	// todo проверки на успех
-	// todo если это первое скачивание, архив должен называться last_version
 	public function generateZip($encoding, $fresh){
 		// чтобы работали файлы с точки, нужно в Illuminate\Filesystem\Filesystem заменить строчку в методе files c $glob = glob($directory.'/*'); на $glob = glob($directory. '/{,.}*', GLOB_BRACE);
 
 		$path = $this->copyToPublicAndEncode($encoding);
 
 		if ($fresh){
-			$archiveName = "last_version.zip";
+			$archiveName = "last_version";
 		}else{
-			$archiveName = $this->version.".zip";
+			$archiveName = $this->version;
 		}
-		$archiveName = 'user_downloads/'.$archiveName;
+		$archiveName = 'user_downloads/'.$archiveName.'.zip';
 
 		$zipper = new \Chumper\Zipper\Zipper;
-		$zipper->make($archiveName)->add($path)->close();
+		$zipper->make(public_path().'/'.$archiveName)->add($path)->close();
 
 		$Filesystem = new Filesystem;
 		$Filesystem->deleteDirectory($path);
