@@ -92,13 +92,17 @@ class BitrixController extends Controller{
 
 		$user = User::find(Auth::id());
 
-		// dd($request);
+		$fresh = $request->download_as == 'new' ? true : false;
+		// dd($module->code);
 
 		if ($user->haveEnoughMoneyForDownload()){
-			$module->upgradeVersion($this->request->version);
+			if (!$fresh){
+				$module->upgradeVersion($this->request->version);
+			}
+			// dd($module->version);
 			Bitrix::updateDownloadCount($module->id);
 
-			if ($pathToZip = $module->generateZip($request->files_encoding)){
+			if ($pathToZip = $module->generateZip($request->files_encoding, $fresh)){
 				$response = Response::download($pathToZip)->deleteFileAfterSend(true);
 				ob_end_clean(); // без этого архив скачивается поверждённым
 

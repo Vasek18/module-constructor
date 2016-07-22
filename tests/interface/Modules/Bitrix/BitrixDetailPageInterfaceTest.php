@@ -64,6 +64,13 @@ class BitrixDetailPageInterfaceTest extends TestCase{
 		$this->submitForm('delete');
 		$this->seePageIs('/personal');
 	}
+
+	/** @test */
+	function smn_can_download_zip(){
+		$this->visit('/my-bitrix/'.$this->module->id);
+		$this->submitForm('module_download');
+		$this->assertResponseOk();
+	}
 }
 
 ?>

@@ -41,5 +41,8 @@ return [
 
 	'module_deletion' => 'Module deletion',
 
-	'module_download' => 'Module download',
+	'module_download'           => 'Module download',
+	'download_as_new_or_update' => 'Download as',
+	'download_as_new'           => 'fresh module',
+	'download_as_update'        => 'update',
 ];

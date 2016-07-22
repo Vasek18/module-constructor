@@ -29,7 +29,16 @@
                                value="{{upgradeVersionNumber($module->version)}}">
                     </div>
                     <div class="form-group">
-                        <label for="version">{{ trans('app.files_encoding') }}</label>
+                        <label for="download_as">{{ trans('bitrix.download_as_new_or_update') }}</label>
+                        <select class="form-control"
+                                name="download_as"
+                                id="download_as">
+                            <option value="new">{{ trans('bitrix.download_as_new') }}</option>
+                            <option value="update">{{ trans('bitrix.download_as_update') }}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="files_encoding">{{ trans('app.files_encoding') }}</label>
                         <select class="form-control"
                                 name="files_encoding"
                                 id="files_encoding">

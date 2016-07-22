@@ -38,8 +38,11 @@ return [
 	'admin_menu_pages_list_title_in_bitrix_block' => 'Страницы административного меню',
 	'no_admin_menu_pages_in_bitrix_block'         => 'Нет таких страниц',
 	'go_to_admin_menu_pages_in_bitrix_block'      => 'Перейти в раздел "Административное меню"',
-	
+
 	'module_deletion' => 'Удаление модуля',
 
-	'module_download' => 'Скачивание модуля',
+	'module_download'           => 'Скачивание модуля',
+	'download_as_new_or_update' => 'Скачать как',
+	'download_as_new'           => 'свежий модуль',
+	'download_as_update'        => 'обновление',
 ];
