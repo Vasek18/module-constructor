@@ -22,9 +22,6 @@ class BitrixComponentsController extends Controller{
 	}
 
 	public function index(Bitrix $module, Request $request){
-		if (!$this->userCreatedModule($module->id)){
-			return $this->unauthorized($request);
-		}
 		$components = $module->components()->get();
 		$data = [
 			'module'     => $module,
@@ -36,9 +33,6 @@ class BitrixComponentsController extends Controller{
 
 	// страница добавления компонента
 	public function create(Bitrix $module, Request $request){
-		if (!$this->userCreatedModule($module->id)){
-			return $this->unauthorized($request);
-		}
 		$data = [
 			'module' => $module,
 		];
@@ -48,10 +42,6 @@ class BitrixComponentsController extends Controller{
 
 	// добавление компонента
 	public function store(Bitrix $module, Request $request){
-		if (!$this->userCreatedModule($module->id)){
-			return $this->unauthorized($request);
-		}
-
 		$component = BitrixComponent::updateOrCreate(
 			[
 				'module_id' => $module->id,
@@ -78,6 +68,10 @@ class BitrixComponentsController extends Controller{
 	}
 
 	public function show(Bitrix $module, BitrixComponent $component, Request $request){
+		if (!$this->moduleOwnsComponent($module, $component)){
+			return $this->unauthorized($request);
+		}
+
 		$data = [
 			'module'     => $module,
 			'component'  => $component,
@@ -88,6 +82,9 @@ class BitrixComponentsController extends Controller{
 	}
 
 	public function update(Bitrix $module, BitrixComponent $component, Request $request){
+		if (!$this->moduleOwnsComponent($module, $component)){
+			return $this->unauthorized($request);
+		}
 
 		if ($request->name){
 			$component->name = $request->name;
@@ -118,6 +115,10 @@ class BitrixComponentsController extends Controller{
 	// todo проверка на возможность скачивания
 	// todo файлы и папки начинающиеся с .
 	public function download(Bitrix $module, BitrixComponent $component, Request $request){
+		if (!$this->moduleOwnsComponent($module, $component)){
+			return $this->unauthorized($request);
+		}
+
 		if ($pathToZip = $component->generateZip()){
 			$response = Response::download($pathToZip)->deleteFileAfterSend(true);
 			ob_end_clean(); // без этого архив скачивается поверждённым
@@ -129,6 +130,10 @@ class BitrixComponentsController extends Controller{
 	}
 
 	public function show_visual_path(Bitrix $module, BitrixComponent $component, Request $request){
+		if (!$this->moduleOwnsComponent($module, $component)){
+			return $this->unauthorized($request);
+		}
+
 		$data = [
 			'module'     => $module,
 			'component'  => $component,
@@ -139,6 +144,10 @@ class BitrixComponentsController extends Controller{
 	}
 
 	public function store_visual_path(Bitrix $module, BitrixComponent $component, Request $request){
+		if (!$this->moduleOwnsComponent($module, $component)){
+			return $this->unauthorized($request);
+		}
+
 		//dd($request);
 		if ($request->path_id_1 && $request->path_name_1){ // если нет первых - нет других (хотя можно же сдвигать?)
 			BitrixComponentsPathItem::updateOrCreate(
@@ -205,6 +214,10 @@ class BitrixComponentsController extends Controller{
 	}
 
 	public function show_component_php(Bitrix $module, BitrixComponent $component, Request $request){
+		if (!$this->moduleOwnsComponent($module, $component)){
+			return $this->unauthorized($request);
+		}
+
 		$data = [
 			'module'    => $module,
 			'component' => $component
@@ -214,6 +227,10 @@ class BitrixComponentsController extends Controller{
 	}
 
 	public function store_component_php(Bitrix $module, BitrixComponent $component, Request $request){
+		if (!$this->moduleOwnsComponent($module, $component)){
+			return $this->unauthorized($request);
+		}
+
 		$component_php = $request->component_php;
 
 		$module->disk()->put($component->getFolder().'\component.php', $component_php);
@@ -226,12 +243,6 @@ class BitrixComponentsController extends Controller{
 	// загрузка архива с компонентом
 	// todo сейчас работает только с зипом
 	public function upload_zip(Bitrix $module, Request $request){
-		if (!$this->userCreatedModule($module->id)){
-			return $this->unauthorized($request);
-		}
-		//dd($request->file('archive'));
-		//dd(Storage::disk('user_modules')->);
-
 		$fileName = $this->moveComponentToPublic($request);
 		$this->extractComponentToModuleFolder($module, $fileName);
 		$componentCode = $this->getComponentCodeFromFolder($fileName);
@@ -291,7 +302,7 @@ class BitrixComponentsController extends Controller{
 	}
 
 	public function destroy(Bitrix $module, BitrixComponent $component, Request $request){
-		if (!$this->userCreatedModule($module->id)){
+		if (!$this->moduleOwnsComponent($module, $component)){
 			return $this->unauthorized($request);
 		}
 

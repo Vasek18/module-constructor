@@ -20,6 +20,10 @@ class BitrixComponentsTemplatesController extends Controller{
 	}
 
 	public function index(Bitrix $module, BitrixComponent $component, Request $request){
+		if (!$this->moduleOwnsComponent($module, $component)){
+			return $this->unauthorized($request);
+		}
+
 		$data = [
 			'module'    => $module,
 			'component' => $component,
@@ -30,6 +34,10 @@ class BitrixComponentsTemplatesController extends Controller{
 	}
 
 	public function create(Bitrix $module, BitrixComponent $component, Request $request){
+		if (!$this->moduleOwnsComponent($module, $component)){
+			return $this->unauthorized($request);
+		}
+
 		$data = [
 			'module'    => $module,
 			'component' => $component,
@@ -40,6 +48,10 @@ class BitrixComponentsTemplatesController extends Controller{
 	}
 
 	public function store(Bitrix $module, BitrixComponent $component, Request $request){
+		if (!$this->moduleOwnsComponent($module, $component)){
+			return $this->unauthorized($request);
+		}
+
 		$templateCode = strtolower($request->code);
 		$template = BitrixComponentsTemplates::updateOrCreate(
 			[
@@ -74,6 +86,10 @@ class BitrixComponentsTemplatesController extends Controller{
 	}
 
 	public function upload(Bitrix $module, BitrixComponent $component, Request $request){
+		if (!$this->moduleOwnsComponent($module, $component)){
+			return $this->unauthorized($request);
+		}
+
 		$templateCode = strtolower($request->template_code);
 		$template = BitrixComponentsTemplates::updateOrCreate(
 			[
@@ -100,6 +116,10 @@ class BitrixComponentsTemplatesController extends Controller{
 	}
 
 	public function show(Bitrix $module, BitrixComponent $component, BitrixComponentsTemplates $template, Request $request){
+		if (!$this->moduleOwnsComponent($module, $component)){
+			return $this->unauthorized($request);
+		}
+
 		$data = [
 			'module'    => $module,
 			'component' => $component,
@@ -110,6 +130,10 @@ class BitrixComponentsTemplatesController extends Controller{
 	}
 
 	public function update(Bitrix $module, BitrixComponent $component, BitrixComponentsTemplates $template, Request $request){
+		if (!$this->moduleOwnsComponent($module, $component)){
+			return $this->unauthorized($request);
+		}
+
 		$disk = $module->disk();
 
 		$template->update(
@@ -139,6 +163,10 @@ class BitrixComponentsTemplatesController extends Controller{
 	}
 
 	public function destroy(Bitrix $module, BitrixComponent $component, BitrixComponentsTemplates $template, Request $request){
+		if (!$this->moduleOwnsComponent($module, $component)){
+			return $this->unauthorized($request);
+		}
+
 		if ($template->code == '.default'){
 			return redirect(route('bitrix_component_templates', ['module' => $module->id, 'component' => $component->id])); // todo возвращать ошибку
 		}

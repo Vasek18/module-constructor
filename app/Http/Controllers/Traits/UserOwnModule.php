@@ -4,11 +4,14 @@ namespace App\Http\Controllers\Traits;
 
 use Illuminate\Http\Request;
 use App\Models\Modules\Bitrix\Bitrix;
+use App\Models\Modules\Bitrix\BitrixComponent;
+use App\Models\Modules\Bitrix\BitrixComponentsArbitraryFiles;
+use App\Models\Modules\Bitrix\BitrixComponentsParams;
 
 trait UserOwnModule{
 	protected function userCreatedModule($id){
 		return Bitrix::where([
-			'id' => $id,
+			'id'      => $id,
 			'user_id' => $this->user->id
 		])->exists();
 	}
@@ -18,7 +21,20 @@ trait UserOwnModule{
 			return response(['message' => 'Nea'], 403);
 		}
 
-		return redirect('/');
+		return redirect('/personal');
+	}
+
+	protected function moduleOwnsComponent(Bitrix $module, BitrixComponent $component){
+		return $component->module->id == $module->id;
+	}
+
+	protected function componentOwnsArbitraryFile(BitrixComponent $component, BitrixComponentsArbitraryFiles $file){
+		return $file->component->id == $component->id;
+	}
+
+	protected function componentsOwnsParam(BitrixComponent $component, BitrixComponentsParams $param){
+		return $param->component->id == $component->id;
 	}
 }
+
 ?>

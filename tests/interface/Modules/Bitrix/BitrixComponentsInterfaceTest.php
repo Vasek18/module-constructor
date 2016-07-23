@@ -4,6 +4,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Models\Modules\Bitrix\BitrixComponent;
 use App\Models\Modules\Bitrix\BitrixComponentsParams;
 use App\Models\Modules\Bitrix\BitrixComponentsTemplates;
+use App\Models\Modules\Bitrix\BitrixComponentsArbitraryFiles;
 
 class BitrixComponentsInterfaceTest extends TestCase{
 
@@ -52,8 +53,8 @@ class BitrixComponentsInterfaceTest extends TestCase{
 		$this->click('delete');
 	}
 
-	function createComponentParamOnForm($component, $rowNumber, $params){
-		$this->visit('/my-bitrix/'.$this->module->id.'/components/'.$component->id.'/params');
+	function createComponentParamOnForm($module, $component, $rowNumber, $params){
+		$this->visit('/my-bitrix/'.$module->id.'/components/'.$component->id.'/params');
 		$inputs = [];
 		if (isset($params['name'])){
 			$inputs['param_name['.$rowNumber.']'] = $params['name'];
@@ -126,6 +127,21 @@ class BitrixComponentsInterfaceTest extends TestCase{
 		return true;
 	}
 
+	function storeArbitraryFileOnForm($module, $component, $path, $name, $content){
+		$this->visit('/my-bitrix/'.$module->id.'/components/'.$component->id.'/other_files');
+
+		$file = public_path().'/'.$name;
+		file_put_contents($file, $content);
+
+		$this->type($path, 'path');
+		$this->attach($file, 'file');
+		$this->press('upload');
+
+		unlink($file);
+
+		return BitrixComponentsArbitraryFiles::where('component_id', $component->id)->where('filename', $name)->where('path', $path)->first();
+	}
+
 	/** @test */
 	function author_can_get_to_this_page(){
 		$this->visit('/my-bitrix/'.$this->module->id.$this->path);
@@ -167,14 +183,37 @@ class BitrixComponentsInterfaceTest extends TestCase{
 	}
 
 	/** @test */
-	function not_author_cannot_get_to_this_page_of_anothers_module(){
+	function not_author_cannot_get_to_index_page_of_anothers_module(){
 		$this->signIn(factory(App\Models\User::class)->create());
+
+		$this->deleteFolder($this->standartModuleCode);
 
 		$this->visit('/my-bitrix/'.$this->module->id.$this->path);
 
 		$this->seePageIs('/personal');
+	}
 
-		$this->deleteFolder($this->standartModuleCode);
+	/** @test */
+	function not_author_cannot_get_to_component_detail_page_of_anothers_module(){
+		// есть один модуль с компонентом
+		$component = $this->createOnForm($this->module, [
+			'name'      => 'Heh',
+			'sort'      => '1487',
+			'code'      => 'trololo',
+			'desc'      => 'My cool component',
+			'namespace' => 'dummy',
+		]);
+		$this->module->deleteFolder();
+
+		// у другого юзера тоже есть модуль с компонентом
+		$this->signIn(factory(App\Models\User::class)->create());
+		$module2 = $this->createBitrixModule();
+		$component2 = $this->createOnForm($module2);
+		$module2->deleteFolder();
+
+		// не должно быть такого, чтобы подменив айдишник компонента на айди компонента из другого модуля, мы хоть что-то увидели
+		$this->visit('/my-bitrix/'.$module2->id.$this->path.'/'.$component->id);
+		$this->seePageIs('/personal');
 	}
 
 	/** @test */
@@ -235,8 +274,51 @@ class BitrixComponentsInterfaceTest extends TestCase{
 		$this->deleteFolder($this->standartModuleCode);
 
 		$this->seePageIs('/my-bitrix/'.$this->module->id.$this->path);
+	}
 
-		// todo проверка на отсутствие компонента
+	/** @test */
+	function not_author_cannot_delete_component(){
+		// есть один модуль с компонентом
+		$component = $this->createOnForm($this->module, [
+			'name'      => 'Heh',
+			'sort'      => '1487',
+			'code'      => 'trololo',
+			'desc'      => 'My cool component',
+			'namespace' => 'dummy',
+		]);
+		$this->module->deleteFolder();
+
+		// у другого юзера тоже есть модуль с компонентом
+		$this->signIn(factory(App\Models\User::class)->create());
+		$module2 = $this->createBitrixModule();
+		$component2 = $this->createOnForm($module2);
+		$module2->deleteFolder();
+
+		$this->visit('/my-bitrix/'.$this->module->id.$this->path.'/'.$component->id.'/delete');
+		$this->seePageIs('/personal');
+	}
+
+	/** @test */
+	function not_author_cannot_get_to_component_visual_path_page_of_anothers_module(){
+		// есть один модуль с компонентом
+		$component = $this->createOnForm($this->module, [
+			'name'      => 'Heh',
+			'sort'      => '1487',
+			'code'      => 'trololo',
+			'desc'      => 'My cool component',
+			'namespace' => 'dummy',
+		]);
+		$this->module->deleteFolder();
+
+		// у другого юзера тоже есть модуль с компонентом
+		$this->signIn(factory(App\Models\User::class)->create());
+		$module2 = $this->createBitrixModule();
+		$component2 = $this->createOnForm($module2);
+		$module2->deleteFolder();
+
+		// не должно быть такого, чтобы подменив айдишник компонента на айди компонента из другого модуля, мы хоть что-то увидели
+		$this->visit('/my-bitrix/'.$module2->id.$this->path.'/'.$component->id.'/visual_path');
+		$this->seePageIs('/personal');
 	}
 
 	/** @test */
@@ -287,28 +369,92 @@ class BitrixComponentsInterfaceTest extends TestCase{
 	}
 
 	/** @test */
+	function not_author_cannot_get_to_component_component_php_page_of_anothers_module(){
+		// есть один модуль с компонентом
+		$component = $this->createOnForm($this->module, [
+			'name'      => 'Heh',
+			'sort'      => '1487',
+			'code'      => 'trololo',
+			'desc'      => 'My cool component',
+			'namespace' => 'dummy',
+		]);
+		$this->module->deleteFolder();
+
+		// у другого юзера тоже есть модуль с компонентом
+		$this->signIn(factory(App\Models\User::class)->create());
+		$module2 = $this->createBitrixModule();
+		$component2 = $this->createOnForm($module2);
+		$module2->deleteFolder();
+
+		// не должно быть такого, чтобы подменив айдишник компонента на айди компонента из другого модуля, мы хоть что-то увидели
+		$this->visit('/my-bitrix/'.$module2->id.$this->path.'/'.$component->id.'/component_php');
+		$this->seePageIs('/personal');
+	}
+
+	/** @test */
+	function not_author_cannot_get_to_component_arbitrary_files_page_of_anothers_module(){
+		// есть один модуль с компонентом
+		$component = $this->createOnForm($this->module, [
+			'name'      => 'Heh',
+			'sort'      => '1487',
+			'code'      => 'trololo',
+			'desc'      => 'My cool component',
+			'namespace' => 'dummy',
+		]);
+		$this->module->deleteFolder();
+
+		// у другого юзера тоже есть модуль с компонентом
+		$this->signIn(factory(App\Models\User::class)->create());
+		$module2 = $this->createBitrixModule();
+		$component2 = $this->createOnForm($module2);
+		$module2->deleteFolder();
+
+		// не должно быть такого, чтобы подменив айдишник компонента на айди компонента из другого модуля, мы хоть что-то увидели
+		$this->visit('/my-bitrix/'.$module2->id.$this->path.'/'.$component->id.'/other_files');
+		$this->seePageIs('/personal');
+	}
+
+	/** @test */
 	function it_can_store_arbitrary_file(){
 		$component = $this->createOnForm($this->module);
 
-		$this->visit('/my-bitrix/'.$this->module->id.'/components/'.$component->id.'/other_files');
-
-		$file = public_path().'/ololo.php';
-		file_put_contents($file, '<? echo "Hi"; ?>');
+		$this->storeArbitraryFileOnForm($this->module, $component, '/ololo/', 'ololo.php', '<? echo "Hi"; ?>');
 
 		$this->deleteFolder($this->standartModuleCode);
 
-		$this->type('/ololo/', 'path');
-		$this->attach($file, 'file');
-		$this->press('upload');
-
 		$this->see('/ololo/ololo.php');
+	}
+
+	/** @test */
+	function not_author_cannot_delete_component_arbitrary_file_of_anothers_component(){
+		// есть один модуль с компонентом с файлом
+		$component = $this->createOnForm($this->module, [
+			'name'      => 'Heh',
+			'sort'      => '1487',
+			'code'      => 'trololo',
+			'desc'      => 'My cool component',
+			'namespace' => 'dummy',
+		]);
+		$file1 = $this->storeArbitraryFileOnForm($this->module, $component, '/ololo/', 'ololo.php', '<? echo "Hi"; ?>');
+		$this->module->deleteFolder();
+
+		// у другого юзера тоже есть модуль с компонентом с файлом
+		$this->signIn(factory(App\Models\User::class)->create());
+		$module2 = $this->createBitrixModule();
+		$component2 = $this->createOnForm($module2);
+		$file2 = $this->storeArbitraryFileOnForm($module2, $component2, '/trololo/', 'trololo.php', 'test');
+		$module2->deleteFolder();
+
+		// не должно быть такого, чтобы подменив айдишник файла на айди компонента из другого модуля, мы хоть что-то увидели
+		$this->visit('/my-bitrix/'.$module2->id.$this->path.'/'.$component2->id.'/other_files/'.$file1->id.'/delete');
+		$this->seePageIs('/personal');
 	}
 
 	/** @test */
 	function it_can_find_name_of_noname_system_param(){
 		$component = $this->createOnForm($this->module);
 
-		$this->createComponentParamOnForm($component, 0, [
+		$this->createComponentParamOnForm($this->module, $component, 0, [
 			'name' => '',
 			'code' => 'CACHE_TIME',
 			'type' => 'STRING',
@@ -317,6 +463,62 @@ class BitrixComponentsInterfaceTest extends TestCase{
 		$this->deleteFolder($this->standartModuleCode);
 
 		$this->see('Время кеширования (сек.)');
+	}
+
+	/** @test */
+	function not_author_cannot_delete_component_param_of_another_component(){
+		// есть один модуль с компонентом с параметром
+		$component = $this->createOnForm($this->module, [
+			'name'      => 'Heh',
+			'sort'      => '1487',
+			'code'      => 'trololo',
+			'desc'      => 'My cool component',
+			'namespace' => 'dummy',
+		]);
+		$param1 = $this->createComponentParamOnForm($this->module, $component, 0, [
+			'name' => '',
+			'code' => 'CACHE_TIME',
+			'type' => 'STRING',
+		]);
+		$this->module->deleteFolder();
+
+		// у другого юзера тоже есть модуль с компонентом с параметром
+		$this->signIn(factory(App\Models\User::class)->create());
+		$module2 = $this->createBitrixModule();
+		$component2 = $this->createOnForm($module2);
+		$param2 = $this->createComponentParamOnForm($module2, $component2, 0, [
+			'name' => '',
+			'code' => 'CACHE_TIME',
+			'type' => 'STRING',
+		]);
+		$module2->deleteFolder();
+
+		// не должно быть такого, чтобы подменив айдишник параметра на айди компонента из другого модуля, мы хоть что-то увидели
+		$this->visit('/my-bitrix/'.$module2->id.$this->path.'/'.$component2->id.'/params/'.$param1->id.'/delete');
+		$this->seePageIs('/personal');
+	}
+
+	/** @test */
+	function not_author_cannot_get_to_component_templates_page_of_anothers_module(){
+		// есть один модуль с компонентом
+		$component = $this->createOnForm($this->module, [
+			'name'      => 'Heh',
+			'sort'      => '1487',
+			'code'      => 'trololo',
+			'desc'      => 'My cool component',
+			'namespace' => 'dummy',
+		]);
+		$this->module->deleteFolder();
+
+		// у другого юзера тоже есть модуль с компонентом
+		$this->signIn(factory(App\Models\User::class)->create());
+		$module2 = $this->createBitrixModule();
+		$component2 = $this->createOnForm($module2);
+		$module2->deleteFolder();
+
+		// не должно быть такого, чтобы подменив айдишник компонента на айди компонента из другого модуля, мы хоть что-то увидели
+		$this->visit('/my-bitrix/'.$module2->id.$this->path.'/'.$component->id.'/templates');
+		$this->seePageIs('/personal');
 	}
 
 	/** @test */

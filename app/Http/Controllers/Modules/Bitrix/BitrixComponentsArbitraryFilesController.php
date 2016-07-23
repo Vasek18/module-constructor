@@ -20,6 +20,10 @@ class BitrixComponentsArbitraryFilesController extends Controller{
 	}
 
 	public function index(Bitrix $module, BitrixComponent $component, Request $request){
+		if (!$this->moduleOwnsComponent($module, $component)){
+			return $this->unauthorized($request);
+		}
+
 		$data = [
 			'module'    => $module,
 			'component' => $component,
@@ -30,6 +34,10 @@ class BitrixComponentsArbitraryFilesController extends Controller{
 	}
 
 	public function store(Bitrix $module, BitrixComponent $component, Request $request){
+		if (!$this->moduleOwnsComponent($module, $component)){
+			return $this->unauthorized($request);
+		}
+
 		$file = $request->file('file');
 		$addPath = $this->validatePath($request->path);
 		//dd($request);
@@ -66,6 +74,12 @@ class BitrixComponentsArbitraryFilesController extends Controller{
 	}
 
 	public function destroy(Bitrix $module, BitrixComponent $component, BitrixComponentsArbitraryFiles $file, Request $request){
+		if (!$this->moduleOwnsComponent($module, $component)){
+			return $this->unauthorized($request);
+		}
+		if (!$this->componentOwnsArbitraryFile($component, $file)){
+			return $this->unauthorized($request);
+		}
 
 		$file->delete();
 

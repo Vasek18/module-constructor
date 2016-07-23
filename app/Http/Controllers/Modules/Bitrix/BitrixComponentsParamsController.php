@@ -23,6 +23,10 @@ class BitrixComponentsParamsController extends Controller{
 	}
 
 	public function index(Bitrix $module, BitrixComponent $component, Request $request){
+		if (!$this->moduleOwnsComponent($module, $component)){
+			return $this->unauthorized($request);
+		}
+
 		$data = [
 			'module'        => $module,
 			'component'     => $component,
@@ -35,6 +39,10 @@ class BitrixComponentsParamsController extends Controller{
 	}
 
 	public function store(Bitrix $module, BitrixComponent $component, Request $request){
+		if (!$this->moduleOwnsComponent($module, $component)){
+			return $this->unauthorized($request);
+		}
+
 		// dd($request);
 		foreach ($request->param_code as $i => $code){
 			// обязательные поля
@@ -143,6 +151,10 @@ class BitrixComponentsParamsController extends Controller{
 
 	public
 	function upload_params_files(Bitrix $module, BitrixComponent $component, Request $request){
+		if (!$this->moduleOwnsComponent($module, $component)){
+			return $this->unauthorized($request);
+		}
+
 		$params_file = $request->file('params_file');
 		$params_lang_file = $request->file('params_lang_file');
 		$params_file->move($component->getFolder(true), $params_file->getClientOriginalName());
@@ -157,9 +169,13 @@ class BitrixComponentsParamsController extends Controller{
 
 	public
 	function destroy(Bitrix $module, BitrixComponent $component, BitrixComponentsParams $param, Request $request){
-		if (!$this->userCreatedModule($module->id)){
+		if (!$this->moduleOwnsComponent($module, $component)){
 			return $this->unauthorized($request);
 		}
+		if (!$this->componentsOwnsParam($component, $param)){
+			return $this->unauthorized($request);
+		}
+
 		if (!$param->id){
 			return false;
 		}

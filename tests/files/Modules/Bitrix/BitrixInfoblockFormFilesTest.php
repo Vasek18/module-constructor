@@ -1183,7 +1183,8 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 		$this->assertEquals(1, count($gottenInstallationFuncCodeArray));
 		$this->assertEquals($expectedInstallationFuncCodeArray, $gottenInstallationFuncCodeArray[0]);
 		$this->assertEquals(0, count($gottenInstallationPropsFuncCodeArray));
-		$this->assertArraySubset([$module->lang_key.'_IBLOCK_TROLOLO_NAME' => 'Ololo'], $installFileLangArr);
+		$this->assertArrayHasKey($module->lang_key.'_IBLOCK_TROLOLO_NAME', $installFileLangArr);
+		$this->assertEquals($installFileLangArr[$module->lang_key.'_IBLOCK_TROLOLO_NAME'], 'Ololo');
 		$this->assertArrayNotHasKey($module->lang_key.'_IBLOCK_TROLOLO_PARAM_TEST_NAME', $installFileLangArr);
 	}
 

@@ -134,8 +134,10 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase{
 
 	function deleteFolder($moduleCode){
 		if (Bitrix::where('code', $moduleCode)->count()){
-			$module = Bitrix::where('code', $moduleCode)->first();
-			$module->deleteFolder();
+			$modules = Bitrix::where('code', $moduleCode)->get();
+			foreach ($modules as $module){
+				$module->deleteFolder();
+			}
 		}
 	}
 }
