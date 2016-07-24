@@ -132,8 +132,12 @@ class BitrixComponentsInterfaceTest extends TestCase{
 		return true;
 	}
 
-	function storeArbitraryFileOnForm($module, $component, $path, $name, $content){
-		$this->visit('/my-bitrix/'.$module->id.'/components/'.$component->id.'/other_files');
+	function storeArbitraryFileOnForm($module, $component, $path, $name, $content, $template = false){
+		if ($template){
+			$this->visit('/my-bitrix/'.$module->id.'/components/'.$component->id.'/templates/'.$template->id.'/files');
+		}else{
+			$this->visit('/my-bitrix/'.$module->id.'/components/'.$component->id.'/other_files');
+		}
 
 		$file = public_path().'/'.$name;
 		file_put_contents($file, $content);
@@ -431,6 +435,27 @@ class BitrixComponentsInterfaceTest extends TestCase{
 	}
 
 	/** @test */
+	function it_can_store_arbitrary_file_in_template(){
+		$component = $this->createOnForm($this->module);
+		$template = $this->createTemplateOnForm($this->module, $component, [
+			'name'                 => 'Test',
+			'code'                 => 'ololo',
+			'template_php'         => '<? echo "HW"; ?>',
+			'style_css'            => '123',
+			'script_js'            => '234',
+			'result_modifier_php'  => '345',
+			'component_epilog_php' => '<? ?>',
+		]);
+		$this->storeArbitraryFileOnForm($this->module, $component, '/ololo/', 'ololo.php', '<? echo "Hi"; ?>', $template);
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$this->visit('/my-bitrix/'.$this->module->id.'/components/'.$component->id.'/templates/'.$template->id.'/files');
+
+		$this->see('/ololo/ololo.php');
+	}
+
+	/** @test */
 	function not_author_cannot_delete_component_arbitrary_file_of_anothers_component(){
 		// есть один модуль с компонентом с файлом
 		$component = $this->createOnForm($this->module, [
@@ -525,6 +550,7 @@ class BitrixComponentsInterfaceTest extends TestCase{
 		$this->visit('/my-bitrix/'.$module2->id.$this->path.'/'.$component->id.'/templates');
 		$this->seePageIs('/personal');
 	}
+
 	/** @test */
 	function not_author_cannot_get_to_component_template_detail_page_of_another_component(){
 		// есть один модуль с компонентом с шаблоном

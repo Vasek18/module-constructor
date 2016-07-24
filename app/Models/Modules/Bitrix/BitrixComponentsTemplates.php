@@ -31,8 +31,8 @@ class BitrixComponentsTemplates extends Model{
 		$this->component()->first()->module()->first()->disk()->makeDirectory($this->component->getFolder().'/templates/'.$this->code);
 	}
 
-	public function getFolder(){
-		$component_folder = $this->component()->first()->getFolder();
+	public function getFolder($full = false){
+		$component_folder = $this->component()->first()->getFolder($full);
 
 		return $component_folder.'\templates\\'.$this->code;
 	}
@@ -97,5 +97,9 @@ class BitrixComponentsTemplates extends Model{
 
 	public function params(){
 		return $this->hasMany('App\Models\Modules\Bitrix\BitrixComponentsParams', "template_id");
+	}
+
+	public function arbitraryFiles(){
+		return $this->hasMany('App\Models\Modules\Bitrix\BitrixComponentsArbitraryFiles', "template_id");
 	}
 }

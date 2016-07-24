@@ -14,6 +14,8 @@ class CreateBitrixComponentsArbitraryFilesTable extends Migration{
 			$table->increments('id');
 			$table->integer('component_id')->unsigned();
 			$table->foreign('component_id')->references('id')->on('bitrix_components')->onDelete('cascade');
+			$table->integer('template_id')->unsigned()->nullable();
+			$table->foreign('template_id')->references('id')->on('bitrix_components_templates');
 			$table->string('filename');
 			$table->string('path');
 		});

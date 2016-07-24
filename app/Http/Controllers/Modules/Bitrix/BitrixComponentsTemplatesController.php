@@ -217,5 +217,14 @@ class BitrixComponentsTemplatesController extends Controller{
 		if (!$this->componentsOwnsTemplate($component, $template)){
 			return $this->unauthorized($request);
 		}
+
+		$data = [
+			'module'    => $module,
+			'component' => $component,
+			'template'  => $template,
+			'files'     => $template->arbitraryFiles()->get()
+		];
+
+		return view("bitrix.components.templates.arbitrary_files.index", $data);
 	}
 }

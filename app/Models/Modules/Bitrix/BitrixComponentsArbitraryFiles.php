@@ -7,7 +7,7 @@ use App\Models\Modules\Bitrix\BitrixComponent;
 
 class BitrixComponentsArbitraryFiles extends Model{
 	protected $table = 'bitrix_components_arbitrary_files';
-	protected $fillable = ['component_id', 'filename', 'path'];
+	protected $fillable = ['component_id', 'filename', 'path', 'template_id'];
 	public $timestamps = false;
 
 	public static function addInBDExistingFile($file, BitrixComponent $component){
@@ -45,11 +45,22 @@ class BitrixComponentsArbitraryFiles extends Model{
 			$path = $this->path;
 		}
 		$componentFolder = $this->component->getFolder($full);
+		if ($this->template_id){
+			$componentFolder = $this->template->getFolder($full);
+		}
 
 		return $componentFolder.$path;
 	}
 
 	public function component(){
 		return $this->belongsTo('App\Models\Modules\Bitrix\BitrixComponent');
+	}
+
+	public function template(){
+		return $this->belongsTo('App\Models\Modules\Bitrix\BitrixComponentsTemplates');
+	}
+
+	public function scopeForAllTemplates($query){
+		return $query->where('template_id', null);
 	}
 }

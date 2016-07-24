@@ -5,6 +5,7 @@ use App\Models\Modules\Bitrix\BitrixComponent;
 use App\Helpers\vArrParse;
 use App\Models\Modules\Bitrix\BitrixComponentsParams;
 use App\Models\Modules\Bitrix\BitrixComponentsTemplates;
+use App\Models\Modules\Bitrix\BitrixComponentsArbitraryFiles;
 
 class BitrixComponentsFilesTest extends TestCase{
 
@@ -128,6 +129,25 @@ class BitrixComponentsFilesTest extends TestCase{
 		}
 
 		return true;
+	}
+
+	function storeArbitraryFileOnForm($module, $component, $path, $name, $content, $template = false){
+		if ($template){
+			$this->visit('/my-bitrix/'.$module->id.'/components/'.$component->id.'/templates/'.$template->id.'/files');
+		}else{
+			$this->visit('/my-bitrix/'.$module->id.'/components/'.$component->id.'/other_files');
+		}
+
+		$file = public_path().'/'.$name;
+		file_put_contents($file, $content);
+
+		$this->type($path, 'path');
+		$this->attach($file, 'file');
+		$this->press('upload');
+
+		unlink($file);
+
+		return BitrixComponentsArbitraryFiles::where('component_id', $component->id)->where('filename', $name)->where('path', $path)->first();
 	}
 
 	/** @test */
@@ -307,6 +327,25 @@ class BitrixComponentsFilesTest extends TestCase{
 		$this->deleteFolder($this->standartModuleCode);
 
 		$this->assertEquals('<? echo "Hi"; ?>', $savedFile);
+	}
+
+	/** @test */
+	function it_can_store_arbitrary_file_in_template(){
+		$component = $this->createOnForm($this->module);
+		$template = $this->createTemplateOnForm($this->module, $component, [
+			'name'                 => 'Test',
+			'code'                 => 'ololo',
+			'template_php'         => '<? echo "HW"; ?>',
+			'style_css'            => '123',
+			'script_js'            => '234',
+			'result_modifier_php'  => '345',
+			'component_epilog_php' => '<? ?>',
+		]);
+		$this->storeArbitraryFileOnForm($this->module, $component, '/ololo/', 'ololo.php', '<? echo "Hi"; ?>', $template);
+
+		$this->assertFileNotExists($component->getFolder(true).'/ololo/ololo.php');
+		$this->assertFileExists($template->getFolder(true).'/ololo/ololo.php');
+		$this->deleteFolder($this->standartModuleCode);
 	}
 
 	/** @test */
