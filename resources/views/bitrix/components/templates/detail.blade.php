@@ -1,11 +1,10 @@
-@extends('bitrix.internal_template')
+@extends('bitrix.components.templates.internal_template')
 
 @section('h1')
     {{$template ? trans('bitrix_components.template').'"'.$template->code.'"' : trans('bitrix_components.templates_create_title')}} | {{ $component->name }} ({{ $component->code }})
 @stop
 
-@section('page')
-    @include('bitrix.components.progress_way_menu')
+@section('templates_page')
     <h2>{{ trans('bitrix_components.template_detail_title') }}</h2>
     <div class="col-md-9">
         <form method="post"

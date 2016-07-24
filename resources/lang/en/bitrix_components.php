@@ -82,6 +82,8 @@ return [
 	'params_dop_iblock_props_list'    => 'Infoblock props list',
 	'params_dop_iblock_type'          => 'Infoblock type',
 	'params_dop_iblock'               => 'Infoblock',
+	'params_dop_template_id'          => 'Only for template',
+	'for_all_templates'               => 'For all templates',
 
 	'arbitrary_files_h1'              => 'Other component files',
 	'arbitrary_files_form_title'      => 'Add file',
@@ -107,4 +109,8 @@ return [
 	'template_field_script_js_code'            => 'script.js',
 	'template_field_result_modifier_php_code'  => 'result_modifier.php',
 	'template_field_component_epilog_php_code' => 'component_epilog.php',
+
+	'template_menu_item_detail'          => 'Main files',
+	'template_menu_item_params'          => 'Params',
+	'template_menu_item_arbitrary_files' => 'Additional files',
 ];

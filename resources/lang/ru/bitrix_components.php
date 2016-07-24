@@ -82,6 +82,8 @@ return [
 	'params_dop_iblock_props_list'    => 'Список свойств инфоблока',
 	'params_dop_iblock_type'          => 'Тип инфоблоков',
 	'params_dop_iblock'               => 'Инфоблок',
+	'params_dop_template_id'          => 'Только для шаблона',
+	'for_all_templates'               => 'Для всех шаблонов',
 
 	'arbitrary_files_h1'              => 'Прочие файлы компонента',
 	'arbitrary_files_form_title'      => 'Добавить файл',
@@ -107,4 +109,8 @@ return [
 	'template_field_script_js_code'            => 'JS-скрипты',
 	'template_field_result_modifier_php_code'  => 'result_modifier.php',
 	'template_field_component_epilog_php_code' => 'component_epilog.php',
+
+	'template_menu_item_detail'          => 'Основные файлы',
+	'template_menu_item_params'          => 'Параметры подключения',
+	'template_menu_item_arbitrary_files' => 'Дополнительные файлы',
 ];

@@ -7,11 +7,11 @@ use Illuminate\Support\Facades\Config;
 
 class BitrixComponentsParams extends Model{
 	protected $table = 'bitrix_components_params';
-	protected $fillable = ['component_id', 'type', 'code', 'name', 'sort', 'group_id', 'refresh', 'default', 'size', 'cols', 'multiple', 'default', 'additional_values', 'spec_vals', 'spec_vals_args'];
+	protected $fillable = ['component_id', 'type', 'code', 'name', 'sort', 'group_id', 'refresh', 'default', 'size', 'cols', 'multiple', 'default', 'additional_values', 'spec_vals', 'spec_vals_args', 'template_id'];
 	public $timestamps = false;
 
 	public static $systemParams = [
-		'CACHE_TIME' => [
+		'CACHE_TIME'           => [
 			'ru' => [
 				'NAME' => 'Время кеширования (сек.)'
 			],
@@ -19,7 +19,7 @@ class BitrixComponentsParams extends Model{
 				'NAME'
 			]
 		],
-		'SEF_MODE' => [
+		'SEF_MODE'             => [
 			'ru' => [
 				'NAME' => 'Включить поддержку ЧПУ'
 			],
@@ -27,7 +27,7 @@ class BitrixComponentsParams extends Model{
 				'NAME'
 			]
 		],
-		'SEF_RULE' => [
+		'SEF_RULE'             => [
 			'ru' => [
 				'NAME' => 'Правило для обработки'
 			],
@@ -35,7 +35,7 @@ class BitrixComponentsParams extends Model{
 				'NAME'
 			]
 		],
-		'AJAX_MODE' => [
+		'AJAX_MODE'            => [
 			'ru' => [
 				'NAME' => 'Включить режим AJAX'
 			],
@@ -43,7 +43,7 @@ class BitrixComponentsParams extends Model{
 				'NAME'
 			]
 		],
-		'SECTION_URL' => [
+		'SECTION_URL'          => [
 			'ru' => [
 				'NAME' => 'URL, ведущий на страницу с содержимым раздела'
 			],
@@ -51,7 +51,7 @@ class BitrixComponentsParams extends Model{
 				'NAME'
 			]
 		],
-		'DETAIL_URL' => [
+		'DETAIL_URL'           => [
 			'ru' => [
 				'NAME' => 'URL, ведущий на страницу с содержимым элемента раздела'
 			],
@@ -59,7 +59,7 @@ class BitrixComponentsParams extends Model{
 				'NAME'
 			]
 		],
-		'SET_TITLE' => [
+		'SET_TITLE'            => [
 			'ru' => [
 				'NAME' => 'Устанавливать заголовок страницы'
 			],
@@ -67,7 +67,7 @@ class BitrixComponentsParams extends Model{
 				'NAME'
 			]
 		],
-		'SET_META_KEYWORDS' => [
+		'SET_META_KEYWORDS'    => [
 			'ru' => [
 				'NAME' => 'Устанавливать ключевые слова страницы'
 			],
@@ -83,7 +83,7 @@ class BitrixComponentsParams extends Model{
 				'NAME'
 			]
 		],
-		'OFFERS_FIELD_CODE' => [
+		'OFFERS_FIELD_CODE'    => [
 			'ru' => [
 				'NAME'
 			],
@@ -92,7 +92,6 @@ class BitrixComponentsParams extends Model{
 			]
 		],
 	];
-
 
 	// public function getNameAttribute($value){
 	// 	if (!$value){
@@ -112,7 +111,7 @@ class BitrixComponentsParams extends Model{
 			return $systemParams[$code][$langCode]["NAME"];
 		}
 	}
-	
+
 	public function getSpecValsFunctionCallAttribute(){
 		return $this->spec_vals ? "$".$this->spec_vals."(".$this->spec_vals_args.")" : '""';
 	}
@@ -127,5 +126,9 @@ class BitrixComponentsParams extends Model{
 
 	public function vals(){
 		return $this->hasMany('App\Models\Modules\Bitrix\BitrixComponentsParamsVals', "param_id");
+	}
+
+	public function scopeForAllTemplates($query){
+		return $query->where('template_id', null);
 	}
 }

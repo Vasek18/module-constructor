@@ -10,6 +10,8 @@ use App\Models\Modules\Bitrix\Bitrix;
 use App\Models\Modules\Bitrix\BitrixComponentsTemplates;
 use App\Models\Modules\Bitrix\BitrixComponent;
 use App\Http\Controllers\Traits\UserOwnModule;
+use App\Models\Modules\Bitrix\BitrixComponentsParamsTypes;
+use App\Models\Modules\Bitrix\BitrixComponentsParamsGroups;
 
 class BitrixComponentsTemplatesController extends Controller{
 	use UserOwnModule;
@@ -119,6 +121,9 @@ class BitrixComponentsTemplatesController extends Controller{
 		if (!$this->moduleOwnsComponent($module, $component)){
 			return $this->unauthorized($request);
 		}
+		if (!$this->componentsOwnsTemplate($component, $template)){
+			return $this->unauthorized($request);
+		}
 
 		$data = [
 			'module'    => $module,
@@ -131,6 +136,9 @@ class BitrixComponentsTemplatesController extends Controller{
 
 	public function update(Bitrix $module, BitrixComponent $component, BitrixComponentsTemplates $template, Request $request){
 		if (!$this->moduleOwnsComponent($module, $component)){
+			return $this->unauthorized($request);
+		}
+		if (!$this->componentsOwnsTemplate($component, $template)){
 			return $this->unauthorized($request);
 		}
 
@@ -166,6 +174,9 @@ class BitrixComponentsTemplatesController extends Controller{
 		if (!$this->moduleOwnsComponent($module, $component)){
 			return $this->unauthorized($request);
 		}
+		if (!$this->componentsOwnsTemplate($component, $template)){
+			return $this->unauthorized($request);
+		}
 
 		if ($template->code == '.default'){
 			return redirect(route('bitrix_component_templates', ['module' => $module->id, 'component' => $component->id])); // todo возвращать ошибку
@@ -177,5 +188,34 @@ class BitrixComponentsTemplatesController extends Controller{
 		BitrixComponentsTemplates::destroy($template->id);
 
 		return redirect(route('bitrix_component_templates', [$module->id, $component->id]));
+	}
+
+	public function show_params(Bitrix $module, BitrixComponent $component, BitrixComponentsTemplates $template, Request $request){
+		if (!$this->moduleOwnsComponent($module, $component)){
+			return $this->unauthorized($request);
+		}
+		if (!$this->componentsOwnsTemplate($component, $template)){
+			return $this->unauthorized($request);
+		}
+
+		$data = [
+			'module'        => $module,
+			'component'     => $component,
+			'template'      => $template,
+			'params'        => $template->params()->orderBy('sort', 'asc')->get(),
+			'params_types'  => BitrixComponentsParamsTypes::all(),
+			'params_groups' => BitrixComponentsParamsGroups::all()
+		];
+
+		return view("bitrix.components.templates.params.index", $data);
+	}
+
+	public function show_files(Bitrix $module, BitrixComponent $component, BitrixComponentsTemplates $template, Request $request){
+		if (!$this->moduleOwnsComponent($module, $component)){
+			return $this->unauthorized($request);
+		}
+		if (!$this->componentsOwnsTemplate($component, $template)){
+			return $this->unauthorized($request);
+		}
 	}
 }

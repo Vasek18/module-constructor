@@ -31,7 +31,7 @@
                 <li class="{{Route::is('bitrix_component_other_files') ? 'active':''}}">
                     <a href="{{route('bitrix_component_other_files', [$module->id, $component->id])}}">{{ trans('bitrix_components.menu_title_other_files') }}{!! in_array(5, $component->steps)?' <span class="badge success"><span class="glyphicon glyphicon-ok aria-hidden="true"></span></span>':''!!}</a>
                 </li>
-                <li class="{{Route::is('bitrix_component_templates') ? 'active':''}}">
+                <li class="{!! classActiveSegment(5, 'templates') !!}">
                     <a href="{{route('bitrix_component_templates', [$module->id, $component->id])}}">{{ trans('bitrix_components.menu_title_templates') }}{!! in_array(6, $component->steps)?' <span class="badge success"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></span>':''!!}</a>
                 </li>
             </ol>

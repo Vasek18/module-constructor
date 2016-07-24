@@ -204,6 +204,22 @@
                                @if ($param && $param->spec_vals == 'iblock_props_list') value="{{$param->spec_vals_args}}" @endif>
                     </div>
                 </div>
+                <div class="form-group"
+                     data-for_types="">
+                    @if (isset($template))
+                        <input type="hidden" name="param_template_id[]" value="{{ $template->id }}">
+                    @else
+                        <label for="param_{{$i}}_template_id">{{ trans('bitrix_components.params_dop_template_id') }}</label>
+                        <select name="param_template_id[]"
+                                id="param_{{$i}}_template_id"
+                                class="form-control">
+                            <option value="">{{ trans('bitrix_components.for_all_templates') }}</option>
+                            @foreach($component->templates as $c_template)
+                                <option value="{{ $c_template->id }}">{{ $c_template->code }}</option>
+                            @endforeach
+                        </select>
+                    @endif
+                </div>
             </div>
         </div>
     </div>

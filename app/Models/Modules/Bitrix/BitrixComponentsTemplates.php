@@ -94,4 +94,8 @@ class BitrixComponentsTemplates extends Model{
 	public function component(){
 		return $this->belongsTo('App\Models\Modules\Bitrix\BitrixComponent');
 	}
+
+	public function params(){
+		return $this->hasMany('App\Models\Modules\Bitrix\BitrixComponentsParams', "template_id");
+	}
 }

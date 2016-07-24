@@ -221,10 +221,13 @@ class BitrixComponent extends Model{
 		$groupsText = ''; // todo
 		$groupsLangText = ''; // todo
 
-		$paramsText = '';
+		$paramsTexts = [];
 		$langFilePath = $this->getFolder().'\lang\ru\.parameters.php';
 
 		foreach ($params as $param){
+			if ($param->template_id){
+				$template = BitrixComponentsTemplates::find($param->template_id);
+			}
 			//dd($param);
 			if ($param->group_id){
 				$parentCode = BitrixComponentsParamsGroups::find($param->group_id)->code;
@@ -234,7 +237,12 @@ class BitrixComponent extends Model{
 			"PARENT" => "'.$parentCode.'",
 			"NAME" => GetMessage("'.$param->lang_key.'_NAME"),
 			"TYPE" => "'.$param->type.'",'.PHP_EOL;
-			$module->changeVarInLangFile($param->lang_key.'_NAME', $param->name, $langFilePath);
+
+			if (!$param->template_id){
+				$module->changeVarInLangFile($param->lang_key.'_NAME', $param->name, $langFilePath);
+			}else{
+				$module->changeVarInLangFile($param->lang_key.'_NAME', $param->name, $template->getFolder().'\lang\ru\.parameters.php');
+			}
 			if ($param->refresh){
 				$paramText .= "\t\t\t".'"REFRESH" => "Y",'.PHP_EOL;
 			}
@@ -261,7 +269,11 @@ class BitrixComponent extends Model{
 						$paramText .= PHP_EOL;
 						foreach ($param->vals as $val){
 							$paramText .= "\t\t\t\t".'"'.$val->key.'" => GetMessage("'.$val->lang_key.'_VALUE"),'.PHP_EOL;
-							$module->changeVarInLangFile($val->lang_key.'_VALUE', $val->value, $langFilePath);
+							if (!$param->template_id){
+								$module->changeVarInLangFile($val->lang_key.'_VALUE', $val->value, $langFilePath);
+							}else{
+								$module->changeVarInLangFile($val->lang_key.'_VALUE', $val->value, $template->getFolder().'\lang\ru\.parameters.php');
+							}
 						}
 						$paramText .= "\t\t\t";
 					}
@@ -273,13 +285,34 @@ class BitrixComponent extends Model{
 
 			$paramText .= "\t\t".'),'.PHP_EOL."\t\t";
 
-			$paramsText .= $paramText;
+			if (!$param->template_id){
+				if (!isset($paramsTexts[0])){
+					$paramsTexts[0] = $paramText;
+				}else{
+					$paramsTexts[0] .= $paramText;
+				}
+			}else{
+				if (!isset($paramsTexts[$param->template_id])){
+					$paramsTexts[$param->template_id] = $paramText;
+				}else{
+					$paramsTexts[$param->template_id] .= $paramText;
+				}
+			}
 		}
 
-		$search = Array('{GROUPS}', '{PARAMS}');
-		$replace = Array($groupsText, $paramsText);
+		// dd($paramsTexts);
 
-		Bitrix::changeVarsInModuleFileAndSave('bitrix\install\components\component_name\.parameters.php', $module->id, $search, $replace, $this->getFolder().'\.parameters.php');
+		foreach ($paramsTexts as $templateID => $paramsText){
+			$search = Array('{GROUPS}', '{PARAMS}');
+			$replace = Array($groupsText, $paramsText);
+
+			if (!$templateID){
+				Bitrix::changeVarsInModuleFileAndSave('bitrix\install\components\component_name\.parameters.php', $module->id, $search, $replace, $this->getFolder().'\.parameters.php');
+			}else{
+				$template = BitrixComponentsTemplates::find($templateID);
+				Bitrix::changeVarsInModuleFileAndSave('bitrix\install\components\component_name\template_code\.parameters.php', $module->id, $search, $replace, $template->getFolder().'\.parameters.php');
+			}
+		}
 
 		return true;
 

@@ -22,6 +22,8 @@ class BitrixComponentsInterfaceTest extends TestCase{
 
 	function tearDown(){
 		parent::tearDown();
+
+		$this->module->deleteFolder();
 	}
 
 	function createOnForm($module, $inputs = []){
@@ -104,6 +106,9 @@ class BitrixComponentsInterfaceTest extends TestCase{
 		}
 		if (isset($params['iblock'])){
 			$inputs['param_'.($rowNumber).'_spec_args[0]'] = $params['iblock'];
+		}
+		if (isset($params['template_id'])){
+			$inputs['param_template_id['.$rowNumber.']'] = $params['template_id'];
 		}
 		//dd($inputs);
 		$this->submitForm('save', $inputs);
@@ -520,6 +525,46 @@ class BitrixComponentsInterfaceTest extends TestCase{
 		$this->visit('/my-bitrix/'.$module2->id.$this->path.'/'.$component->id.'/templates');
 		$this->seePageIs('/personal');
 	}
+	/** @test */
+	function not_author_cannot_get_to_component_template_detail_page_of_another_component(){
+		// есть один модуль с компонентом с шаблоном
+		$component = $this->createOnForm($this->module, [
+			'name'      => 'Heh',
+			'sort'      => '1487',
+			'code'      => 'trololo',
+			'desc'      => 'My cool component',
+			'namespace' => 'dummy',
+		]);
+		$template = $this->createTemplateOnForm($this->module, $component, [
+			'name'                 => 'Test',
+			'code'                 => 'ololo',
+			'template_php'         => '<? echo "HW"; ?>',
+			'style_css'            => '123',
+			'script_js'            => '234',
+			'result_modifier_php'  => '345',
+			'component_epilog_php' => '<? ?>',
+		]);
+		$this->module->deleteFolder();
+
+		// у другого юзера тоже есть модуль с компонентом с шаблоном
+		$this->signIn(factory(App\Models\User::class)->create());
+		$module2 = $this->createBitrixModule();
+		$component2 = $this->createOnForm($module2);
+		$template2 = $this->createTemplateOnForm($module2, $component2, [
+			'name'                 => 'Test',
+			'code'                 => 'ololo',
+			'template_php'         => '<? echo "HW"; ?>',
+			'style_css'            => '123',
+			'script_js'            => '234',
+			'result_modifier_php'  => '345',
+			'component_epilog_php' => '<? ?>',
+		]);
+		$module2->deleteFolder();
+
+		// не должно быть такого, чтобы подменив айдишник шаблона на айди шаблона из другого компонента, мы хоть что-то увидели
+		$this->visit('/my-bitrix/'.$module2->id.$this->path.'/'.$component2->id.'/templates/'.$template->id);
+		$this->seePageIs('/personal');
+	}
 
 	/** @test */
 	function it_can_store_template(){
@@ -576,6 +621,37 @@ class BitrixComponentsInterfaceTest extends TestCase{
 		$this->seeInField('script_js', '234');
 		$this->seeInField('result_modifier_php', '345');
 		$this->seeInField('component_epilog_php', '<? ?>');
+	}
+
+	/** @test */
+	function it_shows_params_according_to_templates(){
+		$component = $this->createOnForm($this->module);
+		$template = $this->createTemplateOnForm($this->module, $component, [
+			'name'                 => 'Test',
+			'code'                 => 'ololo',
+			'template_php'         => '<? echo "HW"; ?>',
+			'style_css'            => '123',
+			'script_js'            => '234',
+			'result_modifier_php'  => '345',
+			'component_epilog_php' => '<? ?>',
+		]);
+		$commonParam = $this->createComponentParamOnForm($this->module, $component, 0, [
+			'name' => 'Ololoparam',
+			'code' => 'trololo',
+			'type' => 'STRING',
+		]);
+		$templateParam = $this->createComponentParamOnForm($this->module, $component, 0, [
+			'name'        => 'Masha',
+			'code'        => 'nasha',
+			'type'        => 'STRING',
+			'template_id' => $template->id,
+		]);
+
+		$this->visit('/my-bitrix/'.$this->module->id.'/components/'.$component->id.'/params');
+		$this->see('Ololoparam');
+
+		$this->visit('/my-bitrix/'.$this->module->id.'/components/'.$component->id.'/templates/'.$template->id.'/params');
+		$this->see('Masha');
 	}
 }
 

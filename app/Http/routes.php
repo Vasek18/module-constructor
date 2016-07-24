@@ -104,6 +104,8 @@ Route::group(['prefix' => 'my-bitrix', 'middleware' => 'bitrix.owner'], function
 			Route::get('{template}', ['uses' => 'Modules\Bitrix\BitrixComponentsTemplatesController@show']);
 			Route::post('{template}/update', 'Modules\Bitrix\BitrixComponentsTemplatesController@update');
 			Route::get('{template}/delete', 'Modules\Bitrix\BitrixComponentsTemplatesController@destroy');
+			Route::get('{template}/params', 'Modules\Bitrix\BitrixComponentsTemplatesController@show_params');
+			Route::get('{template}/files', 'Modules\Bitrix\BitrixComponentsTemplatesController@show_files');
 		});
 	});
 

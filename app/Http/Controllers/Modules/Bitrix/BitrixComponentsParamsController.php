@@ -30,7 +30,7 @@ class BitrixComponentsParamsController extends Controller{
 		$data = [
 			'module'        => $module,
 			'component'     => $component,
-			'params'        => $component->params()->orderBy('sort', 'asc')->get(),
+			'params'        => $component->params()->forAllTemplates()->orderBy('sort', 'asc')->get(),
 			'params_types'  => BitrixComponentsParamsTypes::all(),
 			'params_groups' => BitrixComponentsParamsGroups::all()
 		];
@@ -104,6 +104,9 @@ class BitrixComponentsParamsController extends Controller{
 			}
 			if ($request['param_'.$i.'_spec_args'] && !is_array($request['param_'.$i.'_spec_args'])){
 				$paramArr["spec_vals_args"] = $request['param_'.$i.'_spec_args'];
+			}
+			if (isset($request['param_template_id'][$i]) && $request['param_template_id'][$i]){
+				$paramArr['template_id'] = $request['param_template_id'][$i];
 			}
 			//
 			//dd($paramArr);

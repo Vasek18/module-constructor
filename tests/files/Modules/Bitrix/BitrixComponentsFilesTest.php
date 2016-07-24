@@ -105,6 +105,9 @@ class BitrixComponentsFilesTest extends TestCase{
 		if (isset($params['iblock'])){
 			$inputs['param_'.($rowNumber).'_spec_args[0]'] = $params['iblock'];
 		}
+		if (isset($params['template_id'])){
+			$inputs['param_template_id['.$rowNumber.']'] = $params['template_id'];
+		}
 		//dd($inputs);
 		$this->submitForm('save', $inputs);
 
@@ -450,6 +453,55 @@ class BitrixComponentsFilesTest extends TestCase{
 		$this->assertEquals('Ololo', $params_lang_arr[$component->lang_key.'_PARAM_TROLOLO_NAME']);
 		$this->assertEquals('b', $params_lang_arr[$component->lang_key.'_PARAM_TROLOLO_A_VALUE']);
 		$this->assertEquals('d', $params_lang_arr[$component->lang_key.'_PARAM_TROLOLO_C_VALUE']);
+	}
+
+	/** @test */
+	function it_can_store_string_param_without_dop_params_for_only_one_template(){
+		$component = $this->createOnForm($this->module);
+		$template = $this->createTemplateOnForm($this->module, $component, [
+			'name'                 => 'Test',
+			'code'                 => 'ololo',
+			'template_php'         => '<? echo "HW"; ?>',
+			'style_css'            => '123',
+			'script_js'            => '234',
+			'result_modifier_php'  => '345',
+			'component_epilog_php' => '<? ?>',
+		]);
+		$commonParam = $this->createComponentParamOnForm($component, 0, [
+			'name' => 'Ololo',
+			'code' => 'trololo',
+			'type' => 'STRING',
+		]);
+		$templateParam = $this->createComponentParamOnForm($component, 0, [
+			'name'        => 'Masha',
+			'code'        => 'nasha',
+			'type'        => 'STRING',
+			'template_id' => $template->id,
+		]);
+
+		$params_arr = vArrParse::parseFromText($this->disk()->get($component->getFolder().'/.parameters.php'), '$arComponentParameters');
+		$params_lang_arr = vArrParse::parseFromText($this->disk()->get($component->getFolder().'/lang/ru/.parameters.php'), 'MESS');
+		$template_params_arr = vArrParse::parseFromText($this->disk()->get($template->getFolder().'/.parameters.php'), '$arTemplateParameters');
+		$template_params_lang_arr = vArrParse::parseFromText($this->disk()->get($template->getFolder().'/lang/ru/.parameters.php'), 'MESS');
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$paramArrExpected = [
+			"PARENT" => "BASE",
+			"NAME"   => 'GetMessage("'.$component->lang_key.'_PARAM_TROLOLO_NAME")',
+			"TYPE"   => "STRING",
+		];
+		$templateParamArrExpected = [
+			"PARENT" => "BASE",
+			"NAME"   => 'GetMessage("'.$component->lang_key.'_PARAM_NASHA_NAME")',
+			"TYPE"   => "STRING",
+		];
+		$this->assertEquals($paramArrExpected, $params_arr["PARAMETERS"]["TROLOLO"]);
+		$this->assertArrayNotHasKey("NASHA", $params_arr["PARAMETERS"]);
+		$this->assertEquals($templateParamArrExpected, $template_params_arr["PARAMETERS"]["NASHA"]);
+
+		$this->assertEquals('Ololo', $params_lang_arr[$component->lang_key.'_PARAM_TROLOLO_NAME']);
+		$this->assertEquals('Masha', $template_params_lang_arr[$component->lang_key.'_PARAM_NASHA_NAME']);
 	}
 
 	/** @test */
