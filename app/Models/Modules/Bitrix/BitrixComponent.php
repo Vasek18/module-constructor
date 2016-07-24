@@ -256,7 +256,10 @@ class BitrixComponent extends Model{
 				$paramText .= "\t\t\t".'"SIZE" => "'.$param->size.'",'.PHP_EOL;
 			}
 			if ($param->default){
-				$paramText .= "\t\t\t".'"DEFAULT" => "'.$param->default.'",'.PHP_EOL;
+				if (strpos($param->default, 'GetMessage') === false){
+					$param->default = "'".$param->default."'";
+				}
+				$paramText .= "\t\t\t"."'DEFAULT' => ".$param->default.','.PHP_EOL;
 			}
 			if ($param->cols){
 				$paramText .= "\t\t\t".'"COLS" => "'.$param->cols.'",'.PHP_EOL;

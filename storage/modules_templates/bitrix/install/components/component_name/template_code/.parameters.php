@@ -57,11 +57,6 @@ $iblock_items_list = function ($IBLOCK_ID){
 };
 
 $arTemplateParameters = array(
-	"GROUPS" => array(
-		{GROUPS}
-	),
-	"PARAMETERS" => array(
 		{PARAMS}
-	),
 );
 ?>

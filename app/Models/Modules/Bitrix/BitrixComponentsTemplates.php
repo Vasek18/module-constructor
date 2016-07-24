@@ -5,6 +5,7 @@ namespace App\Models\Modules\Bitrix;
 use Illuminate\Database\Eloquent\Model;
 use Chumper\Zipper\Zipper;
 use App\Helpers\vArrParse;
+use App\Models\Modules\Bitrix\BitrixComponentsParamsTypes;
 
 class BitrixComponentsTemplates extends Model{
 	protected $table = 'bitrix_components_templates';
@@ -64,6 +65,9 @@ class BitrixComponentsTemplates extends Model{
 			$vArrParse = new vArrParse;
 			$params = $vArrParse->parseFromFile($this->getFolder(true).'/.parameters.php', 'arTemplateParameters');
 			foreach ($params as $code => $param){
+				// if ($code == 'POPUP_QUESTION_TITLE'){
+				// 	dd($param);
+				// }
 				$newParamParams = [
 					'code'         => $code,
 					'component_id' => $this->component->id,
@@ -79,6 +83,9 @@ class BitrixComponentsTemplates extends Model{
 					$newParamParams['name'] = "";
 				}
 				if (isset($param["TYPE"])){
+					if (!BitrixComponentsParamsTypes::where('form_type', $param["TYPE"])->count()){
+						$param["TYPE"] = 'STRING';
+					}
 					$newParamParams['type'] = $param["TYPE"];
 				}
 				if (isset($param["DEFAULT"])){
@@ -100,6 +107,9 @@ class BitrixComponentsTemplates extends Model{
 				if (isset($param["ADDITIONAL_VALUES"])){
 					$newParamParams['additional_values'] = $param["ADDITIONAL_VALUES"] == 'Y';
 				}
+				// if ($code == 'POPUP_QUESTION_TITLE'){
+				// 	dd($newParamParams);
+				// }
 				$newParam = BitrixComponentsParams::updateOrCreate([
 					'code'         => $code,
 					'component_id' => $this->component->id,

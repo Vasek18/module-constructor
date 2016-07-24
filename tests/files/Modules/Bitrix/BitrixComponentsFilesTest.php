@@ -537,7 +537,7 @@ class BitrixComponentsFilesTest extends TestCase{
 		];
 		$this->assertEquals($paramArrExpected, $params_arr["PARAMETERS"]["TROLOLO"]);
 		$this->assertArrayNotHasKey("NASHA", $params_arr["PARAMETERS"]);
-		$this->assertEquals($templateParamArrExpected, $template_params_arr["PARAMETERS"]["NASHA"]);
+		$this->assertEquals($templateParamArrExpected, $template_params_arr["NASHA"]);
 
 		$this->assertEquals('Ololo', $params_lang_arr[$component->lang_key.'_PARAM_TROLOLO_NAME']);
 		$this->assertEquals('Masha', $template_params_lang_arr[$component->lang_key.'_PARAM_NASHA_NAME']);
