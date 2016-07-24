@@ -62,9 +62,10 @@ $aTabs = array(
 		'OPTIONS' => array({OPTIONS})
 	),
 	array(
-		"DIV"   => "rights",
-		"TAB"   => Loc::getMessage("MAIN_TAB_RIGHTS"),
-		"TITLE" => Loc::getMessage("MAIN_TAB_TITLE_RIGHTS")
+		"DIV"     => "rights",
+		"TAB"     => Loc::getMessage("MAIN_TAB_RIGHTS"),
+		"TITLE"   => Loc::getMessage("MAIN_TAB_TITLE_RIGHTS"),
+		"OPTIONS" => Array()
 	),
 );
 #Сохранение

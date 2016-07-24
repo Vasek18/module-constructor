@@ -529,6 +529,8 @@ class BitrixComponent extends Model{
 					'code'         => $templateCode
 				]
 			);
+			$template->parseParamsFile();
+			$template->gatherListOfArbitraryFiles();
 		}
 	}
 

@@ -4,13 +4,14 @@ namespace App\Models\Modules\Bitrix;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Modules\Bitrix\BitrixComponent;
+use App\Models\Modules\Bitrix\BitrixComponentsTemplates;
 
 class BitrixComponentsArbitraryFiles extends Model{
 	protected $table = 'bitrix_components_arbitrary_files';
 	protected $fillable = ['component_id', 'filename', 'path', 'template_id'];
 	public $timestamps = false;
 
-	public static function addInBDExistingFile($file, BitrixComponent $component){
+	public static function addInBDExistingFile($file, BitrixComponent $component, BitrixComponentsTemplates $template = null){
 		preg_match('/^(.*)\/([^\/]+)/is', $file, $matches); // всегда будет слеш
 		$path = $matches[1];
 		$fileName = $matches[2];
@@ -19,18 +20,19 @@ class BitrixComponentsArbitraryFiles extends Model{
 			$path .= '/';
 		}
 
-		return $aFile = BitrixComponentsArbitraryFiles::updateOrCreate( // todo мб другой метод, ведь если файл есть, то мы ничего не обновляем
-			[
-				'component_id' => $component->id,
-				'path'         => $path,
-				'filename'     => $fileName
-			],
-			[
-				'component_id' => $component->id,
-				'path'         => $path,
-				'filename'     => $fileName
-			]
-		);
+		$bdArr = [
+			'component_id' => $component->id,
+			'path'         => $path,
+			'filename'     => $fileName,
+		];
+
+		if ($template){
+			$bdArr['template_id'] = $template->id;
+		}
+
+		// dd($bdArr);
+
+		return $aFile = BitrixComponentsArbitraryFiles::firstOrCreate($bdArr);
 	}
 
 	public function deleteFile(){
