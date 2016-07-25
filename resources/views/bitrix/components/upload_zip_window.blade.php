@@ -33,7 +33,7 @@
                                required
                                accept=".zip">
                     </div>
-                    <button class="btn btn-primary">{{ trans('bitrix_components.button_upload') }}</button>
+                    <button class="btn btn-primary" name="upload">{{ trans('bitrix_components.button_upload') }}</button>
                 </form>
             </div>
         </div>
