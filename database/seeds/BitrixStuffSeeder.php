@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Modules\Bitrix\BitrixHelperFunctions;
 
 class BitrixStuffSeeder extends Seeder{
 	/**
@@ -132,6 +133,89 @@ class BitrixStuffSeeder extends Seeder{
 			'desc'     => 'Эта группа появляется, например, при указании параметра SET_TITLE.',
 			'standard' => true
 		]);
+
+		// функции, которые я использую, для сборы данных на стороне Битрикса
+
+		// список типов инфоблоков
+		DB::table('bitrix_helper_functions')->insert([
+			'is_closure' => true,
+			'name'       => 'iblocks_types_list',
+			'body'       => '
+	CModule::IncludeModule("iblock");
+	$select = Array();
+	$select[] = GetMessage("{LANG_KEY}_SELECT");
+	$rsIBlocks = CIBlockType::GetList(array("IBLOCK_TYPE" => "ASC", "ID" => "ASC"));
+	while ($arIBlock = $rsIBlocks->Fetch()){
+		if ($arIBType = CIBlockType::GetByIDLang($arIBlock["ID"], LANG)){
+			$select[$arIBlock["ID"]] = htmlspecialcharsEx($arIBType["NAME"]);
+		}
+	}
+
+	return $select;
+']);
+
+		// список инфоблоков
+		DB::table('bitrix_helper_functions')->insert([
+			'is_closure' => true,
+			'name'       => 'iblocks_list',
+			'body'       => '
+	CModule::IncludeModule("iblock");
+	$select = Array();
+	$select[] = GetMessage("{LANG_KEY}_SELECT");
+	$filter = Array();
+	$filter["TYPE"] = $IBLOCK_TYPE != "-" ? $IBLOCK_TYPE : "";
+	$rsIBlocks = CIBlock::GetList(array("NAME" => "ASC"), $filter);
+	while ($arIBlock = $rsIBlocks->Fetch()){
+		$select[$arIBlock["ID"]] = $arIBlock["NAME"];
+	}
+
+	return $select;
+']);
+		DB::table('bitrix_helper_functions_args')->insert([
+				'function_id' => BitrixHelperFunctions::where('name', 'iblocks_list')->first()->id,
+				'name'        => 'IBLOCK_TYPE']
+		);
+
+		// собираем свойства
+		DB::table('bitrix_helper_functions')->insert([
+			'is_closure' => true,
+			'name'       => 'iblock_props_list',
+			'body'       => '
+	CModule::IncludeModule("iblock");
+	$select = Array();
+	$select[] = GetMessage("{LANG_KEY}_SELECT");
+	$properties = CIBlockProperty::GetList(Array("SORT" => "ASC", "NAME" => "ASC"), Array("ACTIVE" => "Y", "IBLOCK_ID" => $IBLOCK_ID));
+	while ($prop_fields = $properties->GetNext()){
+		$select[$prop_fields["CODE"]] = $prop_fields["NAME"];
+	}
+
+	return $select;
+']);
+		DB::table('bitrix_helper_functions_args')->insert([
+				'function_id' => BitrixHelperFunctions::where('name', 'iblock_props_list')->first()->id,
+				'name'        => 'IBLOCK_ID']
+		);
+
+		// собираем элементы
+		DB::table('bitrix_helper_functions')->insert([
+			'is_closure' => true,
+			'name'       => 'iblock_items_list',
+			'body'       => '
+	CModule::IncludeModule("iblock");
+	$select = Array();
+	$select[] = GetMessage("{LANG_KEY}_SELECT");
+	$rs = CIBlockElement::GetList(Array("SORT" => "ASC", "NAME" => "ASC"), Array("ACTIVE" => "Y", "IBLOCK_ID" => $IBLOCK_ID), false, false, Array("ID", "CODE", "NAME"));
+	while ($ob = $rs->GetNextElement()){
+		$arFields = $ob->GetFields();
+		$select[$arFields["ID"]] = $arFields["NAME"];
+	}
+
+	return $select;
+']);
+		DB::table('bitrix_helper_functions_args')->insert([
+				'function_id' => BitrixHelperFunctions::where('name', 'iblock_items_list')->first()->id,
+				'name'        => 'IBLOCK_ID']
+		);
 
 		Model::reguard();
 	}
