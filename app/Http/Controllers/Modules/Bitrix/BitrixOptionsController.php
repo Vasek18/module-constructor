@@ -11,6 +11,7 @@ use App\Models\Modules\Bitrix\BitrixAdminOptions;
 use Illuminate\Support\Facades\DB;
 use App\Models\Modules\Bitrix\BitrixAdminOptionsVals;
 use App\Http\Controllers\Traits\UserOwnModule;
+use Illuminate\Support\Facades\Auth;
 
 class BitrixOptionsController extends Controller{
 	use UserOwnModule;
@@ -34,10 +35,13 @@ class BitrixOptionsController extends Controller{
 		$data = [
 			'module'        => $module,
 			'options'       => $options,
-			'options_types' => $options_types
+			'options_types' => $options_types,
+			'user'          => Auth::user(),
 		];
 
 		//dd($data);
+
+		// dd(\Auth::user());
 
 		return view("bitrix.admin_options.admin_options", $data);
 	}

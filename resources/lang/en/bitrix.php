@@ -45,4 +45,9 @@ return [
 	'download_as_new_or_update' => 'Download as',
 	'download_as_new'           => 'fresh module',
 	'download_as_update'        => 'update',
+
+	'see_file'         => 'See file',
+	'see_lang_file'    => 'See lang file',
+	'see_file_title'   => 'See file',
+	'no_money_no_file' => 'Sorry, this is a paid service',
 ];

@@ -8,8 +8,18 @@
     @push('scripts')
     <script src="/js/bitrix_module_admin_options.js"></script>
     @endpush
-    <form role="form" method="POST" action="{{ action('Modules\Bitrix\BitrixOptionsController@store', $module->id) }}">
-        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+
+
+    @include('bitrix.button_n_modal_for_file_copy', ['path' => '\options.php', 'show' => $user->canSeePayedFiles(), 'is_lang' => false])
+    @include('bitrix.button_n_modal_for_file_copy', ['path' => '\lang\ru\options.php', 'show' => $user->canSeePayedFiles(), 'is_lang' => true, 'add_id' => '_lang'])
+
+    <form role="form"
+          method="POST"
+          action="{{ action('Modules\Bitrix\BitrixOptionsController@store', $module->id) }}">
+        <input type="hidden"
+               name="_token"
+               value="{{ csrf_token() }}">
         <div class="row option-headers">
             <div class="col-md-4">
                 <label>{{ trans('bitrix_admin_options.option_name') }}</label>
@@ -23,8 +33,7 @@
             <div class="col-md-2">
                 <label>{{ trans('bitrix_admin_options.option_additional_settings') }}</label>
             </div>
-            <div class="col-md-1">
-            </div>
+            <div class="col-md-1"></div>
         </div>
         <div class="options">
             <div class="draggable-container">
@@ -51,7 +60,8 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                <button class="btn btn-primary btn-block" name="save"
+                <button class="btn btn-primary btn-block"
+                        name="save"
                         type="submit">{{ trans('bitrix_admin_options.save') }}</button>
             </div>
         </div>

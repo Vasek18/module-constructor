@@ -53,6 +53,10 @@ class User extends Model implements AuthenticatableContract,
 		return false;
 	}
 
+	public function canSeePayedFiles(){
+		return true;
+	}
+
 	public function bitrixes(){
 		return $this->hasMany('App\Models\Modules\Bitrix\Bitrix');
 	}

@@ -45,4 +45,9 @@ return [
 	'download_as_new_or_update' => 'Скачать как',
 	'download_as_new'           => 'свежий модуль',
 	'download_as_update'        => 'обновление',
+
+	'see_file'         => 'Просмотреть файл',
+	'see_lang_file'    => 'Просмотреть ланг файл',
+	'see_file_title'   => 'Просмотр файла',
+	'no_money_no_file' => 'Эту услугу нужно оплатить',
 ];
