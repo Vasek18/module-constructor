@@ -5,6 +5,7 @@ namespace App\Models\Modules\Bitrix;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Auth;
+use App\Models\Modules\Bitrix\BitrixHelperFunctions;
 
 class BitrixAdminOptions extends Model{
 	protected $table = 'bitrix_modules_options';
@@ -34,12 +35,17 @@ class BitrixAdminOptions extends Model{
 	// сохраняем настройки в папку модуля
 	static public function saveOptionFile(Bitrix $module){
 		$optionsString = '';
+		$helperFunctionsArr = [];
+		$helperFunctions = "";
 		Bitrix::changeVarsInModuleFileAndSave('bitrix/lang/ru/options.php', $module->id);
 		if ($module->options()->count()){
 			$options = $module->options()->orderBy('sort', 'asc')->get();
 
 			foreach ($options as $option){
 				$field_params_string = $option->getParamsStringForFile($option->type);
+				if ($option->spec_vals){
+					$helperFunctionsArr[] = $option->getNeededHelperFunctionName();
+				}
 				//dd($field_params_string);
 				// код, название, значение по умолчанию, [тип поля, параметры]
 				$string = PHP_EOL."\t\t\tarray('".$option->code."', Loc::getMessage('".$module->lang_key."_".strtoupper($option->code)."_TITLE'), '', array('".$option->type."'".$field_params_string.")),";
@@ -56,9 +62,24 @@ class BitrixAdminOptions extends Model{
 					}
 				}
 			}
+
+			// dd($helperFunctionsArr);
+			$helperFunctions = BitrixHelperFunctions::getPhpCodeFromListOfFuncsNames($module, $helperFunctionsArr);
 		}
 
-		Bitrix::changeVarsInModuleFileAndSave('bitrix/options.php', $module->id, Array("{OPTIONS}"), Array($optionsString));
+		Bitrix::changeVarsInModuleFileAndSave('bitrix/options.php', $module->id, Array("{OPTIONS}", "{HELPER_FUNCTIONS}"), Array($optionsString, $helperFunctions));
+	}
+
+	public function getNeededHelperFunctionName(){
+		if ($this->spec_vals == 'iblocks_list'){
+			return 'iblocks_list';
+		}
+		if ($this->spec_vals == 'iblock_items_list'){
+			return 'iblock_items_list';
+		}
+		if ($this->spec_vals == 'iblock_props_list'){
+			return 'iblock_props_list';
+		}
 	}
 
 	public function getParamsStringForFile($option_type){
@@ -80,13 +101,13 @@ class BitrixAdminOptions extends Model{
 			}else{
 				//dd($this->spec_vals);
 				if ($this->spec_vals == 'iblocks_list'){
-					$params_string .= '$iblocks('.$this->spec_vals_args.')';
+					$params_string .= '$iblocks_list('.$this->spec_vals_args.')';
 				}
 				if ($this->spec_vals == 'iblock_items_list'){
-					$params_string .= '$iblock_items('.$this->spec_vals_args.')';
+					$params_string .= '$iblock_items_list('.$this->spec_vals_args.')';
 				}
 				if ($this->spec_vals == 'iblock_props_list'){
-					$params_string .= '$iblock_props('.$this->spec_vals_args.')';
+					$params_string .= '$iblock_props_list('.$this->spec_vals_args.')';
 				}
 			}
 		}
