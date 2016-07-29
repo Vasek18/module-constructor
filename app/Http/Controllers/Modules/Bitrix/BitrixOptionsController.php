@@ -141,15 +141,15 @@ class BitrixOptionsController extends Controller{
 	}
 
 	// удаление поля для страницы настроек
-	public function destroy(Bitrix $module, $option_id, Request $request){
-		if (!$this->userCreatedModule($module->id)){
+	public function destroy(Bitrix $module, BitrixAdminOptions $option, Request $request){
+		if (!$this->moduleOwnsOption($module, $option)){
 			return $this->unauthorized($request);
 		}
-		if (!$option_id || !$module->id){
+		if (!$option->id || !$module->id){
 			return false;
 		}
 		// удаляем запись из БД
-		BitrixAdminOptions::destroy($option_id);
+		BitrixAdminOptions::destroy($option->id);
 
 		// производим замены в папке модуля
 		BitrixAdminOptions::saveOptionFile($module);

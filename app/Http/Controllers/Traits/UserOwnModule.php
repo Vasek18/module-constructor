@@ -8,6 +8,7 @@ use App\Models\Modules\Bitrix\BitrixComponent;
 use App\Models\Modules\Bitrix\BitrixComponentsArbitraryFiles;
 use App\Models\Modules\Bitrix\BitrixComponentsParams;
 use App\Models\Modules\Bitrix\BitrixComponentsTemplates;
+use App\Models\Modules\Bitrix\BitrixAdminOptions;
 
 trait UserOwnModule{
 	protected function userCreatedModule($id){
@@ -39,6 +40,10 @@ trait UserOwnModule{
 
 	protected function componentsOwnsTemplate(BitrixComponent $component, BitrixComponentsTemplates $template){
 		return $template->component->id == $component->id;
+	}
+
+	protected function moduleOwnsOption(Bitrix $module, BitrixAdminOptions $option){
+		return $option->module->id == $module->id;
 	}
 }
 

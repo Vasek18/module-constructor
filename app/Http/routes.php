@@ -47,7 +47,7 @@ Route::group(['prefix' => 'my-bitrix', 'middleware' => 'bitrix.owner'], function
 	Route::group(['prefix' => '{module}/admin_options'], function (){
 		Route::get('', ['as' => 'bitrix_module_admin_options', 'uses' => 'Modules\Bitrix\BitrixOptionsController@index']);
 		Route::post('', 'Modules\Bitrix\BitrixOptionsController@store');
-		Route::get('delete/{option_id}', 'Modules\Bitrix\BitrixOptionsController@destroy');
+		Route::get('delete/{option}', 'Modules\Bitrix\BitrixOptionsController@destroy');
 	});
 
 	// обработчики событий
