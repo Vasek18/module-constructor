@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class BitrixAdminOptionsVals extends Model{
 	protected $table = 'bitrix_modules_options_vals_for_select';
-	protected $fillable = ['option_id', 'key', 'value'];
+	protected $fillable = ['option_id', 'key', 'value', 'is_default'];
 	public $timestamps = false;
 
 	public function getLangKeyAttribute(){

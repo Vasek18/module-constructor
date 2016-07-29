@@ -47,7 +47,7 @@ class BitrixOptionsController extends Controller{
 	}
 
 	public function store(Bitrix $module, Request $request){
-		//dd($request->all());
+		// dd($request->all());
 
 		// перебираем все строки полей
 		// todo я могу без цикла и перебирания полей обойтись
@@ -118,15 +118,23 @@ class BitrixOptionsController extends Controller{
 						if (!$option_val_key || !$request['option_'.$i.'_vals_value'][$io]){
 							continue;
 						}
+
+						$is_default = false;
+						if (isset($request['option_'.$i.'_vals_default']) && $request['option_'.$i.'_vals_default'] == $io){
+							$is_default = true;
+							$option->update(['default_value' => $option_val_key]);
+						}
+
 						$val = BitrixAdminOptionsVals::updateOrCreate(
 							[
 								'option_id' => $option->id,
 								'key'       => $option_val_key
 							],
 							[
-								'option_id' => $option->id,
-								'key'       => $option_val_key,
-								'value'     => $request['option_'.$i.'_vals_value'][$io]
+								'option_id'  => $option->id,
+								'key'        => $option_val_key,
+								'value'      => $request['option_'.$i.'_vals_value'][$io],
+								'is_default' => $is_default,
 							]
 						);
 					}

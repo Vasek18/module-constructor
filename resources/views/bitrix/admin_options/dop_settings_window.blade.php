@@ -27,15 +27,15 @@
                             <b>{{ trans('bitrix_admin_options.specific_values') }}</b>
                         </label>
                         @if ($option && $option->vals)
-                            @foreach($option->vals as $val)
-                                @include('bitrix.admin_options.option_val_item', ['val' => $val, 'i' => $i])
+                            @foreach($option->vals as $io => $val)
+                                @include('bitrix.admin_options.option_val_item', ['val' => $val, 'i' => $i, 'j' => $io])
                             @endforeach
-                            @for($j = count($option->vals); $j<=count($option->vals)+5;$j++)
-                                @include('bitrix.admin_options.option_val_item', ['val' => null, 'i' => $i])
+                            @for($j = count($option->vals); $j<=count($option->vals)+5; $j++)
+                                @include('bitrix.admin_options.option_val_item', ['val' => null, 'i' => $i, 'j' => $j])
                             @endfor
                         @else
-                            @for($j = 0; $j<=5;$j++)
-                                @include('bitrix.admin_options.option_val_item', ['val' => null, 'i' => $i])
+                            @for($j = 0; $j<=5; $j++)
+                                @include('bitrix.admin_options.option_val_item', ['val' => null, 'i' => $i, 'j' => $j])
                             @endfor
                         @endif
                     </div>
@@ -73,7 +73,7 @@
                                @if ($option && $option->spec_vals == 'iblock_props_list') value="{{$option->spec_vals_args}}" @endif>
                     </div>
                 </div>
-                <div class="form-group" data-for_type_ids="text textarea selectbox multiselectbox">
+                <div class="form-group" data-for_type_ids="text textarea">
                     <label for="option_{{$i}}_default_value">{{ trans('bitrix_admin_options.value_by_default') }}</label>
                     <input class="form-control" type="text" name="default_value[]" id="option_{{$i}}_default_value"
                            @if ($option) value="{{$option->default_value}}" @endif>

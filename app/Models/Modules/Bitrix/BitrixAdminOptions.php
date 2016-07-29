@@ -48,12 +48,13 @@ class BitrixAdminOptions extends Model{
 				}
 				//dd($field_params_string);
 				// код, название, значение по умолчанию, [тип поля, параметры]
-				$string = PHP_EOL."\t\t\tarray('".$option->code."', Loc::getMessage('".$module->lang_key."_".strtoupper($option->code)."_TITLE'), '', array('".$option->type."'".$field_params_string.")),";
+				$string = PHP_EOL."\t\t\tarray('".$option->code."', Loc::getMessage('".$option->lang_key."_TITLE'), Loc::getMessage('".$option->lang_key."_DEFAULT_VALUE'), array('".$option->type."'".$field_params_string.")),";
 				//echo $string;
 
 				$optionsString .= $string;
 
-				$module->changeVarInLangFile($option->lang_key, $option->name, 'lang/ru/options.php');
+				$module->changeVarInLangFile($option->lang_key.'_TITLE', $option->name, 'lang/ru/options.php');
+				$module->changeVarInLangFile($option->lang_key."_DEFAULT_VALUE", $option->default_value, 'lang/ru/options.php');
 				if ($option->type == 'selectbox' || $option->type == 'multiselectbox'){
 					if ($option->vals->count()){
 						foreach ($option->vals as $val){
@@ -132,7 +133,7 @@ class BitrixAdminOptions extends Model{
 	}
 
 	public function getLangKeyAttribute(){
-		return $this->module->lang_key.'_'.strtoupper($this->code).'_TITLE';
+		return $this->module->lang_key.'_OPTION_'.strtoupper($this->code);
 	}
 
 	// связи с другими моделями

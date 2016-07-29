@@ -11,7 +11,7 @@
     <div class="col-md-2">
         <div class="checkbox">
             <label>
-                <input type="checkbox">
+                <input type="radio" name="option_{{$i}}_vals_default" value="{{$j}}" {{$val && $val->is_default ? 'checked="checked"' : ''}}>
                 <small>{{ trans('bitrix_admin_options.option_option_default') }}</small>
             </label>
         </div>

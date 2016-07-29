@@ -17,6 +17,7 @@ class CreateBitrixModulesOptionsValsForSelectTable extends Migration{
 			$table->integer('sort');
 			$table->string('key');
 			$table->string('value');
+			$table->boolean('is_default');
 		});
 	}
 
