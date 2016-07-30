@@ -4,7 +4,7 @@ return [
 	'title'         => 'Sign up',
 	'name'          => 'Name',
 	'surname'       => 'Surname',
-	'email'         => 'email',
+	'email'         => 'E-mail',
 	'company_site'  => 'Company site',
 	'company_name'  => 'Company name',
 	'password'      => 'Password',

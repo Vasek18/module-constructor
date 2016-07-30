@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Models\Modules\Bitrix\BitrixAdminMenuItems;
 
 class AuthenticationInterfaceTest extends TestCase{
 
@@ -116,5 +115,4 @@ class AuthenticationInterfaceTest extends TestCase{
 		$this->see('These credentials do not match our records');
 	}
 }
-
 ?>

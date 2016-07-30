@@ -89,7 +89,8 @@
                             <div class="form-group">
                                 <div class="col-md-6 col-md-offset-4">
                                     <button type="submit"
-                                            class="btn btn-primary">{{ trans('reg.submit') }}</button>
+                                            class="btn btn-primary"
+                                    name="signup">{{ trans('reg.submit') }}</button>
                                 </div>
                             </div>
                         </form>

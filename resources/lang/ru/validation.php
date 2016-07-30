@@ -36,7 +36,7 @@ return [
 	'different'            => 'The :attribute and :other must be different.',
 	'digits'               => 'The :attribute must be :digits digits.',
 	'digits_between'       => 'The :attribute must be between :min and :max digits.',
-	'email'                => 'The :attribute must be a valid email address.',
+	'email'                => 'Адрес почты не валидный.',
 	'exists'               => 'The selected :attribute is invalid.',
 	'filled'               => 'Поле :attribute обязательно.',
 	'image'                => 'The :attribute must be an image.',
@@ -124,10 +124,16 @@ return [
 			'required' => 'Поле "Код партнёра" обязательно',
 		],
 		'password'       => [
-			'required' => 'Поле "Пароль" обязательно',
+			'required'  => 'Поле "Пароль" обязательно',
+			'min'       => 'Пароль должен быть не менее :min символов в длину',
+			'confirmed' => 'Пароль и подтверждение не совпадают',
 		],
-		'email'       => [
+		'email'          => [
 			'required' => 'Поле "E-mail" обязательно',
+			'unique'   => 'Такой почтовый адрес уже занят',
+		],
+		'first_name'     => [
+			'required' => 'Поле "Имя" обязательно',
 		],
 	],
 
