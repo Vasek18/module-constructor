@@ -13,7 +13,7 @@ class BitrixDetailPageInterfaceTest extends TestCase{
 		parent::setUp();
 
 		$this->signIn();
-		$this->module = $this->createBitrixModule();
+		$this->module = $this->fillNewBitrixForm();
 	}
 
 	function tearDown(){
@@ -42,7 +42,7 @@ class BitrixDetailPageInterfaceTest extends TestCase{
 	/** @test */
 	function it_displays_module_data(){
 		$this->module->deleteFolder();
-		$this->module = $this->createBitrixModule([
+		$this->module = $this->fillNewBitrixForm([
 			'MODULE_NAME'        => 'Supermodule',
 			'MODULE_DESCRIPTION' => 'Awesome module',
 			'MODULE_CODE'        => 'mysupermodule',

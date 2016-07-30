@@ -89,47 +89,10 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase{
 		$this->type($params['MODULE_CODE'], 'MODULE_CODE');
 		$this->type($params['MODULE_VERSION'], 'MODULE_VERSION');
 		$this->press('module_create');
-	}
 
-	// создаём запись в бд и папку в сторэйдж
-	public function createBitrixModule($params = Array()){
-		if (!isset($params['MODULE_NAME'])){
-			$params['MODULE_NAME'] = $this->standartModuleName;
+		if (isset($params['MODULE_CODE'])){
+			return Bitrix::where('code', $params['MODULE_CODE'])->first();
 		}
-		if (!isset($params['MODULE_DESCRIPTION'])){
-			$params['MODULE_DESCRIPTION'] = $this->standartModuleDescription;
-		}
-		if (!isset($params['MODULE_CODE'])){
-			$params['MODULE_CODE'] = $this->standartModuleCode;
-		}
-		if (!isset($params['MODULE_VERSION'])){
-			$params['MODULE_VERSION'] = $this->standartModuleVersion;
-		}
-		if (!isset($params['PARTNER_NAME'])){
-			$params['PARTNER_NAME'] = $this->user->bitrix_company_name;
-		}
-		if (!isset($params['PARTNER_URI'])){
-			$params['PARTNER_URI'] = $this->user->site;
-		}
-		if (!isset($params['PARTNER_CODE'])){
-			$params['PARTNER_CODE'] = $this->user->bitrix_partner_code;
-		}
-
-		$request = new Request();
-		$request->MODULE_NAME = $params['MODULE_NAME'];
-		$request->MODULE_DESCRIPTION = $params['MODULE_DESCRIPTION'];
-		$request->MODULE_CODE = $params['MODULE_CODE'];
-		$request->MODULE_VERSION = $params['MODULE_VERSION'];
-		$request->PARTNER_NAME = $params['PARTNER_NAME'];
-		$request->PARTNER_URI = $params['PARTNER_URI'];
-		$request->PARTNER_CODE = $params['PARTNER_CODE'];
-
-		$id = Bitrix::store($request);
-		if (!$id){
-			return false;
-		}
-
-		return Bitrix::find($id);
 	}
 
 	function deleteFolder($moduleCode){

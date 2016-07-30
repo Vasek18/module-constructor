@@ -39,55 +39,6 @@ class Bitrix extends Model{
 	// на случай, если я где-то буду использовать create, эти поля можно будет записывать
 	protected $fillable = ['name', 'description', 'code', 'PARTNER_NAME', 'PARTNER_URI', 'PARTNER_CODE', 'version'];
 
-	// создание модуля (записывание в бд)
-	// todo валидация данных
-	public static function store(Request $request){
-		$bitrix = new Bitrix;
-
-		if (!Auth::id()){
-			// todo выкидывать ошибку
-			return false;
-		}
-
-		if (Bitrix::existsModuleWithThisCodeAndPartnerCode($request->PARTNER_CODE, $request->MODULE_CODE)){
-			//dd($request);
-			// todo выкидывать ошибку
-			return false;
-		}
-
-		// на будущее сохраняем какие-то поля в таблицу пользователя, если они не были указаны, но были указаны сейчас
-		$bitrix::completeUserProfile(Auth::id(), $request);
-
-		// запись в БД
-		$bitrix->name = trim($request->MODULE_NAME);
-		$bitrix->description = trim($request->MODULE_DESCRIPTION);
-		$bitrix->code = trim($request->MODULE_CODE);
-		$bitrix->PARTNER_NAME = trim($request->PARTNER_NAME);
-		$bitrix->PARTNER_URI = trim($request->PARTNER_URI);
-		$bitrix->PARTNER_CODE = trim($request->PARTNER_CODE);
-		$version = trim($request->MODULE_VERSION);
-		if (!preg_match('/[0-9]+\.[0-9]+\.[0-9]+/is', $version)){
-			$version = '0.0.1';
-		}
-		if ($version == '0.0.0'){
-			$version = '0.0.1';
-		}
-		$bitrix->version = $version;
-
-		Auth::user()->bitrixes()->save($bitrix);
-		$module_id = $bitrix->id;
-
-		if ($module_id){
-			// создание папки модуля пользователя на серваке
-			if (!$bitrix->createFolder()){
-				// todo возврат ошибки
-				return false;
-			}
-
-			return $module_id;
-		}
-	}
-
 	// создание папки с модулем на серваке
 	// todo проверка защиты
 	public function createFolder(){
@@ -162,7 +113,7 @@ class Bitrix extends Model{
 	}
 
 	// на будущее сохраняем какие-то поля в таблицу пользователя, если они не были указаны, но были указаны сейчас
-	static private function completeUserProfile($user_id, Request $request){
+	static public function completeUserProfile($user_id, Request $request){
 		$user = User::find($user_id);
 		if (!$user->bitrix_partner_code || $user->bitrix_partner_code == ''){
 			$user->bitrix_partner_code = $request->PARTNER_CODE;
@@ -264,6 +215,7 @@ class Bitrix extends Model{
 		$this->disk()->deleteDirectory($this->module_folder);
 	}
 
+	// скорее всего уже не используется
 	public static function existsModuleWithThisCodeAndPartnerCode($partnerCode, $moduleCode){
 		if (Bitrix::where('PARTNER_CODE', $partnerCode)->where('code', $moduleCode)->count()){
 			return true;

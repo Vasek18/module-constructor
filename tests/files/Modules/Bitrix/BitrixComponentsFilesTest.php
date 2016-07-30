@@ -18,7 +18,7 @@ class BitrixComponentsFilesTest extends TestCase{
 		parent::setUp();
 
 		$this->signIn();
-		$this->module = $this->createBitrixModule();
+		$this->module = $this->fillNewBitrixForm();
 	}
 
 	function tearDown(){

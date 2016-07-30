@@ -45,7 +45,7 @@ class BitrixAdminMenuInterfaceTest extends TestCase{
 	/** @test */
 	function author_can_get_to_this_page(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$this->visit('/my-bitrix/'.$module->id.'/admin_menu');
 
@@ -57,7 +57,7 @@ class BitrixAdminMenuInterfaceTest extends TestCase{
 	/** @test */
 	function this_is_definitely_page_about_iblock(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$this->visit('/my-bitrix/'.$module->id.'/admin_menu');
 
@@ -70,7 +70,7 @@ class BitrixAdminMenuInterfaceTest extends TestCase{
 	function this_is_definitely_page_about_iblock_en(){
 		$this->signIn();
 		$this->setLang('en');
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$this->visit('/my-bitrix/'.$module->id.'/admin_menu');
 
@@ -82,7 +82,7 @@ class BitrixAdminMenuInterfaceTest extends TestCase{
 	/** @test */
 	function unauthorized_cannot_get_to_this_page(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$this->logOut();
 
@@ -96,7 +96,7 @@ class BitrixAdminMenuInterfaceTest extends TestCase{
 	/** @test */
 	function not_author_cannot_get_to_this_page_of_anothers_module(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$this->signIn(factory(App\Models\User::class)->create());
 
@@ -110,7 +110,7 @@ class BitrixAdminMenuInterfaceTest extends TestCase{
 	/** @test */
 	function it_returns_page_data_after_save(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$amp = $this->createAdminPageOnForm($module, [
 			'name'        => 'Ololo',
@@ -138,7 +138,7 @@ class BitrixAdminMenuInterfaceTest extends TestCase{
 	/** @test */
 	function it_returns_an_error_when_there_is_no_code(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$amp = $this->createAdminPageOnForm($module, [
 			'name'        => 'Ololo',
@@ -155,7 +155,7 @@ class BitrixAdminMenuInterfaceTest extends TestCase{
 	/** @test */
 	function it_returns_an_error_when_there_is_no_name(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$amp = $this->createAdminPageOnForm($module, [
 			'name' => '',
@@ -172,7 +172,7 @@ class BitrixAdminMenuInterfaceTest extends TestCase{
 	function it_returns_an_error_when_there_is_no_code_en(){
 		$this->signIn();
 		$this->setLang('en');
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$amp = $this->createAdminPageOnForm($module, [
 			'name' => 'Ololo',
@@ -189,7 +189,7 @@ class BitrixAdminMenuInterfaceTest extends TestCase{
 	function it_returns_an_error_when_there_is_no_name_en(){
 		$this->signIn();
 		$this->setLang('en');
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$amp = $this->createAdminPageOnForm($module, [
 			'name' => '',
@@ -205,7 +205,7 @@ class BitrixAdminMenuInterfaceTest extends TestCase{
 	// /** @test */
 	// function it_can_remove_admin_menu_page(){
 	// 	$this->signIn();
-	// 	$module = $this->createBitrixModule();
+	// 	$module = $this->fillNewBitrixForm();
 	//
 	// 	$amp = $this->createAdminPageOnForm($module);
 	// 	$this->removeAdminPage($module, $amp);

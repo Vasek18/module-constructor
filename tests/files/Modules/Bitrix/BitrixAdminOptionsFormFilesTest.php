@@ -5,9 +5,6 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Helpers\vArrParse;
 
 class BitrixAdminOptionsFormFilesTest extends TestCase{
-	// todo значение по умолчанию
-	// todo подстановка чужих айдишников
-
 	use DatabaseTransactions;
 
 	private $module;
@@ -16,7 +13,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 		parent::setUp();
 
 		$this->signIn();
-		$this->module = $this->createBitrixModule();
+		$this->module = $this->fillNewBitrixForm();
 	}
 
 	function tearDown(){

@@ -143,7 +143,7 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 	/** @test */
 	function it_writes_creation_code_with_all_the_params_from_infoblock_tab(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$ib = $this->createIblockOnForm($module, [
 			"CANONICAL_PAGE_URL" => "test",
@@ -195,7 +195,7 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 	/** @test */
 	function it_writes_creation_code_with_all_the_params_from_seo_tab(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$ib = $this->createIblockOnForm($module, [
 			"IPROPERTY_TEMPLATES[SECTION_META_TITLE][TEMPLATE]"                 => "test1",
@@ -294,7 +294,7 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 	/** @test */
 	function it_writes_creation_code_with_all_the_params_from_fields_tab(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$ib = $this->createIblockOnForm($module, [
 			"FIELDS[IBLOCK_SECTION][IS_REQUIRED]"                             => "Y",
@@ -505,7 +505,7 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 	/** @test */
 	function it_writes_creation_code_with_string_prop(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$ib = $this->createIblockOnForm($module, [
 				"properties[NAME][0]" => "Тест",
@@ -566,7 +566,7 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 	/** @test */
 	function it_writes_creation_code_with_google_map_prop(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$ib = $this->createIblockOnForm($module, [
 				'VERSION'             => '2',
@@ -635,7 +635,7 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 	/** @test */
 	function it_writes_creation_code_with_required_string_prop(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$ib = $this->createIblockOnForm($module, [
 				"properties[NAME][0]"        => "Тест",
@@ -697,7 +697,7 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 	/** @test */
 	function it_writes_creation_code_with_changed_permissions(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$ib = $this->createIblockOnForm($module, [
 			"GROUP_ID" => "Array('2' => 'X')",
@@ -742,7 +742,7 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 	/** @test */
 	function it_writes_creation_code_with_test_element(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$ib = $this->createIblockOnForm($module);
 		$this->createIblockElementOnForm($module, $ib, [
@@ -801,7 +801,7 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 	/** @test */
 	function it_writes_creation_code_with_test_element_with_no_props_values_when_there_is_prop(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$ib = $this->createIblockOnForm($module, [
 			"properties[NAME][0]"        => "Тест",
@@ -864,7 +864,7 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 	/** @test */
 	function it_writes_creation_code_with_test_element_with_string_prop_value(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$ib = $this->createIblockOnForm($module, [
 			"properties[NAME][0]"        => "Тест",
@@ -933,7 +933,7 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 	/** @test */
 	function it_writes_creation_code_with_test_element_with_google_map_prop_value(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$ib = $this->createIblockOnForm($module, [
 			"properties[NAME][0]" => "Тест",
@@ -1004,7 +1004,7 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 	/** @test */
 	function it_removes_creation_code_when_there_is_no_iblock(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$iblock = $this->createIblockOnForm($module, [
 			"properties[NAME][0]" => "Тест",
@@ -1029,7 +1029,7 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 	/** @test */
 	function it_removes_creation_code_when_there_is_no_iblock_but_was_with_element(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$iblock = $this->createIblockOnForm($module);
 		$this->createIblockElementOnForm($module, $iblock, [
@@ -1055,7 +1055,7 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 	/** @test */
 	function it_removes_creation_code_when_there_is_no_iblock_but_was_with_element_with_prop(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$iblock = $this->createIblockOnForm($module, [
 			"properties[NAME][0]" => "Тест",
@@ -1086,7 +1086,7 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 	/** @test */
 	function it_save_the_creation_code_of_ib_when_the_second_was_deleted(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$iblock = $this->createIblockOnForm($module);
 
@@ -1137,7 +1137,7 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 	/** @test */
 	function it_removes_creation_code_of_the_prop(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$iblock = $this->createIblockOnForm($module, [
 				"properties[NAME][0]" => "Тест",
@@ -1191,7 +1191,7 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 	/** @test */
 	function it_removes_creation_code_of_test_element(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$iblock = $this->createIblockOnForm($module);
 		$element = $this->createIblockElementOnForm($module, $iblock, [
@@ -1243,7 +1243,7 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 	/** @test */
 	function it_writes_creation_code_with_all_the_params_from_infoblock_tab_on_existing_iblock(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$iblock = $this->createIblockOnForm($module, [
 			"CANONICAL_PAGE_URL" => "test",
@@ -1303,7 +1303,7 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 	/** @test */
 	function it_writes_creation_code_with_all_the_params_from_seo_tab_on_existing_iblock(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$iblock = $this->createIblockOnForm($module);
 		$iblock_ = $this->changeIblockOnForm($module, $iblock, [
@@ -1404,7 +1404,7 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 	/** @test */
 	function it_writes_creation_code_with_all_the_params_from_fields_tab_on_existing_iblock(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$iblock = $this->createIblockOnForm($module);
 		$iblock_ = $this->changeIblockOnForm($module, $iblock, [
@@ -1618,7 +1618,7 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 	/** @test */
 	function it_writes_creation_code_with_string_prop_on_existing_iblock(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$iblock = $this->createIblockOnForm($module);
 		$iblock_ = $this->changeIblockOnForm($module, $iblock, [

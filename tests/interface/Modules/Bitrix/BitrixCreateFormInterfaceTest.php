@@ -173,6 +173,7 @@ class BitrixCreateFormInterfaceTest extends TestCase{
 
 		$this->see('Модуль с таким кодом уже существует у вас');
 	}
+
 	/** @test */
 	function it_returns_an_error_when_a_pair_of_user_code_and_module_code_are_not_unique_en(){
 		$this->setLang('en');

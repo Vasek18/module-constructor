@@ -9,7 +9,7 @@ class BitrixAdminOptionsFormInterfaceTest extends TestCase{
 	/** @test */
 	function author_can_get_to_this_page(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$this->visit('/my-bitrix/'.$module->id.'/admin_options');
 
@@ -21,7 +21,7 @@ class BitrixAdminOptionsFormInterfaceTest extends TestCase{
 	/** @test */
 	function this_is_definitely_page_about_settings(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$this->visit('/my-bitrix/'.$module->id.'/admin_options');
 
@@ -34,7 +34,7 @@ class BitrixAdminOptionsFormInterfaceTest extends TestCase{
 	function this_is_definitely_page_about_settings_en(){
 		$this->signIn();
 		$this->setLang('en');
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$this->visit('/my-bitrix/'.$module->id.'/admin_options');
 
@@ -46,7 +46,7 @@ class BitrixAdminOptionsFormInterfaceTest extends TestCase{
 	/** @test */
 	function unauthorized_cannot_get_to_this_page(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$this->logOut();
 
@@ -60,7 +60,7 @@ class BitrixAdminOptionsFormInterfaceTest extends TestCase{
 	/** @test */
 	function not_author_cannot_get_to_this_page_of_anothers_module(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$this->signIn(factory(App\Models\User::class)->create());
 

@@ -17,7 +17,7 @@ class BitrixComponentsInterfaceTest extends TestCase{
 		parent::setUp();
 
 		$this->signIn();
-		$this->module = $this->createBitrixModule();
+		$this->module = $this->fillNewBitrixForm();
 	}
 
 	function tearDown(){
@@ -216,7 +216,7 @@ class BitrixComponentsInterfaceTest extends TestCase{
 
 		// у другого юзера тоже есть модуль с компонентом
 		$this->signIn(factory(App\Models\User::class)->create());
-		$module2 = $this->createBitrixModule();
+		$module2 = $this->fillNewBitrixForm();
 		$component2 = $this->createOnForm($module2);
 		$module2->deleteFolder();
 
@@ -299,7 +299,7 @@ class BitrixComponentsInterfaceTest extends TestCase{
 
 		// у другого юзера тоже есть модуль с компонентом
 		$this->signIn(factory(App\Models\User::class)->create());
-		$module2 = $this->createBitrixModule();
+		$module2 = $this->fillNewBitrixForm();
 		$component2 = $this->createOnForm($module2);
 		$module2->deleteFolder();
 
@@ -321,7 +321,7 @@ class BitrixComponentsInterfaceTest extends TestCase{
 
 		// у другого юзера тоже есть модуль с компонентом
 		$this->signIn(factory(App\Models\User::class)->create());
-		$module2 = $this->createBitrixModule();
+		$module2 = $this->fillNewBitrixForm();
 		$component2 = $this->createOnForm($module2);
 		$module2->deleteFolder();
 
@@ -391,7 +391,7 @@ class BitrixComponentsInterfaceTest extends TestCase{
 
 		// у другого юзера тоже есть модуль с компонентом
 		$this->signIn(factory(App\Models\User::class)->create());
-		$module2 = $this->createBitrixModule();
+		$module2 = $this->fillNewBitrixForm();
 		$component2 = $this->createOnForm($module2);
 		$module2->deleteFolder();
 
@@ -414,7 +414,7 @@ class BitrixComponentsInterfaceTest extends TestCase{
 
 		// у другого юзера тоже есть модуль с компонентом
 		$this->signIn(factory(App\Models\User::class)->create());
-		$module2 = $this->createBitrixModule();
+		$module2 = $this->fillNewBitrixForm();
 		$component2 = $this->createOnForm($module2);
 		$module2->deleteFolder();
 
@@ -470,7 +470,7 @@ class BitrixComponentsInterfaceTest extends TestCase{
 
 		// у другого юзера тоже есть модуль с компонентом с файлом
 		$this->signIn(factory(App\Models\User::class)->create());
-		$module2 = $this->createBitrixModule();
+		$module2 = $this->fillNewBitrixForm();
 		$component2 = $this->createOnForm($module2);
 		$file2 = $this->storeArbitraryFileOnForm($module2, $component2, '/trololo/', 'trololo.php', 'test');
 		$module2->deleteFolder();
@@ -514,7 +514,7 @@ class BitrixComponentsInterfaceTest extends TestCase{
 
 		// у другого юзера тоже есть модуль с компонентом с параметром
 		$this->signIn(factory(App\Models\User::class)->create());
-		$module2 = $this->createBitrixModule();
+		$module2 = $this->fillNewBitrixForm();
 		$component2 = $this->createOnForm($module2);
 		$param2 = $this->createComponentParamOnForm($module2, $component2, 0, [
 			'name' => '',
@@ -542,7 +542,7 @@ class BitrixComponentsInterfaceTest extends TestCase{
 
 		// у другого юзера тоже есть модуль с компонентом
 		$this->signIn(factory(App\Models\User::class)->create());
-		$module2 = $this->createBitrixModule();
+		$module2 = $this->fillNewBitrixForm();
 		$component2 = $this->createOnForm($module2);
 		$module2->deleteFolder();
 
@@ -574,7 +574,7 @@ class BitrixComponentsInterfaceTest extends TestCase{
 
 		// у другого юзера тоже есть модуль с компонентом с шаблоном
 		$this->signIn(factory(App\Models\User::class)->create());
-		$module2 = $this->createBitrixModule();
+		$module2 = $this->fillNewBitrixForm();
 		$component2 = $this->createOnForm($module2);
 		$template2 = $this->createTemplateOnForm($module2, $component2, [
 			'name'                 => 'Test',

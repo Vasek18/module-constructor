@@ -18,7 +18,7 @@ class BitrixArbitraryFilesInterfaceTest extends TestCase{
 		file_put_contents($this->file, 'ololo');
 
 		$this->signIn();
-		$this->module = $this->createBitrixModule();
+		$this->module = $this->fillNewBitrixForm();
 	}
 
 	function tearDown(){

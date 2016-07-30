@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\Response;
 | Контролер для создания модулей на Битриксе
 |--------------------------------------------------------------------------
 |
-|
 */
 
 class BitrixController extends Controller{
@@ -38,12 +37,40 @@ class BitrixController extends Controller{
 
 	public function store(Requests\BitrixCreateRequest $request){
 		// создание записи в бд и шаблона
-		$id = Bitrix::store($request);
-		if ($id){
-			return redirect(action('Modules\Bitrix\BitrixController@show', $id));
-		}else{
-			return back();
+		$bitrix = new Bitrix;
+
+		// на будущее сохраняем какие-то поля в таблицу пользователя, если они не были указаны, но были указаны сейчас
+		Bitrix::completeUserProfile(Auth::id(), $request);
+
+		// запись в БД
+		$bitrix->name = trim($request->MODULE_NAME);
+		$bitrix->description = trim($request->MODULE_DESCRIPTION);
+		$bitrix->code = trim($request->MODULE_CODE);
+		$bitrix->PARTNER_NAME = trim($request->PARTNER_NAME);
+		$bitrix->PARTNER_URI = trim($request->PARTNER_URI);
+		$bitrix->PARTNER_CODE = trim($request->PARTNER_CODE);
+		$version = trim($request->MODULE_VERSION);
+		if (!preg_match('/[0-9]+\.[0-9]+\.[0-9]+/is', $version)){
+			$version = '0.0.1';
 		}
+		if ($version == '0.0.0'){
+			$version = '0.0.1';
+		}
+		$bitrix->version = $version;
+
+		Auth::user()->bitrixes()->save($bitrix);
+		$module_id = $bitrix->id;
+
+		if ($module_id){
+			// создание папки модуля пользователя на серваке
+			if (!$bitrix->createFolder()){
+				return back()->withErrors([trans('bitrix_create.folder_creation_failure')]);;
+			}
+
+			return redirect(action('Modules\Bitrix\BitrixController@show', $module_id));
+		}
+
+		return back();
 	}
 
 	// детальная страница модуля

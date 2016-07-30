@@ -69,7 +69,7 @@ class BitrixInfoblockFormInterfaceTest extends TestCase{
 	/** @test */
 	function author_can_get_to_this_page(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$this->visit('/my-bitrix/'.$module->id.'/data_storage/ib');
 
@@ -81,7 +81,7 @@ class BitrixInfoblockFormInterfaceTest extends TestCase{
 	/** @test */
 	function this_is_definitely_page_about_iblock(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$this->visit('/my-bitrix/'.$module->id.'/data_storage/ib');
 
@@ -94,7 +94,7 @@ class BitrixInfoblockFormInterfaceTest extends TestCase{
 	function this_is_definitely_page_about_iblock_en(){
 		$this->signIn();
 		$this->setLang('en');
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$this->visit('/my-bitrix/'.$module->id.'/data_storage/ib');
 
@@ -106,7 +106,7 @@ class BitrixInfoblockFormInterfaceTest extends TestCase{
 	/** @test */
 	function unauthorized_cannot_get_to_this_page(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$this->logOut();
 
@@ -120,7 +120,7 @@ class BitrixInfoblockFormInterfaceTest extends TestCase{
 	/** @test */
 	function not_author_cannot_get_to_this_page_of_anothers_module(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$this->signIn(factory(App\Models\User::class)->create());
 
@@ -134,7 +134,7 @@ class BitrixInfoblockFormInterfaceTest extends TestCase{
 	/** @test */
 	function it_returns_infoblock_tab_data_after_save(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$ib = $this->createIblockOnForm($module, [
 			'NAME'               => 'Ololo',
@@ -163,7 +163,7 @@ class BitrixInfoblockFormInterfaceTest extends TestCase{
 	/** @test */
 	function it_returns_seo_tab_data_after_save(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$ib = $this->createIblockOnForm($module, [
 			"IPROPERTY_TEMPLATES[SECTION_META_TITLE][TEMPLATE]"                 => "test1",
@@ -240,7 +240,7 @@ class BitrixInfoblockFormInterfaceTest extends TestCase{
 	/** @test */
 	function it_returns_fields_tab_data_after_save(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$ib = $this->createIblockOnForm($module, [
 			"FIELDS[IBLOCK_SECTION][IS_REQUIRED]"                             => "Y",
@@ -390,7 +390,7 @@ class BitrixInfoblockFormInterfaceTest extends TestCase{
 	/** @test */
 	function it_returns_string_prop_data(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$ib = $this->createIblockOnForm($module, [
 				"properties[NAME][0]"        => "Тест",
@@ -414,7 +414,7 @@ class BitrixInfoblockFormInterfaceTest extends TestCase{
 	// /** @test */ // todo
 	// function it_returns_google_map_prop_data(){
 	// 	$this->signIn();
-	// 	$module = $this->createBitrixModule();
+	// 	$module = $this->fillNewBitrixForm();
 	//
 	// 	$ib = $this->createIblockOnForm($module, [
 	// 			"properties[NAME][0]" => "Тест",
@@ -435,7 +435,7 @@ class BitrixInfoblockFormInterfaceTest extends TestCase{
 	/** @test */
 	function it_returns_permissions_tab_data_after_save(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$ib = $this->createIblockOnForm($module, [
 			"GROUP_ID" => "Array('2' => 'X')",
@@ -450,7 +450,7 @@ class BitrixInfoblockFormInterfaceTest extends TestCase{
 	/** @test */
 	function it_returns_an_error_when_there_is_no_code(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$ib = $this->createIblockOnForm($module, [
 			'NAME' => 'Ololo',
@@ -466,7 +466,7 @@ class BitrixInfoblockFormInterfaceTest extends TestCase{
 	/** @test */
 	function it_returns_an_error_when_there_is_no_name(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$ib = $this->createIblockOnForm($module, [
 			'NAME' => '',
@@ -483,7 +483,7 @@ class BitrixInfoblockFormInterfaceTest extends TestCase{
 	function it_returns_an_error_when_there_is_no_code_en(){
 		$this->signIn();
 		$this->setLang('en');
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$ib = $this->createIblockOnForm($module, [
 			'NAME' => 'Ololo',
@@ -500,7 +500,7 @@ class BitrixInfoblockFormInterfaceTest extends TestCase{
 	function it_returns_an_error_when_there_is_no_name_en(){
 		$this->signIn();
 		$this->setLang('en');
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$ib = $this->createIblockOnForm($module, [
 			'NAME' => '',
@@ -516,7 +516,7 @@ class BitrixInfoblockFormInterfaceTest extends TestCase{
 	/** @test */
 	function it_returns_test_element_data(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$ib = $this->createIblockOnForm($module);
 		$element = $this->createIblockElementOnForm($module, $ib, [
@@ -535,7 +535,7 @@ class BitrixInfoblockFormInterfaceTest extends TestCase{
 	/** @test */
 	function it_returns_data_of_test_element_with_string_prop_value(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$ib = $this->createIblockOnForm($module, [
 			"properties[NAME][0]"        => "Тест",
@@ -558,7 +558,7 @@ class BitrixInfoblockFormInterfaceTest extends TestCase{
 	/** @test */
 	function it_returns_data_of_test_element_with_google_map_prop_value(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$ib = $this->createIblockOnForm($module, [
 			"properties[NAME][0]" => "Тест",
@@ -583,7 +583,7 @@ class BitrixInfoblockFormInterfaceTest extends TestCase{
 	// /** @test */
 	// function it_can_remove_iblock(){
 	// 	$this->signIn();
-	// 	$module = $this->createBitrixModule();
+	// 	$module = $this->fillNewBitrixForm();
 	//
 	// 	$iblock = $this->createIblockOnForm($module);
 	// 	$this->removeIblock($module, $iblock);

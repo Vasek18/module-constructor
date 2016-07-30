@@ -70,7 +70,7 @@ class BitrixAdminMenuFilesTest extends TestCase{
 	/** @test */
 	function it_writes_menu_arr_for_one_page(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$amp = $this->createAdminPageOnForm($module, [
 			'name'        => 'Ololo',
@@ -110,7 +110,7 @@ class BitrixAdminMenuFilesTest extends TestCase{
 	/** @test */
 	function it_writes_menu_arr_for_two_pages(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$amp = $this->createAdminPageOnForm($module, [
 			'name'        => 'Ololo',
@@ -186,7 +186,7 @@ class BitrixAdminMenuFilesTest extends TestCase{
 	/** @test */
 	function it_remove_admin_folder_if_there_is_no_more_pages(){
 		$this->signIn();
-		$module = $this->createBitrixModule();
+		$module = $this->fillNewBitrixForm();
 
 		$amp = $this->createAdminPageOnForm($module, [
 			'name'        => 'Ololo',
