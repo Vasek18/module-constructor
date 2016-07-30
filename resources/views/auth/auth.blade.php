@@ -56,7 +56,8 @@
                                 <div class="col-md-6 col-md-offset-4">
                                     <button type="submit"
                                             class="btn btn-primary"
-                                            style="margin-right: 15px;">
+                                            style="margin-right: 15px;"
+                                    name="login">
                                         {{ trans('auth.button_auth') }}
                                     </button>
                                     <a href="/password/email">{{ trans('auth.forgot_password') }}</a>
