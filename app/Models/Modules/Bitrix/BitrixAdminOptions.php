@@ -136,6 +136,10 @@ class BitrixAdminOptions extends Model{
 		return $this->module->lang_key.'_OPTION_'.strtoupper($this->code);
 	}
 
+	public function getBitrixReceiveCodeAttribute(){
+		return 'COption::GetOptionString("'.$this->module->full_id.'", "'.$this->code.'")';
+	}
+
 	// связи с другими моделями
 	public function module(){
 		return $this->belongsTo('App\Models\Modules\Bitrix\Bitrix');

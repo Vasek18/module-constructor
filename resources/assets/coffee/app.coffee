@@ -35,3 +35,4 @@ $(document).on "click", ".human_ajax_deletion", ->
 
 	return false
 
+$('[data-toggle="popover"]').popover()

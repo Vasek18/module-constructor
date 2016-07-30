@@ -33,6 +33,8 @@
     return false;
   });
 
+  $('[data-toggle="popover"]').popover();
+
 }).call(this);
 
 //# sourceMappingURL=app.js.map

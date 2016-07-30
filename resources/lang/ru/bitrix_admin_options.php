@@ -38,4 +38,5 @@ return [
 	'text_type'                  => 'Строка',
 	'textarea_type'              => 'Многострочный текст',
 	'no_additional_params'       => 'Нет доп. параметров',
+	'bitrix_receive_code'        => 'Код для получения значения',
 ];

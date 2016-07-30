@@ -38,4 +38,5 @@ return [
 	'text_type'                  => 'String',
 	'textarea_type'              => 'Textarea',
 	'no_additional_params'       => 'No additional fields',
+	'bitrix_receive_code'        => 'Code to get the value',
 ];
