@@ -90,8 +90,8 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase{
 		$this->type($params['MODULE_VERSION'], 'MODULE_VERSION');
 		$this->press('module_create');
 
-		if (isset($params['MODULE_CODE'])){
-			return Bitrix::where('code', $params['MODULE_CODE'])->first();
+		if ($params['PARTNER_CODE'] && $params['MODULE_CODE']){
+			return Bitrix::where('PARTNER_CODE', $params['PARTNER_CODE'])->where('code', $params['MODULE_CODE'])->first();
 		}
 	}
 
