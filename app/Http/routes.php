@@ -169,6 +169,9 @@ Route::group(['prefix' => 'my-bitrix', 'middleware' => 'bitrix.owner'], function
 		Route::get('{admin_menu_page}/delete', 'Modules\Bitrix\BitrixAdminMenuController@destroy');
 	});
 });
+
+Route::post('feedback/ilack', 'FeedbackController@sendILackSmthForm');
+
 //Route::post('my/bitrix/{bitrix}/download', 'Modules\Bitrix\BitrixController@download_zip');
 //Route::resource('my/bitrix', 'Modules\Bitrix\BitrixController', [
 //	'names' => [

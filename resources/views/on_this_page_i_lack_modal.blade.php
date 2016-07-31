@@ -17,19 +17,27 @@
                 <h4 class="modal-title">{{ trans('feedback.on_this_page_i_lack_title') }}</h4>
             </div>
             <div class="modal-body">
-                <form>
+                <form method="post"
+                      action="{{ action('FeedbackController@sendILackSmthForm') }}">
+                    {{ csrf_field() }}
+                    <input type="hidden"
+                           name="page"
+                           value="{{ $_SERVER["REQUEST_URI"] }}">
                     <div class="form-group">
                         <label for="email">{{ trans('feedback.on_this_page_i_lack_email') }}</label>
                         <input class="form-control"
                                name="email"
-                               id="email">
+                               id="email"
+                               type="email"
+                               required>
                     </div>
                     <div class="form-group">
                         <label for="text">{{ trans('feedback.on_this_page_i_lack_text') }}</label>
                         <textarea class="form-control"
                                   name="text"
                                   id="text"
-                        rows="10"></textarea>
+                                  rows="10"
+                                  required></textarea>
                     </div>
                     <button type="submit"
                             class="btn btn-primary"
