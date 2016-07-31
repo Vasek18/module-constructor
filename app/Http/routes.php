@@ -176,9 +176,3 @@ Route::group(['prefix' => 'my-bitrix', 'middleware' => 'bitrix.owner'], function
 //	],
 //	'only'  => ['create', 'show', 'store', 'update', 'destroy']
 //]);
-
-Route::get('test', function (){ // todo del (тестовый)
-	Illuminate\Support\Facades\Session::put('lang', Config::get('app.locale') == 'ru' ? 'en' : 'ru');
-
-	return redirect('/');
-});

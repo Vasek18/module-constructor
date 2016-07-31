@@ -43,7 +43,15 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase{
 	}
 
 	public function setLang($lang = 'ru'){
-		app()->setLocale($lang);
+		// $uri = '';
+		// if ($lang == 'en'){
+		// 	$uri = str_replace('http://', 'http://en.', $this->currentUri);
+		// }
+		// if ($lang == 'ru'){
+		// 	$uri = str_replace('http://en.', 'http://', $this->currentUri);
+		// }
+		// $this->visit($uri);
+		Illuminate\Support\Facades\Session::put('lang', $lang);
 	}
 
 	protected function disk(){
