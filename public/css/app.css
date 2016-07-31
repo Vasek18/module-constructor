@@ -7,11 +7,11 @@ body {
 
 #wrap {
   min-height: 100%;
-  margin: 0 auto -50px auto;
+  margin: 0 auto -70px auto;
 }
 
 #push {
-  height: 50px;
+  height: 70px;
 }
 
 .navbar {
@@ -29,13 +29,22 @@ body {
 
 footer {
   width: 100%;
-  height: 50px;
+  height: 70px;
   border-top: 1px solid #e7e7e7;
   background-color: #f8f8f8;
 }
 
+.footer-actions {
+  padding-top: 10px;
+}
+
+.footer-actions a {
+  color: #777;
+  text-decoration: underline;
+}
+
 .creator {
-  padding: 10px 0;
+  padding-top: 10px;
   text-align: center;
   font-size: 17px;
 }

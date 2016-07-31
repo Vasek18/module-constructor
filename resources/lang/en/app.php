@@ -18,6 +18,7 @@ return [
 	'download'       => 'Download',
 	'edit'           => 'Edit',
 	'upload'         => 'Upload',
+	'send'           => 'Send',
 	'delete'         => 'Delete',
 	'not-exist'      => 'Empty',
 	'are_you_sure'   => 'Are you sure?',
