@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\Modules\Bitrix\Bitrix;
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class TestCase extends Illuminate\Foundation\Testing\TestCase{
 	/**
@@ -52,5 +52,15 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase{
 		// }
 		// $this->visit($uri);
 		Illuminate\Support\Facades\Session::put('lang', $lang);
+	}
+
+	public function payDays($days){
+		// почему-то оба работают в разных местах
+
+		$user = User::find(Auth::id());
+		$user->payed_days = intval($days);
+		$user->save();
+
+		$this->user->payed_days = intval($days);
 	}
 }

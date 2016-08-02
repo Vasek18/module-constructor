@@ -31,6 +31,7 @@ class BitrixDetailPageFilesTest extends BitrixTestCase{
 
 	/** @test */
 	function smn_can_download_zip_as_update(){
+		$this->payDays(1);
 		$this->visit('/my-bitrix/'.$this->module->id);
 		$this->submitForm('module_download', [
 			'version'        => '0.0.2',
@@ -43,6 +44,7 @@ class BitrixDetailPageFilesTest extends BitrixTestCase{
 
 	/** @test */
 	function smn_can_download_zip_as_new_module(){
+		$this->payDays(1);
 		$this->visit('/my-bitrix/'.$this->module->id);
 		$this->submitForm('module_download', [
 			'version'        => '0.0.2',
@@ -55,6 +57,7 @@ class BitrixDetailPageFilesTest extends BitrixTestCase{
 
 	/** @test */
 	function archive_contains_all_files(){
+		$this->payDays(1);
 		// тут конечно не всё, но главное, чтобы версия совпадала и хоть какие-то файлы были
 		$this->visit('/my-bitrix/'.$this->module->id);
 		$this->submitForm('module_download', [

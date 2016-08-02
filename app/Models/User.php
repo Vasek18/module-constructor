@@ -37,8 +37,8 @@ class User extends Model implements AuthenticatableContract,
 	 */
 	protected $hidden = ['password', 'remember_token'];
 
-	public function haveEnoughMoneyForDownload(){
-		if ($this->coins){
+	public function canDownloadModule(){
+		if ($this->payed_days){
 			return true;
 		}
 

@@ -55,7 +55,8 @@
             </form>
         </div>
         <div class="col-md-2">
-            @if ($user->haveEnoughMoneyForDownload())
+            @if ($user->canDownloadModule())
+                @include('bitrix.download_modal', [ 'module' => $module])
                 <a class="btn btn-sm btn-success btn-block"
                    data-toggle="modal"
                    data-target="#modal_download_{{$module->id}}"
@@ -76,7 +77,6 @@
             </a>
         </div>
     </div>
-    @include('bitrix.download_modal', [ 'module' => $module])
     @include('bitrix.delete_modal', [ 'module' => $module])
     <h2>{{ trans('bitrix.consist_of') }}</h2>
     <dl class="dl-horizontal">
