@@ -9,76 +9,9 @@ use App\Models\Modules\Bitrix\BitrixIblocksElements;
 
 // todo чёрт ногу сломит
 // todo отключение чекбоксов
-class BitrixInfoblockFormFilesTest extends TestCase{
+class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 
 	use DatabaseTransactions;
-
-	function createIblockOnForm($module, $params = []){
-		$this->visit('/my-bitrix/'.$module->id.'/data_storage/ib');
-		$inputs = [];
-
-		if (!isset($params['VERSION'])){
-			$params['VERSION'] = '2';
-		}
-		if (!isset($params['NAME'])){
-			$params['NAME'] = 'Ololo';
-		}
-		if (!isset($params['CODE'])){
-			$params['CODE'] = 'trololo';
-		}
-		if (!isset($params['SORT'])){
-			$params["SORT"] = "555";
-		}
-		if (!isset($params['LIST_PAGE_URL'])){
-			$params["LIST_PAGE_URL"] = "#SITE_DIR#/".$module->code."/index.php?ID=#IBLOCK_ID##hi";
-		}
-		if (!isset($params['SECTION_PAGE_URL'])){
-			$params["SECTION_PAGE_URL"] = "#SITE_DIR#/".$module->code."/list.php?SECTION_ID=#SECTION_ID##hi";
-		}
-		if (!isset($params['DETAIL_PAGE_URL'])){
-			$params["DETAIL_PAGE_URL"] = "#SITE_DIR#/".$module->code."/detail.php?ID=#ELEMENT_ID##hi";
-		}
-
-		foreach ($params as $code => $val){
-			$inputs[$code] = $val;
-		}
-
-		//dd($params);
-
-		$this->submitForm('save', $inputs);
-
-		if (isset($params['CODE'])){
-			return BitrixInfoblocks::where('code', $params['CODE'])->where('module_id', $module->id)->first();
-		}
-
-		return true;
-	}
-
-	function changeIblockOnForm($module, $iblock, $params = []){
-		$this->visit('/my-bitrix/'.$module->id.'/data_storage/ib/'.$iblock->id);
-		$inputs = [];
-
-		foreach ($params as $code => $val){
-			$inputs[$code] = $val;
-		}
-
-		//dd($params);
-
-		$this->submitForm('save', $inputs);
-
-		return $iblock;
-	}
-
-	function createIblockElementOnForm($module, $iblock, $params = []){
-		$this->visit('/my-bitrix/'.$module->id.'/data_storage/ib/'.$iblock->id.'/create_element');
-		$this->submitForm('save', $params);
-
-		if ($params["CODE"]){
-			return $prop = BitrixIblocksElements::where('code', $params["CODE"])->where('iblock_id', $iblock->id)->first();
-		}
-
-		return false;
-	}
 
 	function getLangFileArray($module, $lang = 'ru'){
 		$optionsFileContent = $this->disk()->get($module->module_folder.'/lang/'.$lang.'/install/index.php');
@@ -133,11 +66,6 @@ class BitrixInfoblockFormFilesTest extends TestCase{
 		}
 
 		return $answer;
-	}
-
-	function removeIblock($module, $iblock){
-		$this->visit('/my-bitrix/'.$module->id.'/data_storage/');
-		$this->click('delete_iblock_'.$iblock->id);
 	}
 
 	/** @test */

@@ -3,11 +3,9 @@
 use App\Models\Modules\Bitrix\Bitrix;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class BitrixDetailPageInterfaceTest extends TestCase{
+class BitrixDetailPageInterfaceTest extends BitrixTestCase{
 
 	use DatabaseTransactions;
-
-	private $module;
 
 	function setUp(){
 		parent::setUp();

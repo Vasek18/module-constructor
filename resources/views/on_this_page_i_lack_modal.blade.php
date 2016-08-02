@@ -22,7 +22,7 @@
                     {{ csrf_field() }}
                     <input type="hidden"
                            name="page"
-                           value="{{ $_SERVER["REQUEST_URI"] }}">
+                           value="{{ Request::url() }}">
                     <div class="form-group">
                         <label for="email">{{ trans('feedback.on_this_page_i_lack_email') }}</label>
                         <input class="form-control"

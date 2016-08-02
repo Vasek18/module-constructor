@@ -1,13 +1,10 @@
 <?php
 
-use App\Models\Modules\Bitrix\BitrixAdminOptions;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Helpers\vArrParse;
 
-class BitrixAdminOptionsFormFilesTest extends TestCase{
+class BitrixAdminOptionsFormFilesTest extends BitrixTestCase{
 	use DatabaseTransactions;
-
-	private $module;
 
 	function setUp(){
 		parent::setUp();
@@ -20,67 +17,6 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 		parent::tearDown();
 
 		$this->module->deleteFolder();
-	}
-
-	function createPropOnForm($module, $rowNumber, $params){
-		$this->visit('/my-bitrix/'.$module->id.'/admin_options');
-		$inputs = [];
-		if (isset($params['name'])){
-			$inputs['option_name['.$rowNumber.']'] = $params['name'];
-		}
-		if (isset($params['code'])){
-			$inputs['option_code['.$rowNumber.']'] = $params['code'];
-		}
-		if (isset($params['type'])){
-			$inputs['option_type['.$rowNumber.']'] = $params['type'];
-		}
-		if (isset($params['width'])){
-			$inputs['option_width['.$rowNumber.']'] = $params['width'];
-		}
-		if (isset($params['height'])){
-			$inputs['option_height['.$rowNumber.']'] = $params['height'];
-		}
-		if (isset($params['vals_key0'])){
-			$inputs['option_'.($rowNumber).'_vals_type'] = 'array';
-			$inputs['option_'.($rowNumber).'_vals_key[0]'] = $params['vals_key0'];
-		}
-		if (isset($params['vals_value0'])){
-			$inputs['option_'.($rowNumber).'_vals_type'] = 'array';
-			$inputs['option_'.($rowNumber).'_vals_value[0]'] = $params['vals_value0'];
-		}
-		if (isset($params['vals_key1'])){
-			$inputs['option_'.($rowNumber).'_vals_type'] = 'array';
-			$inputs['option_'.($rowNumber).'_vals_key[1]'] = $params['vals_key1'];
-		}
-		if (isset($params['vals_value1'])){
-			$inputs['option_'.($rowNumber).'_vals_type'] = 'array';
-			$inputs['option_'.($rowNumber).'_vals_value[1]'] = $params['vals_value1'];
-		}
-		if (isset($params['vals_type'])){
-			$inputs['option_'.($rowNumber).'_vals_type'] = $params['vals_type'];
-		}
-		if (isset($params['iblock'])){
-			$inputs['option_'.($rowNumber).'_spec_args[0]'] = $params['iblock'];
-		}
-		if (isset($params['default_value'])){
-			$inputs['default_value['.$rowNumber.']'] = $params['default_value'];
-		}
-		if (isset($params['vals_default'])){
-			$inputs['option_'.($rowNumber).'_vals_default'] = $params['vals_default'];
-		}
-		//dd($inputs);
-		$this->submitForm('save', $inputs);
-
-		if (isset($params['code'])){
-			return BitrixAdminOptions::where('code', $params['code'])->first();
-		}
-
-		return true;
-	}
-
-	function deletePropOnForm($module, $option){
-		$this->visit('/my-bitrix/'.$module->id.'/admin_options');
-		$this->click('delete_option_'.$option->id);
 	}
 
 	function getPropsArrayFromFile($module){
@@ -99,7 +35,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 
 	/** @test */
 	function smn_can_create_string_option_without_dop_params(){
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'name' => 'Ololo',
 			'code' => 'ololo_from_test',
 			'type' => 'text',
@@ -115,13 +51,13 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 
 	/** @test */
 	function smn_can_create_two_string_options_without_dop_params(){
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'name' => 'Ololo',
 			'code' => 'ololo_from_test',
 			'type' => 'text',
 		]);
 
-		$this->createPropOnForm($this->module, 1, [
+		$this->createAdminOptionOnForm($this->module, 1, [
 			'name' => 'Тест',
 			'code' => 'test_from_test',
 			'type' => 'text',
@@ -142,13 +78,13 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 
 	/** @test */
 	function if_there_are_two_options_with_the_same_code_in_files_will_be_only_last(){
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'name' => 'Ololo',
 			'code' => 'ololo_from_test',
 			'type' => 'text',
 		]);
 
-		$this->createPropOnForm($this->module, 1, [
+		$this->createAdminOptionOnForm($this->module, 1, [
 			'name' => 'Тест',
 			'code' => 'ololo_from_test',
 			'type' => 'text',
@@ -168,7 +104,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 
 	/** @test */
 	function it_wont_create_string_option_without_code(){
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'name' => 'Ololo',
 			'code' => '',
 			'type' => 'text',
@@ -195,7 +131,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 
 	/** @test */
 	function smn_can_create_textarea_option_without_dop_params(){
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'name' => 'Ololo',
 			'code' => 'ololo_from_test',
 			'type' => 'textarea',
@@ -212,7 +148,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 
 	/** @test */
 	function smn_can_create_select_option_without_dop_params(){
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'name' => 'Ololo',
 			'code' => 'ololo_from_test',
 			'type' => 'selectbox',
@@ -229,7 +165,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 
 	/** @test */
 	function smn_can_create_multiselect_option_without_dop_params(){
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'name' => 'Ololo',
 			'code' => 'ololo_from_test',
 			'type' => 'multiselectbox',
@@ -246,7 +182,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 
 	/** @test */
 	function smn_can_create_checkbox_option_without_dop_params(){
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'name' => 'Ololo',
 			'code' => 'ololo_from_test',
 			'type' => 'checkbox',
@@ -263,7 +199,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 
 	/** @test */
 	function smn_can_create_string_option_with_dop_params(){
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'name'          => 'Ololo',
 			'code'          => 'ololo_from_test',
 			'type'          => 'text',
@@ -283,7 +219,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 
 	/** @test */
 	function smn_can_create_textarea_option_with_dop_params(){
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'name'          => 'Ololo',
 			'code'          => 'ololo_from_test',
 			'type'          => 'textarea',
@@ -304,7 +240,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 
 	/** @test */
 	function smn_can_create_select_option_with_one_options(){
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'name'        => 'Ololo',
 			'code'        => 'ololo_from_test',
 			'type'        => 'selectbox',
@@ -325,7 +261,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 
 	/** @test */
 	function smn_cannot_create_select_option_with_one_options_where_no_key(){
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'name'      => 'Ololo',
 			'code'      => 'ololo_from_test',
 			'type'      => 'selectbox',
@@ -344,7 +280,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 
 	/** @test */
 	function smn_cannot_create_select_option_with_one_options_where_no_value(){
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'name'        => 'Ololo',
 			'code'        => 'ololo_from_test',
 			'type'        => 'selectbox',
@@ -363,7 +299,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 
 	/** @test */
 	function smn_can_create_select_option_with_two_options(){
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'name'        => 'Ololo',
 			'code'        => 'ololo_from_test',
 			'type'        => 'selectbox',
@@ -389,7 +325,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 
 	/** @test */
 	function smn_can_create_select_option_with_two_options_and_one_is_default(){
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'name'         => 'Ololo',
 			'code'         => 'ololo_from_test',
 			'type'         => 'selectbox',
@@ -417,7 +353,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 
 	/** @test */
 	function smn_can_create_select_option_with_iblocks_list(){
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'name'      => 'Ololo',
 			'code'      => 'ololo_from_test',
 			'type'      => 'selectbox',
@@ -439,7 +375,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 
 	/** @test */
 	function smn_can_create_select_option_with_iblock_elements_list(){
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'name'      => 'Ololo',
 			'code'      => 'ololo_from_test',
 			'type'      => 'selectbox',
@@ -461,7 +397,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 
 	/** @test */
 	function smn_can_create_select_option_with_iblock_elements_list_with_param(){
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'name'      => 'Ololo',
 			'code'      => 'ololo_from_test',
 			'type'      => 'selectbox',
@@ -483,7 +419,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 
 	/** @test */
 	function smn_can_create_select_option_with_iblock_props_list(){
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'name'      => 'Ololo',
 			'code'      => 'ololo_from_test',
 			'type'      => 'selectbox',
@@ -506,7 +442,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 
 	/** @test */
 	function smn_can_change_option_at_select_option_with_one_option(){
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'name'        => 'Ololo',
 			'code'        => 'ololo_from_test',
 			'type'        => 'selectbox',
@@ -514,7 +450,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 			'vals_value0' => 'b',
 		]);
 
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'name'        => 'Ololo',
 			'code'        => 'ololo_from_test',
 			'type'        => 'selectbox',
@@ -535,7 +471,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 
 	/** @test */
 	function smn_can_remove_option_at_select_option_with_one_option(){
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'name'        => 'Ololo',
 			'code'        => 'ololo_from_test',
 			'type'        => 'selectbox',
@@ -543,7 +479,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 			'vals_value0' => 'b',
 		]);
 
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'name'        => 'Ololo',
 			'code'        => 'ololo_from_test',
 			'type'        => 'selectbox',
@@ -563,7 +499,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 
 	/** @test */
 	function smn_can_remove_option_at_select_option_with_one_option_and_make_it_iblock_elements_list(){
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'name'        => 'Ololo',
 			'code'        => 'ololo_from_test',
 			'type'        => 'selectbox',
@@ -571,7 +507,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 			'vals_value0' => 'b',
 		]);
 
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'name'      => 'Ololo',
 			'code'      => 'ololo_from_test',
 			'type'      => 'multiselectbox',
@@ -592,7 +528,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 
 	/** @test */
 	function smn_can_add_option_at_select_option_with_already_one_option(){
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'name'        => 'Ololo',
 			'code'        => 'ololo_from_test',
 			'type'        => 'selectbox',
@@ -600,7 +536,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 			'vals_value0' => 'b',
 		]);
 
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'name'        => 'Ololo',
 			'code'        => 'ololo_from_test',
 			'type'        => 'selectbox',
@@ -622,7 +558,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 
 	/** @test */ // todo я не понимаю почему, но этот тест не падает, хотя при ручном тестировании всё ломается
 	function if_we_create_select_option_with_options_and_then_create_another_select_option_then_the_first_would_still_keep_its_options(){
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'name'        => 'Ololo',
 			'code'        => 'ololo_from_test',
 			'type'        => 'selectbox',
@@ -630,7 +566,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 			'vals_value0' => 'b',
 		]);
 
-		$this->createPropOnForm($this->module, 1, [
+		$this->createAdminOptionOnForm($this->module, 1, [
 			'name'        => 'Ololo_2',
 			'code'        => 'ololo_from_test_2',
 			'type'        => 'selectbox',
@@ -655,7 +591,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 
 	/** @test */
 	function smn_can_create_multiselect_option_with_one_options(){
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'name'        => 'Ololo',
 			'code'        => 'ololo_from_test',
 			'type'        => 'multiselectbox',
@@ -676,7 +612,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 
 	/** @test */
 	function smn_can_create_multiselect_option_with_two_options(){
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'name'        => 'Ololo',
 			'code'        => 'ololo_from_test',
 			'type'        => 'multiselectbox',
@@ -702,7 +638,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 
 	/** @test */
 	function smn_can_create_multiselect_option_with_two_options_and_one_is_default(){
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'name'         => 'Ololo',
 			'code'         => 'ololo_from_test',
 			'type'         => 'multiselectbox',
@@ -730,7 +666,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 
 	/** @test */
 	function smn_can_create_multiselect_option_with_iblocks_list(){
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'name'      => 'Ololo',
 			'code'      => 'ololo_from_test',
 			'type'      => 'multiselectbox',
@@ -751,7 +687,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 
 	/** @test */
 	function smn_can_create_multiselect_option_with_iblock_elements_list(){
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'name'      => 'Ololo',
 			'code'      => 'ololo_from_test',
 			'type'      => 'multiselectbox',
@@ -772,7 +708,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 
 	/** @test */
 	function smn_can_create_multiselect_option_with_iblock_props_list(){
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'name'      => 'Ololo',
 			'code'      => 'ololo_from_test',
 			'type'      => 'multiselectbox',
@@ -794,14 +730,14 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 
 	/** @test */
 	function smn_can_change_name_of_string_option_with_dop_params(){
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'name'  => 'Ololo',
 			'code'  => 'ololo_from_test',
 			'type'  => 'text',
 			'width' => '10',
 		]);
 
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'name' => 'Ololo trololo',
 		]);
 
@@ -816,7 +752,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 
 	/** @test */
 	function smn_can_change_name_of_textarea_option_with_dop_params(){
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'name'   => 'Ololo',
 			'code'   => 'ololo_from_test',
 			'type'   => 'textarea',
@@ -824,7 +760,7 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 			'width'  => '20',
 		]);
 
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'name' => 'Ololo2',
 		]);
 
@@ -839,14 +775,14 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 
 	/** @test */
 	function smn_can_change_name_of_select_option_with_one_options(){
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'name'        => 'Ololo',
 			'code'        => 'ololo_from_test',
 			'type'        => 'selectbox',
 			'vals_key0'   => 'a',
 			'vals_value0' => 'b',
 		]);
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'name' => 'Ololosko',
 		]);
 
@@ -863,14 +799,14 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 
 	/** @test */
 	function smn_can_change_name_of_multiselect_option_with_one_options(){
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'name'        => 'Ololo',
 			'code'        => 'ololo_from_test',
 			'type'        => 'multiselectbox',
 			'vals_key0'   => 'a',
 			'vals_value0' => 'b',
 		]);
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'name' => 'Ololoskos',
 		]);
 
@@ -887,12 +823,12 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 
 	/** @test */
 	function smn_can_change_name_of_checkbox_option(){
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'name' => 'Ololo',
 			'code' => 'ololo_from_test',
 			'type' => 'checkbox',
 		]);
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'name' => 'Olologa',
 		]);
 
@@ -907,14 +843,14 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 
 	/** @test */
 	function smn_can_change_width_of_string_option_with_dop_params(){
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'name'  => 'Ololo',
 			'code'  => 'ololo_from_test',
 			'type'  => 'text',
 			'width' => '10',
 		]);
 
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'width' => '20',
 		]);
 
@@ -929,14 +865,14 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 
 	/** @test */
 	function smn_can_change_string_option_with_dop_params_to_textarea_option(){
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'name'  => 'Ololo',
 			'code'  => 'ololo_from_test',
 			'type'  => 'text',
 			'width' => '10',
 		]);
 
-		$this->createPropOnForm($this->module, 0, [
+		$this->createAdminOptionOnForm($this->module, 0, [
 			'type'   => 'textarea',
 			'height' => '30',
 		]);
@@ -952,13 +888,13 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 
 	/** @test */
 	function smn_can_delete_string_option(){
-		$option = $this->createPropOnForm($this->module, 0, [
+		$option = $this->createAdminOptionOnForm($this->module, 0, [
 			'name' => 'Ololo',
 			'code' => 'ololo_from_test',
 			'type' => 'text',
 		]);
 
-		$this->deletePropOnForm($this->module, $option);
+		$this->deleteAdminOptionOnForm($this->module, $option);
 
 		$optionsArr = $this->getPropsArrayFromFile($this->module);
 		$optionsLangArr = $this->getLangFileArray($this->module);
@@ -971,19 +907,19 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 
 	/** @test */
 	function smn_can_delete_one_string_option_of_two(){
-		$option = $this->createPropOnForm($this->module, 0, [
+		$option = $this->createAdminOptionOnForm($this->module, 0, [
 			'name' => 'Ololo',
 			'code' => 'ololo_from_test',
 			'type' => 'text',
 		]);
 
-		$option2 = $this->createPropOnForm($this->module, 1, [
+		$option2 = $this->createAdminOptionOnForm($this->module, 1, [
 			'name' => 'Ololo2',
 			'code' => 'ololo_from_test2',
 			'type' => 'text',
 		]);
 
-		$this->deletePropOnForm($this->module, $option);
+		$this->deleteAdminOptionOnForm($this->module, $option);
 
 		$optionsArr = $this->getPropsArrayFromFile($this->module);
 		$optionsLangArr = $this->getLangFileArray($this->module);
@@ -997,20 +933,20 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 
 	/** @test */
 	function smn_can_delete_two_string_options_of_two(){
-		$option = $this->createPropOnForm($this->module, 0, [
+		$option = $this->createAdminOptionOnForm($this->module, 0, [
 			'name' => 'Ololo',
 			'code' => 'ololo_from_test',
 			'type' => 'text',
 		]);
 
-		$option2 = $this->createPropOnForm($this->module, 1, [
+		$option2 = $this->createAdminOptionOnForm($this->module, 1, [
 			'name' => 'Ololo2',
 			'code' => 'ololo_from_test2',
 			'type' => 'text',
 		]);
 
-		$this->deletePropOnForm($this->module, $option);
-		$this->deletePropOnForm($this->module, $option2);
+		$this->deleteAdminOptionOnForm($this->module, $option);
+		$this->deleteAdminOptionOnForm($this->module, $option2);
 
 		$optionsArr = $this->getPropsArrayFromFile($this->module);
 		$optionsLangArr = $this->getLangFileArray($this->module);
@@ -1024,14 +960,14 @@ class BitrixAdminOptionsFormFilesTest extends TestCase{
 
 	/** @test */
 	function smn_can_delete_select_option_with_one_option(){
-		$option = $this->createPropOnForm($this->module, 0, [
+		$option = $this->createAdminOptionOnForm($this->module, 0, [
 			'name'        => 'Ololo',
 			'code'        => 'ololo_from_test',
 			'type'        => 'selectbox',
 			'vals_key0'   => 'a',
 			'vals_value0' => 'b',
 		]);
-		$this->deletePropOnForm($this->module, $option);
+		$this->deleteAdminOptionOnForm($this->module, $option);
 
 		$optionsArr = $this->getPropsArrayFromFile($this->module);
 		$optionsLangArr = $this->getLangFileArray($this->module);

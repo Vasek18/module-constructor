@@ -115,4 +115,5 @@ class AuthenticationInterfaceTest extends TestCase{
 		$this->see('These credentials do not match our records');
 	}
 }
+
 ?>

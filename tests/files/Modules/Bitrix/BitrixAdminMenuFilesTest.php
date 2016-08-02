@@ -5,42 +5,9 @@ use App\Helpers\vArrParse;
 use App\Helpers\vFuncParse;
 use App\Models\Modules\Bitrix\BitrixAdminMenuItems;
 
-class BitrixAdminMenuFilesTest extends TestCase{
+class BitrixAdminMenuFilesTest extends BitrixTestCase{
 
 	use DatabaseTransactions;
-
-	function createAdminPageOnForm($module, $inputs = []){
-		$this->visit('/my-bitrix/'.$module->id.'/admin_menu/create');
-
-		if (!isset($inputs['name'])){
-			$inputs['name'] = 'Ololo';
-		}
-		if (!isset($inputs['code'])){
-			$inputs['code'] = 'trololo';
-		}
-		if (!isset($inputs["sort"])){
-			$inputs['sort'] = "334";
-		}
-		if (!isset($inputs["text"])){
-			$inputs['text'] = "item";
-		}
-		if (!isset($inputs["parent_menu"])){
-			$inputs['parent_menu'] = 'global_menu_settings';
-		}
-
-		$this->submitForm('save', $inputs);
-
-		if (isset($inputs['code'])){
-			return BitrixAdminMenuItems::where('code', $inputs['code'])->where('module_id', $module->id)->first();
-		}
-
-		return true;
-	}
-
-	function removeAdminPage($module, $amp){
-		$this->visit('/my-bitrix/'.$module->id.'/admin_menu/');
-		$this->click('delete_amp_'.$amp->id);
-	}
 
 	function getLangFileArray($module, $lang = 'ru'){
 		$optionsFileContent = $this->disk()->get($module->module_folder.'/lang/'.$lang.'/admin/menu.php');

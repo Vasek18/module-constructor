@@ -3,11 +3,9 @@
 use Chumper\Zipper\Zipper;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class BitrixDetailPageFilesTest extends TestCase{
+class BitrixDetailPageFilesTest extends BitrixTestCase{
 
 	use DatabaseTransactions;
-
-	private $module;
 
 	function setUp(){
 		parent::setUp();

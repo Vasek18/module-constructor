@@ -3,44 +3,10 @@
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Models\Modules\Bitrix\BitrixAdminMenuItems;
 
-
 // todo удаление
-class BitrixAdminMenuInterfaceTest extends TestCase{
+class BitrixAdminMenuInterfaceTest extends BitrixTestCase{
 
 	use DatabaseTransactions;
-
-	function createAdminPageOnForm($module, $inputs = []){
-		$this->visit('/my-bitrix/'.$module->id.'/admin_menu/create');
-
-		if (!isset($inputs['name'])){
-			$inputs['name'] = 'Ololo';
-		}
-		if (!isset($inputs['code'])){
-			$inputs['code'] = 'trololo';
-		}
-		if (!isset($inputs["sort"])){
-			$inputs['sort'] = "334";
-		}
-		if (!isset($inputs["text"])){
-			$inputs['text'] = "item";
-		}
-		if (!isset($inputs["parent_menu"])){
-			$inputs['parent_menu'] = 'global_menu_settings';
-		}
-
-		$this->submitForm('save', $inputs);
-
-		if (isset($inputs['code'])){
-			return BitrixAdminMenuItems::where('code', $inputs['code'])->where('module_id', $module->id)->first();
-		}
-
-		return true;
-	}
-
-	function removeAdminPage($module, $amp){
-		$this->visit('/my-bitrix/'.$module->id.'/admin_menu/');
-		$this->click('delete_amp_'.$amp->id);
-	}
 
 	/** @test */
 	function author_can_get_to_this_page(){

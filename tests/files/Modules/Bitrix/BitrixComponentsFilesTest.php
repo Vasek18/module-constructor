@@ -7,12 +7,11 @@ use App\Models\Modules\Bitrix\BitrixComponentsParams;
 use App\Models\Modules\Bitrix\BitrixComponentsTemplates;
 use App\Models\Modules\Bitrix\BitrixComponentsArbitraryFiles;
 
-class BitrixComponentsFilesTest extends TestCase{
+class BitrixComponentsFilesTest extends BitrixTestCase{
 
 	use DatabaseTransactions;
 
 	protected $path = '/components';
-	private $module;
 
 	function setUp(){
 		parent::setUp();
@@ -25,134 +24,9 @@ class BitrixComponentsFilesTest extends TestCase{
 		parent::tearDown();
 	}
 
-	function createOnForm($module, $inputs = []){
-		$this->visit('/my-bitrix/'.$module->id.$this->path.'/create');
-
-		if (!isset($inputs['name'])){
-			$inputs['name'] = 'ololo';
-		}
-		if (!isset($inputs['code'])){
-			$inputs['code'] = 'trololo';
-		}
-
-		$this->submitForm('create_component', $inputs);
-
-		if (isset($inputs['code'])){
-			return BitrixComponent::where('code', $inputs['code'])->where('module_id', $module->id)->first();
-		}
-
-		return true;
-	}
-
-	function deleteComponentFromList($component){
-		$this->visit('/my-bitrix/'.$this->module->id.$this->path);
-		$this->click('delete_component_'.$component->id);
-	}
-
-	function deleteComponentFromDetail($component){
-		$this->visit('/my-bitrix/'.$this->module->id.$this->path.'/'.$component->id);
-		$this->click('delete');
-	}
-
-	function createComponentParamOnForm($component, $rowNumber, $params){
-		$this->visit('/my-bitrix/'.$this->module->id.'/components/'.$component->id.'/params');
-		$inputs = [];
-		if (isset($params['name'])){
-			$inputs['param_name['.$rowNumber.']'] = $params['name'];
-		}
-		if (isset($params['code'])){
-			$inputs['param_code['.$rowNumber.']'] = $params['code'];
-		}
-		if (isset($params['type'])){
-			$inputs['param_type['.$rowNumber.']'] = $params['type'];
-		}
-		if (isset($params['refresh'])){
-			$inputs['param_refresh['.$rowNumber.']'] = $params['refresh'];
-		}
-		if (isset($params['multiple'])){
-			$inputs['param_multiple['.$rowNumber.']'] = $params['multiple'];
-		}
-		if (isset($params['cols'])){
-			$inputs['param_cols['.$rowNumber.']'] = $params['cols'];
-		}
-		if (isset($params['size'])){
-			$inputs['param_size['.$rowNumber.']'] = $params['size'];
-		}
-		if (isset($params['default'])){
-			$inputs['param_default['.$rowNumber.']'] = $params['default'];
-		}
-		if (isset($params['additional_values'])){
-			$inputs['param_additional_values['.$rowNumber.']'] = $params['additional_values'];
-		}
-		if (isset($params['vals_key0'])){
-			$inputs['param_'.($rowNumber).'_vals_type'] = 'array';
-			$inputs['param_'.($rowNumber).'_vals_key[0]'] = $params['vals_key0'];
-		}
-		if (isset($params['vals_value0'])){
-			$inputs['param_'.($rowNumber).'_vals_type'] = 'array';
-			$inputs['param_'.($rowNumber).'_vals_value[0]'] = $params['vals_value0'];
-		}
-		if (isset($params['vals_key1'])){
-			$inputs['param_'.($rowNumber).'_vals_type'] = 'array';
-			$inputs['param_'.($rowNumber).'_vals_key[1]'] = $params['vals_key1'];
-		}
-		if (isset($params['vals_value1'])){
-			$inputs['param_'.($rowNumber).'_vals_type'] = 'array';
-			$inputs['param_'.($rowNumber).'_vals_value[1]'] = $params['vals_value1'];
-		}
-		if (isset($params['vals_type'])){
-			$inputs['param_'.($rowNumber).'_vals_type'] = $params['vals_type'];
-		}
-		if (isset($params['iblock'])){
-			$inputs['param_'.($rowNumber).'_spec_args[0]'] = $params['iblock'];
-		}
-		if (isset($params['template_id'])){
-			$inputs['param_template_id['.$rowNumber.']'] = $params['template_id'];
-		}
-		//dd($inputs);
-		$this->submitForm('save', $inputs);
-
-		if (isset($params['code'])){
-			return BitrixComponentsParams::where('component_id', $component->id)->where('code', $params['code'])->first();
-		}
-
-		return true;
-	}
-
-	function createTemplateOnForm($module, $component, $inputs = []){
-		$this->visit('/my-bitrix/'.$module->id.'/components/'.$component->id.'/templates/create');
-
-		$this->submitForm('save', $inputs);
-
-		if (isset($inputs['code'])){
-			return BitrixComponentsTemplates::where('code', $inputs['code'])->where('component_id', $component->id)->first();
-		}
-
-		return true;
-	}
-
-	function storeArbitraryFileOnForm($module, $component, $path, $name, $content, $template = false){
-		if ($template){
-			$this->visit('/my-bitrix/'.$module->id.'/components/'.$component->id.'/templates/'.$template->id.'/files');
-		}else{
-			$this->visit('/my-bitrix/'.$module->id.'/components/'.$component->id.'/other_files');
-		}
-
-		$file = public_path().'/'.$name;
-		file_put_contents($file, $content);
-
-		$this->type($path, 'path');
-		$this->attach($file, 'file');
-		$this->press('upload');
-
-		unlink($file);
-
-		return BitrixComponentsArbitraryFiles::where('component_id', $component->id)->where('filename', $name)->where('path', $path)->first();
-	}
-
 	/** @test */
 	function it_creates_standard_component(){
-		$component = $this->createOnForm($this->module, [
+		$component = $this->createComponentOnForm($this->module, [
 			'name' => 'Heh',
 			'sort' => '334',
 			'code' => 'ololo.trololo',
@@ -173,7 +47,7 @@ class BitrixComponentsFilesTest extends TestCase{
 
 	/** @test */
 	function it_creates_component_in_another_namespace(){
-		$component = $this->createOnForm($this->module, [
+		$component = $this->createComponentOnForm($this->module, [
 			'name'      => 'Heh',
 			'sort'      => '334',
 			'code'      => 'ololo.trololo',
@@ -193,7 +67,7 @@ class BitrixComponentsFilesTest extends TestCase{
 
 	/** @test */
 	function it_makes_hello_world_component_instead_of_empty(){
-		$component = $this->createOnForm($this->module, [
+		$component = $this->createComponentOnForm($this->module, [
 			'name' => 'Heh',
 			'code' => 'ololo.trololo',
 		]);
@@ -220,7 +94,7 @@ class BitrixComponentsFilesTest extends TestCase{
 
 	/** @test */
 	function it_can_delete_component(){
-		$component = $this->createOnForm($this->module);
+		$component = $this->createComponentOnForm($this->module);
 
 		$this->deleteComponentFromList($component);
 
@@ -232,7 +106,7 @@ class BitrixComponentsFilesTest extends TestCase{
 
 	/** @test */
 	function it_can_delete_component_from_detail(){
-		$component = $this->createOnForm($this->module);
+		$component = $this->createComponentOnForm($this->module);
 
 		$this->deleteComponentFromDetail($component);
 
@@ -244,7 +118,7 @@ class BitrixComponentsFilesTest extends TestCase{
 
 	/** @test */
 	function it_can_store_visual_path_form(){
-		$component = $this->createOnForm($this->module);
+		$component = $this->createComponentOnForm($this->module);
 
 		$this->visit('/my-bitrix/'.$this->module->id.'/components/'.$component->id.'/visual_path');
 
@@ -294,7 +168,7 @@ class BitrixComponentsFilesTest extends TestCase{
 
 	/** @test */
 	function it_can_store_component_php(){
-		$component = $this->createOnForm($this->module);
+		$component = $this->createComponentOnForm($this->module);
 
 		$this->visit('/my-bitrix/'.$this->module->id.'/components/'.$component->id.'/component_php');
 
@@ -311,7 +185,7 @@ class BitrixComponentsFilesTest extends TestCase{
 
 	/** @test */
 	function it_can_store_arbitrary_file(){
-		$component = $this->createOnForm($this->module);
+		$component = $this->createComponentOnForm($this->module);
 
 		$this->visit('/my-bitrix/'.$this->module->id.'/components/'.$component->id.'/other_files');
 
@@ -331,7 +205,7 @@ class BitrixComponentsFilesTest extends TestCase{
 
 	/** @test */
 	function it_can_store_arbitrary_file_in_template(){
-		$component = $this->createOnForm($this->module);
+		$component = $this->createComponentOnForm($this->module);
 		$template = $this->createTemplateOnForm($this->module, $component, [
 			'name'                 => 'Test',
 			'code'                 => 'ololo',
@@ -341,7 +215,7 @@ class BitrixComponentsFilesTest extends TestCase{
 			'result_modifier_php'  => '345',
 			'component_epilog_php' => '<? ?>',
 		]);
-		$this->storeArbitraryFileOnForm($this->module, $component, '/ololo/', 'ololo.php', '<? echo "Hi"; ?>', $template);
+		$this->storeComponentArbitraryFileOnForm($this->module, $component, '/ololo/', 'ololo.php', '<? echo "Hi"; ?>', $template);
 
 		$this->assertFileNotExists($component->getFolder(true).'/ololo/ololo.php');
 		$this->assertFileExists($template->getFolder(true).'/ololo/ololo.php');
@@ -350,9 +224,9 @@ class BitrixComponentsFilesTest extends TestCase{
 
 	/** @test */
 	function it_can_store_string_param_without_dop_params(){
-		$component = $this->createOnForm($this->module);
+		$component = $this->createComponentOnForm($this->module);
 
-		$this->createComponentParamOnForm($component, 0, [
+		$this->createComponentParamOnForm($this->module, $component, 0, [
 			'name' => 'Ololo',
 			'code' => 'trololo',
 			'type' => 'STRING',
@@ -375,9 +249,9 @@ class BitrixComponentsFilesTest extends TestCase{
 
 	/** @test */
 	function it_can_store_string_param_with_dop_params(){
-		$component = $this->createOnForm($this->module);
+		$component = $this->createComponentOnForm($this->module);
 
-		$this->createComponentParamOnForm($component, 0, [
+		$this->createComponentParamOnForm($this->module, $component, 0, [
 			'name'     => 'Ololo',
 			'code'     => 'trololo',
 			'type'     => 'STRING',
@@ -406,9 +280,9 @@ class BitrixComponentsFilesTest extends TestCase{
 
 	/** @test */
 	function it_can_store_select_param_without_dop_params(){
-		$component = $this->createOnForm($this->module);
+		$component = $this->createComponentOnForm($this->module);
 
-		$this->createComponentParamOnForm($component, 0, [
+		$this->createComponentParamOnForm($this->module, $component, 0, [
 			'name' => 'Ololo',
 			'code' => 'trololo',
 			'type' => 'LIST',
@@ -432,9 +306,9 @@ class BitrixComponentsFilesTest extends TestCase{
 
 	/** @test */
 	function it_can_store_select_param_with_array_vals_type_but_without_options(){
-		$component = $this->createOnForm($this->module);
+		$component = $this->createComponentOnForm($this->module);
 
-		$this->createComponentParamOnForm($component, 0, [
+		$this->createComponentParamOnForm($this->module, $component, 0, [
 			'name'      => 'Ololo',
 			'code'      => 'trololo',
 			'type'      => 'LIST',
@@ -460,9 +334,9 @@ class BitrixComponentsFilesTest extends TestCase{
 
 	/** @test */
 	function it_can_store_select_param_with_options(){
-		$component = $this->createOnForm($this->module);
+		$component = $this->createComponentOnForm($this->module);
 
-		$this->createComponentParamOnForm($component, 0, [
+		$this->createComponentParamOnForm($this->module, $component, 0, [
 			'name'        => 'Ololo',
 			'code'        => 'trololo',
 			'type'        => 'LIST',
@@ -496,7 +370,7 @@ class BitrixComponentsFilesTest extends TestCase{
 
 	/** @test */
 	function it_can_store_string_param_without_dop_params_for_only_one_template(){
-		$component = $this->createOnForm($this->module);
+		$component = $this->createComponentOnForm($this->module);
 		$template = $this->createTemplateOnForm($this->module, $component, [
 			'name'                 => 'Test',
 			'code'                 => 'ololo',
@@ -506,12 +380,12 @@ class BitrixComponentsFilesTest extends TestCase{
 			'result_modifier_php'  => '345',
 			'component_epilog_php' => '<? ?>',
 		]);
-		$commonParam = $this->createComponentParamOnForm($component, 0, [
+		$commonParam = $this->createComponentParamOnForm($this->module, $component, 0, [
 			'name' => 'Ololo',
 			'code' => 'trololo',
 			'type' => 'STRING',
 		]);
-		$templateParam = $this->createComponentParamOnForm($component, 0, [
+		$templateParam = $this->createComponentParamOnForm($this->module, $component, 0, [
 			'name'        => 'Masha',
 			'code'        => 'nasha',
 			'type'        => 'STRING',
@@ -545,7 +419,7 @@ class BitrixComponentsFilesTest extends TestCase{
 
 	/** @test */
 	function it_can_store_template(){
-		$component = $this->createOnForm($this->module);
+		$component = $this->createComponentOnForm($this->module);
 		$template = $this->createTemplateOnForm($this->module, $component, [
 			'name'                 => 'Test',
 			'code'                 => 'ololo',
@@ -573,7 +447,7 @@ class BitrixComponentsFilesTest extends TestCase{
 
 	/** @test */
 	function it_can_update_template(){
-		$component = $this->createOnForm($this->module);
+		$component = $this->createComponentOnForm($this->module);
 		$template = $this->createTemplateOnForm($this->module, $component, [
 			'name'                 => 'Test2',
 			'code'                 => 'ololo',

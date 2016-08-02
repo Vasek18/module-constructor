@@ -5,7 +5,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
 
-class BitrixCreateFormDBTest extends TestCase{
+class BitrixCreateFormDBTest extends BitrixTestCase{
 
 	use DatabaseTransactions;
 
