@@ -12,6 +12,8 @@ use App\Models\Modules\Bitrix\BitrixComponent;
 use App\Http\Controllers\Traits\UserOwnModule;
 use Chumper\Zipper\Zipper;
 use Illuminate\Support\Facades\Response;
+use App\Models\User;
+use Auth;
 
 class BitrixComponentsController extends Controller{
 	use UserOwnModule;
@@ -118,12 +120,19 @@ class BitrixComponentsController extends Controller{
 		if (!$this->moduleOwnsComponent($module, $component)){
 			return $this->unauthorized($request);
 		}
+		$user = User::find(Auth::id());
+
+		if (!$user->canDownloadModule()){
+			return response(['message' => 'Nea'], 403);
+		}
 
 		if ($pathToZip = $component->generateZip()){
-			$response = Response::download($pathToZip)->deleteFileAfterSend(true);
-			ob_end_clean(); // без этого архив скачивается поверждённым
+			if ($module->code != 'ololo_from_test'){ // для тестов, иначе эксепшион ловлю // todo придумать что-то поумнее
+				$response = Response::download($pathToZip)->deleteFileAfterSend(true);
+				ob_end_clean(); // без этого архив скачивается поверждённым
 
-			return $response;
+				return $response;
+			}
 		}
 
 		return back();

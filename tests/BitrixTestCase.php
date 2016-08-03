@@ -214,7 +214,7 @@ class BitrixTestCase extends TestCase{
 	}
 
 	function createComponentOnForm($module, $inputs = []){
-		$this->visit('/my-bitrix/'.$module->id.$this->path.'/create');
+		$this->visit('/my-bitrix/'.$module->id.'/components/create');
 
 		if (!isset($inputs['name'])){
 			$inputs['name'] = 'ololo';

@@ -45,16 +45,20 @@ class User extends Model implements AuthenticatableContract,
 		return false;
 	}
 
-	public function isBitrixModuleOwner(Bitrix $module){
-		if ($this->id === $module->user_id){
+	public function canSeePayedFiles(){
+		if ($this->payed_days){
 			return true;
 		}
 
 		return false;
 	}
 
-	public function canSeePayedFiles(){
-		return true;
+	public function isBitrixModuleOwner(Bitrix $module){
+		if ($this->id === $module->user_id){
+			return true;
+		}
+
+		return false;
 	}
 
 	public function bitrixes(){
