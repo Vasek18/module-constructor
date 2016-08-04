@@ -25,9 +25,9 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase{
 		return $app;
 	}
 
-	public function signIn($user = null){
+	public function signIn($user = null, $params = []){
 		if (!$user){
-			$user = factory(App\Models\User::class)->create();
+			$user = factory(App\Models\User::class)->create($params);
 		}
 		$this->user = $user;
 

@@ -21,6 +21,17 @@ class DatabaseSeeder extends Seeder{
 			'remember_token' => str_random(10),
 			'rubles'         => 1487,
 			'payed_days'     => 1487,
+			'group_id'       => 1,
+		]);
+
+		// группы пользователей
+		DB::table('user_groups')->insert([
+			'code' => 'admin',
+			'name' => 'Админы',
+		]);
+		DB::table('user_groups')->insert([
+			'code' => 'holops',
+			'name' => 'Простые пользователи',
 		]);
 
 		$this->call(BitrixStuffSeeder::class);

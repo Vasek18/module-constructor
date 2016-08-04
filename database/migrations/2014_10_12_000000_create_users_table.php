@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration{
 			$table->integer('rubles')->unsigned()->default(0);
 			$table->integer('payed_days')->unsigned()->default(0);
 			$table->string('lang')->nullable();
+			$table->integer('group_id')->unsigned()->nullable()->default(2);
 			$table->rememberToken();
 			$table->timestamps();
 		});

@@ -30,5 +30,6 @@ class Kernel extends HttpKernel{
 		'auth.basic'   => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
 		'guest'        => \App\Http\Middleware\RedirectIfAuthenticated::class,
 		'bitrix.owner' => \App\Http\Middleware\BitrixOwner::class,
+		'admin'        => \App\Http\Middleware\CheckIfAdmin::class,
 	];
 }

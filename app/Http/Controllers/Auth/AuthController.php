@@ -77,6 +77,7 @@ class AuthController extends Controller{
 			'company_name' => $data['company_name'],
 			'email'        => $data['email'],
 			'password'     => bcrypt($data['password']),
+			'group_id'     => User::$defaultGroup,
 		]);
 	}
 }

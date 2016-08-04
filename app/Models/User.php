@@ -15,27 +15,10 @@ class User extends Model implements AuthenticatableContract,
 	AuthorizableContract,
 	CanResetPasswordContract{
 	use Authenticatable, Authorizable, CanResetPassword;
-
-	/**
-	 * The database table used by the model.
-	 *
-	 * @var string
-	 */
 	protected $table = 'users';
-
-	/**
-	 * The attributes that are mass assignable.
-	 *
-	 * @var array
-	 */
 	protected $fillable = ['first_name', 'last_name', 'company_name', 'site', 'email', 'password'];
-
-	/**
-	 * The attributes excluded from the model's JSON form.
-	 *
-	 * @var array
-	 */
 	protected $hidden = ['password', 'remember_token'];
+	public static $defaultGroup = 2;
 
 	public function canDownloadModule(){
 		if ($this->payed_days){
@@ -63,5 +46,9 @@ class User extends Model implements AuthenticatableContract,
 
 	public function bitrixes(){
 		return $this->hasMany('App\Models\Modules\Bitrix\Bitrix');
+	}
+
+	public function group(){
+		return $this->belongsTo('App\Models\UserGroups');
 	}
 }
