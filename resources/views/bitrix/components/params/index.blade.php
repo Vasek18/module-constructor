@@ -15,6 +15,8 @@
             data-toggle="modal"
             data-target="#upload_prepared_files">{{ trans('bitrix_components.params_button_upload') }}
     </button>
+    @include('bitrix.button_n_modal_for_file_copy', ['path' => '\install\components\\'.$component->namespace.'\\'.$component->code.'\.parameters.php', 'show' => $user->canSeePayedFiles(), 'is_lang' => false])
+    @include('bitrix.button_n_modal_for_file_copy', ['path' => '\install\components\\'.$component->namespace.'\\'.$component->code.'\lang\ru\.parameters.php', 'show' => $user->canSeePayedFiles(), 'is_lang' => true, 'add_id' => '_lang'])
     <div class="modal fade"
          tabindex="-1"
          role="dialog"
