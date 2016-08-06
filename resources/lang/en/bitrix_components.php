@@ -84,6 +84,10 @@ return [
 	'params_dop_iblock'               => 'Infoblock',
 	'params_dop_template_id'          => 'Only for template',
 	'for_all_templates'               => 'For all templates',
+	'params_step_description'         => 'Here you can set those settings that will be displayed to the site administrator during adding / editing a component on the site page.',
+	'params_hints'                    => 'To substitute the value of one setting to another, fill in the value of the last: <pre>
+        $arCurrentValues["{setting code}"]
+    </pre>',
 
 	'arbitrary_files_h1'              => 'Other component files',
 	'arbitrary_files_form_title'      => 'Add file',

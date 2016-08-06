@@ -104,5 +104,8 @@
             </div>
         </div>
     </form>
-
+    <hr>
+    <p class="description">{!! trans('bitrix_components.params_step_description') !!}</p>
+    <hr>
+    <p>{!! trans('bitrix_components.params_hints') !!}</p>
 @stop
