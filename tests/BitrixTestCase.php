@@ -290,6 +290,9 @@ class BitrixTestCase extends TestCase{
 		if (isset($params['vals_type'])){
 			$inputs['param_'.($rowNumber).'_vals_type'] = $params['vals_type'];
 		}
+		if (isset($params['spec_args'])){
+			$inputs['param_'.($rowNumber).'_spec_args[0]'] = $params['spec_args'];
+		}
 		if (isset($params['iblock'])){
 			$inputs['param_'.($rowNumber).'_spec_args[0]'] = $params['iblock'];
 		}

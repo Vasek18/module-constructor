@@ -372,6 +372,124 @@ class BitrixComponentsFilesTest extends BitrixTestCase{
 	}
 
 	/** @test */
+	function it_can_store_iblock_types_list_param(){
+		$component = $this->createComponentOnForm($this->module);
+
+		$this->createComponentParamOnForm($this->module, $component, 0, [
+			'name'      => 'Ololo',
+			'code'      => 'trololo',
+			'type'      => 'LIST',
+			'vals_type' => 'iblocks_types_list',
+		]);
+
+		$paramsFile = $this->disk()->get($component->getFolder().'/.parameters.php');
+		$params_arr = vArrParse::parseFromText($this->disk()->get($component->getFolder().'/.parameters.php'), '$arComponentParameters');
+		$params_lang_arr = vArrParse::parseFromText($this->disk()->get($component->getFolder().'/lang/ru/.parameters.php'), 'MESS');
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$paramArrExpected = [
+			"PARENT" => "BASE",
+			"NAME"   => 'GetMessage("'.$component->lang_key.'_PARAM_TROLOLO_NAME")',
+			"TYPE"   => "LIST",
+			"VALUES" => '$iblocks_types_list()',
+		];
+		$this->assertEquals($paramArrExpected, $params_arr["PARAMETERS"]["TROLOLO"]);
+		$this->assertNotFalse(strpos($paramsFile, '$iblocks_types_list = function(){'), 'No helper function');
+
+		$this->assertEquals('Ololo', $params_lang_arr[$component->lang_key.'_PARAM_TROLOLO_NAME']);
+	}
+
+	/** @test */
+	function it_can_store_iblocks_list_param(){
+		$component = $this->createComponentOnForm($this->module);
+
+		$this->createComponentParamOnForm($this->module, $component, 0, [
+			'name'      => 'Ololo',
+			'code'      => 'trololo',
+			'type'      => 'LIST',
+			'vals_type' => 'iblocks_list',
+		]);
+
+		$paramsFile = $this->disk()->get($component->getFolder().'/.parameters.php');
+		$params_arr = vArrParse::parseFromText($this->disk()->get($component->getFolder().'/.parameters.php'), '$arComponentParameters');
+		$params_lang_arr = vArrParse::parseFromText($this->disk()->get($component->getFolder().'/lang/ru/.parameters.php'), 'MESS');
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$paramArrExpected = [
+			"PARENT" => "BASE",
+			"NAME"   => 'GetMessage("'.$component->lang_key.'_PARAM_TROLOLO_NAME")',
+			"TYPE"   => "LIST",
+			"VALUES" => '$iblocks_list()',
+		];
+		$this->assertEquals($paramArrExpected, $params_arr["PARAMETERS"]["TROLOLO"]);
+		$this->assertNotFalse(strpos($paramsFile, '$iblocks_list = function($IBLOCK_TYPE){'), 'No helper function');
+
+		$this->assertEquals('Ololo', $params_lang_arr[$component->lang_key.'_PARAM_TROLOLO_NAME']);
+	}
+
+	/** @test */
+	function it_can_store_iblock_props_list_param(){
+		$component = $this->createComponentOnForm($this->module);
+
+		$this->createComponentParamOnForm($this->module, $component, 0, [
+			'name'      => 'Ololo',
+			'code'      => 'trololo',
+			'type'      => 'LIST',
+			'vals_type' => 'iblock_props_list',
+			'spec_args' => '2',
+		]);
+
+		$paramsFile = $this->disk()->get($component->getFolder().'/.parameters.php');
+		$params_arr = vArrParse::parseFromText($this->disk()->get($component->getFolder().'/.parameters.php'), '$arComponentParameters');
+		$params_lang_arr = vArrParse::parseFromText($this->disk()->get($component->getFolder().'/lang/ru/.parameters.php'), 'MESS');
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$paramArrExpected = [
+			"PARENT" => "BASE",
+			"NAME"   => 'GetMessage("'.$component->lang_key.'_PARAM_TROLOLO_NAME")',
+			"TYPE"   => "LIST",
+			"VALUES" => '$iblock_props_list(2)',
+		];
+		$this->assertEquals($paramArrExpected, $params_arr["PARAMETERS"]["TROLOLO"]);
+		$this->assertNotFalse(strpos($paramsFile, '$iblock_props_list = function($IBLOCK_ID){'), 'No helper function');
+
+		$this->assertEquals('Ololo', $params_lang_arr[$component->lang_key.'_PARAM_TROLOLO_NAME']);
+	}
+
+	/** @test */
+	function it_can_store_iblock_items_list_param(){
+		$component = $this->createComponentOnForm($this->module);
+
+		$this->createComponentParamOnForm($this->module, $component, 0, [
+			'name'      => 'Ololo',
+			'code'      => 'trololo',
+			'type'      => 'LIST',
+			'vals_type' => 'iblock_items_list',
+			'spec_args' => '2',
+		]);
+
+		$paramsFile = $this->disk()->get($component->getFolder().'/.parameters.php');
+		$params_arr = vArrParse::parseFromText($this->disk()->get($component->getFolder().'/.parameters.php'), '$arComponentParameters');
+		$params_lang_arr = vArrParse::parseFromText($this->disk()->get($component->getFolder().'/lang/ru/.parameters.php'), 'MESS');
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$paramArrExpected = [
+			"PARENT" => "BASE",
+			"NAME"   => 'GetMessage("'.$component->lang_key.'_PARAM_TROLOLO_NAME")',
+			"TYPE"   => "LIST",
+			"VALUES" => '$iblock_items_list(2)',
+		];
+		$this->assertEquals($paramArrExpected, $params_arr["PARAMETERS"]["TROLOLO"]);
+		$this->assertNotFalse(strpos($paramsFile, '$iblock_items_list = function($IBLOCK_ID){'), 'No helper function');
+
+		$this->assertEquals('Ololo', $params_lang_arr[$component->lang_key.'_PARAM_TROLOLO_NAME']);
+	}
+
+	/** @test */
 	function it_can_delete_option_from_select(){
 		$component = $this->createComponentOnForm($this->module);
 

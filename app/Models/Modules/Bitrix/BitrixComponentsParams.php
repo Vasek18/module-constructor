@@ -112,6 +112,21 @@ class BitrixComponentsParams extends Model{
 		}
 	}
 
+	public function getNeededHelperFunctionName(){
+		if ($this->spec_vals == 'iblocks_types_list'){
+			return 'iblocks_types_list';
+		}
+		if ($this->spec_vals == 'iblocks_list'){
+			return 'iblocks_list';
+		}
+		if ($this->spec_vals == 'iblock_items_list'){
+			return 'iblock_items_list';
+		}
+		if ($this->spec_vals == 'iblock_props_list'){
+			return 'iblock_props_list';
+		}
+	}
+
 	public function getSpecValsFunctionCallAttribute(){
 		return $this->spec_vals ? "$".$this->spec_vals."(".$this->spec_vals_args.")" : '""';
 	}

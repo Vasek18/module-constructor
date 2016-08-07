@@ -139,6 +139,40 @@ class BitrixInScopeOfPayTest extends BitrixTestCase{
 
 		$this->module->deleteFolder();
 	}
+
+	/** @test */
+	function free_user_dont_see_component_params_files(){
+		$this->module = $this->fillNewBitrixForm();
+		$component = $this->createComponentOnForm($this->module);
+		$this->createComponentParamOnForm($this->module, $component, 0, [
+			'name' => 'Ololo',
+			'code' => 'trololo',
+			'type' => 'STRING',
+		]);
+
+		$this->dontSee($component->getFolder().'\.parameters.php');
+		$this->dontSee($component->getFolder().'\lang\ru\.parameters.php');
+		$this->see('Эту услугу нужно оплатить');
+
+		$this->module->deleteFolder();
+	}
+
+	/** @test */
+	function payed_user_see_component_params_files(){
+		$this->payDays(1);
+		$this->module = $this->fillNewBitrixForm();
+		$component = $this->createComponentOnForm($this->module);
+		$this->createComponentParamOnForm($this->module, $component, 0, [
+			'name' => 'Ololo',
+			'code' => 'trololo',
+			'type' => 'STRING',
+		]);
+
+		$this->see($component->getFolder().'\.parameters.php');
+		$this->see($component->getFolder().'\lang\ru\.parameters.php');
+
+		$this->module->deleteFolder();
+	}
 }
 
 ?>

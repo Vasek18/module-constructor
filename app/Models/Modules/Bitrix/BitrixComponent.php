@@ -222,6 +222,8 @@ class BitrixComponent extends Model{
 		$groupsLangText = ''; // todo
 
 		$paramsTexts = [];
+		$helperFunctionsArr = [];
+
 		$langFilePath = $this->getFolder().'\lang\ru\.parameters.php';
 
 		foreach ($params as $param){
@@ -283,6 +285,9 @@ class BitrixComponent extends Model{
 					$paramText .= '),'.PHP_EOL;
 				}else{
 					$paramText .= "\t\t\t".'"VALUES" => '.$param->spec_vals_function_call.''.PHP_EOL;
+					if ($param->spec_vals){
+						$helperFunctionsArr[intval($param->template_id)][] = $param->getNeededHelperFunctionName();
+					}
 				}
 			}
 
@@ -303,11 +308,14 @@ class BitrixComponent extends Model{
 			}
 		}
 
-		// dd($paramsTexts);
+		// dd($helperFunctionsArr);
 
-		$search = Array('{GROUPS}', '{PARAMS}');
+		$search = Array('{GROUPS}', '{PARAMS}', '{FUNCTIONS}');
 		foreach ($paramsTexts as $templateID => $paramsText){
-			$replace = Array($groupsText, $paramsText);
+			$replace = Array($groupsText, $paramsText, '');
+			if (isset($helperFunctionsArr[$templateID])){
+				$replace[2] = BitrixHelperFunctions::getPhpCodeFromListOfFuncsNames($module, $helperFunctionsArr[$templateID]);
+			}
 
 			if (!$templateID){
 				Bitrix::changeVarsInModuleFileAndSave('bitrix\install\components\component_name\.parameters.php', $module->id, $search, $replace, $this->getFolder().'\.parameters.php');
