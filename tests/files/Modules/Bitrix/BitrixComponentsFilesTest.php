@@ -245,7 +245,8 @@ class BitrixComponentsFilesTest extends BitrixTestCase{
 			"TYPE"   => "STRING",
 		];
 		$this->assertEquals($paramArrExpected, $params_arr["PARAMETERS"]["TROLOLO"]);
-
+		$this->assertEquals($paramArrExpected, $params_arr["PARAMETERS"]["TROLOLO"]);
+		$this->assertEquals('Выберите', $params_lang_arr[$this->module->lang_key.'_SELECT']);
 		$this->assertEquals('Ololo', $params_lang_arr[$component->lang_key.'_PARAM_TROLOLO_NAME']);
 	}
 

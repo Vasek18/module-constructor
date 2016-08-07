@@ -311,9 +311,11 @@ class BitrixComponent extends Model{
 
 			if (!$templateID){
 				Bitrix::changeVarsInModuleFileAndSave('bitrix\install\components\component_name\.parameters.php', $module->id, $search, $replace, $this->getFolder().'\.parameters.php');
+				$module->changeVarInLangFile($module->lang_key.'_SELECT', trans('app.select'), $this->getFolder().'\lang\ru\.parameters.php');
 			}else{
 				$template = BitrixComponentsTemplates::find($templateID);
 				Bitrix::changeVarsInModuleFileAndSave('bitrix\install\components\component_name\template_code\.parameters.php', $module->id, $search, $replace, $template->getFolder().'\.parameters.php');
+				$module->changeVarInLangFile($module->lang_key.'_SELECT', trans('app.select'), $template->getFolder().'\lang\ru\.parameters.php');
 			}
 		}
 		if (empty($paramsTexts)){
