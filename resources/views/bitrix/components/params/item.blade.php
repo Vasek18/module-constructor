@@ -60,7 +60,7 @@
         @if ($param)
             <a href="{{ action('Modules\Bitrix\BitrixComponentsParamsController@destroy', [$module->id, $component->id, $param->id]) }}"
                class="btn btn-danger human_ajax_deletion"
-               id="delete_param_{{$component->id}}">
+               id="delete_param_{{$param->id}}">
                 <span class="glyphicon glyphicon-trash"
                       aria-hidden="true"></span>
             </a>

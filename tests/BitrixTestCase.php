@@ -305,6 +305,11 @@ class BitrixTestCase extends TestCase{
 		return true;
 	}
 
+	function deleteComponentParamOnForm($module, $component, $param){
+		$this->visit('/my-bitrix/'.$module->id.'/components/'.$component->id.'/params');
+		$this->click('delete_param_'.$param->id);
+	}
+
 	function createTemplateOnForm($module, $component, $inputs = []){
 		$this->visit('/my-bitrix/'.$module->id.'/components/'.$component->id.'/templates/create');
 

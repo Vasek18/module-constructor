@@ -417,6 +417,31 @@ class BitrixComponentsFilesTest extends BitrixTestCase{
 	}
 
 	/** @test */
+	function it_can_delete_param(){
+		$component = $this->createComponentOnForm($this->module);
+
+		$param = $this->createComponentParamOnForm($this->module, $component, 0, [
+			'name'        => 'Ololo',
+			'code'        => 'trololo',
+			'type'        => 'LIST',
+			'vals_type'   => 'array',
+			'vals_key0'   => 'a',
+			'vals_value0' => 'b',
+			'vals_key1'   => 'c',
+			'vals_value1' => 'd',
+		]);
+
+		$this->deleteComponentParamOnForm($this->module, $component, $param);
+
+		$params_arr = vArrParse::parseFromText($this->disk()->get($component->getFolder().'/.parameters.php'), '$arComponentParameters');
+		$params_lang_arr = vArrParse::parseFromText($this->disk()->get($component->getFolder().'/lang/ru/.parameters.php'), 'MESS');
+
+		$this->assertArrayNotHasKey("TROLOLO", $params_arr["PARAMETERS"]);
+		$this->assertArrayNotHasKey($component->lang_key.'_PARAM_TROLOLO_NAME', $params_lang_arr);
+		$this->assertArrayNotHasKey($component->lang_key.'_PARAM_TROLOLO_A_VALUE', $params_lang_arr);
+	}
+
+	/** @test */
 	function it_can_store_string_param_without_dop_params_for_only_one_template(){
 		$component = $this->createComponentOnForm($this->module);
 		$template = $this->createTemplateOnForm($this->module, $component, [

@@ -305,8 +305,8 @@ class BitrixComponent extends Model{
 
 		// dd($paramsTexts);
 
+		$search = Array('{GROUPS}', '{PARAMS}');
 		foreach ($paramsTexts as $templateID => $paramsText){
-			$search = Array('{GROUPS}', '{PARAMS}');
 			$replace = Array($groupsText, $paramsText);
 
 			if (!$templateID){
@@ -315,6 +315,10 @@ class BitrixComponent extends Model{
 				$template = BitrixComponentsTemplates::find($templateID);
 				Bitrix::changeVarsInModuleFileAndSave('bitrix\install\components\component_name\template_code\.parameters.php', $module->id, $search, $replace, $template->getFolder().'\.parameters.php');
 			}
+		}
+		if (empty($paramsTexts)){
+			$replace = Array($groupsText, '');
+			Bitrix::changeVarsInModuleFileAndSave('bitrix\install\components\component_name\.parameters.php', $module->id, $search, $replace, $this->getFolder().'\.parameters.php');
 		}
 
 		return true;
