@@ -22,6 +22,8 @@ class BitrixComponentsFilesTest extends BitrixTestCase{
 
 	function tearDown(){
 		parent::tearDown();
+
+		$this->module->deleteFolder();
 	}
 
 	/** @test */
@@ -369,6 +371,52 @@ class BitrixComponentsFilesTest extends BitrixTestCase{
 	}
 
 	/** @test */
+	function it_can_delete_option_from_select(){
+		$component = $this->createComponentOnForm($this->module);
+
+		$this->createComponentParamOnForm($this->module, $component, 0, [
+			'name'        => 'Ololo',
+			'code'        => 'trololo',
+			'type'        => 'LIST',
+			'vals_type'   => 'array',
+			'vals_key0'   => 'a',
+			'vals_value0' => 'b',
+			'vals_key1'   => 'c',
+			'vals_value1' => 'd',
+		]);
+
+		$this->createComponentParamOnForm($this->module, $component, 0, [
+			'name'        => 'Ololo',
+			'code'        => 'trololo',
+			'type'        => 'LIST',
+			'vals_type'   => 'array',
+			'vals_key0'   => 'a',
+			'vals_value0' => 'b',
+			'vals_key1'   => '',
+			'vals_value1' => '',
+		]);
+
+		$params_arr = vArrParse::parseFromText($this->disk()->get($component->getFolder().'/.parameters.php'), '$arComponentParameters');
+		$params_lang_arr = vArrParse::parseFromText($this->disk()->get($component->getFolder().'/lang/ru/.parameters.php'), 'MESS');
+
+		$this->deleteFolder($this->standartModuleCode);
+
+		$paramArrExpected = [
+			"PARENT" => "BASE",
+			"NAME"   => 'GetMessage("'.$component->lang_key.'_PARAM_TROLOLO_NAME")',
+			"TYPE"   => "LIST",
+			"VALUES" => Array(
+				'a' => 'GetMessage("'.$component->lang_key.'_PARAM_TROLOLO_A_VALUE")',
+			),
+		];
+		$this->assertEquals($paramArrExpected, $params_arr["PARAMETERS"]["TROLOLO"]);
+
+		$this->assertEquals('Ololo', $params_lang_arr[$component->lang_key.'_PARAM_TROLOLO_NAME']);
+		$this->assertEquals('b', $params_lang_arr[$component->lang_key.'_PARAM_TROLOLO_A_VALUE']);
+		$this->assertArrayNotHasKey('d', $params_lang_arr);
+	}
+
+	/** @test */
 	function it_can_store_string_param_without_dop_params_for_only_one_template(){
 		$component = $this->createComponentOnForm($this->module);
 		$template = $this->createTemplateOnForm($this->module, $component, [
@@ -415,6 +463,28 @@ class BitrixComponentsFilesTest extends BitrixTestCase{
 
 		$this->assertEquals('Ololo', $params_lang_arr[$component->lang_key.'_PARAM_TROLOLO_NAME']);
 		$this->assertEquals('Masha', $template_params_lang_arr[$component->lang_key.'_PARAM_NASHA_NAME']);
+	}
+
+	/** @test */
+	function it_can_change_order_of_params(){
+		$component = $this->createComponentOnForm($this->module);
+
+		$this->createComponentParamOnForm($this->module, $component, 0, [
+			'name' => 'Ololo',
+			'code' => 'trololo',
+			'type' => 'STRING',
+			'sort' => '200',
+		]);
+		$this->createComponentParamOnForm($this->module, $component, 1, [
+			'name' => 'Test',
+			'code' => 'test',
+			'type' => 'STRING',
+			'sort' => '100',
+		]);
+
+		$paramsFile = $this->disk()->get($component->getFolder().'/.parameters.php');
+
+		$this->assertRegexp('/"TEST".+"TROLOLO"/is', $paramsFile);
 	}
 
 	/** @test */

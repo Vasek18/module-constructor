@@ -266,6 +266,9 @@ class BitrixTestCase extends TestCase{
 		if (isset($params['size'])){
 			$inputs['param_size['.$rowNumber.']'] = $params['size'];
 		}
+		if (isset($params['sort'])){
+			$inputs['param_sort['.$rowNumber.']'] = $params['sort'];
+		}
 		if (isset($params['default'])){
 			$inputs['param_default['.$rowNumber.']'] = $params['default'];
 		}
@@ -273,19 +276,15 @@ class BitrixTestCase extends TestCase{
 			$inputs['param_additional_values['.$rowNumber.']'] = $params['additional_values'];
 		}
 		if (isset($params['vals_key0'])){
-			$inputs['param_'.($rowNumber).'_vals_type'] = 'array';
 			$inputs['param_'.($rowNumber).'_vals_key[0]'] = $params['vals_key0'];
 		}
 		if (isset($params['vals_value0'])){
-			$inputs['param_'.($rowNumber).'_vals_type'] = 'array';
 			$inputs['param_'.($rowNumber).'_vals_value[0]'] = $params['vals_value0'];
 		}
 		if (isset($params['vals_key1'])){
-			$inputs['param_'.($rowNumber).'_vals_type'] = 'array';
 			$inputs['param_'.($rowNumber).'_vals_key[1]'] = $params['vals_key1'];
 		}
 		if (isset($params['vals_value1'])){
-			$inputs['param_'.($rowNumber).'_vals_type'] = 'array';
 			$inputs['param_'.($rowNumber).'_vals_value[1]'] = $params['vals_value1'];
 		}
 		if (isset($params['vals_type'])){

@@ -68,6 +68,7 @@ return [
 	'params_field_dop_params'                     => 'Доп. параметры',
 
 	'additional_settings_title'       => 'Дополнительные настройки',
+	'params_dop_sort'                 => 'Вес сортировки',
 	'params_dop_refresh'              => 'Обновляет ли остальные настройки?',
 	'params_dop_multiple'             => 'Множественное?',
 	'params_dop_height'               => 'Высота',

@@ -1,11 +1,16 @@
-$('.draggable').draggable()
-
-$(document).on "mouseup", ".draggable", ->
-	$('.draggable .sort-val').each((i, el) ->
-		$(this).val(i)
-		return
-	)
-	return
+#$('.draggable').draggable()
+#
+#$(document).on "mouseup", ".draggable", ->
+#	$('.draggable .sort-val').each((i, el) ->
+#		row = $(this).parents('.draggable');
+#
+#		# меняем сортировку
+#		$(this).val(i)
+#
+#		return
+#	)
+#
+#	return
 
 $(document).on "change", "[data-transform]", ->
 	input = $(this)

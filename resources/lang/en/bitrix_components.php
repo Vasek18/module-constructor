@@ -68,6 +68,7 @@ return [
 	'params_field_dop_params'                     => 'Additional settings',
 
 	'additional_settings_title'       => 'Additional settings',
+	'params_dop_sort'                 => 'Sort value',
 	'params_dop_refresh'              => 'Refresh other settings?',
 	'params_dop_multiple'             => 'Multiple?',
 	'params_dop_height'               => 'Height',

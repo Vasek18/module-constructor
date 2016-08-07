@@ -87,8 +87,6 @@
             </div>
         </div>
         <div class="draggable-container">
-            {{--todo вынести row--}}
-            {{--@each('bitrix.admin_options.item', $params, 'option')--}}
             @foreach($params as $i => $param)
                 {{--{{dd($param)}}--}}
                 @include('bitrix.components.params.item', ['param' => $param, 'i' => $i, 'module' => $module, 'component' => $component])
@@ -100,7 +98,8 @@
         @endfor
         <div class="row">
             <div class="col-md-12">
-                <button class="btn btn-primary btn-block" name="save">{{ trans('app.save') }}</button>
+                <button class="btn btn-primary btn-block"
+                        name="save">{{ trans('app.save') }}</button>
             </div>
         </div>
     </form>

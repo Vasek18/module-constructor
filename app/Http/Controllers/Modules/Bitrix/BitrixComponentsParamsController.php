@@ -43,7 +43,7 @@ class BitrixComponentsParamsController extends Controller{
 			return $this->unauthorized($request);
 		}
 
-		// dd($request);
+		// dd($request->all());
 		foreach ($request->param_code as $i => $code){
 			// обязательные поля
 			if (!$code){
@@ -109,7 +109,7 @@ class BitrixComponentsParamsController extends Controller{
 				$paramArr['template_id'] = $request['param_template_id'][$i];
 			}
 			//
-			//dd($paramArr);
+			// dd($paramArr);
 			//dd($request);
 
 			$param = BitrixComponentsParams::updateOrCreate(
@@ -119,9 +119,10 @@ class BitrixComponentsParamsController extends Controller{
 				],
 				$paramArr
 			);
+			$param->vals()->delete();
 
 			// сохранение опций
-			if (count($request['param_'.$i.'_vals_key']) && $request['param_'.$i.'_vals_type'] == "array"){
+			if (count($request['param_'.$i.'_vals_key']) && $param->spec_vals == "array"){
 				//dd($prop);
 				//dd($request['param_'.$i.'_vals_key']);
 				foreach ($request['param_'.$i.'_vals_key'] as $io => $param_val_key){

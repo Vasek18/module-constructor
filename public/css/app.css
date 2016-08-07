@@ -87,17 +87,6 @@ a.you-can-change:hover {
   background: #eee;
 }
 
-.draggable {
-  cursor: pointer;
-  padding-top: 2px;
-  padding-bottom: 2px;
-}
-
-.draggable:hover,
-.draggable:focus {
-  background: #eee;
-}
-
 .text-center {
   text-align: center;
 }

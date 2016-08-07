@@ -15,6 +15,15 @@
             </div>
             <div class="modal-body">
                 <div class="form-group"
+                     data-for_types="">
+                    <label for="param_{{$i}}_sort">{{ trans('bitrix_components.params_dop_sort') }}</label>
+                    <input class="form-control"
+                           type="text"
+                           name="param_sort[]"
+                           id="param_{{$i}}_sort"
+                           value="{{$param && $param->sort ? $param->sort : '500'}}">
+                </div>
+                <div class="form-group"
                      data-for_types="LIST CHECKBOX">
                     <label for="param_{{$i}}_refresh">{{ trans('bitrix_components.params_dop_refresh') }}</label>
                     <div class="checkbox">

@@ -1,8 +1,4 @@
 <div class="row option {{$param ? 'draggable' : ''}} deletion_wrapper">
-    <input type="hidden"
-           name="param_sort[]"
-           class="sort-val"
-           value="{{$i}}">
     <div class="col-md-3">
         <label class="sr-only"
                for="param_{{$i}}_name">{{ trans('bitrix_components.params_field_name') }}</label>
