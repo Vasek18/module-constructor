@@ -88,6 +88,10 @@ return [
 	'params_step_description'         => 'Here you can set those settings that will be displayed to the site administrator during adding / editing a component on the site page.',
 	'params_hints'                    => 'To substitute the value of one setting to another, fill in the value of the last: <pre>
         $arCurrentValues["{setting code}"]
+    </pre>
+    To substitute the value of module setting use:
+    <pre>
+        COption::GetOptionString($module_id, "{setting code}")
     </pre>',
 
 	'arbitrary_files_h1'              => 'Other component files',

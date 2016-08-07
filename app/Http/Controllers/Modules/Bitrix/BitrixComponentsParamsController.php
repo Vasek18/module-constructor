@@ -32,7 +32,8 @@ class BitrixComponentsParamsController extends Controller{
 			'component'     => $component,
 			'params'        => $component->params()->forAllTemplates()->orderBy('sort', 'asc')->get(),
 			'params_types'  => BitrixComponentsParamsTypes::all(),
-			'params_groups' => BitrixComponentsParamsGroups::all()
+			'params_groups' => BitrixComponentsParamsGroups::all(),
+			'admin_options' => $module->options()->orderBy('sort', 'asc')->get(),
 		];
 
 		return view("bitrix.components.params.index", $data);

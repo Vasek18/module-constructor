@@ -76,6 +76,7 @@
                            type="text"
                            name="param_default[]"
                            id="param_{{$i}}_default"
+                           list="params_variables_list"
                            @if ($param) value="{{$param->default}}" @endif>
                 </div>
                 <div class="form-group"
@@ -178,6 +179,7 @@
                                name="param_{{$i}}_spec_args[]"
                                class="form-control"
                                placeholder="{{ trans('bitrix_components.params_dop_iblock_type' ) }}"
+                               list="params_variables_list"
                                @if ($param && $param->spec_vals == 'iblocks_list') value="{{$param->spec_vals_args}}" @endif>
                     </div>
                     <div>{{ trans('bitrix_components.params_dop_or' ) }}</div>
@@ -194,6 +196,7 @@
                                name="param_{{$i}}_spec_args[]"
                                class="form-control"
                                placeholder="{{ trans('bitrix_components.params_dop_iblock' ) }}"
+                               list="params_variables_list"
                                @if ($param && $param->spec_vals == 'iblock_items_list') value="{{$param->spec_vals_args}}" @endif>
                     </div>
                     <div>{{ trans('bitrix_components.params_dop_or' ) }}</div>
@@ -210,6 +213,7 @@
                                name="param_{{$i}}_spec_args[]"
                                class="form-control"
                                placeholder="{{ trans('bitrix_components.params_dop_iblock' ) }}"
+                               list="params_variables_list"
                                @if ($param && $param->spec_vals == 'iblock_props_list') value="{{$param->spec_vals_args}}" @endif>
                     </div>
                 </div>
