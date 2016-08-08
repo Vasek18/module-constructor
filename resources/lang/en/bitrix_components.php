@@ -27,7 +27,7 @@ return [
 	'menu_title_main_info'     => 'Main info',
 	'menu_title_visual_path'   => 'Visual path',
 	'menu_title_params'        => 'Params',
-	'menu_title_component_php' => 'Component.php',
+	'menu_title_component_php' => 'Logic',
 	'menu_title_other_files'   => 'Other files',
 	'menu_title_templates'     => 'Templates',
 
@@ -93,6 +93,8 @@ return [
     <pre>
         COption::GetOptionString($module_id, "{setting code}")
     </pre>',
+
+	'use' => 'Use',
 
 	'arbitrary_files_h1'              => 'Other component files',
 	'arbitrary_files_form_title'      => 'Add file',

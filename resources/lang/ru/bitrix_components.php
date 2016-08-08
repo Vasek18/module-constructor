@@ -27,7 +27,7 @@ return [
 	'menu_title_main_info'     => 'Основное',
 	'menu_title_visual_path'   => 'Путь в визуальном редакторе',
 	'menu_title_params'        => 'Параметры подключения',
-	'menu_title_component_php' => 'Component.php',
+	'menu_title_component_php' => 'Логика',
 	'menu_title_other_files'   => 'Прочие файлы',
 	'menu_title_templates'     => 'Шаблоны',
 
@@ -93,6 +93,8 @@ return [
     <pre>
         COption::GetOptionString($module_id, "{Код свойства}")
     </pre>',
+
+	'use' => 'Использовать',
 
 	'arbitrary_files_h1'              => 'Прочие файлы компонента',
 	'arbitrary_files_form_title'      => 'Добавить файл',

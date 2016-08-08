@@ -562,9 +562,23 @@ class BitrixComponent extends Model{
 	}
 
 	public function getComponentPhpAttribute(){
-		$code = $this->module()->first()->disk()->get($this->getFolder().'\component.php');
+		$disk = $this->module()->first()->disk();
+		$path = $this->getFolder().'\component.php';
+		if ($disk->exists($path)){
+			return $disk->get($path);
+		}
 
-		return $code;
+		return false;
+	}
+
+	public function getClassPhpAttribute(){
+		$disk = $this->module()->first()->disk();
+		$path = $this->getFolder().'\class.php';
+		if ($disk->exists($path)){
+			return $disk->get($path);
+		}
+
+		return false;
 	}
 
 	public function module(){
