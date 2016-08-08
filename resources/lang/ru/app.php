@@ -24,4 +24,6 @@ return [
 	'are_you_sure'   => 'Вы уверены?',
 	'version'        => 'Версия',
 	'files_encoding' => 'Кодировка',
+
+	'this_is_paid_functionality' => 'Это платный функционал',
 ];

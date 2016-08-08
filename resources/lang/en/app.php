@@ -24,4 +24,6 @@ return [
 	'are_you_sure'   => 'Are you sure?',
 	'version'        => 'Version',
 	'files_encoding' => 'Files encoding',
+
+	'this_is_paid_functionality' => 'This is a paid functionality',
 ];
