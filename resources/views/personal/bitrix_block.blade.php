@@ -71,7 +71,7 @@
                                 <ul>
                                     @foreach($module->components as $component)
                                         <li>
-                                            <a href="{{action('Modules\Bitrix\BitrixComponentsController@show', [$module->id, $component->id])}}">{{$component->name}}</a>
+                                            <a href="{{action('Modules\Bitrix\BitrixComponentsController@show', [$module->id, $component->id])}}">{{$component->name}} ({{$component->code}})</a>
                                         </li>
                                     @endforeach
                                 </ul>

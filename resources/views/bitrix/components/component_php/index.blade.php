@@ -25,10 +25,6 @@
                     Component.php
                 </a>
             </div>
-            <label>
-                <input type="checkbox">
-                {{ trans('bitrix_components.use') }}
-            </label>
             <div class="col-md-12">
                 <div class="collapse"
                      id="component_php_wrap">
@@ -65,10 +61,6 @@
                     Class.php
                 </a>
             </div>
-            <label>
-                <input type="checkbox">
-                {{ trans('bitrix_components.use') }}
-            </label>
             <div class="col-md-12">
                 <div class="collapse"
                      id="class_php_wrap">

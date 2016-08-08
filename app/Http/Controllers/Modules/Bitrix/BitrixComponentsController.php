@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Response;
 use App\Models\User;
 use Auth;
 
+// todo мб вообще избавиться от контроллеров
 class BitrixComponentsController extends Controller{
 	use UserOwnModule;
 
@@ -241,8 +242,25 @@ class BitrixComponentsController extends Controller{
 		}
 
 		$component_php = $request->component_php;
+		$class_php = $request->class_php;
 
-		$module->disk()->put($component->getFolder().'\component.php', $component_php);
+		$pathToComponentPhp = $component->getFolder().'\component.php';
+		if ($component_php){
+			$module->disk()->put($pathToComponentPhp, $component_php);
+		}else{
+			if ($module->disk()->exists($pathToComponentPhp)){
+				$module->disk()->delete($pathToComponentPhp);
+			}
+		}
+
+		$pathToClassPhp = $component->getFolder().'\class.php';
+		if ($class_php){
+			$module->disk()->put($pathToClassPhp, $class_php);
+		}else{
+			if ($module->disk()->exists($pathToClassPhp)){
+				$module->disk()->delete($pathToClassPhp);
+			}
+		}
 
 		$component->saveStep(4);
 

@@ -173,6 +173,37 @@ class BitrixInScopeOfPayTest extends BitrixTestCase{
 
 		$this->module->deleteFolder();
 	}
+
+	/** @test */
+	function free_user_cannot_store_class_php(){
+		$this->module = $this->fillNewBitrixForm();
+		$component = $this->createComponentOnForm($this->module);
+
+		$this->visit('/my-bitrix/'.$this->module->id.'/components/'.$component->id.'/component_php');
+
+		$this->dontSee('name="class_php"');
+
+		$this->module->deleteFolder();
+	}
+
+	/** @test */
+	function payed_user_can_store_class_php(){
+		$this->module = $this->fillNewBitrixForm();
+		$component = $this->createComponentOnForm($this->module);
+		$this->payDays(1);
+
+		$this->visit('/my-bitrix/'.$this->module->id.'/components/'.$component->id.'/component_php');
+
+		$this->submitForm('save', [
+			'class_php' => 'I\'m class',
+		]);
+
+		$class_php = $this->disk()->get($component->getFolder().'/class.php');
+
+		$this->assertEquals('I\'m class', $class_php);
+
+		$this->module->deleteFolder();
+	}
 }
 
 ?>

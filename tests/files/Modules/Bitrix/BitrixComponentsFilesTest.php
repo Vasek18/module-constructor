@@ -186,6 +186,41 @@ class BitrixComponentsFilesTest extends BitrixTestCase{
 	}
 
 	/** @test */
+	function it_can_store_class_php(){
+		$component = $this->createComponentOnForm($this->module);
+		$this->payDays(1);
+
+		$this->visit('/my-bitrix/'.$this->module->id.'/components/'.$component->id.'/component_php');
+
+		$this->submitForm('save', [
+			'class_php' => 'I\'m class',
+		]);
+
+		$class_php = $this->disk()->get($component->getFolder().'/class.php');
+
+		$this->assertEquals('I\'m class', $class_php);
+	}
+
+	/** @test */
+	function if_class_php_or_component_php_is_empty_there_shouldnt_be_file(){
+		$component = $this->createComponentOnForm($this->module);
+		$this->payDays(1);
+
+		$this->visit('/my-bitrix/'.$this->module->id.'/components/'.$component->id.'/component_php');
+		// сначала создадим
+		$this->submitForm('save', [
+			'class_php' => 'I\'m class',
+		]);
+		$this->submitForm('save', [
+			'class_php'     => '',
+			'component_php' => '',
+		]);
+
+		$this->assertFalse($this->disk()->exists($component->getFolder().'/class.php'));
+		$this->assertFalse($this->disk()->exists($component->getFolder().'/component.php'));
+	}
+
+	/** @test */
 	function it_can_store_arbitrary_file(){
 		$component = $this->createComponentOnForm($this->module);
 
