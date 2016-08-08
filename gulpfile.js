@@ -20,5 +20,6 @@ elixir(function(mix){
 		.coffee('bitrix_module_components_params.coffee')
 		.coffee('translit.coffee')
 		.coffee('bitrix_mail_event_create_form.coffee')
-		.coffee('bitrix_mail_template_form.coffee');
+		.coffee('bitrix_mail_template_form.coffee')
+		.coffee('bitrix_component_logic_wizard.coffee');
 });

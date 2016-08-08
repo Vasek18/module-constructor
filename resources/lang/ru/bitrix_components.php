@@ -94,7 +94,10 @@ return [
         COption::GetOptionString($module_id, "{Код свойства}")
     </pre>',
 
-	'use' => 'Использовать',
+	'logic_wizard_title'                 => 'Мастер заготовок',
+	'logic_wizard_text'                  => 'Включить:',
+	'logic_wizard_items_list'            => 'Список элементов',
+	'logic_wizard_items_list_with_props' => 'Список элементов со свойствами',
 
 	'arbitrary_files_h1'              => 'Прочие файлы компонента',
 	'arbitrary_files_form_title'      => 'Добавить файл',

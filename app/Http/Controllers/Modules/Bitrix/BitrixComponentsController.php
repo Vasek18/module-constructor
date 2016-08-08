@@ -267,6 +267,14 @@ class BitrixComponentsController extends Controller{
 		return back();
 	}
 
+	public function get_templates(Bitrix $module, BitrixComponent $component, Request $request){
+		if (!$this->moduleOwnsComponent($module, $component)){
+			return $this->unauthorized($request);
+		}
+
+		return response(['component_php' => '', 'class_php' => '']);
+	}
+
 	// загрузка архива с компонентом
 	// todo сейчас работает только с зипом
 	public function upload_zip(Bitrix $module, Request $request){

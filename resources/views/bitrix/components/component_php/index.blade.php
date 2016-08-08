@@ -5,11 +5,15 @@
 @stop
 
 @push('scripts')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/ace.js"></script>@endpush
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/ace.js"></script>
+<script src="/js/bitrix_component_logic_wizard.js"></script>
+@endpush
 
 @section('page')
 
     @include('bitrix.components.progress_way_menu')
+
+    @include('bitrix.components.component_php.wizard', [])
 
     <form action="{{action('Modules\Bitrix\BitrixComponentsController@store_component_php', [$module->id, $component->id])}}"
           method="post">

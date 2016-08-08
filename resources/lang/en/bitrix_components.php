@@ -94,7 +94,10 @@ return [
         COption::GetOptionString($module_id, "{setting code}")
     </pre>',
 
-	'use' => 'Use',
+	'logic_wizard_title'                 => 'Wizard',
+	'logic_wizard_text'                  => 'Include:',
+	'logic_wizard_items_list'            => 'Items list',
+	'logic_wizard_items_list_with_props' => 'Items list with props',
 
 	'arbitrary_files_h1'              => 'Other component files',
 	'arbitrary_files_form_title'      => 'Add file',
