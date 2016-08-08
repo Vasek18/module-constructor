@@ -33,27 +33,23 @@
                 <div class="collapse"
                      id="component_php_wrap">
                     <h2>Component.php</h2>
-                    @if ($user->canSeePayedFiles())
-                        @push('scripts')
-                        <script>
-                            var editor = ace.edit("component_php_editor");
-                            editor.getSession().setMode("ace/mode/php");
-                            editor.getSession().on('change', function(e){
-                                var text = editor.getSession().getValue();
-                                console.log(text);
-                                $("#component_php").val(text);
-                            });
-                        </script>
-                        @endpush
-                        <div id="component_php_editor"
-                             style="height: 500px">{{$component->component_php}}</div>
-                        <input type="hidden"
-                               name="component_php"
-                               id="component_php"
-                               value="{{$component->component_php}}">
-                    @else
-                        {{ trans('app.this_is_paid_functionality') }}
-                    @endif
+                    @push('scripts')
+                    <script>
+                        var editor = ace.edit("component_php_editor");
+                        editor.getSession().setMode("ace/mode/php");
+                        editor.getSession().on('change', function(e){
+                            var text = editor.getSession().getValue();
+                            console.log(text);
+                            $("#component_php").val(text);
+                        });
+                    </script>
+                    @endpush
+                    <div id="component_php_editor"
+                         style="height: 500px">{{$component->component_php}}</div>
+                    <input type="hidden"
+                           name="component_php"
+                           id="component_php"
+                           value="{{$component->component_php}}">
                 </div>
             </div>
         </div>
