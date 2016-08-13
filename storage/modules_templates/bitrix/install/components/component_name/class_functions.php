@@ -12,7 +12,7 @@
 		$this->arParams["FILTER"]["IBLOCK_ID"] = $this->arParams["IBLOCK_ID"];
 	}
 // ololo
-	public function generateArFilter(){
+	public function generateArFilterOlolo(){
 		$this->arParams["FILTER"] = Array();
 		$this->arParams["FILTER"]["IBLOCK_ID"] = $this->arParams["IBLOCK_ID"];
 	}

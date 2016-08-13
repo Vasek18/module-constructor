@@ -273,7 +273,13 @@ class BitrixComponentsController extends Controller{
 		}
 
 		$component_php = ''; // его делаем пустым и переезжаем на ооп
-		$class_php = $component->getClassPhp();
+
+		$functions = [];
+		foreach ($request->all() as $code => $val){
+			// todo тут надо будет удалять лищние параметры
+			$functions[] = $val;
+		}
+		$class_php = $component->getClassPhp($functions);
 
 		return response(['component_php' => $component_php, 'class_php' => $class_php]);
 	}
