@@ -267,7 +267,7 @@ class BitrixComponentsController extends Controller{
 		return back();
 	}
 
-	public function get_templates(Bitrix $module, BitrixComponent $component, Request $request){
+	public function get_logic_files_templates(Bitrix $module, BitrixComponent $component, Request $request){
 		if (!$this->moduleOwnsComponent($module, $component)){
 			return $this->unauthorized($request);
 		}

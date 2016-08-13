@@ -1,5 +1,5 @@
 <form class="wizard"
-      action="{{ action('Modules\Bitrix\BitrixComponentsController@get_templates', ['module'=>$module->id, 'component' => $component->id]) }}">
+      action="{{ action('Modules\Bitrix\BitrixComponentsController@get_logic_files_templates', ['module'=>$module->id, 'component' => $component->id]) }}">
     <h2>{{ trans('bitrix_components.logic_wizard_title') }}</h2>
     <b>{{ trans('bitrix_components.logic_wizard_text') }}</b>
     <div class="form-group">

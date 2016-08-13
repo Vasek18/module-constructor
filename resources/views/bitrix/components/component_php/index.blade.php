@@ -6,8 +6,7 @@
 
 @push('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/ace.js"></script>
-<script src="/js/bitrix_component_logic_wizard.js"></script>
-@endpush
+<script src="/js/bitrix_component_logic_wizard.js"></script>@endpush
 
 @section('page')
 
@@ -35,10 +34,10 @@
                     <h2>Component.php</h2>
                     @push('scripts')
                     <script>
-                        var editor = ace.edit("component_php_editor");
-                        editor.getSession().setMode("ace/mode/php");
-                        editor.getSession().on('change', function(e){
-                            var text = editor.getSession().getValue();
+                        var editor_component = window.editor_component = ace.edit("component_php_editor");
+                        editor_component.getSession().setMode("ace/mode/php");
+                        editor_component.getSession().on('change', function(e){
+                            var text = editor_component.getSession().getValue();
                             console.log(text);
                             $("#component_php").val(text);
                         });
@@ -72,7 +71,7 @@
                     @if ($user->canSeePayedFiles())
                         @push('scripts')
                         <script>
-                            var editor_class = ace.edit("class_php_editor");
+                            var editor_class = window.editor_class = ace.edit("class_php_editor");
                             editor_class.getSession().setMode("ace/mode/php");
                             editor_class.getSession().on('change', function(e){
                                 var text = editor_class.getSession().getValue();

@@ -86,7 +86,7 @@ Route::group(['prefix' => 'my-bitrix', 'middleware' => 'bitrix.owner'], function
 		Route::group(['prefix' => '{component}/component_php'], function (){
 			Route::get('', ['as' => 'bitrix_component_component_php', 'uses' => 'Modules\Bitrix\BitrixComponentsController@show_component_php']);
 			Route::post('store', 'Modules\Bitrix\BitrixComponentsController@store_component_php');
-			Route::get('get_templates', 'Modules\Bitrix\BitrixComponentsController@get_templates');
+			Route::get('get_templates', 'Modules\Bitrix\BitrixComponentsController@get_logic_files_templates');
 		});
 
 		// другие файлы
