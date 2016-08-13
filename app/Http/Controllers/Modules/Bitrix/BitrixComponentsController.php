@@ -272,7 +272,10 @@ class BitrixComponentsController extends Controller{
 			return $this->unauthorized($request);
 		}
 
-		return response(['component_php' => '', 'class_php' => '']);
+		$component_php = ''; // его делаем пустым и переезжаем на ооп
+		$class_php = $component->getClassPhp();
+
+		return response(['component_php' => $component_php, 'class_php' => $class_php]);
 	}
 
 	// загрузка архива с компонентом

@@ -551,6 +551,36 @@ class BitrixComponent extends Model{
 		}
 	}
 
+	public function getClassPhp($functionsCodes = []){
+		$functionsCodes[] = 'for all';
+		$class_php = Storage::disk('modules_templates')->get('bitrix\install\components\component_name\class.php');
+		$class_functions_php = Storage::disk('modules_templates')->get('bitrix\install\components\component_name\class_functions.php');
+
+		$functions = preg_split('/(\/\/.+)/im', $class_functions_php, null, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE); // без s чтобы в . не было переноса строк
+		// dd($functions);
+
+		$neededFunctions = [];
+		foreach ($functions as $c => $function){
+			if ($c % 2 == 0){ // в чётных список функций
+				$need = false;
+				foreach ($functionsCodes as $functionsCode){
+					if (strpos($function, $functionsCode) !== false){
+						$need = true;
+						break;
+					}
+				}
+			}else{ // в нечётных сами функции
+				if ($need){
+					$neededFunctions[] = $function;
+				}
+			}
+		}
+
+		$class_php = str_replace(['{COMPONENT_CLASS_PHP_CLASS}', '{FUNCTIONS}'], [$this->class_php_class, implode('', $neededFunctions)], $class_php);
+
+		return $class_php;
+	}
+
 	public function getStepsAttribute($value){
 		$steps = array_filter(explode(",", $value));
 
@@ -579,6 +609,10 @@ class BitrixComponent extends Model{
 		}
 
 		return false;
+	}
+
+	public function getClassPhpClassAttribute(){
+		return 'C'.studly_case($this->module()->first()->PARTNER_CODE."_".str_replace('.', '_', $this->code)).'Component';
 	}
 
 	public function module(){
