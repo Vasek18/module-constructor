@@ -80,8 +80,6 @@ class BitrixComponentsFilesTest extends BitrixTestCase{
 		$component_php = $this->disk()->get($component->getFolder().'/component.php');
 		$default_template_php = $this->disk()->get($component->getFolder().'/templates/.default/template.php');
 
-		$this->deleteFolder($this->standartModuleCode);
-
 		$this->assertTrue(in_array($this->module->module_folder.'/install/components/'.$component->namespace.'/'.$component->code, $dirs), 'No component folder');
 		$this->assertEquals('Heh', $description_lang_arr[$component->lang_key."_COMPONENT_NAME"]);
 		$this->assertEquals('500', $description_arr["SORT"]);
@@ -90,7 +88,8 @@ class BitrixComponentsFilesTest extends BitrixTestCase{
 			"SORT" => '500',
 			"NAME" => 'GetMessage("'.$component->lang_key.'_COMPONENTS_FOLDER_NAME")',
 		), $description_arr["PATH"]);
-		$this->assertEquals('<? $this->IncludeComponentTemplate(); ?>', $component_php);
+		// dd($component_php);
+		$this->assertEquals('<?'."\n".'if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();'."\n"."\n".'$this->IncludeComponentTemplate();'."\n".'?>', $component_php);
 		$this->assertEquals('Hello World', $default_template_php);
 	}
 

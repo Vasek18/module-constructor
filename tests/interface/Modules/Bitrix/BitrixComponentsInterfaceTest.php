@@ -140,12 +140,10 @@ class BitrixComponentsInterfaceTest extends BitrixTestCase{
 		$this->seeInField('path_sort_1', '500');
 
 		$this->visit('/my-bitrix/'.$this->module->id.'/components/'.$component->id.'/component_php');
-		$this->seeInField('component_php', '<? $this->IncludeComponentTemplate(); ?>');
+		$this->seeInField('component_php', '<?'."\n".'if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();'."\n"."\n".'$this->IncludeComponentTemplate();'."\n".'?>');
 
 		$this->visit('/my-bitrix/'.$this->module->id.'/components/'.$component->id.'/templates');
 		$this->see('.default (Дефолтный)');
-
-		$this->deleteFolder($this->standartModuleCode);
 	}
 
 	/** @test */

@@ -37,7 +37,7 @@ class BitrixComponent extends Model{
 	}
 
 	public function createDefaultComponentPhp(){
-		$component_php = '<? $this->IncludeComponentTemplate(); ?>';
+		$component_php = Storage::disk('modules_templates')->get('bitrix\install\components\component_name\component.php');
 
 		$this->module()->first()->disk()->put($this->getFolder().'\component.php', $component_php);
 
