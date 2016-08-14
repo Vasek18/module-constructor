@@ -204,6 +204,18 @@ class BitrixInScopeOfPayTest extends BitrixTestCase{
 
 		$this->module->deleteFolder();
 	}
+
+	/** @test */
+	function free_user_cannot_see_class_php_templates(){
+		$this->module = $this->fillNewBitrixForm();
+		$component = $this->createComponentOnForm($this->module);
+
+		$this->visit('/my-bitrix/'.$this->module->id.'/components/'.$component->id.'/component_php/get_templates?items_list=items_list');
+
+		$this->module->deleteFolder();
+
+		$this->seePageIs('personal');
+	}
 }
 
 ?>

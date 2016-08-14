@@ -271,7 +271,9 @@ class BitrixComponentsController extends Controller{
 		if (!$this->moduleOwnsComponent($module, $component)){
 			return $this->unauthorized($request);
 		}
-
+		if (!auth::user()->canSeePayedFiles()){
+			return $this->unauthorized($request);
+		}
 		$component_php = ''; // его делаем пустым и переезжаем на ооп
 
 		$functions = [];
