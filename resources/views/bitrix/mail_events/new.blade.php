@@ -67,27 +67,31 @@
                 <span class="help-block"
                       id="MAIL_EVENT_VARS_help"></span>
             </div>
-            <div class="col-md-4 vals-list">
+            <div class="col-md-4">
                 @for($i=0; $i<5; $i++)
-                    <div class="form-group">
-                        <div class="col-md-6">
-                            <input class="form-control"
-                                   type="text"
-                                   placeholder="{{trans('bitrix_mail_events.create_form_var_name')}}"
-                                   name="MAIL_EVENT_VARS_NAMES[]"
-                                   id="MAIL_EVENT_VARS_NAME_{{$i}}">
-                        </div>
-                        <div class="col-md-6">
-                            <input class="form-control"
-                                   type="text"
-                                   placeholder="{{trans('bitrix_mail_events.create_form_var_code')}}"
-                                   name="MAIL_EVENT_VARS_CODES[]"
-                                   id="MAIL_EVENT_VARS_CODE_{{$i}}"
-                                   data-translit_from="MAIL_EVENT_VARS_NAME_{{$i}}"
-                                   data-transform="uppercase">
+                    <div class="vals-list">
+                        <div class="form-group var-row">
+                            <div class="col-md-6">
+                                <input class="form-control"
+                                       type="text"
+                                       placeholder="{{trans('bitrix_mail_events.create_form_var_name')}}"
+                                       name="MAIL_EVENT_VARS_NAMES[]"
+                                       id="MAIL_EVENT_VARS_NAME_{{$i}}">
+                            </div>
+                            <div class="col-md-6">
+                                <input class="form-control"
+                                       type="text"
+                                       placeholder="{{trans('bitrix_mail_events.create_form_var_code')}}"
+                                       name="MAIL_EVENT_VARS_CODES[]"
+                                       id="MAIL_EVENT_VARS_CODE_{{$i}}"
+                                       data-translit_from="MAIL_EVENT_VARS_NAME_{{$i}}"
+                                       data-transform="uppercase">
+                            </div>
                         </div>
                     </div>
                 @endfor
+                <a href="#"
+                   class="btn btn-primary add-var-row">{{trans('app.add')}}</a>
             </div>
         </div>
         <div class="form-group">

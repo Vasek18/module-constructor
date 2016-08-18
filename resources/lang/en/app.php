@@ -14,6 +14,7 @@ return [
 	'menu'           => 'Menu',
 	'select'         => 'Select',
 	'save'           => 'Save',
+	'add'            => 'Add',
 	'create'         => 'Create',
 	'download'       => 'Download',
 	'edit'           => 'Edit',

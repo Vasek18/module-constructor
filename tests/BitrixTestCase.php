@@ -442,6 +442,10 @@ class BitrixTestCase extends TestCase{
 		if (isset($params["sort"])){
 			$inputs["MAIL_EVENT_SORT"] = $params["sort"];
 		}
+		if (isset($params["var0"])){
+			$inputs["MAIL_EVENT_VARS_NAMES[0]"] = $params["var0"]["name"];
+			$inputs["MAIL_EVENT_VARS_CODES[0]"] = $params["var0"]["code"];
+		}
 
 		$this->submitForm('create', $inputs);
 

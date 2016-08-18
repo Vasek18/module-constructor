@@ -40,3 +40,18 @@ $(document).on "change", "#MAIL_EVENT_VARS", ->
 	#	console.log pair
 
 	return
+
+# добавление дополнительной строчки для переменной
+$(document).on "click", ".add-var-row", ->
+	count = $('.var-row').length
+
+	# вставляем вёрстку
+	varRow = $('.var-row:last').clone()
+	$(this).before(varRow)
+
+	newRow = $('.var-row:last')
+	newRow.find('[name*=MAIL_EVENT_VARS_NAMES]').attr('id', "MAIL_EVENT_VARS_NAME_#{count}")
+	newRow.find('[name*=MAIL_EVENT_VARS_CODES]').attr('id', "MAIL_EVENT_VARS_CODE_#{count}")
+	newRow.find('[name*=MAIL_EVENT_VARS_CODES]').attr('data-translit_from', "MAIL_EVENT_VARS_NAME_#{count}")
+
+	return false

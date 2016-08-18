@@ -70,12 +70,14 @@ class BitrixMailEventsInterfaceTest extends BitrixTestCase{
 			'name' => 'TestMail',
 			'code' => 'TEST_MAIL',
 			'sort' => '1808',
+			'var0' => ['name' => 'Ololo', 'code' => 'trololo']
 		]);
 
 		$this->seePageIs('/my-bitrix/'.$this->module->id.$this->path.'/'.$mail_event->id);
 		$this->see('TestMail');
 		$this->see('TEST_MAIL');
 		$this->see('1808');
+		$this->see('TROLOLO - Ololo');
 	}
 }
 
