@@ -10,6 +10,7 @@ use App\Models\Modules\Bitrix\BitrixComponentsTemplates;
 use App\Models\Modules\Bitrix\BitrixComponentsArbitraryFiles;
 use App\Models\Modules\Bitrix\BitrixInfoblocks;
 use App\Models\Modules\Bitrix\BitrixIblocksElements;
+use App\Models\Modules\Bitrix\BitrixMailEvents;
 
 class BitrixTestCase extends TestCase{
 	public $module;
@@ -426,5 +427,28 @@ class BitrixTestCase extends TestCase{
 	function removeIblock($module, $iblock){
 		$this->visit('/my-bitrix/'.$module->id.'/data_storage/');
 		$this->click('delete_iblock_'.$iblock->id);
+	}
+
+	function createMailEventOnForm($module, $params = []){
+		$this->visit('/my-bitrix/'.$module->id.'/mail_events/create');
+
+		$inputs = [];
+		if (isset($params["name"])){
+			$inputs["MAIL_EVENT_NAME"] = $params["name"];
+		}
+		if (isset($params["code"])){
+			$inputs["MAIL_EVENT_CODE"] = $params["code"];
+		}
+		if (isset($params["sort"])){
+			$inputs["MAIL_EVENT_SORT"] = $params["sort"];
+		}
+
+		$this->submitForm('create', $inputs);
+
+		if (isset($params['code'])){
+			return BitrixMailEvents::where('code', $params['code'])->where('module_id', $module->id)->first();
+		}
+
+		return true;
 	}
 }

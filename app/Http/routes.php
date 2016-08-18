@@ -144,7 +144,7 @@ Route::group(['prefix' => 'my-bitrix', 'middleware' => 'bitrix.owner'], function
 	});
 
 	// почтовые события
-	Route::group(['prefix' => '{module}/mail_events'], function (){
+	Route::group(['prefix' => '{module}/mail_events', 'middleware' => 'auth'], function (){
 		Route::get('', ['as' => 'bitrix_module_mail_events', 'uses' => 'Modules\Bitrix\BitrixMailEventsController@index']);
 		Route::get('create', ['uses' => 'Modules\Bitrix\BitrixMailEventsController@create']);
 		Route::post('', 'Modules\Bitrix\BitrixMailEventsController@store');
