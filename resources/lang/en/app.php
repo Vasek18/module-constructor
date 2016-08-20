@@ -22,9 +22,13 @@ return [
 	'send'           => 'Send',
 	'delete'         => 'Delete',
 	'not-exist'      => 'Empty',
+	'not-exist_pl'   => 'Empty',
 	'are_you_sure'   => 'Are you sure?',
 	'version'        => 'Version',
 	'files_encoding' => 'Files encoding',
 
 	'this_is_paid_functionality' => 'This is a paid functionality',
+
+	'field_name' => 'Name',
+	'field_code' => 'Code',
 ];
