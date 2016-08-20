@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Models\Modules\Bitrix\BitrixArbitraryFiles;
+use App\Models\Modules\Bitrix\BitrixMailEventsVar;
 
 class BitrixMailEventsInterfaceTest extends BitrixTestCase{
 
@@ -78,6 +78,146 @@ class BitrixMailEventsInterfaceTest extends BitrixTestCase{
 		$this->see('TEST_MAIL');
 		$this->see('1808');
 		$this->see('TROLOLO - Ololo');
+	}
+
+	/** @test */
+	function it_returns_mail_event_in_list_on_index_page(){
+		$mail_event = $this->createMailEventOnForm($this->module, [
+			'name' => 'TestMail',
+			'code' => 'TEST_MAIL',
+			'sort' => '1808',
+			'var0' => ['name' => 'Ololo', 'code' => 'trololo']
+		]);
+
+		$this->visit('/my-bitrix/'.$this->module->id.$this->path);
+		$this->see('TestMail');
+		$this->see('TEST_MAIL');
+	}
+
+	/** @test */
+	function not_author_cannot_get_to_mail_event_detail_page_of_anothers_module(){
+		// есть один модуль с событием
+		$mail_event = $this->createMailEventOnForm($this->module, [
+			'name' => 'TestMail',
+			'code' => 'TEST_MAIL',
+			'sort' => '1808',
+			'var0' => ['name' => 'Ololo', 'code' => 'trololo']
+		]);
+		$this->module->deleteFolder();
+
+		// у другого юзера тоже есть модуль с событием
+		$this->signIn(factory(App\Models\User::class)->create());
+		$module2 = $this->fillNewBitrixForm();
+		$mail_event2 = $this->createMailEventOnForm($module2, [
+			'name' => 'TestMail',
+			'code' => 'TEST_MAIL',
+			'sort' => '1808',
+			'var0' => ['name' => 'Ololo', 'code' => 'trololo']
+		]);
+		$module2->deleteFolder();
+
+		// не должно быть такого, чтобы подменив айдишник события на айди события из другого модуля, мы хоть что-то увидели
+		$this->visit('/my-bitrix/'.$module2->id.$this->path.'/'.$mail_event->id);
+		$this->seePageIs('/personal');
+	}
+
+	/** @test */
+	function it_can_add_variable(){
+		$mail_event = $this->createMailEventOnForm($this->module, [
+			'name' => 'TestMail',
+			'code' => 'TEST_MAIL',
+			'sort' => '1808',
+			'var0' => ['name' => 'Ololo', 'code' => 'trololo']
+		]);
+
+		$this->submitForm('add_var', [
+			'name' => 'Vasya',
+			'code' => 'CREATOR',
+		]);
+
+		$this->see('CREATOR - Vasya');
+	}
+
+	/** @test */
+	function it_can_delete_mail_event(){
+		$mail_event = $this->createMailEventOnForm($this->module, [
+			'name' => 'TestMail',
+			'code' => 'TEST_MAIL',
+			'sort' => '1808',
+			'var0' => ['name' => 'Ololo', 'code' => 'trololo']
+		]);
+
+		$this->deleteMailEventOnDetail($mail_event);
+
+		$this->seePageIs('/my-bitrix/'.$this->module->id.$this->path);
+		$this->dontSee('TestMail');
+	}
+
+	/** @test */
+	function you_cannot_delete_anothers_mail_event(){
+		$mail_event = $this->createMailEventOnForm($this->module, [
+			'name' => 'TestMail',
+			'code' => 'TEST_MAIL',
+			'sort' => '1808',
+			'var0' => ['name' => 'Ololo', 'code' => 'trololo']
+		]);
+
+		$this->signIn(factory(App\Models\User::class)->create());
+		$module2 = $this->fillNewBitrixForm();
+		$mail_event2 = $this->createMailEventOnForm($module2, [
+			'name' => 'TestHackMail',
+			'code' => 'TEST_MAIL',
+			'sort' => '1808',
+			'var0' => ['name' => 'Ololo', 'code' => 'trololo']
+		]);
+		$module2->deleteFolder();
+
+		// удаляем через гет, потому что такой ссылки нет
+		$this->visit('/my-bitrix/'.$module2->id.$this->path.'/'.$mail_event->id.'/delete');
+		$this->seePageIs('/personal');
+
+		// тут вероятен случай, что событие всё-таки удалиться, но в этих тестах я абстрагируюсь от бд
+	}
+
+	/** @test */
+	function it_can_delete_var(){
+		$mail_event = $this->createMailEventOnForm($this->module, [
+			'name' => 'TestMail',
+			'code' => 'TEST_MAIL',
+			'sort' => '1808',
+			'var0' => ['name' => 'Ololo', 'code' => 'trololo']
+		]);
+
+		$var = BitrixMailEventsVar::where('code', 'trololo')->where('mail_event_id', $mail_event->id)->first();
+		$this->click('delete-var-'.$var->id);
+
+		$this->dontSee('trololo - Ololo');
+	}
+
+	/** @test */
+	function you_cannot_delete_anothers_event_var(){
+		$mail_event = $this->createMailEventOnForm($this->module, [
+			'name' => 'TestMail',
+			'code' => 'TEST_MAIL',
+			'sort' => '1808',
+			'var0' => ['name' => 'Ololo', 'code' => 'trololo']
+		]);
+
+		$var = BitrixMailEventsVar::where('code', 'trololo')->where('mail_event_id', $mail_event->id)->first();
+
+		$this->signIn(factory(App\Models\User::class)->create());
+		$module2 = $this->fillNewBitrixForm();
+		$mail_event2 = $this->createMailEventOnForm($module2, [
+			'name' => 'TestHackMail',
+			'code' => 'TEST_MAIL',
+			'sort' => '1808',
+			'var0' => ['name' => 'Ololo', 'code' => 'trololo']
+		]);
+		$module2->deleteFolder();
+
+		// удаляем через гет, потому что такой ссылки нет
+		$this->visit('/my-bitrix/'.$module2->id.$this->path.'/'.$mail_event2->id.'/vars/'.$var->id.'/delete');
+		$this->seePageIs('/personal');
 	}
 }
 

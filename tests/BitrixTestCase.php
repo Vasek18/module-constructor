@@ -455,4 +455,9 @@ class BitrixTestCase extends TestCase{
 
 		return true;
 	}
+
+	function deleteMailEventOnDetail($mailEvent){
+		$this->visit('/my-bitrix/'.$mailEvent->module->id.'/mail_events/'.$mailEvent->id);
+		$this->click('delete-mail-event');
+	}
 }

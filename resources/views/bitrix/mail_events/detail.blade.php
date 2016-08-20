@@ -44,7 +44,8 @@
                             <div class="col-md-10">{{$var->code}} - {{$var->name}}</div>
                             <div class="col-md-2">
                                 <a href="{{ action('Modules\Bitrix\BitrixMailEventsController@destroy_var', [$module->id, $mail_event->id, $var->id]) }}"
-                                   class="btn btn-danger btn-sm">
+                                   class="btn btn-danger btn-sm"
+                                   id="delete-var-{{ $var->id }}">
                                     <span class="glyphicon glyphicon-trash"
                                           aria-hidden="true"></span>
                                 </a>
@@ -94,7 +95,8 @@
         <br>
         <p>
             <a href="{{ action('Modules\Bitrix\BitrixMailEventsController@destroy', [$module->id, $mail_event->id]) }}"
-               class="btn btn-sm btn-danger">
+               class="btn btn-sm btn-danger"
+               id="delete-mail-event">
                 <span class="glyphicon glyphicon-trash"
                       aria-hidden="true"></span>
                 {{ trans('bitrix_mail_events.delete_event_btn') }}
@@ -127,7 +129,7 @@
                                 <input class="form-control"
                                        type="text"
                                        placeholder="{{ trans('app.field_name') }}"
-                                       name="MAIL_EVENT_VARS_NAME"
+                                       name="name"
                                        id="MAIL_EVENT_VARS_NAME"
                                        required>
                             </div>
@@ -135,7 +137,7 @@
                                 <input class="form-control"
                                        type="text"
                                        placeholder="{{ trans('app.field_code') }}"
-                                       name="MAIL_EVENT_VARS_CODE"
+                                       name="code"
                                        id="MAIL_EVENT_VARS_CODE"
                                        data-translit_from="MAIL_EVENT_VARS_NAME"
                                        data-transform="uppercase"
@@ -145,7 +147,7 @@
                         <p>
                             <button type="submit"
                                     class="btn btn-primary"
-                                    name="module_download">{{ trans('app.add') }}
+                                    name="add_var">{{ trans('app.add') }}
                             </button>
                         </p>
                     </form>

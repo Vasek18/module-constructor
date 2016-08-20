@@ -80,7 +80,7 @@ class BitrixMailEventsController extends Controller{
 	}
 
 	public function show(Bitrix $module, BitrixMailEvents $mail_event, Request $request){
-		if (!$this->userCreatedModule($module->id)){
+		if (!$this->moduleOwnsMailEvent($module, $mail_event)){
 			return $this->unauthorized($request);
 		}
 		$data = [
@@ -96,7 +96,7 @@ class BitrixMailEventsController extends Controller{
 	}
 
 	public function update(Bitrix $module, BitrixMailEvents $mail_event, Request $request){
-		if (!$this->userCreatedModule($module->id)){
+		if (!$this->moduleOwnsMailEvent($module, $mail_event)){
 			return $this->unauthorized($request);
 		}
 		if ($request->code){
@@ -122,7 +122,7 @@ class BitrixMailEventsController extends Controller{
 	}
 
 	public function destroy(Bitrix $module, BitrixMailEvents $mail_event, Request $request){
-		if (!$this->userCreatedModule($module->id)){
+		if (!$this->moduleOwnsMailEvent($module, $mail_event)){
 			return $this->unauthorized($request);
 		}
 
@@ -136,7 +136,7 @@ class BitrixMailEventsController extends Controller{
 	}
 
 	public function create_template(Bitrix $module, BitrixMailEvents $mail_event, Request $request){
-		if (!$this->userCreatedModule($module->id)){
+		if (!$this->moduleOwnsMailEvent($module, $mail_event)){
 			return $this->unauthorized($request);
 		}
 		$data = [
@@ -149,7 +149,7 @@ class BitrixMailEventsController extends Controller{
 	}
 
 	public function store_template(Bitrix $module, BitrixMailEvents $mail_event, Request $request){
-		if (!$this->userCreatedModule($module->id)){
+		if (!$this->moduleOwnsMailEvent($module, $mail_event)){
 			return $this->unauthorized($request);
 		}
 
@@ -174,7 +174,7 @@ class BitrixMailEventsController extends Controller{
 	}
 
 	public function show_template(Bitrix $module, BitrixMailEvents $mail_event, BitrixMailEventsTemplate $template, Request $request){
-		if (!$this->userCreatedModule($module->id)){
+		if (!$this->moduleOwnsMailEvent($module, $mail_event)){
 			return $this->unauthorized($request);
 		}
 		$data = [
@@ -187,7 +187,7 @@ class BitrixMailEventsController extends Controller{
 	}
 
 	public function update_template(Bitrix $module, BitrixMailEvents $mail_event, BitrixMailEventsTemplate $template, Request $request){
-		if (!$this->userCreatedModule($module->id)){
+		if (!$this->moduleOwnsMailEvent($module, $mail_event)){
 			return $this->unauthorized($request);
 		}
 
@@ -211,7 +211,7 @@ class BitrixMailEventsController extends Controller{
 	}
 
 	public function destroy_template(Bitrix $module, BitrixMailEvents $mail_event, BitrixMailEventsTemplate $template, Request $request){
-		if (!$this->userCreatedModule($module->id)){
+		if (!$this->moduleOwnsMailEvent($module, $mail_event)){
 			return $this->unauthorized($request);
 		}
 
@@ -225,7 +225,10 @@ class BitrixMailEventsController extends Controller{
 	}
 
 	public function destroy_var(Bitrix $module, BitrixMailEvents $mail_event, BitrixMailEventsVar $var, Request $request){
-		if (!$this->userCreatedModule($module->id)){
+		if (!$this->moduleOwnsMailEvent($module, $mail_event)){
+			return $this->unauthorized($request);
+		}
+		if (!$this->mailEventOwnsVar($mail_event, $var)){
 			return $this->unauthorized($request);
 		}
 
@@ -237,19 +240,19 @@ class BitrixMailEventsController extends Controller{
 	}
 
 	public function add_var(Bitrix $module, BitrixMailEvents $mail_event, Request $request){
-		if (!$this->userCreatedModule($module->id)){
+		if (!$this->moduleOwnsMailEvent($module, $mail_event)){
 			return $this->unauthorized($request);
 		}
 
 		$mail_event_var = BitrixMailEventsVar::updateOrCreate(
 			[
 				'mail_event_id' => $mail_event->id,
-				'code'          => $request->MAIL_EVENT_VARS_CODE
+				'code'          => $request->code
 			],
 			[
 				'mail_event_id' => $mail_event->id,
-				'name'          => $request->MAIL_EVENT_VARS_NAME,
-				'code'          => $request->MAIL_EVENT_VARS_CODE
+				'name'          => $request->name,
+				'code'          => $request->code
 			]
 		);
 

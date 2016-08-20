@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Traits;
 
+use App\Models\Modules\Bitrix\BitrixMailEventsVar;
 use Illuminate\Http\Request;
 use App\Models\Modules\Bitrix\Bitrix;
 use App\Models\Modules\Bitrix\BitrixComponent;
@@ -9,6 +10,7 @@ use App\Models\Modules\Bitrix\BitrixComponentsArbitraryFiles;
 use App\Models\Modules\Bitrix\BitrixComponentsParams;
 use App\Models\Modules\Bitrix\BitrixComponentsTemplates;
 use App\Models\Modules\Bitrix\BitrixAdminOptions;
+use App\Models\Modules\Bitrix\BitrixMailEvents;
 
 trait UserOwnModule{
 	protected function userCreatedModule($id){
@@ -44,6 +46,14 @@ trait UserOwnModule{
 
 	protected function moduleOwnsOption(Bitrix $module, BitrixAdminOptions $option){
 		return $option->module->id == $module->id;
+	}
+
+	protected function moduleOwnsMailEvent(Bitrix $module, BitrixMailEvents $event){
+		return $event->module->id == $module->id;
+	}
+
+	protected function mailEventOwnsVar(BitrixMailEvents $event, BitrixMailEventsVar $var){
+		return $var->mailEvent->id == $event->id;
 	}
 }
 
