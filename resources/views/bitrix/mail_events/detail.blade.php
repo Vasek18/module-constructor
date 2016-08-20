@@ -36,7 +36,7 @@
                        data-name="sort">{{$mail_event->sort}}</a>
                 </p>
             </div>
-            <h3>{{ trans('bitrix_mail_events.detail_page_vars') }}</h3>
+            <h3>{{ trans('bitrix_mail_events.vars') }}</h3>
             @if (count($mail_event->vars))
                 <div class="list-group">
                     @foreach($mail_event->vars as $var)
