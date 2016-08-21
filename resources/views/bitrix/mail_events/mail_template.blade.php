@@ -8,6 +8,8 @@
 <script src="/js/bitrix_mail_template_form.js"></script>@endpush
 
 @section('page')
+    <a href="{{ action('Modules\Bitrix\BitrixMailEventsController@show', [$module->id, $mail_event->id]) }}"
+       class="btn btn-primary">{{ trans('app.back') }}</a>
     @if (count($errors) > 0)
         <div class="alert alert-danger">
             <strong>{{trans('validation.error')}}</strong> {{trans('validation.there_occur_errors')}}<br><br>

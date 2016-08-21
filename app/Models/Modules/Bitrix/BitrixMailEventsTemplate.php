@@ -14,6 +14,7 @@ class BitrixMailEventsTemplate extends Model{
 		'to',
 		'copy',
 		'hidden_copy',
+		'reply_to',
 		'in_reply_to',
 		'theme',
 		'body'

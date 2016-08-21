@@ -170,13 +170,17 @@ class BitrixMailEventsController extends Controller{
 
 		$module->storeMailEventsInModuleFolder();
 
-		return redirect(action('Modules\Bitrix\BitrixMailEventsController@show', [$module->id, $mail_event->id]));
+		return redirect(action('Modules\Bitrix\BitrixMailEventsController@show_template', [$module->id, $mail_event->id, $template->id]));
 	}
 
 	public function show_template(Bitrix $module, BitrixMailEvents $mail_event, BitrixMailEventsTemplate $template, Request $request){
 		if (!$this->moduleOwnsMailEvent($module, $mail_event)){
 			return $this->unauthorized($request);
 		}
+		if (!$this->mailEventOwnsTemplate($mail_event, $template)){
+			return $this->unauthorized($request);
+		}
+
 		$data = [
 			'module'     => $module,
 			'mail_event' => $mail_event,
@@ -188,6 +192,9 @@ class BitrixMailEventsController extends Controller{
 
 	public function update_template(Bitrix $module, BitrixMailEvents $mail_event, BitrixMailEventsTemplate $template, Request $request){
 		if (!$this->moduleOwnsMailEvent($module, $mail_event)){
+			return $this->unauthorized($request);
+		}
+		if (!$this->mailEventOwnsTemplate($mail_event, $template)){
 			return $this->unauthorized($request);
 		}
 
@@ -207,11 +214,14 @@ class BitrixMailEventsController extends Controller{
 
 		$module->storeMailEventsInModuleFolder();
 
-		return redirect(action('Modules\Bitrix\BitrixMailEventsController@show', [$module->id, $mail_event->id]));
+		return redirect(action('Modules\Bitrix\BitrixMailEventsController@show_template', [$module->id, $mail_event->id, $template->id]));
 	}
 
 	public function destroy_template(Bitrix $module, BitrixMailEvents $mail_event, BitrixMailEventsTemplate $template, Request $request){
 		if (!$this->moduleOwnsMailEvent($module, $mail_event)){
+			return $this->unauthorized($request);
+		}
+		if (!$this->mailEventOwnsTemplate($mail_event, $template)){
 			return $this->unauthorized($request);
 		}
 

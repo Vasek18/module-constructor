@@ -11,6 +11,7 @@ use App\Models\Modules\Bitrix\BitrixComponentsArbitraryFiles;
 use App\Models\Modules\Bitrix\BitrixInfoblocks;
 use App\Models\Modules\Bitrix\BitrixIblocksElements;
 use App\Models\Modules\Bitrix\BitrixMailEvents;
+use App\Models\Modules\Bitrix\BitrixMailEventsTemplate;
 
 class BitrixTestCase extends TestCase{
 	public $module;
@@ -459,5 +460,17 @@ class BitrixTestCase extends TestCase{
 	function deleteMailEventOnDetail($mailEvent){
 		$this->visit('/my-bitrix/'.$mailEvent->module->id.'/mail_events/'.$mailEvent->id);
 		$this->click('delete-mail-event');
+	}
+
+	function createMailEventTemplateOnForm($module, $mailEvent, $inputs = []){
+		$this->visit('/my-bitrix/'.$module->id.'/mail_events/'.$mailEvent->id.'/templates/create');
+
+		$this->submitForm('save', $inputs);
+
+		if (isset($inputs['name'])){
+			return BitrixMailEventsTemplate::where('name', $inputs['name'])->where('mail_event_id', $mailEvent->id)->first();
+		}
+
+		return true;
 	}
 }

@@ -75,7 +75,8 @@
                         <a href="{{ action('Modules\Bitrix\BitrixMailEventsController@show_template', [$module->id, $mail_event->id, $template->id]) }}">{{$template->name}}
                         </a>
                         <a href="{{ action('Modules\Bitrix\BitrixMailEventsController@destroy_template', [$module->id, $mail_event->id, $template->id]) }}"
-                           class="btn btn-danger btn-sm pull-right">
+                           class="btn btn-danger btn-sm pull-right"
+                           id="delete-template-{{ $template->id }}">
                             <span class="glyphicon glyphicon-trash"
                                   aria-hidden="true"></span>
                         </a>
