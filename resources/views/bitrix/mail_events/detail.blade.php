@@ -40,11 +40,11 @@
             @if (count($mail_event->vars))
                 <div class="list-group">
                     @foreach($mail_event->vars as $var)
-                        <div class="list-group-item clearfix">
+                        <div class="list-group-item clearfix deletion_wrapper">
                             <div class="col-md-10">{{$var->code}} - {{$var->name}}</div>
                             <div class="col-md-2">
                                 <a href="{{ action('Modules\Bitrix\BitrixMailEventsController@destroy_var', [$module->id, $mail_event->id, $var->id]) }}"
-                                   class="btn btn-danger btn-sm"
+                                   class="btn btn-danger btn-sm human_ajax_deletion"
                                    id="delete-var-{{ $var->id }}">
                                     <span class="glyphicon glyphicon-trash"
                                           aria-hidden="true"></span>
@@ -71,11 +71,11 @@
         @if (count($mail_event->templates))
             <div class="list-group">
                 @foreach($mail_event->templates as $template)
-                    <div class="list-group-item clearfix">
+                    <div class="list-group-item clearfix deletion_wrapper">
                         <a href="{{ action('Modules\Bitrix\BitrixMailEventsController@show_template', [$module->id, $mail_event->id, $template->id]) }}">{{$template->name}}
                         </a>
                         <a href="{{ action('Modules\Bitrix\BitrixMailEventsController@destroy_template', [$module->id, $mail_event->id, $template->id]) }}"
-                           class="btn btn-danger btn-sm pull-right"
+                           class="btn btn-danger btn-sm pull-right human_ajax_deletion"
                            id="delete-template-{{ $template->id }}">
                             <span class="glyphicon glyphicon-trash"
                                   aria-hidden="true"></span>
