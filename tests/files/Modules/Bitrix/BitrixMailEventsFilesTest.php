@@ -83,6 +83,37 @@ class BitrixMailEventsFilesTest extends BitrixTestCase{
 		$this->assertNotFalse(strpos($installationFileContent, 'function createMailEvent'));
 		$this->assertNotFalse(strpos($installationFileContent, 'function deleteMailEvent'));
 	}
+
+	/** @test */
+	function it_saves_mailevent_with_vars_creation_code(){
+		$mail_event = $this->createMailEventOnForm($this->module, [
+			'name' => 'TestMail',
+			'code' => 'TEST_MAIL',
+			'sort' => '1808',
+			'var0' => ['name' => 'Ololo', 'code' => 'TROLOLO']
+		]);
+
+		$gottenInstallationFuncCodeArray = $this->getMailEventsCreationFuncCallParamsArray($this->module);
+		$installFileLangArr = $this->getLangFileArray($this->module);
+		$installationFileContent = file_get_contents($this->module->getFolder(true).'/install/index.php');
+
+		$expectedInstallationFuncCodeArray = [
+			'"TEST_MAIL"',
+			'Loc::getMessage("'.$this->module->lang_key.'_MAIL_EVENT_TEST_MAIL_NAME")',
+			'Loc::getMessage("'.$this->module->lang_key.'_MAIL_EVENT_TEST_MAIL_DESC")',
+			'1808',
+		];
+
+		$this->assertEquals(1, count($gottenInstallationFuncCodeArray));
+		$this->assertEquals($expectedInstallationFuncCodeArray, $gottenInstallationFuncCodeArray[0]);
+
+		$this->assertEquals($installFileLangArr[$this->module->lang_key.'_MAIL_EVENT_TEST_MAIL_NAME'], 'TestMail');
+
+		$this->assertEquals($installFileLangArr[$this->module->lang_key.'_MAIL_EVENT_TEST_MAIL_DESC'], '#TROLOLO# - Ololo'.PHP_EOL);
+
+		$this->assertNotFalse(strpos($installationFileContent, 'function createMailEvent'));
+		$this->assertNotFalse(strpos($installationFileContent, 'function deleteMailEvent'));
+	}
 }
 
 ?>
