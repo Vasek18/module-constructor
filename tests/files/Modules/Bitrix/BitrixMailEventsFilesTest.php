@@ -1,66 +1,88 @@
 <?php
 
-// use Illuminate\Foundation\Testing\DatabaseTransactions;
-// use App\Models\Modules\Bitrix\BitrixComponent;
-// use App\Helpers\vArrParse;
-// use App\Models\Modules\Bitrix\BitrixComponentsParams;
-// use App\Models\Modules\Bitrix\BitrixComponentsTemplates;
-// use App\Models\Modules\Bitrix\BitrixComponentsArbitraryFiles;
-//
-// class BitrixMailEventsFilesTest extends BitrixTestCase{
-//
-// 	use DatabaseTransactions;
-//
-// 	protected $path = '/mail_events';
-//
-// 	function setUp(){
-// 		parent::setUp();
-//
-// 		$this->signIn();
-// 		$this->module = $this->fillNewBitrixForm();
-// 	}
-//
-// 	function tearDown(){
-// 		parent::tearDown();
-//
-// 		$this->module->deleteFolder();
-// 	}
-//
-// 	function getMailEventCreationFuncCallParamsArray($module){
-// 		$answer = [];
-// 		$installationFileContent = file_get_contents($module->getFolder(true).'/install/index.php');
-// 		$gottenInstallationFuncCode = vFuncParse::parseFromText($installationFileContent, 'createNecessaryMailEvents');
-// 		// dd($installationFileContent);
-//
-// 		preg_match_all('/(\$this\-\>createIblock\([^\;]+\);)/is', $gottenInstallationFuncCode, $matches);
-//
-// 		foreach ($matches[1] as $gottenInstallationFuncCodePart){
-// 			$answer[] = vArrParse::parseFromText($gottenInstallationFuncCodePart);
-// 		}
-//
-// 		return $answer;
-// 	}
-//
-// 	/** @test */
-// 	function it_creates_standard_component(){
-// 		$mail_event = $this->createMailEventOnForm($this->module, [
-// 			'name' => 'TestMail',
-// 			'code' => 'TEST_MAIL',
-// 			'sort' => '1808',
-// 			'var0' => ['name' => 'Ololo', 'code' => 'trololo']
-// 		]);
-//
-// 		$dirs = $this->disk()->directories($this->module->module_folder.'/install/components/'.$component->namespace);
-// 		$description_lang_arr = vArrParse::parseFromText($this->disk()->get($component->getFolder().'/lang/ru/.description.php'), 'MESS');
-// 		$description_arr = vArrParse::parseFromText($this->disk()->get($component->getFolder().'/.description.php'), '$arComponentDescription');
-//
-// 		$this->deleteFolder($this->standartModuleCode);
-//
-// 		$this->assertTrue(in_array($this->module->module_folder.'/install/components/'.$component->namespace.'/'.$component->code, $dirs), 'No component folder');
-// 		$this->assertEquals('Heh', $description_lang_arr[$component->lang_key."_COMPONENT_NAME"]);
-// 		$this->assertEquals('HelloWorld', $description_lang_arr[$component->lang_key."_COMPONENT_DESCRIPTION"]);
-// 		$this->assertEquals('334', $description_arr["SORT"]);
-// 	}
-// }
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Helpers\vArrParse;
+use App\Helpers\vFuncParse;
+
+class BitrixMailEventsFilesTest extends BitrixTestCase{
+
+	use DatabaseTransactions;
+
+	protected $path = '/mail_events';
+
+	function setUp(){
+		parent::setUp();
+
+		$this->signIn();
+		$this->module = $this->fillNewBitrixForm();
+	}
+
+	function tearDown(){
+		parent::tearDown();
+
+		$this->module->deleteFolder();
+	}
+
+	function getMailEventsCreationFuncCallParamsArray($module){
+		$answer = [];
+		$installationFileContent = file_get_contents($module->getFolder(true).'/install/index.php');
+		$gottenInstallationFuncCode = vFuncParse::getFullCode($installationFileContent, 'createNecessaryMailEvents');
+		// dd($gottenInstallationFuncCode);
+
+		preg_match_all('/\$this\-\>createMailEvent\(([^\;]+)\);/is', $gottenInstallationFuncCode, $matches);
+		// dd($matches);
+
+		foreach ($matches[1] as $gottenInstallationFuncCodePart){
+			$answer[] = explode(', ', $gottenInstallationFuncCodePart);
+		}
+
+		return $answer;
+	}
+
+	function getLangFileArray($module, $lang = 'ru'){
+		$optionsFileContent = $this->disk()->get($module->module_folder.'/lang/'.$lang.'/install/index.php');
+		$optionsArr = vArrParse::parseFromText($optionsFileContent, 'MESS');
+
+		return $optionsArr;
+	}
+
+	/** @test */
+	function at_first_there_is_no_optional_functions(){
+		$installationFileContent = file_get_contents($this->module->getFolder(true).'/install/index.php');
+
+		$this->assertFalse(strpos($installationFileContent, 'function createMailEvent'));
+		$this->assertFalse(strpos($installationFileContent, 'function createMailTemplate'));
+		$this->assertFalse(strpos($installationFileContent, 'function deleteMailEvent'));
+	}
+
+	/** @test */
+	function it_saves_mailevent_creation_code(){
+		$mail_event = $this->createMailEventOnForm($this->module, [
+			'name' => 'TestMail',
+			'code' => 'TEST_MAIL',
+			'sort' => '1808'
+		]);
+
+		$gottenInstallationFuncCodeArray = $this->getMailEventsCreationFuncCallParamsArray($this->module);
+		$installFileLangArr = $this->getLangFileArray($this->module);
+		$installationFileContent = file_get_contents($this->module->getFolder(true).'/install/index.php');
+
+		$expectedInstallationFuncCodeArray = [
+			'"TEST_MAIL"',
+			'Loc::getMessage("'.$this->module->lang_key.'_MAIL_EVENT_TEST_MAIL_NAME")',
+			'Loc::getMessage("'.$this->module->lang_key.'_MAIL_EVENT_TEST_MAIL_DESC")',
+			'1808',
+		];
+
+		$this->assertEquals(1, count($gottenInstallationFuncCodeArray));
+		$this->assertEquals($expectedInstallationFuncCodeArray, $gottenInstallationFuncCodeArray[0]);
+
+		$this->assertArrayHasKey($this->module->lang_key.'_MAIL_EVENT_TEST_MAIL_NAME', $installFileLangArr);
+		$this->assertEquals($installFileLangArr[$this->module->lang_key.'_MAIL_EVENT_TEST_MAIL_NAME'], 'TestMail');
+
+		$this->assertNotFalse(strpos($installationFileContent, 'function createMailEvent'));
+		$this->assertNotFalse(strpos($installationFileContent, 'function deleteMailEvent'));
+	}
+}
 
 ?>

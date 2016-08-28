@@ -74,7 +74,7 @@ class BitrixMailEventsController extends Controller{
 			);
 		}
 
-		$module->storeMailEventsInModuleFolder();
+		BitrixMailEvents::writeInFile($module);
 
 		return redirect(action('Modules\Bitrix\BitrixMailEventsController@show', [$module->id, $mail_event->id]));
 	}
@@ -114,7 +114,7 @@ class BitrixMailEventsController extends Controller{
 			$mail_event->save();
 		}
 
-		$module->storeMailEventsInModuleFolder();
+		BitrixMailEvents::writeInFile($module);
 
 		if (!$request->ajax()){
 			return redirect(action('Modules\Bitrix\BitrixMailEventsController@show', [$module->id, $mail_event->id]));
@@ -130,7 +130,7 @@ class BitrixMailEventsController extends Controller{
 
 		$mail_event->delete();
 
-		$module->storeMailEventsInModuleFolder();
+		BitrixMailEvents::writeInFile($module);
 
 		return redirect(action('Modules\Bitrix\BitrixMailEventsController@index', [$module->id]));
 	}
@@ -168,7 +168,7 @@ class BitrixMailEventsController extends Controller{
 			]
 		);
 
-		$module->storeMailEventsInModuleFolder();
+		BitrixMailEvents::writeInFile($module);
 
 		return redirect(action('Modules\Bitrix\BitrixMailEventsController@show_template', [$module->id, $mail_event->id, $template->id]));
 	}
@@ -212,7 +212,7 @@ class BitrixMailEventsController extends Controller{
 
 		$template->save();
 
-		$module->storeMailEventsInModuleFolder();
+		BitrixMailEvents::writeInFile($module);
 
 		return redirect(action('Modules\Bitrix\BitrixMailEventsController@show_template', [$module->id, $mail_event->id, $template->id]));
 	}
@@ -229,7 +229,7 @@ class BitrixMailEventsController extends Controller{
 
 		$template->delete();
 
-		$module->storeMailEventsInModuleFolder();
+		BitrixMailEvents::writeInFile($module);
 
 		return back();
 	}
@@ -244,7 +244,7 @@ class BitrixMailEventsController extends Controller{
 
 		$var->delete();
 
-		$module->storeMailEventsInModuleFolder();
+		BitrixMailEvents::writeInFile($module);
 
 		return back();
 	}
@@ -266,7 +266,7 @@ class BitrixMailEventsController extends Controller{
 			]
 		);
 
-		$module->storeMailEventsInModuleFolder();
+		BitrixMailEvents::writeInFile($module);
 
 		return back();
 	}

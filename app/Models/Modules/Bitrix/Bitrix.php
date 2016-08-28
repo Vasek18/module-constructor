@@ -229,69 +229,6 @@ class Bitrix extends Model{
 		return in_array($this->module_folder, $this->disk()->directories());
 	}
 
-	public function storeMailEventsInModuleFolder(){
-		$this->writeMailEventsCreationCode();
-		$this->writeMailEventsDeletionCode();
-		$this->writeMailEventsLangCode();
-	}
-
-	public function writeMailEventsCreationCode(){
-		$code = "\t".'public function createNecessaryMailEvents(){'.PHP_EOL;
-
-		foreach ($this->mailEvents as $mailEvent){
-			$code .= "\t\t".$mailEvent->generateCreationCode().PHP_EOL;
-			foreach ($mailEvent->templates as $template){
-				$code .= "\t\t".$template->generateCreationCode().PHP_EOL;
-			}
-		}
-
-		$code .= "\t".'} // createNecessaryMailEvents';
-
-		$path = $this->module_folder.'/install/index.php';
-		$file = $this->disk()->get($path);
-
-		$currentCode = findFunctionCodeInTextUsingCommentOnEnd($file, 'createNecessaryMailEvents');
-
-		$file = str_replace($currentCode, $code, $file);
-
-		$this->disk()->put($path, $file);
-
-		return $code;
-	}
-
-	public function writeMailEventsDeletionCode(){
-		$code = "\t".'public function deleteNecessaryMailEvents(){'.PHP_EOL;
-
-		$mailEvents = $this->mailEvents()->get();
-		foreach ($mailEvents as $mailEvent){
-			$code .= "\t\t".$mailEvent->generateDeletionCode().PHP_EOL;
-		}
-
-		$code .= "\t".'} // deleteNecessaryMailEvents';
-
-		$path = $this->module_folder.'/install/index.php';
-		$file = $this->disk()->get($path);
-
-		$currentCode = findFunctionCodeInTextUsingCommentOnEnd($file, 'deleteNecessaryMailEvents');
-
-		$file = str_replace($currentCode, $code, $file);
-
-		$this->disk()->put($path, $file);
-
-		return $code;
-	}
-
-	public function writeMailEventsLangCode(){
-		foreach ($this->mailEvents as $mailEvent){
-			$this->changeVarInLangFile($mailEvent->lang_key.'_NAME', $mailEvent->name, '/lang/ru/install/index.php');
-			$this->changeVarInLangFile($mailEvent->lang_key.'_DESC', $mailEvent->description, '/lang/ru/install/index.php');
-			foreach ($mailEvent->templates as $template){
-				$this->changeVarInLangFile($template->lang_key.'_THEME', $template->theme, '/lang/ru/install/index.php');
-				$this->changeVarInLangFile($template->lang_key.'_BODY', $template->body, '/lang/ru/install/index.php');
-			}
-		}
-	}
-
 	// мб в vArrParse перенести
 	// todo перенести работу с лангами всех сущностей Битрикса сюда
 	public function changeVarInLangFile($key, $var, $path){
