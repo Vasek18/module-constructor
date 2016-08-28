@@ -2,6 +2,7 @@
 
 namespace App\Models\Modules\Bitrix;
 
+use App\Helpers\vFuncParse;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Auth;
@@ -349,6 +350,53 @@ class Bitrix extends Model{
 		}
 
 		return $empty && rmdir($path);
+	}
+
+	public function addAdditionalInstallHelpersFunctions($functionNames = [], $fileName = ''){
+		if (!strlen($fileName)){
+			return false;
+		}
+		$file = Storage::disk('modules_templates')->get('/bitrix/install/installhelpers/'.$fileName);
+		$installFilePath = $this->getFolder(true).'/install/index.php';
+		$installFile = file_get_contents($installFilePath);
+
+		$text = '';
+		foreach ($functionNames as $functionName){
+			if (strpos($installFile, 'function '.$functionName) !== false){ // если есть, не ставим второй раз (но мб удалять?)
+				continue;
+			}
+
+			$text .= vFuncParse::getFullCode($file, $functionName).PHP_EOL.PHP_EOL;
+		}
+
+		// похожий код есть в changeVarsInModuleFileAndSave, надо бы его вынести
+		$template_search = [];
+		$template_replace = [];
+		foreach ($this->replaceArray as $search => $replace){
+			$template_search[] = $search;
+			$template_replace[] = $this->$replace;
+		}
+		$text = str_replace($template_search, $template_replace, $text);
+
+		$posToPaste = vFuncParse::getStartPos($installFile, 'DoInstall');
+		$installFile = substr_replace($installFile, $text, $posToPaste, 0);
+
+		file_put_contents($installFilePath, $installFile);
+	}
+
+	public function removeAdditionalInstallHelpersFunctions($functionNames = []){
+		$installFilePath = $this->getFolder(true).'/install/index.php';
+		$installFile = file_get_contents($installFilePath);
+
+		foreach ($functionNames as $functionName){
+			if (strpos($installFile, 'function '.$functionName) === false){ // если нет, то и делать ничего не надо
+				continue;
+			}
+
+			$installFile = str_replace(vFuncParse::getFullCode($installFile, $functionName), '', $installFile);
+		}
+
+		file_put_contents($installFilePath, $installFile);
 	}
 
 	public function getCanDownloadAttribute(){

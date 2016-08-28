@@ -1,4 +1,5 @@
 <?php
+
 function createIblockType(){
 	global $DB, $APPLICATION;
 	CModule::IncludeModule("iblock");
@@ -72,6 +73,7 @@ function createIblock($params){
 function createIblockProp($arFieldsProp){
 	CModule::IncludeModule("iblock");
 	$ibp = new CIBlockProperty;
+
 	return $ibp->Add($arFieldsProp);
 }
 

@@ -69,6 +69,22 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 	}
 
 	/** @test */
+	function at_first_there_is_no_optional_functions(){
+		$this->signIn();
+		$module = $this->fillNewBitrixForm();
+
+		$installationFileContent = file_get_contents($module->getFolder(true).'/install/index.php');
+
+		$module->deleteFolder();
+
+		$this->assertFalse(strpos($installationFileContent, 'function createIblockType'));
+		$this->assertFalse(strpos($installationFileContent, 'function removeIblockType'));
+		$this->assertFalse(strpos($installationFileContent, 'function createIblock'));
+		$this->assertFalse(strpos($installationFileContent, 'function createIblockProp'));
+		$this->assertFalse(strpos($installationFileContent, 'function createIblockElement'));
+	}
+
+	/** @test */
 	function it_writes_creation_code_with_all_the_params_from_infoblock_tab(){
 		$this->signIn();
 		$module = $this->fillNewBitrixForm();
@@ -81,6 +97,7 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 
 		$gottenInstallationFuncCodeArray = $this->getIblockCreationFuncCallParamsArray($module);
 		$installFileLangArr = $this->getLangFileArray($module);
+		$installationFileContent = file_get_contents($module->getFolder(true).'/install/index.php');
 		$module->deleteFolder();
 
 		$expectedInstallationFuncCodeArray = [
@@ -118,6 +135,9 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 		$this->assertArrayHasKey($module->lang_key.'_IBLOCK_TROLOLO_NAME', $installFileLangArr);
 		$this->assertEquals($installFileLangArr[$module->lang_key.'_IBLOCK_TROLOLO_NAME'], 'Ololo');
 
+		$this->assertNotFalse(strpos($installationFileContent, 'function createIblockType'));
+		$this->assertNotFalse(strpos($installationFileContent, 'function removeIblockType'));
+		$this->assertNotFalse(strpos($installationFileContent, 'function createIblock'));
 	}
 
 	/** @test */
@@ -444,6 +464,7 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 		$gottenInstallationFuncCodeArray = $this->getIblockCreationFuncCallParamsArray($module);
 		$gottenInstallationPropsFuncCodeArray = $this->getIblockPropsCreationFuncCallParamsArray($module);
 		$installFileLangArr = $this->getLangFileArray($module);
+		$installationFileContent = file_get_contents($module->getFolder(true).'/install/index.php');
 		$module->deleteFolder();
 
 		$expectedInstallationFuncCodeArray = [
@@ -489,6 +510,8 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 		$this->assertEquals($expectedPropCreationCodeArray, $gottenInstallationPropsFuncCodeArray[0], 'Prop array doesnt match');
 		$this->assertArraySubset([$module->lang_key.'_IBLOCK_TROLOLO_NAME' => 'Ololo'], $installFileLangArr);
 		$this->assertArraySubset([$module->lang_key.'_IBLOCK_TROLOLO_PARAM_TEST_NAME' => 'Тест'], $installFileLangArr);
+
+		$this->assertNotFalse(strpos($installationFileContent, 'function createIblockProp'));
 	}
 
 	/** @test */
@@ -681,6 +704,7 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 		$gottenInstallationFuncCodeArray = $this->getIblockCreationFuncCallParamsArray($module);
 		$gottenInstallationElementsFuncCodeArray = $this->getIblockElementsCreationFuncCallParamsArray($module);
 		$installFileLangArr = $this->getLangFileArray($module);
+		$installationFileContent = file_get_contents($module->getFolder(true).'/install/index.php');
 		$module->deleteFolder();
 
 		$expectedInstallationFuncCodeArray = [
@@ -724,6 +748,8 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 		$this->assertEquals($installFileLangArr[$module->lang_key.'_IBLOCK_TROLOLO_NAME'], 'Ololo');
 		$this->assertArrayHasKey($ib->lang_key.'_ELEMENT_TROLOLO_NAME', $installFileLangArr);
 		$this->assertEquals($installFileLangArr[$ib->lang_key.'_ELEMENT_TROLOLO_NAME'], 'Trololo');
+
+		$this->assertNotFalse(strpos($installationFileContent, 'function createIblockElement'));
 	}
 
 	/** @test */
@@ -952,6 +978,12 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 		$this->assertRegExp('/function deleteNecessaryIblocks\(\){\s*return true;\s*}/is', $gottenDeletionFuncCode);
 		$this->assertArrayNotHasKey($module->lang_key.'_IBLOCK_TROLOLO_NAME', $installFileLangArr);
 		$this->assertArrayNotHasKey($module->lang_key.'_IBLOCK_TROLOLO_PARAM_TEST_NAME', $installFileLangArr);
+
+		$this->assertFalse(strpos($installationFileContent, 'function createIblockType'));
+		$this->assertFalse(strpos($installationFileContent, 'function removeIblockType'));
+		$this->assertFalse(strpos($installationFileContent, 'function createIblock'));
+		$this->assertFalse(strpos($installationFileContent, 'function createIblockProp'));
+		$this->assertFalse(strpos($installationFileContent, 'function createIblockElement'));
 	}
 
 	/** @test */
@@ -1027,6 +1059,7 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 
 		$gottenInstallationFuncCodeArray = $this->getIblockCreationFuncCallParamsArray($module);
 		$installFileLangArr = $this->getLangFileArray($module);
+		$installationFileContent = file_get_contents($module->getFolder(true).'/install/index.php');
 		$module->deleteFolder();
 
 		$expectedInstallationFuncCodeArray = [
@@ -1060,6 +1093,10 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 		$this->assertEquals($expectedInstallationFuncCodeArray, $gottenInstallationFuncCodeArray[0]);
 		$this->assertArraySubset([$module->lang_key.'_IBLOCK_TROLOLO_NAME' => 'Ololo'], $installFileLangArr);
 		$this->assertArrayNotHasKey($module->lang_key.'_IBLOCK_TROLOLO_I_NAME', $installFileLangArr);
+
+		$this->assertNotFalse(strpos($installationFileContent, 'function createIblockType'));
+		$this->assertNotFalse(strpos($installationFileContent, 'function removeIblockType'));
+		$this->assertNotFalse(strpos($installationFileContent, 'function createIblock'));
 	}
 
 	/** @test */
@@ -1076,6 +1113,7 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 		$this->visit('/my-bitrix/'.$module->id.'/data_storage/ib/'.$iblock->id);
 		$this->click('delete_prop_'.$prop->id);
 
+		$installationFileContent = file_get_contents($module->getFolder(true).'/install/index.php');
 		$gottenInstallationFuncCodeArray = $this->getIblockCreationFuncCallParamsArray($module);
 		$gottenInstallationPropsFuncCodeArray = $this->getIblockPropsCreationFuncCallParamsArray($module);
 		$installFileLangArr = $this->getLangFileArray($module);
@@ -1114,6 +1152,7 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 		$this->assertArrayHasKey($module->lang_key.'_IBLOCK_TROLOLO_NAME', $installFileLangArr);
 		$this->assertEquals($installFileLangArr[$module->lang_key.'_IBLOCK_TROLOLO_NAME'], 'Ololo');
 		$this->assertArrayNotHasKey($module->lang_key.'_IBLOCK_TROLOLO_PARAM_TEST_NAME', $installFileLangArr);
+		$this->assertFalse(strpos($installationFileContent, 'function createIblockProp'));
 	}
 
 	/** @test */
@@ -1132,6 +1171,7 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 		$gottenInstallationFuncCodeArray = $this->getIblockCreationFuncCallParamsArray($module);
 		$gottenInstallationElementsFuncCodeArray = $this->getIblockElementsCreationFuncCallParamsArray($module);
 		$installFileLangArr = $this->getLangFileArray($module);
+		$installationFileContent = file_get_contents($module->getFolder(true).'/install/index.php');
 		$module->deleteFolder();
 
 		$expectedInstallationFuncCodeArray = [
@@ -1166,6 +1206,7 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 		$this->assertEquals(0, count($gottenInstallationElementsFuncCodeArray));
 		$this->assertArraySubset([$module->lang_key.'_IBLOCK_TROLOLO_NAME' => 'Ololo'], $installFileLangArr);
 		$this->assertArrayNotHasKey($iblock->lang_key.'_ELEMENT_TROLOLO_NAME', $installFileLangArr);
+		$this->assertFalse(strpos($installationFileContent, 'function createIblockElement'));
 	}
 
 	/** @test */

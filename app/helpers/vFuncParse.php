@@ -9,12 +9,30 @@ class vFuncParse{
 	public static function parseFromFile($file, $funcName){
 		$fileContent = file_get_contents($file);
 
-		return static::parseFromText($fileContent, $funcName);
+		return static::getFullCode($fileContent, $funcName);
 	}
 
+	public static function getStartPos($text, $funcName){
+		$funcBeginning = static::getBeginningOfFunction($text, $funcName);
+		return static::getBeginningPosOfFunction($text, $funcBeginning);
+	}
+
+	// переименовать в getFullCode
 	public static function parseFromText($text, $funcName){
 		$funcBeginning = static::getBeginningOfFunction($text, $funcName);
 		//dd($funcBeginning);
+		$funcBeginningPos = static::getBeginningPosOfFunction($text, $funcBeginning);
+		// dd($funcBeginningPos);
+		$funcEndingPos = static::getEndingPosOfFunction($text, $funcBeginning, $funcBeginningPos);
+		//dd($funcEndingPos);
+		$functionString = static::extractFuncString($text, $funcBeginningPos, $funcEndingPos);
+
+		return $functionString;
+	}
+
+	public static function getFullCode($text, $funcName){
+		$funcBeginning = static::getBeginningOfFunction($text, $funcName);
+		// dd($funcBeginning);
 		$funcBeginningPos = static::getBeginningPosOfFunction($text, $funcBeginning);
 		//dd($funcBeginningPos);
 		$funcEndingPos = static::getEndingPosOfFunction($text, $funcBeginning, $funcBeginningPos);
@@ -25,12 +43,34 @@ class vFuncParse{
 	}
 
 	protected static function getBeginningOfFunction($text, $funcName){
-		preg_match('/(function\s+'.$funcName.'\s*\([^\{]*\){)/is', $text, $matches);
-		if (isset($matches[1])){
-			return $matches[1];
+		preg_match('/([\w\s]*)(function\s+'.$funcName.'\s*\([^\{]*\){)/is', $text, $matches);
+		// dd($matches);
+		if (isset($matches[2])){
+			$modifs = '';
+			if (strlen($matches[1])){
+				$modifs = static::extractModifs($matches[1]);
+				if (strlen($modifs)){
+					$modifs .= ' ';
+				}
+			}
+
+			return $modifs.$matches[2];
 		}
 
 		return false;
+	}
+
+	protected static function extractModifs($string){
+		$legalModifs = ['private', 'protected', 'public', 'static'];
+
+		$modifs = explode(' ', $string);
+		foreach ($modifs as $c => $modif){
+			if (!in_array($modif, $legalModifs)){
+				unset($modifs[$c]);
+			}
+		}
+
+		return implode(' ', $modifs);
 	}
 
 	protected static function getBeginningPosOfFunction($text, $funcBeginning){

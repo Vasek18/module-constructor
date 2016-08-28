@@ -28,9 +28,43 @@ class BitrixInfoblocks extends Model{
 
 		$module->disk()->put($path, $file);
 
+		static::manageHelpersFunctions($module);
+
 		static::writeInLangFile($module);
 
 		return true;
+	}
+
+	public static function manageHelpersFunctions($module){
+		if ($module->infoblocks()->count()){
+			$module->addAdditionalInstallHelpersFunctions(['createIblockType', 'removeIblockType', 'createIblock'], 'iblock.php');
+			$issetProp = false;
+			$issetElement = false;
+			foreach ($module->infoblocks as $infoblock){
+				if ($infoblock->properties()->count()){
+					$issetProp = true;
+				}else{
+
+				}
+				if ($infoblock->elements()->count()){
+					$issetElement = true;
+				}
+			}
+
+			if ($issetProp){
+				$module->addAdditionalInstallHelpersFunctions(['createIblockProp'], 'iblock.php');
+			}else{
+				$module->removeAdditionalInstallHelpersFunctions(['createIblockProp']);
+			}
+			if ($issetElement){
+				$module->addAdditionalInstallHelpersFunctions(['createIblockElement'], 'iblock.php');
+			}else{
+				$module->removeAdditionalInstallHelpersFunctions(['createIblockElement']);
+			}
+			
+		}else{
+			$module->removeAdditionalInstallHelpersFunctions(['createIblockType', 'removeIblockType', 'createIblock', 'createIblockProp', 'createIblockElement']);
+		}
 	}
 
 	public static function generateInfoblocksCreationFunctionCode($module){
