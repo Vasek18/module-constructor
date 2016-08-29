@@ -90,6 +90,9 @@ class BitrixMailEvents extends Model{
 	}
 
 	public function deleteLangCode(){
+		foreach ($this->templates as $template){
+			$template->deleteLangCode();
+		}
 		$this->module->changeVarInLangFile($this->lang_key.'_NAME', "", '/lang/ru/install/index.php');
 		$this->module->changeVarInLangFile($this->lang_key.'_DESC', "", '/lang/ru/install/index.php');
 	}
