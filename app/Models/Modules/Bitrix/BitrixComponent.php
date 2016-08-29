@@ -14,6 +14,7 @@ class BitrixComponent extends Model{
 	public $timestamps = false;
 	public $nonArbitraryFiles = [
 		'/component.php',
+		'/class.php',
 		'/.description.php',
 		'/.parameters.php'
 	];

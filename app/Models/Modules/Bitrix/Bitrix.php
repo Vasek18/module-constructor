@@ -238,6 +238,7 @@ class Bitrix extends Model{
 		if (strpos($path, '/'.$this->module_folder) !== 0){
 			$path = $this->module_folder.$path;
 		}
+		$var = str_replace('"', '\"', $var);
 
 		if ($this->disk()->exists($path)){
 			$langFile = $this->disk()->get($path);
