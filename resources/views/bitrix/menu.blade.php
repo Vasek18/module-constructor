@@ -35,6 +35,9 @@
                 <li class="{!! classActiveSegment(3, 'mail_events') !!}">
                     <a href="{{ route('bitrix_module_mail_events', $module->id) }}">{{ trans('bitrix_top_menu.mail_events') }}</a>
                 </li>
+                <li class="{!! classActiveSegment(3, 'lang') !!}">
+                    <a href="{{ route('bitrix_module_lang', $module->id) }}">{{ trans('bitrix_top_menu.lang') }}</a>
+                </li>
             </ul>
         </div>
     </div>

@@ -169,6 +169,11 @@ Route::group(['prefix' => 'my-bitrix', 'middleware' => 'bitrix.owner'], function
 		Route::put('{admin_menu_page}', 'Modules\Bitrix\BitrixAdminMenuController@update');
 		Route::get('{admin_menu_page}/delete', 'Modules\Bitrix\BitrixAdminMenuController@destroy');
 	});
+
+	// переводы
+	Route::group(['prefix' => '{module}/lang', 'middleware' => 'auth'], function (){
+		Route::get('', ['as' => 'bitrix_module_lang', 'uses' => 'Modules\Bitrix\BitrixLangController@index']);
+	});
 });
 
 Route::post('feedback/ilack', 'FeedbackController@sendILackSmthForm');

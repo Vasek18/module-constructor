@@ -10,4 +10,5 @@ return [
 	'arbitrary_files' => 'Произвольные файлы',
 	'mail_events'     => 'Работа с почтой',
 	'admin_menu'      => 'Админ. панель',
+	'lang'            => 'Переводы',
 ];
