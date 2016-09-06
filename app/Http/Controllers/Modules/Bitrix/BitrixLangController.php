@@ -14,7 +14,8 @@ class BitrixLangController extends Controller{
 
 	public function index(Bitrix $module, Request $request){
 		$data = [
-			'module' => $module
+			'module' => $module,
+			'files'  => $module->getListOfAllFiles(['php', 'html'], true)
 		];
 
 		return view("bitrix.lang.index", $data);

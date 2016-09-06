@@ -337,6 +337,35 @@ class Bitrix extends Model{
 		file_put_contents($installFilePath, $installFile);
 	}
 
+	public function getListOfAllFiles($onlyExtensions = [], $excludeLangs = false){
+		$allFiles = $this->disk()->allFiles($this->getFolder(false));
+
+		$files = [];
+		foreach ($allFiles as $c => $file){
+			$file = preg_replace('/^'.$this->module_folder.'/is', '', $file);
+			if ($onlyExtensions){
+				preg_match('/^.+\.([^\.]+)$/is', $file, $matches);
+				if (isset($matches[1])){
+					$ext = $matches[1];
+					if (!in_array($ext, $onlyExtensions)){
+						continue;
+					}
+				}else{
+					continue; // без расширения файлы в таком случае не берём
+				}
+			}
+			if ($excludeLangs){
+				if (strpos($file, '/lang/') !== false){
+					continue;
+				}
+			}
+
+			$files[] = $file;
+		}
+
+		return $files;
+	}
+
 	public function getCanDownloadAttribute(){
 		$user = User::find(Auth::id());
 
