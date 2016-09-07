@@ -16,8 +16,9 @@
         <div class="col-md-6">
             @if (count($phrases))
                 <table class="table table-bordered">
-                    @foreach($phrases as $phrase)
+                    @foreach($phrases as $c => $phrase)
                         <tr>
+                            <td>{{ $c }}</td>
                             <td>{{ $phrase["phrase"] }}</td>
                             <td>
                                 <input type="text" name="lang"></td>

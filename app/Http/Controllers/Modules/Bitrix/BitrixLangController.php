@@ -24,6 +24,7 @@ class BitrixLangController extends Controller{
 	}
 
 	public function edit(Bitrix $module, Request $request){
+		// dd(vLang::getAllPotentialPhrases('src="<?"photo.jpg";? >"'));
 		$file = $module->module_folder.Input::get('file');
 		if (!$module->disk()->exists($file)){
 			return back();
