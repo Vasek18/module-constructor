@@ -62,6 +62,16 @@ class vLangTest extends TestCase{
 	}
 
 	/** @test */
+	function it_doesnt_count_php_brackets_as_tag_brackets(){
+		$string = '<img alt="<?=$arItem;?>" src="<?=$templateFolder;?>';
+		$expectedArr = [];
+
+		$gottenArr = vLang::getAllPotentialPhrases($string);
+
+		$this->assertEquals($expectedArr, $gottenArr);
+	}
+
+	/** @test */
 	function it_finds_php_single_line_comments(){
 		$string = '<? // ololo ?>';
 		$expectedArr = [
@@ -107,6 +117,23 @@ class vLangTest extends TestCase{
 	function function_calls_is_not_possible_phrase(){
 		$string = '// print_r(123) ?>';
 		$expectedArr = [];
+
+		$gottenArr = vLang::getAllPotentialPhrases($string);
+
+		$this->assertEquals($expectedArr, $gottenArr);
+	}
+
+	/** @test */
+	function comments_are_cut_by_php_brackets(){
+		$string = ' // todo брать у пользователя?>">';
+		$expectedArr = [
+			Array(
+				'phrase'     => 'todo брать у пользователя',
+				'start_pos'  => 4,
+				'is_comment' => true,
+				'code_type'  => 'php',
+			)
+		];
 
 		$gottenArr = vLang::getAllPotentialPhrases($string);
 
