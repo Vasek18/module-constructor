@@ -11,7 +11,7 @@
         <ul>
             @foreach($files as $file)
                 <li>
-                    <a href="#">{{ $file }}</a>
+                    <a href="{{ action('Modules\Bitrix\BitrixLangController@edit', [$module->id]) }}?file={{urlencode($file)}}">{{ $file }}</a>
                 </li>
             @endforeach
         </ul>
