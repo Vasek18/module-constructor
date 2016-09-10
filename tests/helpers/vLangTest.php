@@ -25,6 +25,23 @@ class vLangTest extends TestCase{
 	}
 
 	/** @test */
+	function it_returns_right_not_first_position(){
+		$string = "1close <p>close</p>";
+		$expectedArr = [
+			Array(
+				'phrase'     => 'close',
+				'start_pos'  => 10,
+				'is_comment' => false,
+				'code_type'  => 'html',
+			)
+		];
+
+		$gottenArr = vLang::getAllPotentialPhrases($string);
+
+		$this->assertEquals($expectedArr, $gottenArr);
+	}
+
+	/** @test */
 	function it_finds_phrase_if_it_is_assigned_to_a_var_in_php(){
 		$string = '<? $a = "Test";?>';
 		$expectedArr = [
@@ -133,6 +150,46 @@ class vLangTest extends TestCase{
 				'is_comment' => true,
 				'code_type'  => 'php',
 			)
+		];
+
+		$gottenArr = vLang::getAllPotentialPhrases($string);
+
+		$this->assertEquals($expectedArr, $gottenArr);
+	}
+
+	/** @test */
+	function it_returns_right_positions_of_two_similar_phrases(){
+		$string = '<a>ololo</a><p>ololo</p>	';
+		$expectedArr = [
+			[
+				"phrase"     => "ololo",
+				"start_pos"  => 3,
+				"is_comment" => false,
+				"code_type"  => "html",
+			],
+			[
+				"phrase"     => "ololo",
+				"start_pos"  => 15,
+				"is_comment" => false,
+				"code_type"  => "html",
+			]
+		];
+
+		$gottenArr = vLang::getAllPotentialPhrases($string);
+
+		$this->assertEquals($expectedArr, $gottenArr);
+	}
+
+	/** @test */
+	function it_returns_right_positions_of_html_phrase_after_piece_of_php(){
+		$string = '<? ololo(); ?><p>ololo</p>';
+		$expectedArr = [
+			[
+				"phrase"     => "ololo",
+				"start_pos"  => 17,
+				"is_comment" => false,
+				"code_type"  => "html",
+			]
 		];
 
 		$gottenArr = vLang::getAllPotentialPhrases($string);

@@ -24,20 +24,33 @@ class BitrixLangController extends Controller{
 	}
 
 	public function edit(Bitrix $module, Request $request){
-		// dd(vLang::getAllPotentialPhrases(''));
+		// dd(vLang::getAllPotentialPhrases('<a>ololo</a><p>ololo</p>'));
 		$file = $module->module_folder.Input::get('file');
 		if (!$module->disk()->exists($file)){
 			return back();
 		}
-		$content = $module->disk()->get($file);
+		$contentOriginal = $module->disk()->get($file);
 
-		$phrases = vLang::getAllPotentialPhrases($content);
+		$phrases = vLang::getAllPotentialPhrases($contentOriginal);
 
-		$content = htmlentities($content);
+		$content = htmlentities($contentOriginal);
 		$content = str_replace("\n", '<br>', $content);
 
+		$i = 0;
 		foreach ($phrases as $phrase){
-			$content = str_replace(htmlentities($phrase['phrase']), '<span class="bg-danger">'.htmlentities($phrase['phrase']).'</span>', $content);
+			$wrapPre = '<span class="bg-danger">';
+			$wrapAfter = '</span>';
+			$textBefore = str_replace("\n", '<br>', htmlentities(substr($contentOriginal, 0, $phrase["start_pos"])));
+			$start_pos = strlen($textBefore) + $i * (strlen($wrapPre) + strlen($wrapAfter));
+
+			if ($phrase['phrase'] == 'close'){
+				// dd(substr($contentOriginal, 0, $phrase["start_pos"]));
+				// dd($phrase);
+				// dd(htmlentities(substr($contentOriginal, 0, $phrase["start_pos"])));
+				// dd(strlen(''));
+			}
+			$content = substr_replace($content, $wrapPre.htmlentities($phrase['phrase']).$wrapAfter, $start_pos, strlen(htmlentities($phrase['phrase'])));
+			$i++;
 		}
 
 		$data = [

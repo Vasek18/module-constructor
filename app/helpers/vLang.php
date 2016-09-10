@@ -31,24 +31,51 @@ class vLang{
 	private static function getAllPotentialPhrasesInHtml($content){
 		$phrases = [];
 
+		$content = static::hidePhp($content);
 		$phrases = array_merge($phrases, static::getAllPotentialPhrasesInHtmlBetweenTags($content));
 
 		return $phrases;
 	}
 
+	private static function hidePhp($content){
+		$startO = strpos($content, '<?');
+		$startE = strpos($content, '?>');
+		while ($startO || $startE){
+			if ($startO < $startE){ // это покрывает случаи и ?\> и <??\>
+				$content = substr_replace($content, str_repeat('#', $startE - $startO + 2), $startO, $startE - $startO + 2);
+			}
+			if ($startO > $startE && $startE){ // случай ?\> <?
+				$content = substr_replace($content, str_repeat('#', $startE + 2), 0, $startE + 2);
+			}
+			if ($startO && !$startE){ // случай <?
+				$content = substr_replace($content, str_repeat('#', strlen($content) - $startO), $startO);
+			}
+			$startO = strpos($content, '<?');
+			$startE = strpos($content, '?>');
+		}
+
+		return $content;
+	}
+
 	private static function getAllPotentialPhrasesInHtmlBetweenTags($content){
 		$textsBetweenTags = [];
 
-		preg_match_all('/\>([^\<\>]+)\</is', $content, $matches);
+		// preg_match_all('/(^.*?\>\s*?)([^\<\>]+)\s*?\</is', $content, $matches);
+		preg_match_all('/.*?\>\s*?([^\<\>\#]+)\s*?.*?\</is', $content, $matches, PREG_OFFSET_CAPTURE);
+		// echo "<pre>";
+		// print_r($matches);
+		// echo "</pre>";
+		// dd();
 		if (isset($matches[1])){
-			foreach ($matches[1] as $match){
-				$match = trim($match);
-				if (!strlen($match)){
+			foreach ($matches[1] as $c => $match){
+				$match[0] = trim($match[0]);
+				if (!strlen($match[0])){
 					continue;
 				}
+
 				$textsBetweenTags[] = [
-					'phrase'     => $match,
-					'start_pos'  => strpos($content, $match),
+					'phrase'     => $match[0],
+					'start_pos'  => $match[1],
 					'is_comment' => false,
 					'code_type'  => 'html',
 				];
@@ -110,7 +137,7 @@ class vLang{
 				if (!strlen($match)){
 					continue;
 				}
-				$match = preg_replace('/(.+)\s*?\?\>/', '$1', $match); // убираем ? >, которое могло попасть
+				$match = preg_replace('/(.+)\s*?\?\>.*?$/m', '$1', $match); // убираем ? >, которое могло попасть, ну и всё что за ним, если оно есть
 				$match = trim($match);
 
 				$phrases[] = [
