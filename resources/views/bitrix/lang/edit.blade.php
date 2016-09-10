@@ -45,8 +45,8 @@
                                 <th></th>
                                 <th></th>
                             </tr>
-                            @foreach($langArr as $key => $phrase)
-                                <tr>
+                            @foreach($allKeys as $key)
+                                <tr class="">
                                     <td>
                                         <p class="form-control-static">
                                             {{ $key }}
@@ -54,7 +54,7 @@
                                     </td>
                                     <td>
                                         <p class="form-control-static">
-                                            {{ $phrase }}
+                                            {{ isset($langArr[$key]) ? $langArr[$key] : '' }}
                                         </p>
                                     </td>
                                     <td></td>

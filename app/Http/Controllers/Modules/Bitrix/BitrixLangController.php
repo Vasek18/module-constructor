@@ -24,7 +24,6 @@ class BitrixLangController extends Controller{
 	}
 
 	public function edit(Bitrix $module, Request $request){
-		// dd(vLang::getAllPotentialPhrases('<a>ololo</a><p>ololo</p>'));
 		$file = Input::get('file');
 		$filePath = $module->module_folder.$file;
 		if (!$module->disk()->exists($filePath)){
@@ -51,12 +50,16 @@ class BitrixLangController extends Controller{
 			$i++;
 		}
 
+		$langs = $module->getLangsArraysForFile($filePath);
+		$allKeys = $langs["allKeys"];
+		unset($langs["allKeys"]);
 		$data = [
 			'module'  => $module,
 			'content' => $content,
 			'file'    => $file,
 			'phrases' => $phrases,
-			'langs'   => $module->getLangsArraysForFile($filePath),
+			'langs'   => $langs,
+			'allKeys' => $allKeys,
 		];
 
 		return view("bitrix.lang.edit", $data);

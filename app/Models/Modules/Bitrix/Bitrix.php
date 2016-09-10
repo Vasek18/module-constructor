@@ -374,6 +374,7 @@ class Bitrix extends Model{
 		$langPaths = $this->disk()->directories($root.'/lang');
 
 		$answer = [];
+		$allKeys = [];
 		foreach ($langPaths as $langPath){
 			$langPathArr = explode('/', $langPath);
 			$language = $langPathArr[count($langPathArr) - 1];
@@ -384,8 +385,14 @@ class Bitrix extends Model{
 			$langPath = $langPath.$path;
 			if ($this->disk()->exists($langPath)){
 				$answer[$language] = vArrParse::parseFromText($this->disk()->get($langPath), "MESS");
+
+				foreach ($answer[$language] as $key => $value){
+					$allKeys[] = $key;
+				}
 			}
 		}
+
+		$answer["allKeys"] = array_unique($allKeys);
 
 		return $answer;
 	}
