@@ -14,21 +14,62 @@
             </div>
         </div>
         <div class="col-md-6">
-            @if (count($phrases))
-                <table class="table table-bordered">
-                    @foreach($phrases as $c => $phrase)
-                        <tr>
-                            <td>{{ $c }}</td>
-                            <td>{{ $phrase["phrase"] }}</td>
-                            <td>
-                                <input type="text"
-                                       name="lang"
-                                       class="form-control">
-                            </td>
-                        </tr>
-                    @endforeach
-                </table>
-            @endif
+            <ul class="nav nav-tabs"
+                role="tablist">
+                @foreach($langs as $langID => $langArr)
+                    <li role="presentation"
+                        class="{{ $langID == 'ru' ? 'active' : '' }}">
+                        <a href="#{{ $langID }}"
+                           aria-controls="{{ $langID }}"
+                           role="tab"
+                           data-toggle="tab">{{ $langID }}
+                        </a>
+                    </li>
+                @endforeach
+            </ul>
+            <div class="tab-content">
+                @foreach($langs as $langID => $langArr)
+                    <div role="tabpanel"
+                         class="tab-pane {{ $langID == 'ru' ? 'active' : '' }}"
+                         id="{{ $langID }}">
+                        <table class="table table-bordered">
+                            @foreach($langArr as $key => $phrase)
+                                <tr>
+                                    <td>
+                                        <input type="text"
+                                               name="lang"
+                                               class="form-control"
+                                               value="{{ $key }}">
+                                    </td>
+                                    <td>
+                                        <input type="text"
+                                               name="lang"
+                                               class="form-control"
+                                               value="{{ $phrase }}">
+                                    </td>
+                                </tr>
+                            @endforeach
+                            @if ($langID == 'ru')
+                                @foreach($phrases as $c => $phrase)
+                                    <tr>
+                                        <td>
+                                            <input type="text"
+                                                   name="lang"
+                                                   class="form-control">
+                                        </td>
+                                        <td>
+                                            <input type="text"
+                                                   name="lang"
+                                                   class="form-control"
+                                                   value="{{ $phrase["phrase"] }}">
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                        </table>
+                    </div>
+                @endforeach
+            </div>
         </div>
     </div>
 @stop

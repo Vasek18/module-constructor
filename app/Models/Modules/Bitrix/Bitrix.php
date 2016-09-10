@@ -366,7 +366,7 @@ class Bitrix extends Model{
 		return $files;
 	}
 
-	public function getLangsArraysForFile($file, $languages = ['ru', 'en']){
+	public function getLangsArraysForFile($file, $onlyLanguages = []){
 		$pathArr = explode('/', $file);
 		$root = $pathArr[0];
 		if (in_array('components', $pathArr)){
@@ -378,9 +378,17 @@ class Bitrix extends Model{
 
 		$path = str_replace($root, '', $file);
 
+		$langPaths = $this->disk()->directories($root.'/lang');
+
 		$answer = [];
-		foreach ($languages as $language){
-			$langPath = $root.'/lang/'.$language.$path;
+		foreach ($langPaths as $langPath){
+			$langPathArr = explode('/', $langPath);
+			$language = $langPathArr[count($langPathArr) - 1];
+			if (!empty($onlyLanguages) && !in_array($language, $onlyLanguages)){
+				continue;
+			}
+
+			$langPath = $langPath.$path;
 			if ($this->disk()->exists($langPath)){
 				$answer[$language] = vArrParse::parseFromText($this->disk()->get($langPath), "MESS");
 			}
