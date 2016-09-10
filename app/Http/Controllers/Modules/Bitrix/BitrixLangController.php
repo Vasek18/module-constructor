@@ -35,13 +35,16 @@ class BitrixLangController extends Controller{
 		$phrases = vLang::getAllPotentialPhrases($contentOriginal);
 
 		$content = htmlentities($contentOriginal);
-		$content = str_replace("\n", '<br>', $content);
+
+		$search = Array("\n", "\t");
+		$replace = Array("<br>", "&nbsp;&nbsp;&nbsp;&nbsp;");
+		$content = str_replace($search, $replace, $content);
 
 		$i = 0;
 		foreach ($phrases as $phrase){
 			$wrapPre = '<span class="bg-danger">';
 			$wrapAfter = '</span>';
-			$textBefore = str_replace("\n", '<br>', htmlentities(substr($contentOriginal, 0, $phrase["start_pos"])));
+			$textBefore = str_replace($search, $replace, htmlentities(substr($contentOriginal, 0, $phrase["start_pos"])));
 			$start_pos = strlen($textBefore) + $i * (strlen($wrapPre) + strlen($wrapAfter));
 
 			$content = substr_replace($content, $wrapPre.htmlentities($phrase['phrase']).$wrapAfter, $start_pos, strlen(htmlentities($phrase['phrase'])));
