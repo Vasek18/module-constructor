@@ -21,7 +21,10 @@
                             <td>{{ $c }}</td>
                             <td>{{ $phrase["phrase"] }}</td>
                             <td>
-                                <input type="text" name="lang"></td>
+                                <input type="text"
+                                       name="lang"
+                                       class="form-control">
+                            </td>
                         </tr>
                     @endforeach
                 </table>

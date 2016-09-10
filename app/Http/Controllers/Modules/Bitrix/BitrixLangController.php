@@ -43,12 +43,6 @@ class BitrixLangController extends Controller{
 			$textBefore = str_replace("\n", '<br>', htmlentities(substr($contentOriginal, 0, $phrase["start_pos"])));
 			$start_pos = strlen($textBefore) + $i * (strlen($wrapPre) + strlen($wrapAfter));
 
-			if ($phrase['phrase'] == 'close'){
-				// dd(substr($contentOriginal, 0, $phrase["start_pos"]));
-				// dd($phrase);
-				// dd(htmlentities(substr($contentOriginal, 0, $phrase["start_pos"])));
-				// dd(strlen(''));
-			}
 			$content = substr_replace($content, $wrapPre.htmlentities($phrase['phrase']).$wrapAfter, $start_pos, strlen(htmlentities($phrase['phrase'])));
 			$i++;
 		}
@@ -58,6 +52,7 @@ class BitrixLangController extends Controller{
 			'content' => $content,
 			'file'    => $file,
 			'phrases' => $phrases,
+			'langs'   => $module->getLangsArraysForFile($file),
 		];
 
 		return view("bitrix.lang.edit", $data);

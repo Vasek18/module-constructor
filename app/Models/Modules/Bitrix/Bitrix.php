@@ -366,6 +366,29 @@ class Bitrix extends Model{
 		return $files;
 	}
 
+	public function getLangsArraysForFile($file, $languages = ['ru', 'en']){
+		$pathArr = explode('/', $file);
+		$root = $pathArr[0];
+		if (in_array('components', $pathArr)){
+			$root = implode('/', array_slice($pathArr, 0, array_search('components', $pathArr) + 3)); // +3 потому что пространство имён ещё нужно и название компонента
+		}
+		if (in_array('templates', $pathArr)){
+			$root = implode('/', array_slice($pathArr, 0, array_search('templates', $pathArr) + 2)); // +2 потому что ещё нужно название шаблона
+		}
+
+		$path = str_replace($root, '', $file);
+
+		$answer = [];
+		foreach ($languages as $language){
+			$langPath = $root.'/lang/'.$language.$path;
+			if ($this->disk()->exists($langPath)){
+				$answer[$language] = vArrParse::parseFromText($this->disk()->get($langPath), "MESS");
+			}
+		}
+
+		return $answer;
+	}
+
 	public function getCanDownloadAttribute(){
 		$user = User::find(Auth::id());
 
