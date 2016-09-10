@@ -68,11 +68,11 @@ class BitrixMailEvents extends Model{
 
 	public static function writeInLangFile($module){
 		foreach ($module->mailEvents as $mailEvent){
-			$module->changeVarInLangFile($mailEvent->lang_key.'_NAME', $mailEvent->name, '/lang/ru/install/index.php');
-			$module->changeVarInLangFile($mailEvent->lang_key.'_DESC', $mailEvent->description, '/lang/ru/install/index.php');
+			$module->changeVarInLangFile($mailEvent->lang_key.'_NAME', $mailEvent->name, '/lang/'.$module->default_lang.'/install/index.php');
+			$module->changeVarInLangFile($mailEvent->lang_key.'_DESC', $mailEvent->description, '/lang/'.$module->default_lang.'/install/index.php');
 			foreach ($mailEvent->templates as $template){
-				$module->changeVarInLangFile($template->lang_key.'_THEME', $template->theme, '/lang/ru/install/index.php');
-				$module->changeVarInLangFile($template->lang_key.'_BODY', $template->body, '/lang/ru/install/index.php');
+				$module->changeVarInLangFile($template->lang_key.'_THEME', $template->theme, '/lang/'.$module->default_lang.'/install/index.php');
+				$module->changeVarInLangFile($template->lang_key.'_BODY', $template->body, '/lang/'.$module->default_lang.'/install/index.php');
 			}
 		}
 	}
@@ -93,8 +93,8 @@ class BitrixMailEvents extends Model{
 		foreach ($this->templates as $template){
 			$template->deleteLangCode();
 		}
-		$this->module->changeVarInLangFile($this->lang_key.'_NAME', "", '/lang/ru/install/index.php');
-		$this->module->changeVarInLangFile($this->lang_key.'_DESC', "", '/lang/ru/install/index.php');
+		$this->module->changeVarInLangFile($this->lang_key.'_NAME', "", '/lang/'.$this->module->default_lang.'/install/index.php');
+		$this->module->changeVarInLangFile($this->lang_key.'_DESC', "", '/lang/'.$this->module->default_lang.'/install/index.php');
 	}
 
 	public static function manageHelpersFunctions($module){

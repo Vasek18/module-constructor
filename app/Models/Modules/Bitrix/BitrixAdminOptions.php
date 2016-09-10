@@ -37,7 +37,7 @@ class BitrixAdminOptions extends Model{
 		$optionsString = '';
 		$helperFunctionsArr = [];
 		$helperFunctions = "";
-		Bitrix::changeVarsInModuleFileAndSave('bitrix/lang/ru/options.php', $module->id);
+		Bitrix::changeVarsInModuleFileAndSave('bitrix/lang/'.$module->default_lang.'/options.php', $module->id);
 		if ($module->options()->count()){
 			$options = $module->options()->orderBy('sort', 'asc')->get();
 
@@ -59,14 +59,14 @@ class BitrixAdminOptions extends Model{
 
 				$optionsString .= $string;
 
-				$module->changeVarInLangFile($option->lang_key.'_TITLE', $option->name, 'lang/ru/options.php');
+				$module->changeVarInLangFile($option->lang_key.'_TITLE', $option->name, 'lang/'.$module->default_lang.'/options.php');
 				if ($option->default_value){
-					$module->changeVarInLangFile($option->lang_key."_DEFAULT_VALUE", $option->default_value, 'lang/ru/options.php');
+					$module->changeVarInLangFile($option->lang_key."_DEFAULT_VALUE", $option->default_value, 'lang/'.$module->default_lang.'/options.php');
 				}
 				if ($option->type == 'selectbox' || $option->type == 'multiselectbox'){
 					if ($option->vals->count()){
 						foreach ($option->vals as $val){
-							$module->changeVarInLangFile($val->lang_key, $val->value, 'lang/ru/options.php'); // todo, а это всегда надо?
+							$module->changeVarInLangFile($val->lang_key, $val->value, 'lang/'.$module->default_lang.'/options.php'); // todo, а это всегда надо?
 						}
 					}
 				}

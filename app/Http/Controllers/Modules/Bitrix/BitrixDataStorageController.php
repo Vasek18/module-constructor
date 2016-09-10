@@ -165,7 +165,7 @@ class BitrixDataStorageController extends Controller{
 	}
 
 	public function delete_prop(Bitrix $module, BitrixIblocksProps $prop, Request $request){
-		$module->changeVarInLangFile($prop->lang_key."_NAME", "", '/lang/ru/install/index.php');
+		$module->changeVarInLangFile($prop->lang_key."_NAME", "", '/lang/'.$module->default_lang.'/install/index.php');
 
 		$prop->delete();
 
@@ -279,7 +279,7 @@ class BitrixDataStorageController extends Controller{
 	}
 
 	public function delete_element(Bitrix $module, BitrixInfoblocks $iblock, BitrixIblocksElements $element, Request $request){
-		$module->changeVarInLangFile($element->lang_key."_NAME", "", '/lang/ru/install/index.php');
+		$module->changeVarInLangFile($element->lang_key."_NAME", "", '/lang/'.$module->default_lang.'/install/index.php');
 
 		$element->delete();
 

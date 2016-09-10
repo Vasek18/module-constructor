@@ -36,8 +36,8 @@ class BitrixMailEventsTemplate extends Model{
 	}
 
 	public function deleteLangCode(){
-		$this->mailEvent->module->changeVarInLangFile($this->lang_key.'_THEME', "", '/lang/ru/install/index.php');
-		$this->mailEvent->module->changeVarInLangFile($this->lang_key.'_BODY', "", '/lang/ru/install/index.php');
+		$this->mailEvent->module->changeVarInLangFile($this->lang_key.'_THEME', "", '/lang/'.$this->mailEvent->module->default_lang.'/install/index.php');
+		$this->mailEvent->module->changeVarInLangFile($this->lang_key.'_BODY', "", '/lang/'.$this->mailEvent->module->default_lang.'/install/index.php');
 	}
 
 	public function getLangKeyAttribute(){

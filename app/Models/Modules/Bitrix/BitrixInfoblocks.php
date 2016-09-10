@@ -61,7 +61,7 @@ class BitrixInfoblocks extends Model{
 			}else{
 				$module->removeAdditionalInstallHelpersFunctions(['createIblockElement']);
 			}
-			
+
 		}else{
 			$module->removeAdditionalInstallHelpersFunctions(['createIblockType', 'removeIblockType', 'createIblock', 'createIblockProp', 'createIblockElement']);
 		}
@@ -98,14 +98,14 @@ class BitrixInfoblocks extends Model{
 
 	public static function writeInLangFile(Bitrix $module){
 		foreach ($module->infoblocks as $iblock){
-			$module->changeVarInLangFile($iblock->lang_key."_NAME", $iblock->name, '/lang/ru/install/index.php');
+			$module->changeVarInLangFile($iblock->lang_key."_NAME", $iblock->name, '/lang/'.$module->default_lang.'/install/index.php');
 
 			foreach ($iblock->properties as $property){
-				$module->changeVarInLangFile($property->lang_key."_NAME", $property->name, '/lang/ru/install/index.php');
+				$module->changeVarInLangFile($property->lang_key."_NAME", $property->name, '/lang/'.$module->default_lang.'/install/index.php');
 			}
 
 			foreach ($iblock->elements as $element){
-				$module->changeVarInLangFile($element->lang_key."_NAME", $element->name, '/lang/ru/install/index.php');
+				$module->changeVarInLangFile($element->lang_key."_NAME", $element->name, '/lang/'.$module->default_lang.'/install/index.php');
 
 				foreach ($element->props as $prop){
 					$val = $prop->pivot->value;
@@ -121,7 +121,7 @@ class BitrixInfoblocks extends Model{
 					}
 
 					if ($val){
-						$module->changeVarInLangFile($element->lang_key.'_PROP_'.$prop->code.'_VALUE', $val, '/lang/ru/install/index.php');
+						$module->changeVarInLangFile($element->lang_key.'_PROP_'.$prop->code.'_VALUE', $val, '/lang/'.$module->default_lang.'/install/index.php');
 					}
 				}
 			}
@@ -205,17 +205,17 @@ class BitrixInfoblocks extends Model{
 	}
 
 	public function cleanLangFromYourself(){
-		$this->module()->first()->changeVarInLangFile($this->lang_key."_NAME", "", '/lang/ru/install/index.php');
+		$this->module()->first()->changeVarInLangFile($this->lang_key."_NAME", "", '/lang/'.$this->module->default_lang.'/install/index.php');
 
 		foreach ($this->properties as $property){
-			$this->module()->first()->changeVarInLangFile($property->lang_key."_NAME", "", '/lang/ru/install/index.php');
+			$this->module()->first()->changeVarInLangFile($property->lang_key."_NAME", "", '/lang/'.$this->module->default_lang.'/install/index.php');
 		}
 
 		foreach ($this->elements as $element){
-			$this->module()->first()->changeVarInLangFile($element->lang_key."_NAME", "", '/lang/ru/install/index.php');
+			$this->module()->first()->changeVarInLangFile($element->lang_key."_NAME", "", '/lang/'.$this->module->default_lang.'/install/index.php');
 
 			foreach ($element->props as $prop){
-				$this->module()->first()->changeVarInLangFile($element->lang_key.'_PROP_'.$prop->code.'_VALUE', "", '/lang/ru/install/index.php');
+				$this->module()->first()->changeVarInLangFile($element->lang_key.'_PROP_'.$prop->code.'_VALUE', "", '/lang/'.$this->module->default_lang.'/install/index.php');
 			}
 		}
 	}

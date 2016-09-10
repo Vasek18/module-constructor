@@ -18,7 +18,7 @@
                 role="tablist">
                 @foreach($langs as $langID => $langArr)
                     <li role="presentation"
-                        class="{{ $langID == 'ru' ? 'active' : '' }}">
+                        class="{{ $langID == $module->default_lang ? 'active' : '' }}">
                         <a href="#{{ $langID }}"
                            aria-controls="{{ $langID }}"
                            role="tab"
@@ -30,7 +30,7 @@
             <div class="tab-content">
                 @foreach($langs as $langID => $langArr)
                     <div role="tabpanel"
-                         class="tab-pane {{ $langID == 'ru' ? 'active' : '' }}"
+                         class="tab-pane {{ $langID == $module->default_lang ? 'active' : '' }}"
                          id="{{ $langID }}">
                         <table class="table table-bordered">
                             @foreach($langArr as $key => $phrase)
@@ -49,7 +49,7 @@
                                     </td>
                                 </tr>
                             @endforeach
-                            @if ($langID == 'ru')
+                            @if ($langID == $module->default_lang)
                                 @foreach($phrases as $c => $phrase)
                                     <tr>
                                         <td>

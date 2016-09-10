@@ -163,7 +163,7 @@ class BitrixComponentsParamsController extends Controller{
 		$params_file = $request->file('params_file');
 		$params_lang_file = $request->file('params_lang_file');
 		$params_file->move($component->getFolder(true), $params_file->getClientOriginalName());
-		$params_lang_file->move($component->getFolder(true).'/lang/ru', $params_lang_file->getClientOriginalName()); // todo другие языки
+		$params_lang_file->move($component->getFolder(true).'/lang/'.$module->default_lang, $params_lang_file->getClientOriginalName()); // todo другие языки
 
 		BitrixComponentsParams::parsePreparedFiles($params_file, $params_lang_file);
 

@@ -57,6 +57,7 @@ class BitrixController extends Controller{
 			$version = '0.0.1';
 		}
 		$bitrix->version = $version;
+		$bitrix->default_lang = 'ru'; // todo давать возможность задать
 
 		Auth::user()->bitrixes()->save($bitrix);
 		$module_id = $bitrix->id;
@@ -92,13 +93,13 @@ class BitrixController extends Controller{
 			$module->name = $this->request->name;
 			$module->save();
 
-			$module->changeVarsInModuleFileAndSave('bitrix/lang/ru/install/index.php', $module->id);
+			$module->changeVarsInModuleFileAndSave('bitrix/lang/'.$module->default_lang.'/install/index.php', $module->id);
 		}
 		if ($this->request->description){
 			$module->description = $this->request->description;
 			$module->save();
 
-			$module->changeVarsInModuleFileAndSave('bitrix/lang/ru/install/index.php', $module->id);
+			$module->changeVarsInModuleFileAndSave('bitrix/lang/'.$module->default_lang.'/install/index.php', $module->id);
 		}
 		if ($this->request->version){
 			$module->version = $this->request->version;

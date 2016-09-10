@@ -51,14 +51,14 @@ class BitrixAdminMenuItems extends Model{
 
 	public static function writeLangs(Bitrix $module){
 		// сначала чистим от всего, что было раньше
-		$module->disk()->deleteDirectory($module->module_folder.'/lang/ru/admin/');
+		$module->disk()->deleteDirectory($module->module_folder.'/lang/'.$module->default_lang.'/admin/');
 
 		foreach ($module->adminMenuPages()->get() as $admin_menu_page){
-			$module->changeVarInLangFile($admin_menu_page->lang_key."_TEXT", $admin_menu_page->text, '/lang/ru/admin/menu.php');
-			$module->changeVarInLangFile($admin_menu_page->lang_key."_TITLE", $admin_menu_page->title ? $admin_menu_page->title : $admin_menu_page->text, '/lang/ru/admin/menu.php');
+			$module->changeVarInLangFile($admin_menu_page->lang_key."_TEXT", $admin_menu_page->text, '/lang/'.$module->default_lang.'/admin/menu.php');
+			$module->changeVarInLangFile($admin_menu_page->lang_key."_TITLE", $admin_menu_page->title ? $admin_menu_page->title : $admin_menu_page->text, '/lang/'.$module->default_lang.'/admin/menu.php');
 
 			// сохраняем файл с лангом страницы
-			$module->disk()->put($module->module_folder.'/lang/ru/admin/'.$admin_menu_page->file_name, $admin_menu_page->lang_code);
+			$module->disk()->put($module->module_folder.'/lang/'.$module->default_lang.'/admin/'.$admin_menu_page->file_name, $admin_menu_page->lang_code);
 		}
 	}
 

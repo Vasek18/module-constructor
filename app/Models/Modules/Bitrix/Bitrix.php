@@ -38,7 +38,7 @@ class Bitrix extends Model{
 	];
 
 	// на случай, если я где-то буду использовать create, эти поля можно будет записывать
-	protected $fillable = ['name', 'description', 'code', 'PARTNER_NAME', 'PARTNER_URI', 'PARTNER_CODE', 'version'];
+	protected $fillable = ['name', 'description', 'code', 'PARTNER_NAME', 'PARTNER_URI', 'PARTNER_CODE', 'version', 'default_lang'];
 
 	// создание папки с модулем на серваке
 	// todo проверка защиты
@@ -68,9 +68,9 @@ class Bitrix extends Model{
 		Bitrix::changeVarsInModuleFileAndSave('bitrix/include.php', $this->id);
 
 		// воссоздаём начальную структуру для ланга
-		$this->disk()->makeDirectory($module_folder."/lang/ru/install");
+		$this->disk()->makeDirectory($module_folder."/lang/'.$this->default_lang.'/install");
 		// подставляем значения в шаблон индексного файла
-		Bitrix::changeVarsInModuleFileAndSave('bitrix/lang/ru/install/index.php', $this->id);
+		Bitrix::changeVarsInModuleFileAndSave('bitrix/lang/'.$this->default_lang.'/install/index.php', $this->id);
 
 		return true;
 	}
