@@ -174,6 +174,7 @@ Route::group(['prefix' => 'my-bitrix', 'middleware' => 'bitrix.owner'], function
 	Route::group(['prefix' => '{module}/lang', 'middleware' => 'auth'], function (){
 		Route::get('', ['as' => 'bitrix_module_lang', 'uses' => 'Modules\Bitrix\BitrixLangController@index']);
 		Route::get('/edit', ['uses' => 'Modules\Bitrix\BitrixLangController@edit']);
+		Route::post('/update', ['uses' => 'Modules\Bitrix\BitrixLangController@update']);
 	});
 });
 

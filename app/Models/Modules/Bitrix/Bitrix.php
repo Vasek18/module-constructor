@@ -367,14 +367,7 @@ class Bitrix extends Model{
 	}
 
 	public function getLangsArraysForFile($file, $onlyLanguages = []){
-		$pathArr = explode('/', $file);
-		$root = $pathArr[0];
-		if (in_array('components', $pathArr)){
-			$root = implode('/', array_slice($pathArr, 0, array_search('components', $pathArr) + 3)); // +3 потому что пространство имён ещё нужно и название компонента
-		}
-		if (in_array('templates', $pathArr)){
-			$root = implode('/', array_slice($pathArr, 0, array_search('templates', $pathArr) + 2)); // +2 потому что ещё нужно название шаблона
-		}
+		$root = $this->getLangRootForFile($file);
 
 		$path = str_replace($root, '', $file);
 
@@ -395,6 +388,19 @@ class Bitrix extends Model{
 		}
 
 		return $answer;
+	}
+
+	public function getLangRootForFile($file){
+		$pathArr = explode('/', $file);
+		$root = $pathArr[0];
+		if (in_array('components', $pathArr)){
+			$root = implode('/', array_slice($pathArr, 0, array_search('components', $pathArr) + 3)); // +3 потому что пространство имён ещё нужно и название компонента
+		}
+		if (in_array('templates', $pathArr)){
+			$root = implode('/', array_slice($pathArr, 0, array_search('templates', $pathArr) + 2)); // +2 потому что ещё нужно название шаблона
+		}
+
+		return $root;
 	}
 
 	public function getCanDownloadAttribute(){

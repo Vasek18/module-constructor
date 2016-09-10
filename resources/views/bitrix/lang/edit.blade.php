@@ -27,7 +27,13 @@
                     </li>
                 @endforeach
             </ul>
-            <form class="tab-content">
+            <form class="tab-content"
+                  method="post"
+                  action="{{ action('Modules\Bitrix\BitrixLangController@update', [$module->id]) }}">
+                {{ csrf_field() }}
+                <input type="hidden"
+                       name="file"
+                       value="{{ $file }}">
                 @foreach($langs as $langID => $langArr)
                     <div role="tabpanel"
                          class="tab-pane {{ $langID == $module->default_lang ? 'active' : '' }}"
@@ -60,22 +66,43 @@
                                     <tr>
                                         <td>
                                             <input type="text"
-                                                   name="lang"
+                                                   name="code_{{ $c + count($langArr) }}"
                                                    class="form-control"
                                                    value="{{ translit($phrase["phrase"]) }}">
                                         </td>
                                         <td>
+                                            <input type="hidden"
+                                                   name="phrase_{{ $c + count($langArr) }}"
+                                                   value="{{ $phrase["phrase"] }}">
+                                            <input type="hidden"
+                                                   name="start_pos_{{ $c + count($langArr) }}"
+                                                   value="{{ $phrase["start_pos"] }}">
+                                            <input type="hidden"
+                                                   name="is_comment_{{ $c + count($langArr) }}"
+                                                   value="{{ $phrase["is_comment"]?'1':'0' }}">
+                                            <input type="hidden"
+                                                   name="code_type_{{ $c + count($langArr) }}"
+                                                   value="{{ $phrase["code_type"] }}">
+                                            <input type="hidden"
+                                                   name="lang_{{ $c + count($langArr) }}"
+                                                   value="{{ $langID }}">
                                             <p class="form-control-static">{{ $phrase["phrase"] }}</p>
                                         </td>
                                         <td>
-                                            <a href="#"
-                                               class="btn btn-primary">{{ trans('bitrix_lang.btn_translate') }}
-                                            </a>
+                                            <button href="#"
+                                                    name="save"
+                                                    id="save_{{ $c + count($langArr) }}"
+                                                    value="save_{{ $c + count($langArr) }}"
+                                                    class="btn btn-primary">{{ trans('bitrix_lang.btn_translate') }}
+                                            </button>
                                         </td>
                                         <td>
-                                            <a href="#"
-                                               class="btn btn-info">{{ trans('bitrix_lang.btn_translit') }}
-                                            </a>
+                                            <button href="#"
+                                                    name="translit"
+                                                    id="translit_{{ $c + count($langArr) }}"
+                                                    value="translit_{{ $c + count($langArr) }}"
+                                                    class="btn btn-info">{{ trans('bitrix_lang.btn_translit') }}
+                                            </button>
                                         </td>
                                     </tr>
                                 @endforeach

@@ -60,6 +60,57 @@ class BitrixLangController extends Controller{
 		];
 
 		return view("bitrix.lang.edit", $data);
+	}
 
+	public function update(Bitrix $module, Request $request){
+		echo "<pre>";
+		print_r($request->all());
+		echo "</pre>";
+		$file = $request->file;
+		$filePath = $module->module_folder.$file;
+		if (!$module->disk()->exists($filePath)){
+			return back();
+		}
+
+		if ($request->translit){
+			$id = preg_replace('/.+_/', '', $request->translit);
+			$action = 'translit';
+		}
+
+		if ($request->save){
+			$id = preg_replace('/.+_/', '', $request->save);
+			$action = 'save';
+		}
+		$start_pos = $request['start_pos_'.$id];
+		$is_comment = $request['is_comment_'.$id];
+		$code_type = $request['code_type_'.$id];
+		$code = $request['code_'.$id];
+		$phrase = $request['phrase_'.$id];
+		$lang = $request['lang_'.$id];
+		$contentOriginal = $module->disk()->get($filePath);
+
+		if ($action == 'translit'){
+			$newContent = substr_replace($contentOriginal, translit($phrase), $start_pos, strlen($phrase));
+		}
+
+		if ($action == 'save'){
+			if ($code_type == 'html'){
+				$langReplacement = '<?=GetMessage('.strtoupper('"'.$code.'"').');?>';
+			}
+			if (!$langReplacement){
+				return back();
+			}
+			$newContent = substr_replace($contentOriginal, $langReplacement, $start_pos, strlen($phrase));
+
+			$langRootForFile = $module->getLangRootForFile($filePath);
+			$langFilePath = $langRootForFile.'/lang/'.$lang.str_replace($langRootForFile, '', $filePath);
+			$module->changeVarInLangFile(strtoupper($code), $phrase, $langFilePath);
+		}
+
+		if ($newContent){
+			$module->disk()->put($filePath, $newContent);
+		}
+
+		return back();
 	}
 }
