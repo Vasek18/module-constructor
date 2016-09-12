@@ -32,6 +32,11 @@ class BitrixLangController extends Controller{
 		$contentOriginal = $module->disk()->get($filePath);
 
 		$phrases = vLang::getAllPotentialPhrases($contentOriginal);
+		foreach ($phrases as $c => $phrase){
+			if ($phrase["is_comment"] && translit($phrase["phrase"]) == $phrase["phrase"]){ // скорее всего уже исправленный коммент коммент
+				unset($phrases[$c]);
+			}
+		}
 
 		$content = htmlentities($contentOriginal);
 
@@ -84,6 +89,12 @@ class BitrixLangController extends Controller{
 			$id = preg_replace('/.+_/', '', $request->save);
 			$action = 'save';
 		}
+
+		if ($request->delete){
+			$id = preg_replace('/.+_/', '', $request->delete);
+			$action = 'delete';
+		}
+
 		$start_pos = $request['start_pos_'.$id];
 		$is_comment = $request['is_comment_'.$id];
 		$code_type = $request['code_type_'.$id];
@@ -110,7 +121,13 @@ class BitrixLangController extends Controller{
 			$module->changeVarInLangFile(strtoupper($code), $phrase, $langFilePath);
 		}
 
-		if ($newContent){
+		if ($action == 'delete'){
+			$langRootForFile = $module->getLangRootForFile($filePath);
+			$langFilePath = $langRootForFile.'/lang/'.$lang.str_replace($langRootForFile, '', $filePath);
+			$module->changeVarInLangFile(strtoupper($code), '', $langFilePath);
+		}
+
+		if (isset($newContent)){
 			$module->disk()->put($filePath, $newContent);
 		}
 

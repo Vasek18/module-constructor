@@ -368,6 +368,7 @@ class Bitrix extends Model{
 
 	public function getLangsArraysForFile($file, $onlyLanguages = []){
 		$root = $this->getLangRootForFile($file);
+		$fileContent = $this->disk()->get($file);
 
 		$path = str_replace($root, '', $file);
 
@@ -387,12 +388,15 @@ class Bitrix extends Model{
 				$answer[$language] = vArrParse::parseFromText($this->disk()->get($langPath), "MESS");
 
 				foreach ($answer[$language] as $key => $value){
-					$allKeys[] = $key;
+					$allKeys[$key] = [
+						'key'    => $key,
+						'unused' => !strpos($fileContent, $key)
+					];
 				}
 			}
 		}
 
-		$answer["allKeys"] = array_unique($allKeys);
+		$answer["allKeys"] = $allKeys;
 
 		return $answer;
 	}

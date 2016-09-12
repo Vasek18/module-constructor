@@ -45,21 +45,40 @@
                                 <th></th>
                                 <th></th>
                             </tr>
+                            <?php $i = 0; ?>
                             @foreach($allKeys as $key)
-                                <tr class="">
+                                <tr class="{{ $key["unused"] ? 'bg-danger' : '' }}">
                                     <td>
                                         <p class="form-control-static">
-                                            {{ $key }}
+                                            {{ $key["key"] }}
                                         </p>
                                     </td>
                                     <td>
                                         <p class="form-control-static">
-                                            {{ isset($langArr[$key]) ? $langArr[$key] : '' }}
+                                            {{ isset($langArr[$key["key"]]) ? $langArr[$key["key"]] : '' }}
                                         </p>
                                     </td>
                                     <td></td>
-                                    <td></td>
+                                    <td>
+                                        @if ($key["unused"])
+                                            <input type="hidden"
+                                                   name="code_{{ $i }}"
+                                                   value="{{ $key["key"] }}">
+                                            <input type="hidden"
+                                                   name="phrase_{{ $i }}"
+                                                   value="{{ isset($langArr[$key["key"]]) ? $langArr[$key["key"]] : '' }}">
+                                            <input type="hidden"
+                                                   name="lang_{{ $i }}"
+                                                   value="{{ $langID }}">
+                                            <button name="delete"
+                                                    id="delete_{{ $i }}"
+                                                    value="delete_{{ $i }}"
+                                                    class="btn btn-danger">{{ trans('app.delete') }}
+                                            </button>
+                                        @endif
+                                    </td>
                                 </tr>
+                                <?php $i++; ?>
                             @endforeach
                             @if ($langID == $module->default_lang)
                                 @foreach($phrases as $c => $phrase)
@@ -89,16 +108,14 @@
                                             <p class="form-control-static">{{ $phrase["phrase"] }}</p>
                                         </td>
                                         <td>
-                                            <button href="#"
-                                                    name="save"
+                                            <button name="save"
                                                     id="save_{{ $c + count($langArr) }}"
                                                     value="save_{{ $c + count($langArr) }}"
                                                     class="btn btn-primary">{{ trans('bitrix_lang.btn_translate') }}
                                             </button>
                                         </td>
                                         <td>
-                                            <button href="#"
-                                                    name="translit"
+                                            <button name="translit"
                                                     id="translit_{{ $c + count($langArr) }}"
                                                     value="translit_{{ $c + count($langArr) }}"
                                                     class="btn btn-info">{{ trans('bitrix_lang.btn_translit') }}
