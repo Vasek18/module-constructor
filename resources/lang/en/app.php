@@ -19,6 +19,7 @@ return [
 	'create'   => 'Create',
 	'download' => 'Download',
 	'edit'     => 'Edit',
+	'change'   => 'Change',
 	'upload'   => 'Upload',
 	'send'     => 'Send',
 	'delete'   => 'Delete',

@@ -95,6 +95,11 @@ class BitrixLangController extends Controller{
 			$action = 'delete';
 		}
 
+		if ($request->change){
+			$id = preg_replace('/.+_/', '', $request->change);
+			$action = 'change';
+		}
+
 		$start_pos = $request['start_pos_'.$id];
 		$is_comment = $request['is_comment_'.$id];
 		$code_type = $request['code_type_'.$id];
@@ -125,6 +130,12 @@ class BitrixLangController extends Controller{
 			$langRootForFile = $module->getLangRootForFile($filePath);
 			$langFilePath = $langRootForFile.'/lang/'.$lang.str_replace($langRootForFile, '', $filePath);
 			$module->changeVarInLangFile(strtoupper($code), '', $langFilePath);
+		}
+
+		if ($action == 'change'){
+			$langRootForFile = $module->getLangRootForFile($filePath);
+			$langFilePath = $langRootForFile.'/lang/'.$lang.str_replace($langRootForFile, '', $filePath);
+			$module->changeVarInLangFile(strtoupper($code), $phrase, $langFilePath);
 		}
 
 		if (isset($newContent)){

@@ -49,27 +49,30 @@
                             @foreach($allKeys as $key)
                                 <tr class="{{ $key["unused"] ? 'bg-danger' : '' }}">
                                     <td>
+                                        <input type="hidden"
+                                               name="code_{{ $i }}"
+                                               value="{{ $key["key"] }}">
+                                        <input type="hidden"
+                                               name="lang_{{ $i }}"
+                                               value="{{ $langID }}">
                                         <p class="form-control-static">
                                             {{ $key["key"] }}
                                         </p>
                                     </td>
                                     <td>
-                                        <p class="form-control-static">
-                                            {{ isset($langArr[$key["key"]]) ? $langArr[$key["key"]] : '' }}
-                                        </p>
+                                        <input class="form-control"
+                                               name="phrase_{{ $i }}"
+                                               value="{{ isset($langArr[$key["key"]]) ? $langArr[$key["key"]] : '' }}"/>
                                     </td>
-                                    <td></td>
+                                    <td>
+                                        <button name="change"
+                                                id="change_{{ $i }}"
+                                                value="change_{{ $i }}"
+                                                class="btn btn-info">{{ trans('app.change') }}
+                                        </button>
+                                    </td>
                                     <td>
                                         @if ($key["unused"])
-                                            <input type="hidden"
-                                                   name="code_{{ $i }}"
-                                                   value="{{ $key["key"] }}">
-                                            <input type="hidden"
-                                                   name="phrase_{{ $i }}"
-                                                   value="{{ isset($langArr[$key["key"]]) ? $langArr[$key["key"]] : '' }}">
-                                            <input type="hidden"
-                                                   name="lang_{{ $i }}"
-                                                   value="{{ $langID }}">
                                             <button name="delete"
                                                     id="delete_{{ $i }}"
                                                     value="delete_{{ $i }}"
