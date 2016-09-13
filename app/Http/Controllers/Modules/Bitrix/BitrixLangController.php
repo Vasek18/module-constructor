@@ -58,6 +58,9 @@ class BitrixLangController extends Controller{
 		$langs = $module->getLangsArraysForFile($filePath);
 		$allKeys = $langs["allKeys"];
 		unset($langs["allKeys"]);
+		if (!$langs){ // на случай отсутствия ланг файлов
+			$langs[$module->default_lang] = [];
+		}
 		$data = [
 			'module'  => $module,
 			'content' => $content,

@@ -111,11 +111,13 @@
                                             <p class="form-control-static">{{ $phrase["phrase"] }}</p>
                                         </td>
                                         <td>
-                                            <button name="save"
-                                                    id="save_{{ $c + count($langArr) }}"
-                                                    value="save_{{ $c + count($langArr) }}"
-                                                    class="btn btn-primary">{{ trans('bitrix_lang.btn_translate') }}
-                                            </button>
+                                            @if (!$phrase["is_comment"])
+                                                <button name="save"
+                                                        id="save_{{ $c + count($langArr) }}"
+                                                        value="save_{{ $c + count($langArr) }}"
+                                                        class="btn btn-primary">{{ trans('bitrix_lang.btn_translate') }}
+                                                </button>
+                                            @endif
                                         </td>
                                         <td>
                                             <button name="translit"
