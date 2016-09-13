@@ -68,7 +68,7 @@ class Bitrix extends Model{
 		Bitrix::changeVarsInModuleFileAndSave('bitrix/include.php', $this->id);
 
 		// воссоздаём начальную структуру для ланга
-		$this->disk()->makeDirectory($module_folder."/lang/'.$this->default_lang.'/install");
+		$this->disk()->makeDirectory($module_folder."/lang/".$this->default_lang."/install");
 		// подставляем значения в шаблон индексного файла
 		Bitrix::changeVarsInModuleFileAndSave('bitrix/lang/'.$this->default_lang.'/install/index.php', $this->id);
 

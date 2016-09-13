@@ -55,9 +55,7 @@
                                         <input type="hidden"
                                                name="lang_{{ $i }}"
                                                value="{{ $langID }}">
-                                        <p class="form-control-static">
-                                            {{ $key["key"] }}
-                                        </p>
+                                        <p class="form-control-static">{{ $key["key"] }}</p>
                                     </td>
                                     <td>
                                         <input class="form-control"
@@ -88,41 +86,41 @@
                                     <tr>
                                         <td>
                                             <input type="text"
-                                                   name="code_{{ $c + count($langArr) }}"
+                                                   name="code_{{ $c + count($allKeys) }}"
                                                    class="form-control"
                                                    value="{{ translit($phrase["phrase"]) }}">
                                         </td>
                                         <td>
                                             <input type="hidden"
-                                                   name="phrase_{{ $c + count($langArr) }}"
+                                                   name="phrase_{{ $c + count($allKeys) }}"
                                                    value="{{ $phrase["phrase"] }}">
                                             <input type="hidden"
-                                                   name="start_pos_{{ $c + count($langArr) }}"
+                                                   name="start_pos_{{ $c + count($allKeys) }}"
                                                    value="{{ $phrase["start_pos"] }}">
                                             <input type="hidden"
-                                                   name="is_comment_{{ $c + count($langArr) }}"
+                                                   name="is_comment_{{ $c + count($allKeys) }}"
                                                    value="{{ $phrase["is_comment"]?'1':'0' }}">
                                             <input type="hidden"
-                                                   name="code_type_{{ $c + count($langArr) }}"
+                                                   name="code_type_{{ $c + count($allKeys) }}"
                                                    value="{{ $phrase["code_type"] }}">
                                             <input type="hidden"
-                                                   name="lang_{{ $c + count($langArr) }}"
+                                                   name="lang_{{ $c + count($allKeys) }}"
                                                    value="{{ $langID }}">
                                             <p class="form-control-static">{{ $phrase["phrase"] }}</p>
                                         </td>
                                         <td>
                                             @if (!$phrase["is_comment"])
                                                 <button name="save"
-                                                        id="save_{{ $c + count($langArr) }}"
-                                                        value="save_{{ $c + count($langArr) }}"
+                                                        id="save_{{ $c + count($allKeys) }}"
+                                                        value="save_{{ $c + count($allKeys) }}"
                                                         class="btn btn-primary">{{ trans('bitrix_lang.btn_translate') }}
                                                 </button>
                                             @endif
                                         </td>
                                         <td>
                                             <button name="translit"
-                                                    id="translit_{{ $c + count($langArr) }}"
-                                                    value="translit_{{ $c + count($langArr) }}"
+                                                    id="translit_{{ $c + count($allKeys) }}"
+                                                    value="translit_{{ $c + count($allKeys) }}"
                                                     class="btn btn-info">{{ trans('bitrix_lang.btn_translit') }}
                                             </button>
                                         </td>

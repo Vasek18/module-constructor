@@ -27,7 +27,7 @@ class BitrixLangController extends Controller{
 		$file = Input::get('file');
 		$filePath = $module->module_folder.$file;
 		if (!$module->disk()->exists($filePath)){
-			return back();
+			return redirect(action('Modules\Bitrix\BitrixLangController@index', [$module]));
 		}
 		$contentOriginal = $module->disk()->get($filePath);
 
@@ -37,6 +37,7 @@ class BitrixLangController extends Controller{
 				unset($phrases[$c]);
 			}
 		}
+		$phrases = array_values($phrases); // сбрасываем нумерацию
 
 		$content = htmlentities($contentOriginal);
 
@@ -74,9 +75,9 @@ class BitrixLangController extends Controller{
 	}
 
 	public function update(Bitrix $module, Request $request){
-		echo "<pre>";
-		print_r($request->all());
-		echo "</pre>";
+		// echo "<pre>";
+		// print_r($request->all());
+		// echo "</pre>";
 		$file = $request->file;
 		$filePath = $module->module_folder.$file;
 		if (!$module->disk()->exists($filePath)){
