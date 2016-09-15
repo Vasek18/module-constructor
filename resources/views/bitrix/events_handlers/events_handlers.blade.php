@@ -57,7 +57,7 @@
         @endfor
         <div class="row">
             <div class="col-md-12">
-                <button type="submit" class="btn btn-primary btn-block" name="save_handlers">{{ trans('app.save') }}</button>
+                <button type="submit" class="btn btn-primary btn-block" name="save">{{ trans('app.save') }}</button>
             </div>
         </div>
     </form>

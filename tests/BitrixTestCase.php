@@ -12,6 +12,7 @@ use App\Models\Modules\Bitrix\BitrixInfoblocks;
 use App\Models\Modules\Bitrix\BitrixIblocksElements;
 use App\Models\Modules\Bitrix\BitrixMailEvents;
 use App\Models\Modules\Bitrix\BitrixMailEventsTemplate;
+use App\Models\Modules\Bitrix\BitrixEventsHandlers;
 
 class BitrixTestCase extends TestCase{
 	public $module;
@@ -469,6 +470,34 @@ class BitrixTestCase extends TestCase{
 
 		if (isset($inputs['name'])){
 			return BitrixMailEventsTemplate::where('name', $inputs['name'])->where('mail_event_id', $mailEvent->id)->first();
+		}
+
+		return true;
+	}
+
+	function createEventHandlerOnForm($module, $rowNumber, $params){
+		$this->visit('/my-bitrix/'.$module->id.'/events_handlers');
+		$inputs = [];
+		if (isset($params['from_module'])){
+			$inputs['from_module['.$rowNumber.']'] = $params['from_module'];
+		}
+		if (isset($params['event'])){
+			$inputs['event['.$rowNumber.']'] = $params['event'];
+		}
+		if (isset($params['class'])){
+			$inputs['class['.$rowNumber.']'] = $params['class'];
+		}
+		if (isset($params['method'])){
+			$inputs['method['.$rowNumber.']'] = $params['method'];
+		}
+		if (isset($params['php_code'])){
+			$inputs['php_code['.$rowNumber.']'] = $params['php_code'];
+		}
+
+		$this->submitForm('save', $inputs);
+
+		if (isset($params['class']) && isset($params['method'])){
+			return BitrixEventsHandlers::where('class', $params['class'])->where('method', $params['method'])->first();
 		}
 
 		return true;

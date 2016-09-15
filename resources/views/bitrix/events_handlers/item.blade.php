@@ -72,7 +72,6 @@
                             {{--editor.setValue("{!!$handler?$handler->php_code:''!!}");--}}
                             editor_{{$i}}.getSession().on('change', function(e){
                                 var text = editor_{{$i}}.getSession().getValue();
-                                console.log(text)
                                 $("#php_code_{{$i}}").val(text);
                             });
                         </script>
