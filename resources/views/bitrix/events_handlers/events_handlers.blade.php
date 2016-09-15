@@ -1,7 +1,7 @@
 @extends('bitrix.internal_template')
 
 @section('h1')
-    Привязка к событиям
+    {{ trans('bitrix_event_handlers.h1') }}
 @stop
 
 @section('page')
@@ -20,7 +20,7 @@
     </datalist>
     @if (count($errors) > 0)
         <div class="alert alert-danger">
-            <strong>Ошибка!</strong> При заполнение формы возникли ошибки<br><br>
+            <strong>{{ trans('validation.error') }}</strong> {{ trans('validation.there_occur_errors') }}<br><br>
             <ul>
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -33,19 +33,19 @@
         {{ csrf_field() }}
         <div class="row option-headers">
             <div class="col-md-2">
-                <label>Модуль генерирующий событие</label>
+                <label>{{ trans('bitrix_event_handlers.module') }}</label>
             </div>
             <div class="col-md-3">
-                <label>Событие</label>
+                <label>{{ trans('bitrix_event_handlers.event') }}</label>
             </div>
             <div class="col-md-2">
-                <label>Класс для обработчика</label>
+                <label>{{ trans('bitrix_event_handlers.class') }}</label>
             </div>
             <div class="col-md-2">
-                <label>Метод для обработчика</label>
+                <label>{{ trans('bitrix_event_handlers.method') }}</label>
             </div>
             <div class="col-md-2">
-                <label>Код обработчика</label>
+                <label>{{ trans('bitrix_event_handlers.code') }}</label>
             </div>
         </div>
         @foreach($handlers as $i => $handler)
@@ -57,7 +57,7 @@
         @endfor
         <div class="row">
             <div class="col-md-12">
-                <button type="submit" class="btn btn-primary btn-block" name="save_handlers">Сохранить</button>
+                <button type="submit" class="btn btn-primary btn-block" name="save_handlers">{{ trans('app.save') }}</button>
             </div>
         </div>
     </form>
