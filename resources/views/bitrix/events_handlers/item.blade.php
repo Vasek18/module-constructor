@@ -1,4 +1,4 @@
-<div class="row option">
+<div class="row option deletion_wrapper">
     <div class="col-md-2">
         <label class="sr-only"
                for="from_module_{{$i}}">{{ trans('bitrix_event_handlers.module') }}</label>
@@ -56,7 +56,8 @@
                         <button type="button"
                                 class="close"
                                 data-dismiss="modal"
-                                aria-label="Close"><span aria-hidden="true">&times;</span>
+                                aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
                         </button>
                         <h4 class="modal-title">{{ trans('bitrix_event_handlers.code') }}</h4>
                     </div>
@@ -87,8 +88,9 @@
     </div>
     <div class="col-md-1">
         @if ($handler)
-            <a href="{{ action('Modules\Bitrix\BitrixEventHandlersController@destroy', [$module->id, $handler?$handler->id:'']) }}"
-               class="btn btn-danger">
+            <a href="{{ action('Modules\Bitrix\BitrixEventHandlersController@destroy', [$module, $handler]) }}"
+               class="btn btn-danger human_ajax_deletion"
+               id="delete_handler_{{$handler->id}}">
                 <span class="glyphicon glyphicon-trash"
                       aria-hidden="true"></span>
             </a>

@@ -42,8 +42,8 @@ class BitrixEventsHandlers extends Model{
 
 	// сохраняем обработчики в папку модуля
 	static public function saveEventsInFolder($module_id){
+		$module = Bitrix::find($module_id);
 		if (BitrixEventsHandlers::where('module_id', $module_id)->count()){
-			$module = Bitrix::find($module_id);
 
 			$handlerTemplate = Storage::disk('modules_templates')->get('bitrix/lib/event.php');
 			$installHandlersCode = '';
@@ -76,6 +76,8 @@ class BitrixEventsHandlers extends Model{
 			//dd($installHandlersCode);
 
 			BitrixEventsHandlers::writeHandlerRegisterAndUnregisterCodeInInstallFile($module, $installHandlersCode, $uninstallHandlersCode);
+		}else{
+			BitrixEventsHandlers::writeHandlerRegisterAndUnregisterCodeInInstallFile($module, "\t\t".'return true;'.PHP_EOL, "\t\t".'return true;'.PHP_EOL);
 		}
 	}
 
@@ -100,7 +102,11 @@ class BitrixEventsHandlers extends Model{
 		return studly_case($this->class);
 	}
 
+	public function getFileAttribute(){
+		return $this->module->module_folder.'/lib/eventhandlers/'.strtolower($this->class).'.php';
+	}
+
 	public function module(){
-		return $this->belongsTo('App\Models\Modules\Bitrix');
+		return $this->belongsTo('App\Models\Modules\Bitrix\Bitrix');
 	}
 }

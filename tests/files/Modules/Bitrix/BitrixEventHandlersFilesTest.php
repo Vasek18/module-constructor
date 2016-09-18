@@ -131,20 +131,103 @@ class MySuperClass{
 		$this->assertFileNotExists($this->module->getFolder().'/lib/eventhandlers/myclass.php');
 	}
 
-	/** @test */
-	function it_cannot_edit_anothers_module_event_handler(){
-	}
+	// /** @test */ // нет смысла, так как мы не работаем по id
+	// function it_cannot_edit_anothers_module_event_handler(){
+	// }
 
 	/** @test */
 	function it_deletes_last_event_handler(){
+		$handler = $this->createEventHandlerOnForm($this->module, 0, [
+			'from_module' => 'main',
+			'event'       => 'OnProlog',
+			'class'       => 'MyClass',
+			'method'      => 'Handler',
+			'php_code'    => '<?="ololo";?>',
+		]);
+
+		$this->click('delete_handler_'.$handler->id);
+
+		$installationArr = $this->getEventHandlersCreationFuncCallParamsArray($this->module);
+		$expectedArr = [];
+		$this->assertEquals($expectedArr, $installationArr);
+
+		$this->assertFileNotExists($this->module->getFolder().'/lib/eventhandlers/myclass.php');
 	}
 
 	/** @test */
 	function it_deletes_not_last_event_handler(){
+		$handler = $this->createEventHandlerOnForm($this->module, 0, [
+			'from_module' => 'main',
+			'event'       => 'OnProlog',
+			'class'       => 'MyClass',
+			'method'      => 'Handler',
+			'php_code'    => '<?="ololo";?>',
+		]);
+		$handler2 = $this->createEventHandlerOnForm($this->module, 1, [
+			'from_module' => 'test',
+			'event'       => 'OnTest',
+			'class'       => 'MySuperClass',
+			'method'      => 'UltimateHandler',
+			'php_code'    => '<?="trololo";?>',
+		]);
+
+		$this->click('delete_handler_'.$handler2->id);
+
+		$installationArr = $this->getEventHandlersCreationFuncCallParamsArray($this->module);
+		$file = file_get_contents($this->module->getFolder().'/lib/eventhandlers/myclass.php');
+		$expectedArr = [
+			[
+				"main",
+				"OnProlog",
+				'$this->MODULE_ID',
+				'\\'.$this->module->namespace.'\EventHandlers\MyClass',
+				"Handler",
+			]
+		];
+
+		$this->assertEquals($expectedArr, $installationArr);
+
+		$this->assertEquals(preg_split('/\r\n|\r|\n/', $file),
+			preg_split('/\r\n|\r|\n/', '<?
+namespace '.$this->module->namespace.'\EventHandlers;
+
+class MyClass{
+	static public function Handler(){
+		<?="ololo";?>
+	}
+
+}'));
+
+		$this->assertFileNotExists($this->module->getFolder().'/lib/eventhandlers/mysuperclass.php');
 	}
 
 	/** @test */
 	function it_cannot_delete_anothers_module_event_handler(){
+		$handler = $this->createEventHandlerOnForm($this->module, 0, [
+			'from_module' => 'main',
+			'event'       => 'OnProlog',
+			'class'       => 'MyClass',
+			'method'      => 'Handler',
+			'php_code'    => '<?="ololo";?>',
+		]);
+
+		$this->signIn(factory(App\Models\User::class)->create());
+
+		$this->visit('/my-bitrix/'.$this->module->id.$this->path.'/delete/'.$handler->id);
+
+		$installationArr = $this->getEventHandlersCreationFuncCallParamsArray($this->module);
+		$expectedArr = [
+			[
+				"main",
+				"OnProlog",
+				'$this->MODULE_ID',
+				'\\'.$this->module->namespace.'\EventHandlers\MyClass',
+				"Handler",
+			]
+		];
+		$this->assertEquals($expectedArr, $installationArr);
+
+		$this->assertFileExists($this->module->getFolder().'/lib/eventhandlers/myclass.php');
 	}
 }
 

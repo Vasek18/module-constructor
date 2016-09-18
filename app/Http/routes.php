@@ -54,7 +54,7 @@ Route::group(['prefix' => 'my-bitrix', 'middleware' => 'bitrix.owner'], function
 	Route::group(['prefix' => '{module}/events_handlers'], function (){
 		Route::get('', ['as' => 'bitrix_module_events_handlers', 'uses' => 'Modules\Bitrix\BitrixEventHandlersController@index']);
 		Route::post('', 'Modules\Bitrix\BitrixEventHandlersController@store');
-		Route::get('delete/{option_id}', 'Modules\Bitrix\BitrixEventHandlersController@destroy');
+		Route::get('delete/{handler}', 'Modules\Bitrix\BitrixEventHandlersController@destroy');
 	});
 
 	// компоненты

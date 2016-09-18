@@ -84,18 +84,21 @@ class BitrixEventHandlersController extends Controller{
 	}
 
 	// удаление обработчика
-	public function destroy($module_id, $handler_id, Request $request){
-		if (!$this->userCreatedModule($module_id)){
+	public function destroy(Bitrix $module, BitrixEventsHandlers $handler, Request $request){
+		if (!$this->userCreatedModule($module->id)){
 			return $this->unauthorized($request);
 		}
-		if (!$handler_id || !$module_id){
+		if (!$handler->id || !$module->id){
 			return false;
 		}
 		// удаляем запись из БД
-		BitrixEventsHandlers::destroy($handler_id);
+		BitrixEventsHandlers::destroy($handler->id);
 
 		// производим замены в папке модуля
-		BitrixEventsHandlers::saveEventsInFolder($module_id);
+		BitrixEventsHandlers::saveEventsInFolder($module->id);
+
+		// удаляем обработчик
+		$module->disk()->delete($handler->file);
 
 		return back();
 	}
