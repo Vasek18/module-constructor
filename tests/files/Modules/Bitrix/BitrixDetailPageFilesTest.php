@@ -78,6 +78,30 @@ class BitrixDetailPageFilesTest extends BitrixTestCase{
 
 		$this->assertRegExp('/0\.0\.5/is', $version_php);
 	}
+
+	/** @test */
+	function archive_contains_all_files_at_fresh_download(){
+		$this->payDays(1);
+		// тут конечно не всё, но главное, чтобы версия совпадала и хоть какие-то файлы были
+		$this->visit('/my-bitrix/'.$this->module->id);
+		$this->submitForm('module_download', [
+			'version'        => '0.0.5',
+			'download_as'    => 'new',
+			'files_encoding' => 'utf-8',
+		]);
+		$this->assertFileExists(public_path().'/user_downloads/last_version.zip');
+
+		$zipper = new Zipper;
+		$zipper->make(public_path().'/user_downloads/last_version.zip');
+		$include_php = $zipper->getFileContent('.last_version/include.php');
+		$install_index_php = $zipper->getFileContent('.last_version/install/index.php');
+		$version_php = $zipper->getFileContent('.last_version/install/version.php');
+		$zipper->close();
+
+		unlink(public_path().'/user_downloads/last_version.zip');
+
+		$this->assertRegExp('/0\.0\.1/is', $version_php); // todo здесь всегд 0.0.1 будет?
+	}
 }
 
 ?>

@@ -148,7 +148,11 @@ class Bitrix extends Model{
 		$archiveName = 'user_downloads/'.$archiveName.'.zip';
 
 		$zipper = new \Chumper\Zipper\Zipper;
-		$zipper->make(public_path().'/'.$archiveName)->add($path)->close();
+		if ($fresh){
+			$zipper->make(public_path().'/'.$archiveName)->folder('.last_version')->add($path)->close();
+		}else{
+			$zipper->make(public_path().'/'.$archiveName)->add($path)->close();
+		}
 
 		$Filesystem = new Filesystem;
 		$Filesystem->deleteDirectory($path);
