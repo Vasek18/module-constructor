@@ -38,7 +38,7 @@ class Bitrix extends Model{
 	];
 
 	// на случай, если я где-то буду использовать create, эти поля можно будет записывать
-	protected $fillable = ['name', 'description', 'code', 'PARTNER_NAME', 'PARTNER_URI', 'PARTNER_CODE', 'version', 'default_lang'];
+	protected $fillable = ['name', 'description', 'code', 'PARTNER_NAME', 'PARTNER_URI', 'PARTNER_CODE', 'version', 'default_lang', 'last_download'];
 
 	// создание папки с модулем на серваке
 	// todo проверка защиты
@@ -416,6 +416,23 @@ class Bitrix extends Model{
 		}
 
 		return $root;
+	}
+
+	public function getAllChangedOrNewFiles(){
+		$files = [];
+
+		$modifiedTimestamp = 0;
+		if ($this->last_download){
+			$modifiedTimestamp = Carbon::parse($this->last_download)->getTimestamp();
+		}
+		foreach ($this->getListOfAllFiles() as $file){
+			$mtimeModified = filemtime($this->getFolder().$file);
+			if ($mtimeModified >= $modifiedTimestamp){
+				$files[] = $file;
+			}
+		}
+
+		return $files;
 	}
 
 	public function getCanDownloadAttribute(){

@@ -23,7 +23,8 @@ class CreateBitrixesTable extends Migration{
 			$table->integer('user_id')->unsigned();
 			$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 			$table->string('version')->default('0.0.1');
-			$table->integer('download_counter')->nullable()->unsigned()->default(0);
+			$table->integer('download_counter')->nullable()->unsigned()->default(0); // наверное удалим
+			$table->timestamp('last_download')->nullable();
 			$table->string('default_lang')->default('ru');
 			$table->timestamps();
 		});

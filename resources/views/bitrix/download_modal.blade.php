@@ -2,7 +2,7 @@
      tabindex="-1"
      role="dialog"
      id="modal_download_{{$module->id}}">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button"
@@ -50,6 +50,14 @@
                             class="btn btn-primary"
                             name="module_download">{{ trans('app.download') }}
                     </button>
+                    <div class="files">
+                        <h2>Изменённые файлы</h2>
+                        <ul>
+                            @foreach($module->getAllChangedOrNewFiles() as $file)
+                                <li>{{$file}}</li>
+                            @endforeach
+                        </ul>
+                    </div>
                 </form>
             </div>
         </div>

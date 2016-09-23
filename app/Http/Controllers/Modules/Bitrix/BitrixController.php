@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Modules\Bitrix;
 
 use App\Models\Modules\Bitrix\Bitrix;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
@@ -132,6 +133,8 @@ class BitrixController extends Controller{
 		// dd($module->version);
 		Bitrix::updateDownloadCount($module->id);
 
+		$module->update(['last_download' => Carbon::now()]);
+
 		if ($pathToZip = $module->generateZip($request->files_encoding, $fresh)){
 			if ($module->code != 'ololo_from_test'){ // для тестов, иначе эксепшион ловлю // todo придумать что-то поумнее
 				$response = Response::download($pathToZip)->deleteFileAfterSend(true);
@@ -140,8 +143,6 @@ class BitrixController extends Controller{
 				return $response;
 			}
 		}
-
-		// }
 
 		return back();
 	}
