@@ -178,12 +178,20 @@ class Bitrix extends Model{
 		$publicFolder = public_path().'/'.time().rand(0, 100);
 		// mkdir($publicFolder);
 
+		$dontConvertExts = ['jpg', 'png'];
+
 		foreach ($files as $file){
 			$dirPath = preg_replace('#^(.*?[\\\/])[^\\\/]+$#', '$1', $file);
+			$ext = preg_replace('#^.*\.([^\.]+)#', '$1', $file);
+
 			if (!file_exists($publicFolder.$dirPath) && !is_dir($publicFolder.$dirPath)){
 				mkdir($publicFolder.$dirPath, 0777, true);
 			}
-			$content = mb_convert_encoding(file_get_contents($moduleFolder.$file), $encoding, 'UTF-8');
+
+			$content = file_get_contents($moduleFolder.$file);
+			if (!in_array($ext, $dontConvertExts)){
+				$content = mb_convert_encoding($content, $encoding, 'UTF-8');
+			}
 			file_put_contents($publicFolder.$file, $content);
 		}
 
