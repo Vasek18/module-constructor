@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Storage;
 use App\Helpers\vArrParse;
 use Illuminate\Filesystem\Filesystem;
 use PhpParser\Node\Scalar\MagicConst\File;
+use Symfony\Component\Finder\Finder;
+use ZipArchive;
 
 class Bitrix extends Model{
 	/**
@@ -154,22 +156,36 @@ class Bitrix extends Model{
 
 		if ($fresh){
 			$archiveName = "last_version";
+			$rootFolder = ".last_version";
 		}else{
 			$archiveName = $this->version;
+			$rootFolder = $this->version;
 		}
-		$archiveName = 'user_downloads/'.$archiveName.'.zip';
+		$archiveFullName = 'user_downloads/'.$archiveName.'.zip';
 
 		$zipper = new \Chumper\Zipper\Zipper;
-		if ($fresh){
-			$zipper->make(public_path().'/'.$archiveName)->folder('.last_version')->add($path)->close();
-		}else{
-			$zipper->make(public_path().'/'.$archiveName)->folder($this->version)->add($path)->close();
-		}
+		$zipper->make(public_path().'/'.$archiveFullName)->folder($rootFolder)->add($path)->close();
+
+		// $zip = new ZipArchive();
+		// $zip->open($archiveFullName, ZipArchive::CREATE | ZipArchive::OVERWRITE);
+		//
+		// $files = new RecursiveIteratorIterator(
+		// 	new RecursiveDirectoryIterator(public_path().'/'.$archiveFullName),
+		// 	RecursiveIteratorIterator::LEAVES_ONLY
+		// );
+		// foreach ($files as $name => $file){
+		// 	if (!$file->isDir()){
+		// 		$filePath = $file->getRealPath();
+		// 		$relativePath = substr($filePath, strlen(public_path().'/'.$archiveFullName) + 1);
+		// 		$zip->addFile($filePath, $relativePath);
+		// 	}
+		// }
+		// $zip->close();
 
 		$Filesystem = new Filesystem;
 		$Filesystem->deleteDirectory($path);
 
-		return $archiveName;
+		return $archiveFullName;
 	}
 
 	public function copyToPublicAndEncode($encoding = 'UTF-8', $files){
