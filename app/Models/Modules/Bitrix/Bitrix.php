@@ -137,7 +137,6 @@ class Bitrix extends Model{
 	// todo проверки на успех
 	public function generateZip($encoding, $fresh){
 		// чтобы работали файлы с точки, нужно в Illuminate\Filesystem\Filesystem заменить строчку в методе files c $glob = glob($directory.'/*'); на $glob = glob($directory. '/{,.}*', GLOB_BRACE);
-
 		$path = $this->copyToPublicAndEncode($encoding);
 
 		if ($fresh){

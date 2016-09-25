@@ -54,7 +54,15 @@
                         <h2>Изменённые файлы</h2>
                         <ul>
                             @foreach($module->getAllChangedOrNewFiles() as $file)
-                                <li>{{$file}}</li>
+                                <li>
+                                    <label>
+                                        <input type="checkbox"
+                                               name="files[]"
+                                               value="{{ $file }}"
+                                               checked>
+                                        {{$file}}
+                                    </label>
+                                </li>
                             @endforeach
                         </ul>
                     </div>

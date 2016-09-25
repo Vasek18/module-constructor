@@ -12,8 +12,11 @@ var elixir = require('laravel-elixir');
  */
 
 elixir(function(mix){
-	mix.sass('app.scss')
+	mix.copy('node_modules/sweetalert/dist/sweetalert.css', 'resources/assets/sass/sweetalert.scss')
+
+		.sass('app.scss')
 		.sass('iblock_form.scss')
+
 		.coffee('app.coffee')
 		.coffee('a.you-can-change.coffee')
 		.coffee('bitrix_module_admin_options.coffee')
@@ -21,5 +24,6 @@ elixir(function(mix){
 		.coffee('translit.coffee')
 		.coffee('bitrix_mail_event_create_form.coffee')
 		.coffee('bitrix_mail_template_form.coffee')
-		.coffee('bitrix_component_logic_wizard.coffee');
+		.coffee('bitrix_component_logic_wizard.coffee')
+		.copy('node_modules/sweetalert/dist/sweetalert-dev.js', 'public/js/sweetalert.js')
 });

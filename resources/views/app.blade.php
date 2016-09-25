@@ -80,7 +80,9 @@
 {{--<script src="/js/draggable.js"></script>--}}
 {{--<script src="/js/jquery.nestable.js"></script>--}}
 <script src="/js/translit.js"></script>
+<script src="/js/sweetalert.js"></script>
 <script src="/js/app.js"></script>
 @stack('scripts')
+@include('flash')
 </body>
 </html>
