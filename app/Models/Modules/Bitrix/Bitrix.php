@@ -147,7 +147,7 @@ class Bitrix extends Model{
 		if (!$fresh && $updater){
 			file_put_contents($path.'/updater.php', $updater);
 		}
-		if (!$fresh && $description){ // todo нужные языки
+		if (!$fresh){ // todo нужные языки
 			file_put_contents($path.'/description.en', mb_convert_encoding($description, $encoding, 'UTF-8'));
 			file_put_contents($path.'/description.ru', mb_convert_encoding($description, $encoding, 'UTF-8'));
 		}

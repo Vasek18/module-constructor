@@ -69,9 +69,11 @@ class BitrixDetailPageFilesTest extends BitrixTestCase{
 
 		$zipper = new Zipper;
 		$zipper->make(public_path().'/user_downloads/0.0.5.zip');
-		$include_php = $zipper->getFileContent('include.php');
-		$install_index_php = $zipper->getFileContent('install/index.php');
-		$version_php = $zipper->getFileContent('install/version.php');
+		$include_php = $zipper->getFileContent('0.0.5/include.php');
+		$install_index_php = $zipper->getFileContent('0.0.5/install/index.php');
+		$updater_php = $zipper->getFileContent('0.0.5/updater.php');
+		$description_en = $zipper->getFileContent('0.0.5/description.en');
+		$version_php = $zipper->getFileContent('0.0.5/install/version.php');
 		$zipper->close();
 
 		unlink(public_path().'/user_downloads/0.0.5.zip');
