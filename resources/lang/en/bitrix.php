@@ -1,6 +1,8 @@
 <?php
 
 return [
+	'module_created' => 'Module created',
+
 	'detail_h1'                             => 'Basic',
 	'field_code'                            => 'Code',
 	'field_name'                            => 'Name',

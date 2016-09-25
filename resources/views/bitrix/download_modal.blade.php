@@ -26,7 +26,7 @@
                                name="version"
                                id="version"
                                required
-                               value="{{upgradeVersionNumber($module->version)}}">
+                               value="{{ $module->download_counter ? upgradeVersionNumber($module->version) : $module->version}}">
                     </div>
                     <div class="form-group">
                         <label for="download_as">{{ trans('bitrix.download_as_new_or_update') }}</label>
@@ -53,13 +53,16 @@
                     <div class="files">
                         <h2>Изменённые файлы</h2>
                         <ul>
-                            @foreach($module->getAllChangedOrNewFiles() as $file)
+                            <?php $changedFiles = $module->getAllChangedOrNewFiles() ?>
+                            @foreach($module->getListOfAllFiles() as $file)
                                 <li>
                                     <label>
                                         <input type="checkbox"
                                                name="files[]"
                                                value="{{ $file }}"
-                                               checked>
+                                        <?php if (in_array($file, $changedFiles)){
+                                            echo "checked";
+                                        } ?>>
                                         {{$file}}
                                     </label>
                                 </li>

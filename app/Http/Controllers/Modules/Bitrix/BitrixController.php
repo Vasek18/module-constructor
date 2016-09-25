@@ -69,6 +69,8 @@ class BitrixController extends Controller{
 				return back()->withErrors([trans('bitrix_create.folder_creation_failure')]);;
 			}
 
+			flash()->success(trans('bitrix.module_created'));
+
 			return redirect(action('Modules\Bitrix\BitrixController@show', $module_id));
 		}
 
@@ -119,23 +121,18 @@ class BitrixController extends Controller{
 	// todo нельзя указать последнюю версию, если были произведены изменения
 	public function download_zip(Bitrix $module, Request $request){
 		$user = User::find(Auth::id());
-
 		if (!$user->canDownloadModule()){
 			return response(['message' => 'Nea'], 403);
 		}
 
+		$inputs = $request->all();
 		$fresh = $request->download_as == 'new' ? true : false;
-		// dd($module->code);
 
-		if (!$fresh){
-			$module->upgradeVersion($this->request->version);
-		}
-		// dd($module->version);
-		Bitrix::updateDownloadCount($module->id);
+		$module->upgradeVersion($this->request->version);
+		$module->updateDownloadCount();
+		$module->updateDownloadTime();
 
-		$module->update(['last_download' => Carbon::now()]);
-
-		if ($pathToZip = $module->generateZip($request->files_encoding, $fresh)){
+		if ($pathToZip = $module->generateZip($request->files_encoding, $fresh, $inputs['files'])){
 			if ($module->code != 'ololo_from_test'){ // для тестов, иначе эксепшион ловлю // todo придумать что-то поумнее
 				$response = Response::download($pathToZip)->deleteFileAfterSend(true);
 				ob_end_clean(); // без этого архив скачивается поверждённым

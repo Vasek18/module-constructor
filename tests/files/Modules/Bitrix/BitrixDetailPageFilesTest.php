@@ -85,7 +85,7 @@ class BitrixDetailPageFilesTest extends BitrixTestCase{
 		// тут конечно не всё, но главное, чтобы версия совпадала и хоть какие-то файлы были
 		$this->visit('/my-bitrix/'.$this->module->id);
 		$this->submitForm('module_download', [
-			'version'        => '0.0.5',
+			'version'        => '0.0.1',
 			'download_as'    => 'new',
 			'files_encoding' => 'utf-8',
 		]);

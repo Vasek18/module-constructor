@@ -164,4 +164,6 @@ function translit($text){
 	return $text;
 }
 
-?>
+function flash(){
+	return app('App\Http\Flash');
+}

@@ -55,9 +55,10 @@ class BitrixInScopeOfPayTest extends BitrixTestCase{
 
 		$response = $this->call('POST', action('Modules\Bitrix\BitrixController@download_zip', $this->module->id), array(
 			'_token' => csrf_token(),
+			'files'  => ['/include.php'],
 		));
 
-		$this->assertEquals($response->getStatusCode(), 302); // 302 - перенаправление, так что тоже подходит
+		$this->assertEquals(302, $response->getStatusCode()); // 302 - перенаправление, так что тоже подходит
 
 		$this->module->deleteFolder();
 	}

@@ -38,7 +38,7 @@ class Bitrix extends Model{
 	];
 
 	// на случай, если я где-то буду использовать create, эти поля можно будет записывать
-	protected $fillable = ['name', 'description', 'code', 'PARTNER_NAME', 'PARTNER_URI', 'PARTNER_CODE', 'version', 'default_lang', 'last_download'];
+	protected $fillable = ['name', 'description', 'code', 'PARTNER_NAME', 'PARTNER_URI', 'PARTNER_CODE', 'version', 'default_lang', 'download_counter', 'last_download'];
 
 	// создание папки с модулем на серваке
 	// todo проверка защиты
@@ -135,9 +135,9 @@ class Bitrix extends Model{
 
 	// создаёт архив модуля для скачивания
 	// todo проверки на успех
-	public function generateZip($encoding, $fresh){
+	public function generateZip($encoding, $fresh, $files){
 		// чтобы работали файлы с точки, нужно в Illuminate\Filesystem\Filesystem заменить строчку в методе files c $glob = glob($directory.'/*'); на $glob = glob($directory. '/{,.}*', GLOB_BRACE);
-		$path = $this->copyToPublicAndEncode($encoding);
+		$path = $this->copyToPublicAndEncode($encoding, $files);
 
 		if ($fresh){
 			$archiveName = "last_version";
@@ -159,31 +159,22 @@ class Bitrix extends Model{
 		return $archiveName;
 	}
 
-	public function copyToPublicAndEncode($encoding = 'UTF-8'){
-		$fromFolder = $this->getFolder(true);
-		$toFolder = time().rand(0, 100);
+	public function copyToPublicAndEncode($encoding = 'UTF-8', $files){
+		$moduleFolder = $this->getFolder(true);
 
-		mkdir(public_path().'/'.$toFolder);
+		$publicFolder = public_path().'/'.time().rand(0, 100);
+		// mkdir($publicFolder);
 
-		$dirIterator = new \RecursiveDirectoryIterator($fromFolder, \RecursiveDirectoryIterator::SKIP_DOTS);
-		$iterator = new \RecursiveIteratorIterator($dirIterator, \RecursiveIteratorIterator::SELF_FIRST);
-		foreach ($iterator as $object){
-			if (!$object->isDir()){
-				$absolutePath = $object->getPath();
-				$relativePath = str_replace($fromFolder, "", $absolutePath);
-				$fileName = $object->getFilename();
-				$content = mb_convert_encoding(file_get_contents($object->getRealPath()), $encoding, 'UTF-8');
-
-				file_put_contents(public_path().'/'.$toFolder.'/'.$relativePath.'/'.$fileName, $content);
-			}else{
-				$relativePath = str_replace($fromFolder, "", $object->getRealPath());
-				if ($relativePath){
-					mkdir(public_path().'/'.$toFolder.'/'.$relativePath);
-				}
+		foreach ($files as $file){
+			$dirPath = preg_replace('#^(.*?[\\\/])[^\\\/]+$#', '$1', $file);
+			if (!file_exists($publicFolder.$dirPath) && !is_dir($publicFolder.$dirPath)){
+				mkdir($publicFolder.$dirPath, 0777, true);
 			}
+			$content = mb_convert_encoding(file_get_contents($moduleFolder.$file), $encoding, 'UTF-8');
+			file_put_contents($publicFolder.$file, $content);
 		}
 
-		return public_path().'/'.$toFolder;
+		return $publicFolder;
 	}
 
 	// изменение номера версии у модуля
@@ -196,13 +187,15 @@ class Bitrix extends Model{
 	}
 
 	// увеличиваем счётчик скачиваний
-	public static function updateDownloadCount($id){
-		$module = Bitrix::find($id);
+	public function updateDownloadCount(){
+		$this->update(['download_counter' => intval($this->download_counter) + 1]);
+	}
 
-		$module->download_counter = intval($module->download_counter) + 1;
-		$module->save();
+	public function updateDownloadTime(){
+		$now = Carbon::now();
+		$this->update(['last_download' => $now]);
 
-		return true;
+		return $now;
 	}
 
 	// получить папку модуля
