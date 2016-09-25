@@ -40,6 +40,11 @@ class Bitrix extends Model{
 	// на случай, если я где-то буду использовать create, эти поля можно будет записывать
 	protected $fillable = ['name', 'description', 'code', 'PARTNER_NAME', 'PARTNER_URI', 'PARTNER_CODE', 'version', 'default_lang', 'download_counter', 'last_download'];
 
+	public static $requiredFiles = [
+		'/include.php',
+		'/install/version.php',
+	];
+
 	// создание папки с модулем на серваке
 	// todo проверка защиты
 	public function createFolder(){
@@ -135,9 +140,17 @@ class Bitrix extends Model{
 
 	// создаёт архив модуля для скачивания
 	// todo проверки на успех
-	public function generateZip($encoding, $fresh, $files){
+	public function generateZip($encoding, $fresh, $files, $updater = '', $description = ''){
 		// чтобы работали файлы с точки, нужно в Illuminate\Filesystem\Filesystem заменить строчку в методе files c $glob = glob($directory.'/*'); на $glob = glob($directory. '/{,.}*', GLOB_BRACE);
 		$path = $this->copyToPublicAndEncode($encoding, $files);
+
+		if (!$fresh && $updater){
+			file_put_contents($path.'/updater.php', $updater);
+		}
+		if (!$fresh && $description){ // todo нужные языки
+			file_put_contents($path.'/description.en', mb_convert_encoding($description, $encoding, 'UTF-8'));
+			file_put_contents($path.'/description.ru', mb_convert_encoding($description, $encoding, 'UTF-8'));
+		}
 
 		if ($fresh){
 			$archiveName = "last_version";
@@ -150,7 +163,7 @@ class Bitrix extends Model{
 		if ($fresh){
 			$zipper->make(public_path().'/'.$archiveName)->folder('.last_version')->add($path)->close();
 		}else{
-			$zipper->make(public_path().'/'.$archiveName)->add($path)->close();
+			$zipper->make(public_path().'/'.$archiveName)->folder($this->version)->add($path)->close();
 		}
 
 		$Filesystem = new Filesystem;
@@ -196,6 +209,22 @@ class Bitrix extends Model{
 		$this->update(['last_download' => $now]);
 
 		return $now;
+	}
+
+	// todo актуальное
+	public function generateUpdaterPhp(){
+		$default = '<?php
+if(IsModuleInstalled(\''.$this->full_id.'\')){
+	if (is_dir(dirname(__FILE__).\'/install/components\')){
+		$updater->CopyFiles("install/components", "components/");
+	}
+
+}
+';
+
+		$code = $default;
+
+		return $code;
 	}
 
 	// получить папку модуля

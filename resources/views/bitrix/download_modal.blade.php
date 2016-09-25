@@ -46,12 +46,26 @@
                             <option value="windows-1251">windows-1251</option>
                         </select>
                     </div>
+                    <div class="form-group">
+                        <label for="description">{{ trans('bitrix.version_description') }}</label>
+                        <textarea id="description"
+                                  name="description"
+                                  class="form-control"
+                                  rows=10></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="updater">{{ trans('bitrix.updater') }}</label>
+                        <textarea id="updater"
+                                  name="updater"
+                                  class="form-control"
+                                  rows=10>{{ $module->generateUpdaterPhp() }}</textarea>
+                    </div>
                     <button type="submit"
                             class="btn btn-primary"
                             name="module_download">{{ trans('app.download') }}
                     </button>
                     <div class="files">
-                        <h2>Изменённые файлы</h2>
+                        <h2>{{ trans('bitrix.changed_files') }}</h2>
                         <ul>
                             <?php $changedFiles = $module->getAllChangedOrNewFiles() ?>
                             @foreach($module->getListOfAllFiles() as $file)
@@ -60,7 +74,7 @@
                                         <input type="checkbox"
                                                name="files[]"
                                                value="{{ $file }}"
-                                        <?php if (in_array($file, $changedFiles)){
+                                        <?php if (in_array($file, $changedFiles) or in_array($file, $module::$requiredFiles)){
                                             echo "checked";
                                         } ?>>
                                         {{$file}}

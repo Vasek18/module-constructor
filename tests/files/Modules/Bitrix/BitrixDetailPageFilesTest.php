@@ -56,7 +56,7 @@ class BitrixDetailPageFilesTest extends BitrixTestCase{
 	}
 
 	/** @test */
-	function archive_contains_all_files(){
+	function archive_contains_all_files_at_update(){
 		$this->payDays(1);
 		// тут конечно не всё, но главное, чтобы версия совпадала и хоть какие-то файлы были
 		$this->visit('/my-bitrix/'.$this->module->id);

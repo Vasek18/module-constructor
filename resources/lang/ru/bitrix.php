@@ -47,6 +47,9 @@ return [
 	'download_as_new_or_update' => 'Скачать как',
 	'download_as_new'           => 'свежий модуль',
 	'download_as_update'        => 'обновление',
+	'version_description'       => 'Описание обновления',
+	'changed_files'             => 'Изменённые файлы',
+	'updater'                   => 'Скрипт обновления (updater.php)',
 
 	'see_file'         => 'Просмотреть файл',
 	'see_lang_file'    => 'Просмотреть ланг файл',

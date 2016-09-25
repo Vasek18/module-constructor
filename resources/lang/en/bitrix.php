@@ -47,6 +47,9 @@ return [
 	'download_as_new_or_update' => 'Download as',
 	'download_as_new'           => 'fresh module',
 	'download_as_update'        => 'update',
+	'version_description'       => 'Version description',
+	'changed_files'             => 'Changed files',
+	'updater'                   => 'Updater script (updater.php)',
 
 	'see_file'         => 'See file',
 	'see_lang_file'    => 'See lang file',
