@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Storage;
 use App\Helpers\vArrParse;
 use Illuminate\Filesystem\Filesystem;
 use PhpParser\Node\Scalar\MagicConst\File;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 use Symfony\Component\Finder\Finder;
 use ZipArchive;
 
@@ -144,15 +146,6 @@ class Bitrix extends Model{
 	// todo проверки на успех
 	public function generateZip($encoding, $fresh, $files, $updater = '', $description = ''){
 		// чтобы работали файлы с точки, нужно в Illuminate\Filesystem\Filesystem заменить строчку в методе files c $glob = glob($directory.'/*'); на $glob = glob($directory. '/{,.}*', GLOB_BRACE);
-		$path = $this->copyToPublicAndEncode($encoding, $files);
-
-		if (!$fresh && $updater){
-			file_put_contents($path.'/updater.php', $updater);
-		}
-		if (!$fresh){ // todo нужные языки
-			file_put_contents($path.'/description.en', mb_convert_encoding($description, $encoding, 'UTF-8'));
-			file_put_contents($path.'/description.ru', mb_convert_encoding($description, $encoding, 'UTF-8'));
-		}
 
 		if ($fresh){
 			$archiveName = "last_version";
@@ -163,24 +156,34 @@ class Bitrix extends Model{
 		}
 		$archiveFullName = 'user_downloads/'.$archiveName.'.zip';
 
-		$zipper = new \Chumper\Zipper\Zipper;
-		$zipper->make(public_path().'/'.$archiveFullName)->folder($rootFolder)->add($path)->close();
+		$path = $this->copyToPublicAndEncode($encoding, $files, $rootFolder);
 
-		// $zip = new ZipArchive();
-		// $zip->open($archiveFullName, ZipArchive::CREATE | ZipArchive::OVERWRITE);
-		//
-		// $files = new RecursiveIteratorIterator(
-		// 	new RecursiveDirectoryIterator(public_path().'/'.$archiveFullName),
-		// 	RecursiveIteratorIterator::LEAVES_ONLY
-		// );
-		// foreach ($files as $name => $file){
-		// 	if (!$file->isDir()){
-		// 		$filePath = $file->getRealPath();
-		// 		$relativePath = substr($filePath, strlen(public_path().'/'.$archiveFullName) + 1);
-		// 		$zip->addFile($filePath, $relativePath);
-		// 	}
-		// }
-		// $zip->close();
+		if (!$fresh && $updater){
+			file_put_contents($path.'/'.$rootFolder.'/updater.php', $updater);
+		}
+		if (!$fresh){ // todo нужные языки
+			file_put_contents($path.'/'.$rootFolder.'/description.en', mb_convert_encoding($description, $encoding, 'UTF-8'));
+			file_put_contents($path.'/'.$rootFolder.'/description.ru', mb_convert_encoding($description, $encoding, 'UTF-8'));
+		}
+
+		// $zipper = new \Chumper\Zipper\Zipper;
+		// $zipper->make(public_path().'/'.$archiveFullName)->folder($rootFolder)->add($path)->close();
+
+		$zip = new ZipArchive();
+		$zip->open(public_path().'/'.$archiveFullName, ZipArchive::CREATE | ZipArchive::OVERWRITE);
+
+		$files = new RecursiveIteratorIterator(
+			new RecursiveDirectoryIterator($path),
+			RecursiveIteratorIterator::LEAVES_ONLY
+		);
+		foreach ($files as $name => $file){
+			if (!$file->isDir()){
+				$filePath = $file->getRealPath();
+				$relativePath = substr($filePath, strlen($path) + 1);
+				$zip->addFile($filePath, $relativePath);
+			}
+		}
+		$zip->close();
 
 		$Filesystem = new Filesystem;
 		$Filesystem->deleteDirectory($path);
@@ -188,10 +191,11 @@ class Bitrix extends Model{
 		return $archiveFullName;
 	}
 
-	public function copyToPublicAndEncode($encoding = 'UTF-8', $files){
+	public function copyToPublicAndEncode($encoding = 'UTF-8', $files, $rootFolder){
 		$moduleFolder = $this->getFolder(true);
 
-		$publicFolder = public_path().'/'.time().rand(0, 100);
+		$tempFolder = public_path().'/'.time().rand(0, 100);
+		$publicFolder = $tempFolder.'/'.$rootFolder;
 		// mkdir($publicFolder);
 
 		$dontConvertExts = ['jpg', 'png'];
@@ -211,7 +215,7 @@ class Bitrix extends Model{
 			file_put_contents($publicFolder.$file, $content);
 		}
 
-		return $publicFolder;
+		return $tempFolder;
 	}
 
 	// изменение номера версии у модуля
