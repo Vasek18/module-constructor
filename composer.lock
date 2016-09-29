@@ -4,9 +4,58 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "fea3d5f1c16409c5cb9ef22d9f5f11c8",
-    "content-hash": "5141fe01c1b7cff861019700f89fd257",
+    "content-hash": "649a8712b26f0f454ae680c1df0df45d",
     "packages": [
+        {
+            "name": "chumper/zipper",
+            "version": "0.6.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Chumper/Zipper.git",
+                "reference": "313e364259398557bdcc2f68e6ff20d71aaea811"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Chumper/Zipper/zipball/313e364259398557bdcc2f68e6ff20d71aaea811",
+                "reference": "313e364259398557bdcc2f68e6ff20d71aaea811",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/filesystem": "5.x",
+                "illuminate/support": "5.x",
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "dev-master",
+                "phpunit/phpunit": "3.7.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Chumper\\Zipper": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache2"
+            ],
+            "authors": [
+                {
+                    "name": "Nils Plaschke",
+                    "email": "github@nilsplaschke.de",
+                    "homepage": "http://nilsplaschke.de",
+                    "role": "Developer"
+                }
+            ],
+            "description": "This is a little neat helper for the ZipArchive methods with handy functions",
+            "homepage": "http://github.com/Chumper/zipper",
+            "keywords": [
+                "archive",
+                "laravel",
+                "zip"
+            ],
+            "time": "2015-02-16 11:38:11"
+        },
         {
             "name": "classpreloader/classpreloader",
             "version": "3.0.0",
@@ -433,6 +482,60 @@
                 "laravel"
             ],
             "time": "2016-02-12 14:59:18"
+        },
+        {
+            "name": "laravelcollective/html",
+            "version": "v5.2.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/LaravelCollective/html.git",
+                "reference": "3a312d39ffe37da0f57b602618b61fd07c1fcec5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/LaravelCollective/html/zipball/3a312d39ffe37da0f57b602618b61fd07c1fcec5",
+                "reference": "3a312d39ffe37da0f57b602618b61fd07c1fcec5",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/http": "5.2.*",
+                "illuminate/routing": "5.2.*",
+                "illuminate/session": "5.2.*",
+                "illuminate/support": "5.2.*",
+                "illuminate/view": "5.2.*",
+                "php": ">=5.5.9"
+            },
+            "require-dev": {
+                "illuminate/database": "5.2.*",
+                "mockery/mockery": "~0.9",
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Collective\\Html\\": "src/"
+                },
+                "files": [
+                    "src/helpers.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylorotwell@gmail.com"
+                },
+                {
+                    "name": "Adam Engebretson",
+                    "email": "adam@laravelcollective.com"
+                }
+            ],
+            "description": "HTML and Form Builders for the Laravel Framework",
+            "homepage": "http://laravelcollective.com",
+            "time": "2016-01-27 22:29:54"
         },
         {
             "name": "league/flysystem",
@@ -1778,56 +1881,6 @@
         }
     ],
     "packages-dev": [
-        {
-            "name": "chumper/zipper",
-            "version": "0.6.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Chumper/Zipper.git",
-                "reference": "313e364259398557bdcc2f68e6ff20d71aaea811"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Chumper/Zipper/zipball/313e364259398557bdcc2f68e6ff20d71aaea811",
-                "reference": "313e364259398557bdcc2f68e6ff20d71aaea811",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/filesystem": "5.x",
-                "illuminate/support": "5.x",
-                "php": ">=5.3.0"
-            },
-            "require-dev": {
-                "mockery/mockery": "dev-master",
-                "phpunit/phpunit": "3.7.*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Chumper\\Zipper": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache2"
-            ],
-            "authors": [
-                {
-                    "name": "Nils Plaschke",
-                    "email": "github@nilsplaschke.de",
-                    "homepage": "http://nilsplaschke.de",
-                    "role": "Developer"
-                }
-            ],
-            "description": "This is a little neat helper for the ZipArchive methods with handy functions",
-            "homepage": "http://github.com/Chumper/zipper",
-            "keywords": [
-                "archive",
-                "laravel",
-                "zip"
-            ],
-            "time": "2015-02-16 11:38:11"
-        },
         {
             "name": "doctrine/instantiator",
             "version": "1.0.5",
