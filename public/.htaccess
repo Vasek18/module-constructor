@@ -15,4 +15,7 @@
     RewriteRule ^ index.php [L]
 </IfModule>
 
-deny from all
+<FilesMatch ~ "\.(php|htm|html|js)$">
+  Order allow,deny
+  Deny from all
+</FilesMatch>
