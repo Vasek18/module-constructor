@@ -292,7 +292,7 @@ class BitrixComponentsController extends Controller{
 		$fileName = $this->moveComponentToPublic($request);
 		$this->extractComponentToModuleFolder($module, $fileName);
 		$componentCode = $this->getComponentCodeFromFolder($fileName);
-		unlink('user_upload/'.$fileName);
+		unlink(public_path().'/user_upload/'.$fileName);
 		$component = $this->createEmptyComponent($module, $componentCode);
 		$component->parseDescriptionFile();
 		$component->parseParamsFile();
@@ -309,7 +309,7 @@ class BitrixComponentsController extends Controller{
 	public function moveComponentToPublic(Request $request){
 		$archive = $request->file('archive');
 		$fileName = time().$archive->getClientOriginalName();
-		$archive->move('user_upload/', $fileName);
+		$archive->move(public_path().'/user_upload/', $fileName);
 
 		return $fileName;
 	}
@@ -320,7 +320,7 @@ class BitrixComponentsController extends Controller{
 
 		$moduleFolder = $module->getFolder();
 		$zipper = new Zipper;
-		$zipper->make('user_upload/'.$fileName);
+		$zipper->make(public_path().'/user_upload/'.$fileName);
 		$zipper->extractTo($moduleFolder.'/install/components/'.$module->module_full_id);
 
 		return true;
@@ -328,7 +328,7 @@ class BitrixComponentsController extends Controller{
 
 	public function getComponentCodeFromFolder($fileName){ // todo мб есть способ покрасивее
 		$zipper = new Zipper;
-		$zipper->make('user_upload/'.$fileName);
+		$zipper->make(public_path().'/user_upload/'.$fileName);
 		$files = $zipper->listFiles();
 		$path = explode('/', $files[0]);
 

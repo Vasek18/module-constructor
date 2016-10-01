@@ -28,10 +28,11 @@ class BitrixComponentsTemplates extends Model{
 
 	public function extractUploadedZip($archive){
 		$fileName = time().$archive->getClientOriginalName();
-		$archive->move('user_upload/', $fileName);
+		$archivePath = public_path().'/user_upload/';
+		$archive->move($archivePath, $fileName);
 
 		$zipper = new Zipper;
-		$zipper->make('user_upload/'.$fileName);
+		$zipper->make($archivePath.$fileName);
 		if ($zipper->contains('template.php')){
 			$this->createFolder();
 			$zipper->extractTo($this->component->getFolder(true).'/templates/'.$this->code);
@@ -40,7 +41,7 @@ class BitrixComponentsTemplates extends Model{
 		}
 		$zipper->close();
 
-		unlink('user_upload/'.$fileName);
+		unlink($archivePath.$fileName);
 	}
 
 	public function createFolder(){

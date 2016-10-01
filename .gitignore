@@ -3,3 +3,7 @@
 Homestead.yaml
 Homestead.json
 .env
+/public/user_downloads
+/public/user_upload
+/public/for_tests
+/storage/user_modules_bitrix

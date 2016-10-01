@@ -204,7 +204,7 @@ class BitrixComponent extends Model{
 	}
 
 	public function generateZip(){
-		$archiveName = $this->code.".zip";
+		$archiveName = public_path().'/user_downloads/'.$this->code.".zip";
 
 		//dd(glob($this->getFolder(true). '/{,.[a-zA-Z]}*', GLOB_BRACE));
 

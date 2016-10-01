@@ -14,8 +14,3 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
-
-<FilesMatch ~ "\.(php|htm|html|js)$">
-  Order allow,deny
-  Deny from all
-</FilesMatch>

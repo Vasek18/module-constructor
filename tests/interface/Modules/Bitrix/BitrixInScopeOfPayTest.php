@@ -139,6 +139,9 @@ class BitrixInScopeOfPayTest extends BitrixTestCase{
 		$this->assertNotEquals($response->getStatusCode(), 403); // 302 - перенаправление, так что тоже подходит
 
 		$this->module->deleteFolder();
+
+		$pathToComponent = public_path().'/user_downloads/trololo.zip';
+		unlink($pathToComponent); // иначе папка с архивом валяется
 	}
 
 	/** @test */
