@@ -25,6 +25,10 @@
                     </p>
                 </div>
             </div>
+            <div class="col-md-8 col-md-offset-2 project-goal">
+                <h2>{{trans('home.project_goal_title')}}</h2>
+                <p>{!! trans('home.project_goal_text') !!}</p>
+            </div>
             <div class="col-md-8 col-md-offset-2 modules-created">
                 <p>{{trans('home.there_were_created')}}</p>
                 <strong>{{$countModules}}</strong>

@@ -1,7 +1,0 @@
-<?
-$MESS["ARISTOV_COMMENTS_KOMMENTARII"] = "Комментарии";
-$MESS["ARISTOV_COMMENTS_NAPISATQ_KOMMENTARIY"] = "Написать комментарий";
-$MESS["ARISTOV_COMMENTS_IMA"] = "Имя";
-$MESS["ARISTOV_COMMENTS_TEKST_SOOBSENIA"] = "Текст сообщения";
-$MESS["ARISTOV_COMMENTS_OTPRAVITQ_KOMMENTARI"] = "Отправить комментарий";
-?>

@@ -1272,9 +1272,41 @@ footer {
   margin-bottom: 15px;
 }
 
+.banner-on-main {
+  padding: 30px 0;
+  border-bottom: 1px solid #e7e7e7;
+}
+
 .banner-on-main h2 {
   font-size: 63px;
   text-align: center;
+}
+
+.banner-on-main strong {
+  font-size: 70px;
+  font-weight: 400;
+  line-height: 80px;
+}
+
+.banner-on-main p {
+  line-height: 25px;
+  margin-top: 20px;
+  font-size: 15px;
+}
+
+.project-goal {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding-bottom: 30px;
+  font-size: 20px;
+  text-align: center;
+  border-bottom: 1px solid #e7e7e7;
+}
+
+.project-goal h2 {
+  padding-top: 0px;
+  padding-bottom: 20px;
+  font-size: 63px;
 }
 
 .modules-created {
@@ -1307,23 +1339,6 @@ a.you-can-change:hover {
 
 .no-margin {
   margin: 0;
-}
-
-.banner-on-main {
-  padding: 30px 0;
-  border-bottom: 1px solid #e7e7e7;
-}
-
-.banner-on-main strong {
-  font-size: 70px;
-  font-weight: 400;
-  line-height: 80px;
-}
-
-.banner-on-main p {
-  line-height: 25px;
-  margin-top: 20px;
-  font-size: 15px;
 }
 
 .not-exist {

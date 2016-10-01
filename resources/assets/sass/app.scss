@@ -1,10 +1,10 @@
 // @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 @import "sweetalert";
-
 $footerHeight : 70px;
 $footerHeightReverse : -70px;
 $hoverBackgroundColor : #eee;
 $fontColor : #777;
+$borderDefaulColor : #e7e7e7;
 
 html, body{
   height      : 100%;
@@ -31,7 +31,7 @@ html, body{
 footer{
   width            : 100%;
   height           : $footerHeight;
-  border-top       : 1px solid #e7e7e7;
+  border-top       : 1px solid $borderDefaulColor;
   background-color : #f8f8f8;
 }
 .footer-actions{
@@ -54,9 +54,34 @@ footer{
   margin-bottom : 15px;
 }
 .banner-on-main{
+  padding       : 30px 0;
+  border-bottom : 1px solid $borderDefaulColor;
   h2{
     font-size  : 63px;
     text-align : center;
+  }
+  & strong{
+    font-size   : 70px;
+    font-weight : 400;
+    line-height : 80px;
+  }
+  & p{
+    line-height : 25px;
+    margin-top  : 20px;
+    font-size   : 15px;
+  }
+}
+.project-goal{
+  margin-top     : 20px;
+  margin-bottom  : 20px;
+  padding-bottom : 30px;
+  font-size      : 20px;
+  text-align     : center;
+  border-bottom  : 1px solid $borderDefaulColor;
+  h2{
+    padding-top    : 0px;
+    padding-bottom : 20px;
+    font-size      : 63px;
   }
 }
 .modules-created{
@@ -92,20 +117,6 @@ a.you-can-change{
 }
 .no-margin{
   margin : 0;
-}
-.banner-on-main{
-  padding       : 30px 0;
-  border-bottom : 1px solid #e7e7e7;
-  & strong{
-    font-size   : 70px;
-    font-weight : 400;
-    line-height : 80px;
-  }
-  & p{
-    line-height : 25px;
-    margin-top  : 20px;
-    font-size   : 15px;
-  }
 }
 .not-exist{
   color   : #ccc;

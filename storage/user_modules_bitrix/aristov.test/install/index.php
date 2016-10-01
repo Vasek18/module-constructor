@@ -5,7 +5,7 @@ use \Bitrix\Main\Application;
 Loc::loadMessages(__FILE__);
 
 Class aristov_test extends CModule{
-	var $MODULE_ID = 'aristov.test';
+	var	$MODULE_ID = 'aristov.test';
 	var $MODULE_VERSION;
 	var $MODULE_VERSION_DATE;
 	var $MODULE_NAME;
@@ -22,7 +22,7 @@ Class aristov_test extends CModule{
 		$this->PARTNER_NAME = getMessage("ARISTOV_TEST_PARTNER_NAME");
 		$this->PARTNER_URI = getMessage("ARISTOV_TEST_PARTNER_URI");
 
-		$this->exclusionAdminFiles = array(
+		$this->exclusionAdminFiles=array(
 			'..',
 			'.',
 			'menu.php',
@@ -42,13 +42,11 @@ Class aristov_test extends CModule{
 
 	function InstallEvents(){
 		return true;
-
-}
+	}
 
 	function UnInstallEvents(){
 		return true;
-
-}
+	}
 
 	function InstallFiles($arParams = array()){
 		$path = $this->GetPath()."/install/components";
@@ -136,22 +134,12 @@ Class aristov_test extends CModule{
 	}
 
 	function createNecessaryMailEvents(){
-		$this->createMailEvent("TEST", Loc::getMessage("ARISTOV_TEST_MAIL_EVENT_TEST_NAME"), Loc::getMessage("ARISTOV_TEST_MAIL_EVENT_TEST_DESC"), 500);
-		$this->createMailTemplate(Array(
-			"EVENT_NAME" => "TEST",
-			"EMAIL_FROM" => "#DEFAULT_EMAIL_FROM#",
-			"EMAIL_TO"   => "#EMAIL_TO#",
-			"BCC"        => "",
-			"SUBJECT"    => Loc::getMessage("ARISTOV_TEST_MAIL_EVENT_TEST_TEMPLATE_1_THEME"),
-			"BODY_TYPE"  => "html",
-			"MESSAGE"    => Loc::getMessage("ARISTOV_TEST_MAIL_EVENT_TEST_TEMPLATE_1_BODY")
-		));
-
-	} // createNecessaryMailEvents
+		return true;
+	}
 
 	function deleteNecessaryMailEvents(){
-		$this->deleteMailEvent("TEST");
-	} // deleteNecessaryMailEvents
+		return true;
+	}
 
 	function isVersionD7(){
 		return CheckVersion(\Bitrix\Main\ModuleManager::getVersion('main'), '14.00.00');
@@ -173,49 +161,6 @@ Class aristov_test extends CModule{
 		}
 
 		return $ids;
-	}
-
-	function createMailEvent($code, $name, $description, $sort, $LID = 'ru'){
-		$params = Array(
-			"LID"         => $LID,
-			"EVENT_NAME"  => $code,
-			"NAME"        => $name,
-			"SORT"        => $sort,
-			"DESCRIPTION" => $description
-		);
-		$rsET = CEventType::GetList(Array("TYPE_ID" => $code, "LID" => $LID));
-		if ($arET = $rsET->Fetch()){
-			$event = CEventType::Update(array("ID" => $arET["ID"]), $params);
-			$eventID = $arET["ID"];
-		}else{
-			$event = new CEventType;
-			$eventID = $event->Add($params);
-		}
-
-		return $eventID;
-	}
-
-	function deleteMailEvent($code){
-		$rsMess = CEventMessage::GetList($by, $order, Array('TYPE_ID' => $code));
-		while ($arMess = $rsMess->Fetch()){
-			$template = new CEventMessage;
-			$template->Delete($arMess["ID"]);
-		}
-
-		$et = new CEventType;
-		$et->Delete($code);
-	}
-
-	function createMailTemplate($params){
-		$params["ACTIVE"] = "Y";
-		if (!isset($params["LID"])){
-			$params["LID"] = 's1';
-		}
-
-		$template = new CEventMessage;
-		$templateID = $template->Add($params);
-
-		return $templateID;
 	}
 
 	function DoInstall(){
@@ -254,5 +199,4 @@ Class aristov_test extends CModule{
 		$APPLICATION->IncludeAdminFile(Loc::getMessage("ARISTOV_TEST_UNINSTALL"), $this->GetPath()."/install/unstep.php");
 	}
 }
-
 ?>
