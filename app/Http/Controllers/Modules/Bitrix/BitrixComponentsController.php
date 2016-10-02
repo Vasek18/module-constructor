@@ -19,11 +19,6 @@ use Auth;
 class BitrixComponentsController extends Controller{
 	use UserOwnModule;
 
-	public function __construct(){
-		parent::__construct();
-		$this->middleware('auth');
-	}
-
 	public function index(Bitrix $module, Request $request){
 		$components = $module->components()->get();
 		$data = [

@@ -15,11 +15,6 @@ use App\Models\Modules\Bitrix\BitrixIblocksElements;
 class BitrixDataStorageController extends Controller{
 	use UserOwnModule;
 
-	public function __construct(){
-		parent::__construct();
-		$this->middleware('auth');
-	}
-
 	// страница настроек для страницы настроек
 	public function index(Bitrix $module, Request $request){
 		if (!$this->userCreatedModule($module->id)){

@@ -15,11 +15,6 @@ use App\Models\Modules\Bitrix\BitrixComponentsTemplates;
 class BitrixComponentsArbitraryFilesController extends Controller{
 	use UserOwnModule;
 
-	public function __construct(){
-		parent::__construct();
-		$this->middleware('auth');
-	}
-
 	public function index(Bitrix $module, BitrixComponent $component, Request $request){
 		if (!$this->moduleOwnsComponent($module, $component)){
 			return $this->unauthorized($request);

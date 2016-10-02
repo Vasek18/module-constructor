@@ -15,11 +15,6 @@ use Illuminate\Support\Facades\DB;
 class BitrixEventHandlersController extends Controller{
 	use UserOwnModule;
 
-	public function __construct(){
-		parent::__construct();
-		$this->middleware('auth');
-	}
-
 	// страница обработчиков событий
 	public function index(Bitrix $module, Request $request){
 		if (!$this->userCreatedModule($module->id)){

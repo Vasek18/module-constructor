@@ -16,11 +16,6 @@ use Illuminate\Support\Facades\Auth;
 class BitrixOptionsController extends Controller{
 	use UserOwnModule;
 
-	public function __construct(){
-		parent::__construct();
-		$this->middleware('auth');
-	}
-
 	// страница настроек для страницы настроек
 	public function index(Bitrix $module, Request $request){
 		$options = BitrixAdminOptions::where('module_id', $module->id)->orderBy('sort', 'asc')->get();

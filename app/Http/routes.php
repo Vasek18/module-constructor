@@ -35,7 +35,7 @@ Route::group(['prefix' => 'password'], function (){
 
 // Битрикс
 //Route::group(['prefix' => 'my/bitrix'], function (){
-Route::group(['prefix' => 'my-bitrix', 'middleware' => 'bitrix.owner'], function (){
+Route::group(['prefix' => 'my-bitrix', 'middleware' => ['bitrix.owner', 'auth']], function (){
 	Route::get('create', 'Modules\Bitrix\BitrixController@create');
 	Route::post('', 'Modules\Bitrix\BitrixController@store');
 	Route::get('{module}', ['as' => 'bitrix_module_detail', 'uses' => 'Modules\Bitrix\BitrixController@show']);
@@ -135,7 +135,7 @@ Route::group(['prefix' => 'my-bitrix', 'middleware' => 'bitrix.owner'], function
 	});
 
 	// произвольные файлы
-	Route::group(['prefix' => '{module}/arbitrary_files', 'middleware' => 'auth'], function (){
+	Route::group(['prefix' => '{module}/arbitrary_files'], function (){
 		Route::get('', ['as' => 'bitrix_module_arbitrary_files', 'uses' => 'Modules\Bitrix\BitrixArbitraryFilesController@index']);
 		Route::post('', 'Modules\Bitrix\BitrixArbitraryFilesController@store');
 		Route::get('{file}/delete', 'Modules\Bitrix\BitrixArbitraryFilesController@destroy');
@@ -144,7 +144,7 @@ Route::group(['prefix' => 'my-bitrix', 'middleware' => 'bitrix.owner'], function
 	});
 
 	// почтовые события
-	Route::group(['prefix' => '{module}/mail_events', 'middleware' => 'auth'], function (){
+	Route::group(['prefix' => '{module}/mail_events'], function (){
 		Route::get('', ['as' => 'bitrix_module_mail_events', 'uses' => 'Modules\Bitrix\BitrixMailEventsController@index']);
 		Route::get('create', ['uses' => 'Modules\Bitrix\BitrixMailEventsController@create']);
 		Route::post('', 'Modules\Bitrix\BitrixMailEventsController@store');
@@ -161,7 +161,7 @@ Route::group(['prefix' => 'my-bitrix', 'middleware' => 'bitrix.owner'], function
 	});
 
 	// страницы административного меню
-	Route::group(['prefix' => '{module}/admin_menu', 'middleware' => 'auth'], function (){
+	Route::group(['prefix' => '{module}/admin_menu'], function (){
 		Route::get('', ['as' => 'bitrix_module_admin_menu', 'uses' => 'Modules\Bitrix\BitrixAdminMenuController@index']);
 		Route::get('create', ['uses' => 'Modules\Bitrix\BitrixAdminMenuController@create']);
 		Route::post('', 'Modules\Bitrix\BitrixAdminMenuController@store');
@@ -171,7 +171,7 @@ Route::group(['prefix' => 'my-bitrix', 'middleware' => 'bitrix.owner'], function
 	});
 
 	// переводы
-	Route::group(['prefix' => '{module}/lang', 'middleware' => 'auth'], function (){
+	Route::group(['prefix' => '{module}/lang'], function (){
 		Route::get('', ['as' => 'bitrix_module_lang', 'uses' => 'Modules\Bitrix\BitrixLangController@index']);
 		Route::get('/edit', ['uses' => 'Modules\Bitrix\BitrixLangController@edit']);
 		Route::post('/update', ['uses' => 'Modules\Bitrix\BitrixLangController@update']);

@@ -26,7 +26,6 @@ class BitrixController extends Controller{
 
 	public function __construct(Request $request){
 		parent::__construct();
-		$this->middleware('auth');
 
 		$this->request = $request;
 		// todo почему-то не получило вынести также и модуль
