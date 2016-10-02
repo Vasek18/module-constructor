@@ -2,8 +2,8 @@
 
 @section("content")
     <div class="container">
-        <h1>{{trans('personal_index.personal_cabinet')}}
-            <small>{{ Auth::user()->last_name }} {{  Auth::user()->first_name }}</small>
+        <h1>{{ Auth::user()->last_name }} {{  Auth::user()->first_name }}
+            <small>({{ trans('personal_index.payed_days') }}: {{  Auth::user()->payed_days }})</small>
         </h1>
         <hr>
         <h2>{{trans('personal_index.modules_list')}}</h2>

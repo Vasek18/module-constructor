@@ -44,6 +44,15 @@ class User extends Model implements AuthenticatableContract,
 		return false;
 	}
 
+	public function payForDay(){
+		$days = $this->payed_days;
+		if ($days){
+			$days--;
+		}
+		$this->payed_days = $days;
+		$this->save();
+	}
+
 	public function bitrixes(){
 		return $this->hasMany('App\Models\Modules\Bitrix\Bitrix');
 	}
