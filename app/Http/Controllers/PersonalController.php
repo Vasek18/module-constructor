@@ -2,12 +2,8 @@
 
 namespace App\Http\Controllers;
 use App\Models\User;
-use Illuminate\Http\Request;
-
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
-use App\Models\Modules\Bitrix\Bitrix;
 use Auth;
+use Illuminate\Support\Facades\Config;
 
 class PersonalController extends Controller{
 

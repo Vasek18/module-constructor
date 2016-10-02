@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Config;
 
 class RegistrationInterfaceTest extends TestCase{
 
@@ -260,6 +261,24 @@ class RegistrationInterfaceTest extends TestCase{
 		]);
 
 		$this->see('The email must be a valid email address');
+	}
+
+	/** @test */
+	function it_gives_free_days(){
+		$this->submitForm('signup', [
+			'first_name'            => 'Вася',
+			'last_name'             => 'Аристов',
+			'company_name'          => 'Aristov',
+			'site'                  => 'http://aristov-vasiliy.ru/',
+			'email'                 => 'ololo@trololo.ru',
+			'password'              => '12345678',
+			'password_confirmation' => '12345678',
+		]);
+
+		$this->seeInDatabase('users', [
+			'email'      => 'ololo@trololo.ru',
+			'payed_days' => Config::get('constants.DAYS_TRIAL')
+		]);
 	}
 }
 

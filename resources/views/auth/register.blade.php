@@ -31,7 +31,8 @@
                                     <input type="text"
                                            class="form-control"
                                            name="first_name"
-                                           value="{{ old('first_name') }}">
+                                           value="{{ old('first_name') }}"
+                                           required>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -49,7 +50,8 @@
                                     <input type="email"
                                            class="form-control"
                                            name="email"
-                                           value="{{ old('email') }}">
+                                           value="{{ old('email') }}"
+                                           required>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -75,7 +77,8 @@
                                 <div class="col-md-6">
                                     <input type="password"
                                            class="form-control"
-                                           name="password">
+                                           name="password"
+                                           required>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -90,7 +93,7 @@
                                 <div class="col-md-6 col-md-offset-4">
                                     <button type="submit"
                                             class="btn btn-primary"
-                                    name="signup">{{ trans('reg.submit') }}</button>
+                                            name="signup">{{ trans('reg.submit') }}</button>
                                 </div>
                             </div>
                         </form>

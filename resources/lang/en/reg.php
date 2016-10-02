@@ -10,4 +10,7 @@ return [
 	'password'      => 'Password',
 	'password_conf' => 'Password confirmation',
 	'submit'        => 'Sign up',
+
+	'you_ve_registered' => 'You\'ve registered',
+	'trial_provided'    => '{0}|[1,Inf]Provided demo mode on days: :days',
 ];

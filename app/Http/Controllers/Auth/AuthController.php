@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
@@ -70,7 +71,9 @@ class AuthController extends Controller{
 	 * @return User
 	 */
 	protected function create(array $data){
-		return User::create([
+		$daysTrial = Config::get('constants.DAYS_TRIAL');
+
+		$user = User::create([
 			'first_name'   => $data['first_name'],
 			'last_name'    => $data['last_name'],
 			'site'         => $data['site'],
@@ -79,5 +82,12 @@ class AuthController extends Controller{
 			'password'     => bcrypt($data['password']),
 			'group_id'     => User::$defaultGroup,
 		]);
+
+		$user->payed_days = $daysTrial;
+		$user->save();
+
+		flash()->success(trans('reg.you_ve_registered').'\n'.trans_choice('reg.trial_provided', $daysTrial, ['days' => $daysTrial]));
+
+		return $user;
 	}
 }
