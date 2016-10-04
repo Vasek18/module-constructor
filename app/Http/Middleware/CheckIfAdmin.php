@@ -3,9 +3,14 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use App\Models\Modules\Bitrix\Bitrix;
+use Illuminate\Contracts\Auth\Guard;
 
 class CheckIfAdmin{
+
+	public function __construct(Guard $auth){
+		$this->auth = $auth;
+	}
+
 	/**
 	 * Handle an incoming request.
 	 *
@@ -14,6 +19,15 @@ class CheckIfAdmin{
 	 * @return mixed
 	 */
 	public function handle($request, Closure $next){
+
+		if ($this->auth->guest()){
+			if ($request->ajax()){
+				return response('Unauthorized.', 401);
+			}else{
+				return redirect()->guest(route('auth'));
+			}
+		}
+
 		$user = $request->user();
 		$group = $user->group()->first();
 		if (!$group || $group->code != 'admin'){ // если не админ
