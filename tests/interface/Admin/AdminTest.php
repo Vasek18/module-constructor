@@ -12,7 +12,7 @@ class AdminTest extends \TestCase{
 
 	/** @test */
 	function unauthorized_cant_get_to_admin_page(){
-		$this->visit('/admin');
+		$this->visit('/oko');
 
 		$this->seePageIs('/personal/auth');
 	}
@@ -21,7 +21,7 @@ class AdminTest extends \TestCase{
 	function common_user_cant_get_to_admin_page(){
 		$this->signIn();
 
-		$this->visit('/admin');
+		$this->visit('/oko');
 
 		$this->seePageIs('/personal');
 	}
@@ -32,9 +32,9 @@ class AdminTest extends \TestCase{
 			'group_id' => $this->adminUserGroup
 		]);
 
-		$this->visit('/admin');
+		$this->visit('/oko');
 
-		$this->seePageIs('/admin');
+		$this->seePageIs('/oko');
 	}
 
 }

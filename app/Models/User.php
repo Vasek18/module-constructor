@@ -57,6 +57,10 @@ class User extends Model implements AuthenticatableContract,
 		return $this->hasMany('App\Models\Modules\Bitrix\Bitrix');
 	}
 
+	public function modules(){
+		return $this->hasMany('App\Models\Modules\Bitrix\Bitrix'); // пока только битрикс
+	}
+
 	public function group(){
 		return $this->belongsTo('App\Models\UserGroups');
 	}

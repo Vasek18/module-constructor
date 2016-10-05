@@ -29,14 +29,14 @@ $factory->define(App\Models\Modules\Bitrix\Bitrix::class, function (Faker\Genera
 	$user = factory(App\Models\User::class)->create();
 
 	return [
-		'MODULE_NAME'        => $faker->word,
-		'MODULE_CODE'        => $faker->word,
-		'MODULE_DESCRIPTION' => $faker->sentence(7),
+		'name'        => $faker->word,
+		'code'        => $faker->word,
+		'description' => $faker->sentence(7),
 		'PARTNER_NAME'       => $user->first_name,
 		'PARTNER_URI'        => $user->site,
 		'PARTNER_CODE'       => $user->bitrix_partner_code,
 		'user_id'            => $user->id,
-		'VERSION'            => "0.0.1",
+		'version'            => "0.0.1",
 		'download_counter'   => 0,
 	];
 });

@@ -12,9 +12,19 @@ class AdminController extends Controller{
 
 	public function users(){
 		$data = [
-			'usersCount' => User::count()
+			'usersCount' => User::count(),
+			'users'      => User::all(),
 		];
 
 		return view("admin.users", $data);
+	}
+
+	public function usersDetail(User $user){
+		$data = [
+			'user'     => $user,
+			'bitrixes' => $user->bitrixes,
+		];
+
+		return view("admin.user_detail", $data);
 	}
 }

