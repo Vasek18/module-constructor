@@ -2,7 +2,6 @@
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use BitrixTestCase;
 
 class AdminUsersTest extends TestCase{
 
@@ -28,7 +27,7 @@ class AdminUsersTest extends TestCase{
 
 		$this->visit('/oko/users');
 
-		$this->seePageIs('/oko');
+		$this->seePageIs('/oko/users');
 	}
 
 	/** @test */

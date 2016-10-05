@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Support\Facades\Config;
 
 class CheckIfAdmin{
 
@@ -30,7 +31,7 @@ class CheckIfAdmin{
 
 		$user = $request->user();
 		$group = $user->group()->first();
-		if (!$group || $group->code != 'admin'){ // если не админ
+		if (!$group || $group->id != Config::get('constants.ADMIN_GROUP_ID')){ // если не админ
 			return redirect('personal');
 		}
 

