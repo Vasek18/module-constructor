@@ -100,7 +100,7 @@ $WATERMARK_FILE_POSITION = [
             <input class="form-control"
                    name="FIELDS[ACTIVE_TO][DEFAULT_VALUE]"
                    type="text"
-                   value="{{isset($iblock)?$iblock->params->FIELDS->ACTIVE_TO->DEFAULT_VALUE:''}}">
+                   value="{{isset($iblock)&&isset($iblock->params->FIELDS->ACTIVE_TO)?$iblock->params->FIELDS->ACTIVE_TO->DEFAULT_VALUE:''}}">
         </td>
     </tr>
     <tr>
@@ -127,7 +127,7 @@ $WATERMARK_FILE_POSITION = [
             <input class="form-control"
                    name="FIELDS[NAME][DEFAULT_VALUE]"
                    type="text"
-                   value="{{isset($iblock)?$iblock->params->FIELDS->NAME->DEFAULT_VALUE:''}}">
+                   value="{{isset($iblock)&&isset($iblock->params->FIELDS->NAME)?$iblock->params->FIELDS->NAME->DEFAULT_VALUE:''}}">
         </td>
     </tr>
     <tr>

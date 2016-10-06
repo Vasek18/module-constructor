@@ -11,7 +11,8 @@
     "php": ">=5.5.9",
     "laravel/framework": "5.2.*",
     "laravelcollective/html": "^5.2.0",
-    "chumper/zipper": "^0.6.1"
+    "chumper/zipper": "^0.6.1",
+    "Nathanmac/Parser": "4.*"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",

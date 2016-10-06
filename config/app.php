@@ -53,7 +53,7 @@ return [
 	|
 	*/
 
-	'locale'  => 'ru',
+	'locale' => 'ru',
 	/*
 	|--------------------------------------------------------------------------
 	| Application Fallback Locale
@@ -146,6 +146,7 @@ return [
 		//Collective\Html\HtmlServiceProvider::class,
 
 		Chumper\Zipper\ZipperServiceProvider::class, // для zip'а
+		Nathanmac\Utilities\Parser\ParserServiceProvider::class, // для xml
 	],
 
 	/*
@@ -199,6 +200,7 @@ return [
 		'Html' => Collective\Html\HtmlFacade::class,
 
 		'Zipper' => Chumper\Zipper\Zipper::class,
+		'Parser' => Nathanmac\Utilities\Parser\Facades\Parser::class,
 	],
 
 ];

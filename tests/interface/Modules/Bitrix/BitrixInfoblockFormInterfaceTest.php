@@ -9,6 +9,8 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 
 	use DatabaseTransactions;
 
+	protected $path = '/data_storage';
+
 	/** @test */
 	function author_can_get_to_this_page(){
 		$this->signIn();
@@ -521,6 +523,26 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 		$this->see('one');
 		$this->see('two');
 		$this->seePageIs('/my-bitrix/'.$module->id.'/data_storage/ib/'.$ib->id.'/show_element/'.$element->id);
+	}
+
+	/** @test */
+	function it_imports_main_iblock_params_from_xml(){
+		$this->signIn();
+		$module = $this->fillNewBitrixForm();
+
+		$file = public_path().'/for_tests/test_iblock.xml';
+		$this->visit('/my-bitrix/'.$module->id.$this->path);
+		$this->attach($file, 'file');
+		$this->press('import');
+		$module->deleteFolder();
+
+		$this->seeInField('NAME', 'Тест');
+		$this->seeInField('CODE', 'test');
+		$this->seeInField('SORT', '500');
+		$this->seeInField('LIST_PAGE_URL', '#SITE_DIR#/test/');
+		$this->seeInField('SECTION_PAGE_URL', '#SITE_DIR#/test/#SECTION_CODE_PATH#/');
+		$this->seeInField('DETAIL_PAGE_URL', '#SITE_DIR#/test/#SECTION_CODE_PATH#/#CODE#.html');
+		$this->seeInField('CANONICAL_PAGE_URL', 'canon');
 	}
 
 	// /** @test */

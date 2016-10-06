@@ -11,6 +11,7 @@ use App\Http\Controllers\Traits\UserOwnModule;
 use App\Models\Modules\Bitrix\BitrixInfoblocks;
 use App\Models\Modules\Bitrix\BitrixIblocksProps;
 use App\Models\Modules\Bitrix\BitrixIblocksElements;
+use Nathanmac\Utilities\Parser\Facades\Parser;
 
 class BitrixDataStorageController extends Controller{
 	use UserOwnModule;
@@ -41,11 +42,6 @@ class BitrixDataStorageController extends Controller{
 		//dd($data);
 
 		return view("bitrix.data_storage.add_ib", $data);
-	}
-
-	public function xml_ib_import(Bitrix $module, Request $request){
-		dd($request->file);
-		dd('test');
 	}
 
 	public function store_ib(Bitrix $module, Requests\InfoblockFormRequest $request){
@@ -89,6 +85,30 @@ class BitrixDataStorageController extends Controller{
 		}
 
 		BitrixInfoblocks::writeInFile($module);
+
+		return redirect(action('Modules\Bitrix\BitrixDataStorageController@detail_ib', [$module->id, $iblock->id]));
+	}
+
+	public function xml_ib_import(Bitrix $module, Request $request){
+		$file = file_get_contents($request->file->getRealPath());
+
+		$arr = Parser::xml($file);
+		// dd($arr['Каталог']);
+
+		$iblock = BitrixInfoblocks::create([
+			'module_id' => $module->id,
+			'name'      => $arr['Каталог']['Наименование'],
+			'code'      => $arr['Каталог']['БитриксКод'],
+			'params'    => json_encode([
+				'NAME'               => $arr['Каталог']['Наименование'],
+				'CODE'               => $arr['Каталог']['БитриксКод'],
+				'SORT'               => $arr['Каталог']['БитриксСортировка'],
+				'LIST_PAGE_URL'      => $arr['Каталог']['БитриксURLСписок'],
+				'SECTION_PAGE_URL'   => $arr['Каталог']['БитриксURLРаздел'],
+				'DETAIL_PAGE_URL'    => $arr['Каталог']['БитриксURLДеталь'],
+				'CANONICAL_PAGE_URL' => $arr['Каталог']['БитриксURLКанонический'],
+			]) // предыдущие пару параметров дублируются здесь специально, чтобы можно было создавать массив по одному лишь params
+		]);
 
 		return redirect(action('Modules\Bitrix\BitrixDataStorageController@detail_ib', [$module->id, $iblock->id]));
 	}

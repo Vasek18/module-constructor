@@ -5,5 +5,5 @@ Homestead.json
 .env
 /public/user_downloads
 /public/user_upload
-/public/for_tests
+/public/for_tests/bitrix_catalog.section.zip
 /storage/user_modules_bitrix
