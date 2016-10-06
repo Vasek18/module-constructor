@@ -43,6 +43,11 @@ class BitrixDataStorageController extends Controller{
 		return view("bitrix.data_storage.add_ib", $data);
 	}
 
+	public function xml_ib_import(Bitrix $module, Request $request){
+		dd($request->file);
+		dd('test');
+	}
+
 	public function store_ib(Bitrix $module, Requests\InfoblockFormRequest $request){
 		$params = $request->all();
 		unset($params['_token']);

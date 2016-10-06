@@ -8,6 +8,7 @@ return [
 	'link_to_personal_title' => 'Личный кабинет',
 	'link_to_logout_title'   => 'Выйти',
 	'bitrix_module'          => 'Модуль',
+	'file'                   => 'Файл',
 
 	'yes'  => 'Да',
 	'no'   => 'Нет',
@@ -23,6 +24,7 @@ return [
 	'change'   => 'Изменить',
 	'send'     => 'Отправить',
 	'delete'   => 'Удалить',
+	'import'   => 'Импортировать',
 
 	'not-exist'    => 'Отсутствует',
 	'not-exist_pl' => 'Отсутствуют',

@@ -118,6 +118,7 @@ Route::group(['prefix' => 'my-bitrix', 'middleware' => ['bitrix.owner', 'auth']]
 		Route::group(['prefix' => 'ib'], function (){
 			Route::get('', 'Modules\Bitrix\BitrixDataStorageController@add_ib');
 			Route::post('', 'Modules\Bitrix\BitrixDataStorageController@store_ib');
+			Route::post('xml_ib_import', 'Modules\Bitrix\BitrixDataStorageController@xml_ib_import');
 			Route::get('{iblock}', 'Modules\Bitrix\BitrixDataStorageController@detail_ib');
 			Route::get('{iblock}/delete', 'Modules\Bitrix\BitrixDataStorageController@delete_ib');
 			Route::post('{iblock}/save', 'Modules\Bitrix\BitrixDataStorageController@save_ib');

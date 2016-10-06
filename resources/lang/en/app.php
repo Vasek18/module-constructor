@@ -8,6 +8,7 @@ return [
 	'link_to_personal_title' => 'Personal',
 	'link_to_logout_title'   => 'Logout',
 	'bitrix_module'          => 'Module',
+	'file'                   => 'File',
 
 	'yes'  => 'Yes',
 	'no'   => 'No',
@@ -23,6 +24,7 @@ return [
 	'upload'   => 'Upload',
 	'send'     => 'Send',
 	'delete'   => 'Delete',
+	'import'   => 'Import',
 
 	'not-exist'    => 'Empty',
 	'not-exist_pl' => 'Empty',
