@@ -545,6 +545,31 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 		$this->seeInField('CANONICAL_PAGE_URL', 'canon');
 	}
 
+	/** @test */
+	function it_imports_iblock_properties_from_xml(){
+		$this->signIn();
+		$module = $this->fillNewBitrixForm();
+
+		$file = public_path().'/for_tests/test_iblock.xml';
+		$this->visit('/my-bitrix/'.$module->id.$this->path);
+		$this->attach($file, 'file');
+		$this->press('import');
+		$module->deleteFolder();
+
+		$this->seeInField('properties[NAME][0]', 'Тестовое свойство');
+		$this->seeInField('properties[CODE][0]', 'TESTOVOE_SVOISVTO');
+		$this->seeInField('properties[SORT][0]', '400');
+		$this->seeIsSelected('properties[TYPE][0]', 'S');
+		$this->dontSeeIsChecked('properties[MULTIPLE][0]');
+		$this->dontSeeIsChecked('properties[IS_REQUIRED][0]');
+		$this->seeInField('properties[NAME][1]', 'Ещё свойство');
+		$this->seeInField('properties[CODE][1]', 'ANOTHER_ONE');
+		$this->seeInField('properties[SORT][1]', '500');
+		$this->seeIsSelected('properties[TYPE][1]', 'E');
+		$this->seeIsChecked('properties[MULTIPLE][1]');
+		$this->seeIsChecked('properties[IS_REQUIRED][1]');
+	}
+
 	// /** @test */
 	// function it_can_remove_iblock(){
 	// 	$this->signIn();

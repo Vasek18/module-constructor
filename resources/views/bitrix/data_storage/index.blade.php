@@ -16,9 +16,9 @@
     <br>
     <br>
     @if (count($infoblocks))
-        <div class="list-group deletion_wrapper">
+        <div class="list-group">
             @foreach($infoblocks as $infoblock)
-                <div class="list-group-item clearfix infoblock">
+                <div class="list-group-item clearfix infoblock deletion_wrapper">
                     <a href="{{ action('Modules\Bitrix\BitrixDataStorageController@detail_ib', [$module->id, $infoblock->id]) }}">
                         {{ trans('bitrix_data_storage.iblock') }} "{{$infoblock->name}}" ({{$infoblock->code}})
                     </a>

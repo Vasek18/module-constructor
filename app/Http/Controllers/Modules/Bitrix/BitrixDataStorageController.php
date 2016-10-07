@@ -93,22 +93,47 @@ class BitrixDataStorageController extends Controller{
 		$file = file_get_contents($request->file->getRealPath());
 
 		$arr = Parser::xml($file);
-		// dd($arr["Классификатор"]["Свойства"]);
+		// dd($arr["Классификатор"]["Свойства"]['Свойство']);
 
-		$iblock = BitrixInfoblocks::create([
-			'module_id' => $module->id,
-			'name'      => $arr['Каталог']['Наименование'],
-			'code'      => $arr['Каталог']['БитриксКод'],
-			'params'    => json_encode([
-				'NAME'               => $arr['Каталог']['Наименование'],
-				'CODE'               => $arr['Каталог']['БитриксКод'],
-				'SORT'               => $arr['Каталог']['БитриксСортировка'],
-				'LIST_PAGE_URL'      => $arr['Каталог']['БитриксURLСписок'],
-				'SECTION_PAGE_URL'   => $arr['Каталог']['БитриксURLРаздел'],
-				'DETAIL_PAGE_URL'    => $arr['Каталог']['БитриксURLДеталь'],
-				'CANONICAL_PAGE_URL' => $arr['Каталог']['БитриксURLКанонический'],
-			]) // предыдущие пару параметров дублируются здесь специально, чтобы можно было создавать массив по одному лишь params
-		]);
+		$iblock = BitrixInfoblocks::updateOrCreate(
+			[
+				'module_id' => $module->id,
+				'code'      => $arr['Каталог']['БитриксКод'],
+			],
+			[
+				'module_id' => $module->id,
+				'name'      => $arr['Каталог']['Наименование'],
+				'code'      => $arr['Каталог']['БитриксКод'],
+				'params'    => json_encode([
+					'NAME'               => $arr['Каталог']['Наименование'],
+					'CODE'               => $arr['Каталог']['БитриксКод'],
+					'SORT'               => $arr['Каталог']['БитриксСортировка'],
+					'LIST_PAGE_URL'      => $arr['Каталог']['БитриксURLСписок'],
+					'SECTION_PAGE_URL'   => $arr['Каталог']['БитриксURLРаздел'],
+					'DETAIL_PAGE_URL'    => $arr['Каталог']['БитриксURLДеталь'],
+					'CANONICAL_PAGE_URL' => $arr['Каталог']['БитриксURLКанонический'],
+				])
+			]);
+
+		foreach ($arr["Классификатор"]["Свойства"]['Свойство'] as $propArr){
+			if (isset($propArr["БитриксТипСвойства"])){ // считаем, что свойство от прочих элементов отличает именно это поле
+				BitrixIblocksProps::updateOrCreate(
+					[
+						'iblock_id' => $iblock->id,
+						'code'      => $propArr['БитриксКод']
+					],
+					[
+						'iblock_id'   => $iblock->id,
+						'code'        => $propArr['БитриксКод'],
+						'name'        => $propArr['Наименование'],
+						'sort'        => $propArr["БитриксСортировка"],
+						'type'        => $propArr["БитриксТипСвойства"],
+						'multiple'    => ($propArr["Множественное"] == 'true') ? true : false,
+						'is_required' => ($propArr["БитриксОбязательное"] == 'true') ? true : false
+					]
+				);
+			}
+		}
 
 		return redirect(action('Modules\Bitrix\BitrixDataStorageController@detail_ib', [$module->id, $iblock->id]));
 	}
