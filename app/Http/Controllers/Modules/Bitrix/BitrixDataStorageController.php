@@ -93,7 +93,7 @@ class BitrixDataStorageController extends Controller{
 		$file = file_get_contents($request->file->getRealPath());
 
 		$arr = Parser::xml($file);
-		// dd($arr['Каталог']);
+		// dd($arr["Классификатор"]["Свойства"]);
 
 		$iblock = BitrixInfoblocks::create([
 			'module_id' => $module->id,

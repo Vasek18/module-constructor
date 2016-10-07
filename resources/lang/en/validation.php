@@ -123,6 +123,18 @@ return [
 		'PARTNER_CODE'   => [
 			'required' => 'The "Partner code" field is required',
 		],
+		'password'       => [
+			'required'  => 'The password field is required',
+			'min'       => 'The password must be at least :min characters',
+			'confirmed' => 'The password confirmation does not match',
+		],
+		'email'          => [
+			'required' => 'The email field is required',
+			'unique'   => 'The email has already been taken',
+		],
+		'first_name'     => [
+			'required' => 'The first name field is required',
+		],
 	],
 
 	/*

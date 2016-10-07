@@ -92,7 +92,7 @@ class BitrixLangInterfaceTest extends BitrixTestCase{
 		$this->visit('/my-bitrix/'.$this->module->id.$this->path.'/edit?file=%2Fololo.php');
 		$this->press('save_1');
 
-		$this->see('<p><?=GetMessage("OLOLO");?></p>');
+		$this->see('&lt;p&gt;&lt;?=GetMessage("OLOLO");?&gt;&lt;/p&gt;');
 		$this->see('<p class="form-control-static">OLOLO</p>');
 	}
 
@@ -103,7 +103,7 @@ class BitrixLangInterfaceTest extends BitrixTestCase{
 		$this->visit('/my-bitrix/'.$this->module->id.$this->path.'/edit?file=%2Fololo.php');
 		$this->press('save_0');
 
-		$this->see('<p><?=GetMessage("OLOLO");?></p>');
+		$this->see('&lt;p&gt;&lt;?=GetMessage("OLOLO");?&gt;&lt;/p&gt;');
 		$this->see('<p class="form-control-static">OLOLO</p>');
 	}
 
@@ -135,7 +135,7 @@ class BitrixLangInterfaceTest extends BitrixTestCase{
 		$this->type('trololo', 'phrase_0');
 		$this->press('change_0');
 
-		$this->see('<p><?=GetMessage("OLOLO");?></p>');
+		$this->see('&lt;p&gt;&lt;?=GetMessage("OLOLO");?&gt;&lt;/p&gt;');
 		$this->see('<p class="form-control-static">OLOLO</p>');
 		$this->seeInField('phrase_0', 'trololo');
 	}
