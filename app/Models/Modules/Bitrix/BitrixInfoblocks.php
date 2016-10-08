@@ -120,6 +120,10 @@ class BitrixInfoblocks extends Model{
 						}
 					}
 
+					if (is_array($val)){
+						$val = implode(',', $val);
+					}
+
 					if ($val){
 						$module->changeVarInLangFile($element->lang_key.'_PROP_'.$prop->code.'_VALUE', $val, '/lang/'.$module->default_lang.'/install/index.php');
 					}

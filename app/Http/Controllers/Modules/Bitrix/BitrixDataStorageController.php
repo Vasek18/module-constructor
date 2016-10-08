@@ -16,6 +16,8 @@ use Nathanmac\Utilities\Parser\Facades\Parser;
 class BitrixDataStorageController extends Controller{
 	use UserOwnModule;
 
+	public static $arrayGlue = '_###_';
+
 	// страница настроек для страницы настроек
 	public function index(Bitrix $module, Request $request){
 		if (!$this->userCreatedModule($module->id)){
@@ -93,7 +95,6 @@ class BitrixDataStorageController extends Controller{
 		$file = file_get_contents($request->file->getRealPath());
 
 		$arr = Parser::xml($file);
-		// dd($arr["Классификатор"]["Свойства"]['Свойство']);
 
 		$iblock = BitrixInfoblocks::updateOrCreate(
 			[
@@ -115,6 +116,7 @@ class BitrixDataStorageController extends Controller{
 				])
 			]);
 
+		$tempPropArr = [];
 		foreach ($arr["Классификатор"]["Свойства"]['Свойство'] as $propArr){
 			if (isset($propArr["БитриксТипСвойства"])){ // считаем, что свойство от прочих элементов отличает именно это поле
 				BitrixIblocksProps::updateOrCreate(
@@ -132,8 +134,48 @@ class BitrixDataStorageController extends Controller{
 						'is_required' => ($propArr["БитриксОбязательное"] == 'true') ? true : false
 					]
 				);
+
+				$tempPropArr[$propArr['Ид']] = $propArr['БитриксКод'];
 			}
 		}
+
+		foreach ($arr['Каталог']['Товары']['Товар'] as $itemArr){
+			$elementArr = [
+				'iblock_id' => $iblock->id,
+				'name'      => $itemArr['Наименование'],
+				'active'    => true,
+			];
+
+			$tempPropValArr = [];
+			foreach ($itemArr['ЗначенияСвойств']['ЗначенияСвойства'] as $propValArr){
+				if ($propValArr['Ид'] == 'CML2_CODE'){
+					$elementArr['code'] = $propValArr['Значение'];
+				}
+				if ($propValArr['Ид'] == 'CML2_SORT'){
+					$elementArr['sort'] = $propValArr['Значение'];
+				}
+				if (isset($tempPropArr[$propValArr['Ид']])){
+					$val = $propValArr['Значение'];
+					if (is_array($val)){
+						$val = implode(static::$arrayGlue, $val);
+					}
+					if ($val){
+						$prop = BitrixIblocksProps::where('iblock_id', $iblock->id)->where('code', $tempPropArr[$propValArr['Ид']])->first();
+						if (!$prop){
+							continue;
+						}
+
+						$tempPropValArr[$prop->id] = ['value' => $val];
+					}
+				}
+			}
+
+			$element = BitrixIblocksElements::create($elementArr);
+
+			$element->props()->sync($tempPropValArr);
+		}
+
+		BitrixInfoblocks::writeInFile($module);
 
 		return redirect(action('Modules\Bitrix\BitrixDataStorageController@detail_ib', [$module->id, $iblock->id]));
 	}
@@ -251,7 +293,7 @@ class BitrixDataStorageController extends Controller{
 					continue;
 				}
 				if (is_array($val)){
-					$val = implode('_###_', $val);
+					$val = implode(static::$arrayGlue, $val);
 				}
 
 				$attachArr[$prop->id] = ['value' => $val];
@@ -269,8 +311,8 @@ class BitrixDataStorageController extends Controller{
 		$props_vals = [];
 		foreach ($element->props as $prop){
 			$val = $prop->pivot->value;
-			if (strpos($val, '_###_') !== false){
-				$val = explode('_###_', $val);
+			if (strpos($val, static::$arrayGlue) !== false){
+				$val = explode(static::$arrayGlue, $val);
 			}
 			$props_vals[$prop->code] = $val;
 		}
@@ -310,7 +352,7 @@ class BitrixDataStorageController extends Controller{
 					continue;
 				}
 				if (is_array($val)){
-					$val = implode('_###_', $val);
+					$val = implode(static::$arrayGlue, $val);
 				}
 
 				$attachArr[$prop->id] = ['value' => $val];

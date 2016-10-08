@@ -11,24 +11,25 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 
 	protected $path = '/data_storage';
 
+	function setUp(){
+		parent::setUp();
+
+		$this->signIn();
+		$this->module = $this->fillNewBitrixForm();
+	}
+
 	/** @test */
 	function author_can_get_to_this_page(){
-		$this->signIn();
-		$module = $this->fillNewBitrixForm();
+		$this->visit('/my-bitrix/'.$this->module->id.'/data_storage/ib');
 
-		$this->visit('/my-bitrix/'.$module->id.'/data_storage/ib');
-
-		$this->seePageIs('/my-bitrix/'.$module->id.'/data_storage/ib');
+		$this->seePageIs('/my-bitrix/'.$this->module->id.'/data_storage/ib');
 
 		$this->deleteFolder($this->standartModuleCode);
 	}
 
 	/** @test */
 	function this_is_definitely_page_about_iblock(){
-		$this->signIn();
-		$module = $this->fillNewBitrixForm();
-
-		$this->visit('/my-bitrix/'.$module->id.'/data_storage/ib');
+		$this->visit('/my-bitrix/'.$this->module->id.'/data_storage/ib');
 
 		$this->see('Добавить инфоблок');
 
@@ -37,11 +38,9 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 
 	/** @test */
 	function this_is_definitely_page_about_iblock_en(){
-		$this->signIn();
 		$this->setLang('en');
-		$module = $this->fillNewBitrixForm();
 
-		$this->visit('/my-bitrix/'.$module->id.'/data_storage/ib');
+		$this->visit('/my-bitrix/'.$this->module->id.'/data_storage/ib');
 
 		$this->see('Add infoblock');
 
@@ -50,12 +49,9 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 
 	/** @test */
 	function unauthorized_cannot_get_to_this_page(){
-		$this->signIn();
-		$module = $this->fillNewBitrixForm();
-
 		$this->logOut();
 
-		$this->visit('/my-bitrix/'.$module->id.'/data_storage/ib');
+		$this->visit('/my-bitrix/'.$this->module->id.'/data_storage/ib');
 
 		$this->seePageIs('/personal/auth');
 
@@ -64,12 +60,9 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 
 	/** @test */
 	function not_author_cannot_get_to_this_page_of_anothers_module(){
-		$this->signIn();
-		$module = $this->fillNewBitrixForm();
-
 		$this->signIn(factory(App\Models\User::class)->create());
 
-		$this->visit('/my-bitrix/'.$module->id.'/data_storage/ib');
+		$this->visit('/my-bitrix/'.$this->module->id.'/data_storage/ib');
 
 		$this->seePageIs('/personal');
 
@@ -78,10 +71,7 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 
 	/** @test */
 	function it_returns_infoblock_tab_data_after_save(){
-		$this->signIn();
-		$module = $this->fillNewBitrixForm();
-
-		$ib = $this->createIblockOnForm($module, [
+		$ib = $this->createIblockOnForm($this->module, [
 			'NAME'               => 'Ololo',
 			'CODE'               => 'trololo',
 			"LIST_PAGE_URL"      => "ololo_list",
@@ -102,15 +92,12 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 		$this->seeInField("CANONICAL_PAGE_URL", "test_canon");
 		$this->seeIsChecked("INDEX_SECTION");
 		$this->seeIsChecked("INDEX_ELEMENT");
-		$this->seePageIs('/my-bitrix/'.$module->id.'/data_storage/ib/'.$ib->id);
+		$this->seePageIs('/my-bitrix/'.$this->module->id.'/data_storage/ib/'.$ib->id);
 	}
 
 	/** @test */
 	function it_returns_seo_tab_data_after_save(){
-		$this->signIn();
-		$module = $this->fillNewBitrixForm();
-
-		$ib = $this->createIblockOnForm($module, [
+		$ib = $this->createIblockOnForm($this->module, [
 			"IPROPERTY_TEMPLATES[SECTION_META_TITLE][TEMPLATE]"                 => "test1",
 			"IPROPERTY_TEMPLATES[SECTION_META_KEYWORDS][TEMPLATE]"              => "test2",
 			"IPROPERTY_TEMPLATES[SECTION_META_DESCRIPTION][TEMPLATE]"           => "test3",
@@ -179,15 +166,12 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 		$this->seeInField("IPROPERTY_TEMPLATES[ELEMENT_DETAIL_PICTURE_FILE_NAME][SPACE]", "{");
 		$this->seeIsChecked("IPROPERTY_TEMPLATES[ELEMENT_DETAIL_PICTURE_FILE_NAME][TRANSLIT]");
 		$this->seeIsChecked("IPROPERTY_TEMPLATES[ELEMENT_DETAIL_PICTURE_FILE_NAME][LOWER]");
-		$this->seePageIs('/my-bitrix/'.$module->id.'/data_storage/ib/'.$ib->id);
+		$this->seePageIs('/my-bitrix/'.$this->module->id.'/data_storage/ib/'.$ib->id);
 	}
 
 	/** @test */
 	function it_returns_fields_tab_data_after_save(){
-		$this->signIn();
-		$module = $this->fillNewBitrixForm();
-
-		$ib = $this->createIblockOnForm($module, [
+		$ib = $this->createIblockOnForm($this->module, [
 			"FIELDS[IBLOCK_SECTION][IS_REQUIRED]"                             => "Y",
 			"FIELDS[IBLOCK_SECTION][DEFAULT_VALUE][KEEP_IBLOCK_SECTION_ID]"   => "Y",
 			"FIELDS[ACTIVE][IS_REQUIRED]"                                     => "Y",
@@ -329,15 +313,12 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 		$this->seeIsSelected("FIELDS[DETAIL_PICTURE][DEFAULT_VALUE][WATERMARK_TEXT_POSITION]", "br");
 		$this->seeIsSelected("FIELDS[DETAIL_TEXT_TYPE][DEFAULT_VALUE]", "html");
 		$this->seeIsSelected("FIELDS[CODE][DEFAULT_VALUE][TRANS_CASE]", "U");
-		$this->seePageIs('/my-bitrix/'.$module->id.'/data_storage/ib/'.$ib->id);
+		$this->seePageIs('/my-bitrix/'.$this->module->id.'/data_storage/ib/'.$ib->id);
 	}
 
 	/** @test */
 	function it_returns_string_prop_data(){
-		$this->signIn();
-		$module = $this->fillNewBitrixForm();
-
-		$ib = $this->createIblockOnForm($module, [
+		$ib = $this->createIblockOnForm($this->module, [
 				"properties[NAME][0]"        => "Тест",
 				"properties[CODE][0]"        => "TEST",
 				"properties[MULTIPLE][0]"    => "Y",
@@ -345,7 +326,7 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 			]
 		);
 
-		$module->deleteFolder();
+		$this->module->deleteFolder();
 
 		$this->seeInField("properties[NAME][0]", "Тест");
 		$this->seeInField("properties[CODE][0]", "TEST");
@@ -353,51 +334,45 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 		$this->seeIsChecked("properties[IS_REQUIRED][0]");
 		// $this->seeIsSelected("properties[TYPE][0]", 'S');
 
-		$this->seePageIs('/my-bitrix/'.$module->id.'/data_storage/ib/'.$ib->id);
+		$this->seePageIs('/my-bitrix/'.$this->module->id.'/data_storage/ib/'.$ib->id);
 	}
 
 	// /** @test */ // todo
 	// function it_returns_google_map_prop_data(){
 	// 	$this->signIn();
-	// 	$module = $this->fillNewBitrixForm();
+	// 	$this->module = $this->fillNewBitrixForm();
 	//
-	// 	$ib = $this->createIblockOnForm($module, [
+	// 	$ib = $this->createIblockOnForm($this->module, [
 	// 			"properties[NAME][0]" => "Тест",
 	// 			"properties[CODE][0]" => "TEST",
 	// 			"properties[TYPE][0]" => "S:map_google",
 	// 		]
 	// 	);
 	//
-	// 	$module->deleteFolder();
+	// 	$this->module->deleteFolder();
 	//
 	// 	$this->seeInField("properties[NAME][0]", "Тест");
 	// 	$this->seeInField("properties[CODE][0]", "TEST");
 	// 	$this->seeIsSelected("properties[TYPE][0]", 'S:map_google');
 	//
-	// 	$this->seePageIs('/my-bitrix/'.$module->id.'/data_storage/ib/'.$ib->id);
+	// 	$this->seePageIs('/my-bitrix/'.$this->module->id.'/data_storage/ib/'.$ib->id);
 	// }
 
 	/** @test */
 	function it_returns_permissions_tab_data_after_save(){
-		$this->signIn();
-		$module = $this->fillNewBitrixForm();
-
-		$ib = $this->createIblockOnForm($module, [
+		$ib = $this->createIblockOnForm($this->module, [
 			"GROUP_ID" => "Array('2' => 'X')",
 		]);
 
 		$this->deleteFolder($this->standartModuleCode);
 
 		$this->seeIsSelected("GROUP_ID", "Array('2' => 'X')");
-		$this->seePageIs('/my-bitrix/'.$module->id.'/data_storage/ib/'.$ib->id);
+		$this->seePageIs('/my-bitrix/'.$this->module->id.'/data_storage/ib/'.$ib->id);
 	}
 
 	/** @test */
 	function it_returns_an_error_when_there_is_no_code(){
-		$this->signIn();
-		$module = $this->fillNewBitrixForm();
-
-		$ib = $this->createIblockOnForm($module, [
+		$ib = $this->createIblockOnForm($this->module, [
 			'NAME' => 'Ololo',
 			'CODE' => ''
 		]);
@@ -405,15 +380,12 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 		$this->deleteFolder($this->standartModuleCode);
 
 		$this->see('Поле "Код" обязательно');
-		$this->seePageIs('/my-bitrix/'.$module->id.'/data_storage/ib/');
+		$this->seePageIs('/my-bitrix/'.$this->module->id.'/data_storage/ib/');
 	}
 
 	/** @test */
 	function it_returns_an_error_when_there_is_no_name(){
-		$this->signIn();
-		$module = $this->fillNewBitrixForm();
-
-		$ib = $this->createIblockOnForm($module, [
+		$ib = $this->createIblockOnForm($this->module, [
 			'NAME' => '',
 			'CODE' => 'trololo'
 		]);
@@ -421,16 +393,14 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 		$this->deleteFolder($this->standartModuleCode);
 
 		$this->see('Поле "Название" обязательно');
-		$this->seePageIs('/my-bitrix/'.$module->id.'/data_storage/ib/');
+		$this->seePageIs('/my-bitrix/'.$this->module->id.'/data_storage/ib/');
 	}
 
 	/** @test */
 	function it_returns_an_error_when_there_is_no_code_en(){
-		$this->signIn();
 		$this->setLang('en');
-		$module = $this->fillNewBitrixForm();
 
-		$ib = $this->createIblockOnForm($module, [
+		$ib = $this->createIblockOnForm($this->module, [
 			'NAME' => 'Ololo',
 			'CODE' => ''
 		]);
@@ -438,16 +408,14 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 		$this->deleteFolder($this->standartModuleCode);
 
 		$this->see('The "Code" field is required');
-		$this->seePageIs('/my-bitrix/'.$module->id.'/data_storage/ib/');
+		$this->seePageIs('/my-bitrix/'.$this->module->id.'/data_storage/ib/');
 	}
 
 	/** @test */
 	function it_returns_an_error_when_there_is_no_name_en(){
-		$this->signIn();
 		$this->setLang('en');
-		$module = $this->fillNewBitrixForm();
 
-		$ib = $this->createIblockOnForm($module, [
+		$ib = $this->createIblockOnForm($this->module, [
 			'NAME' => '',
 			'CODE' => 'trololo'
 		]);
@@ -455,86 +423,74 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 		$this->deleteFolder($this->standartModuleCode);
 
 		$this->see('The "Name" field is required');
-		$this->seePageIs('/my-bitrix/'.$module->id.'/data_storage/ib/');
+		$this->seePageIs('/my-bitrix/'.$this->module->id.'/data_storage/ib/');
 	}
 
 	/** @test */
 	function it_returns_test_element_data(){
-		$this->signIn();
-		$module = $this->fillNewBitrixForm();
-
-		$ib = $this->createIblockOnForm($module);
-		$element = $this->createIblockElementOnForm($module, $ib, [
+		$ib = $this->createIblockOnForm($this->module);
+		$element = $this->createIblockElementOnForm($this->module, $ib, [
 			'NAME' => 'Trololo',
 			'CODE' => 'trololo',
 			'SORT' => '1487',
 		]);
-		$module->deleteFolder();
+		$this->module->deleteFolder();
 
 		$this->seeInField('NAME', 'Trololo');
 		$this->seeInField('CODE', 'trololo');
 		$this->seeInField('SORT', '1487');
-		$this->seePageIs('/my-bitrix/'.$module->id.'/data_storage/ib/'.$ib->id.'/show_element/'.$element->id);
+		$this->seePageIs('/my-bitrix/'.$this->module->id.'/data_storage/ib/'.$ib->id.'/show_element/'.$element->id);
 	}
 
 	/** @test */
 	function it_returns_data_of_test_element_with_string_prop_value(){
-		$this->signIn();
-		$module = $this->fillNewBitrixForm();
-
-		$ib = $this->createIblockOnForm($module, [
+		$ib = $this->createIblockOnForm($this->module, [
 			"properties[NAME][0]"        => "Тест",
 			"properties[CODE][0]"        => "TEST",
 			"properties[IS_REQUIRED][0]" => "Y",
 		]);
-		$element = $this->createIblockElementOnForm($module, $ib, [
+		$element = $this->createIblockElementOnForm($this->module, $ib, [
 			'NAME'        => 'Trololo',
 			'CODE'        => 'trololo',
 			'props[TEST]' => 'test',
 		]);
-		$module->deleteFolder();
+		$this->module->deleteFolder();
 
 		$this->seeInField('NAME', 'Trololo');
 		$this->seeInField('CODE', 'trololo');
 		$this->seeInField('props[TEST]', 'test');
-		$this->seePageIs('/my-bitrix/'.$module->id.'/data_storage/ib/'.$ib->id.'/show_element/'.$element->id);
+		$this->seePageIs('/my-bitrix/'.$this->module->id.'/data_storage/ib/'.$ib->id.'/show_element/'.$element->id);
 	}
 
 	/** @test */
 	function it_returns_data_of_test_element_with_google_map_prop_value(){
-		$this->signIn();
-		$module = $this->fillNewBitrixForm();
-
-		$ib = $this->createIblockOnForm($module, [
+		$ib = $this->createIblockOnForm($this->module, [
 			"properties[NAME][0]" => "Тест",
 			"properties[CODE][0]" => "TEST",
 			"properties[TYPE][0]" => "S:map_google",
 		]);
-		$element = $this->createIblockElementOnForm($module, $ib, [
+		$element = $this->createIblockElementOnForm($this->module, $ib, [
 			'NAME'           => 'Trololo',
 			'CODE'           => 'trololo',
 			'props[TEST][0]' => 'one',
 			'props[TEST][1]' => 'two',
 		]);
-		$module->deleteFolder();
+		$this->module->deleteFolder();
 
 		$this->seeInField('NAME', 'Trololo');
 		$this->seeInField('CODE', 'trololo');
 		$this->see('one');
 		$this->see('two');
-		$this->seePageIs('/my-bitrix/'.$module->id.'/data_storage/ib/'.$ib->id.'/show_element/'.$element->id);
+		$this->seePageIs('/my-bitrix/'.$this->module->id.'/data_storage/ib/'.$ib->id.'/show_element/'.$element->id);
 	}
 
 	/** @test */
 	function it_imports_main_iblock_params_from_xml(){
-		$this->signIn();
-		$module = $this->fillNewBitrixForm();
-
 		$file = public_path().'/for_tests/test_iblock.xml';
-		$this->visit('/my-bitrix/'.$module->id.$this->path);
+		$this->visit('/my-bitrix/'.$this->module->id.$this->path);
 		$this->attach($file, 'file');
 		$this->press('import');
-		$module->deleteFolder();
+		$this->module->deleteFolder();
 
 		$this->seeInField('NAME', 'Тест');
 		$this->seeInField('CODE', 'test');
@@ -548,13 +504,13 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 	/** @test */
 	function it_imports_iblock_properties_from_xml(){
 		$this->signIn();
-		$module = $this->fillNewBitrixForm();
+		$this->module = $this->fillNewBitrixForm();
 
 		$file = public_path().'/for_tests/test_iblock.xml';
-		$this->visit('/my-bitrix/'.$module->id.$this->path);
+		$this->visit('/my-bitrix/'.$this->module->id.$this->path);
 		$this->attach($file, 'file');
 		$this->press('import');
-		$module->deleteFolder();
+		$this->module->deleteFolder();
 
 		$this->seeInField('properties[NAME][0]', 'Тестовое свойство');
 		$this->seeInField('properties[CODE][0]', 'TESTOVOE_SVOISVTO');
@@ -570,16 +526,41 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 		$this->seeIsChecked('properties[IS_REQUIRED][1]');
 	}
 
+	/** @test */
+	function it_imports_iblock_elements_from_xml(){
+		$file = public_path().'/for_tests/test_iblock.xml';
+		$this->visit('/my-bitrix/'.$this->module->id.$this->path);
+		$this->attach($file, 'file');
+		$this->press('import');
+		$this->module->deleteFolder();
+
+		$iblock = BitrixInfoblocks::where('code', "test")->first();
+		$element1 = BitrixIblocksElements::where('name', "Тест")->where('iblock_id', $iblock->id)->first();
+		$element2 = BitrixIblocksElements::where('name', "Ололо")->where('iblock_id', $iblock->id)->first();
+
+		$this->visit('/my-bitrix/'.$this->module->id.'/data_storage/ib/'.$iblock->id.'/show_element/'.$element1->id);
+		$this->seeInField('NAME', 'Тест');
+		$this->seeInField('CODE', '');
+		$this->seeInField('SORT', '400');
+		$this->seeInField('props[TESTOVOE_SVOISVTO]', 'Ололо');
+
+		$this->visit('/my-bitrix/'.$this->module->id.'/data_storage/ib/'.$iblock->id.'/show_element/'.$element2->id);
+		$this->seeInField('NAME', 'Ололо');
+		$this->seeInField('CODE', 'ololo');
+		$this->seeInField('SORT', '500');
+		$this->seeInField('props[TESTOVOE_SVOISVTO]', '');
+	}
+
 	// /** @test */
 	// function it_can_remove_iblock(){
 	// 	$this->signIn();
-	// 	$module = $this->fillNewBitrixForm();
+	// 	$this->module = $this->fillNewBitrixForm();
 	//
-	// 	$iblock = $this->createIblockOnForm($module);
-	// 	$this->removeIblock($module, $iblock);
-	// 	$module->deleteFolder();
+	// 	$iblock = $this->createIblockOnForm($this->module);
+	// 	$this->removeIblock($this->module, $iblock);
+	// 	$this->module->deleteFolder();
 	//
-	// 	$this->visit('/my-bitrix/'.$module->id.'/data_storage/')->dontSee('bitrix');
+	// 	$this->visit('/my-bitrix/'.$this->module->id.'/data_storage/')->dontSee('bitrix');
 	// }
 }
 
