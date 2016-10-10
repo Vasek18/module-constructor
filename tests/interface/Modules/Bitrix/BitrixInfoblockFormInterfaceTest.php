@@ -5,6 +5,7 @@ use App\Models\Modules\Bitrix\BitrixInfoblocks;
 use App\Models\Modules\Bitrix\BitrixIblocksElements;
 
 // todo чекбоксы
+// todo здесь почему-то папка не удаляется где-то
 class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 
 	use DatabaseTransactions;
@@ -18,13 +19,18 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 		$this->module = $this->fillNewBitrixForm();
 	}
 
+	function tearDown(){
+		parent::tearDown();
+
+		$this->module->deleteFolder();
+	}
+
 	/** @test */
 	function author_can_get_to_this_page(){
 		$this->visit('/my-bitrix/'.$this->module->id.'/data_storage/ib');
 
 		$this->seePageIs('/my-bitrix/'.$this->module->id.'/data_storage/ib');
 
-		$this->deleteFolder($this->standartModuleCode);
 	}
 
 	/** @test */
@@ -32,8 +38,6 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 		$this->visit('/my-bitrix/'.$this->module->id.'/data_storage/ib');
 
 		$this->see('Добавить инфоблок');
-
-		$this->deleteFolder($this->standartModuleCode);
 	}
 
 	/** @test */
@@ -43,8 +47,6 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 		$this->visit('/my-bitrix/'.$this->module->id.'/data_storage/ib');
 
 		$this->see('Add infoblock');
-
-		$this->deleteFolder($this->standartModuleCode);
 	}
 
 	/** @test */
@@ -54,8 +56,6 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 		$this->visit('/my-bitrix/'.$this->module->id.'/data_storage/ib');
 
 		$this->seePageIs('/personal/auth');
-
-		$this->deleteFolder($this->standartModuleCode);
 	}
 
 	/** @test */
@@ -65,8 +65,6 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 		$this->visit('/my-bitrix/'.$this->module->id.'/data_storage/ib');
 
 		$this->seePageIs('/personal');
-
-		$this->deleteFolder($this->standartModuleCode);
 	}
 
 	/** @test */
@@ -81,8 +79,6 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 			"INDEX_SECTION"      => "Y",
 			"INDEX_ELEMENT"      => "Y"
 		]);
-
-		$this->deleteFolder($this->standartModuleCode);
 
 		$this->seeInField('NAME', 'Ololo');
 		$this->seeInField('CODE', 'trololo');
@@ -131,8 +127,6 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 			"IPROPERTY_TEMPLATES[ELEMENT_DETAIL_PICTURE_FILE_NAME][TRANSLIT]"   => "Y",
 			"IPROPERTY_TEMPLATES[ELEMENT_DETAIL_PICTURE_FILE_NAME][LOWER]"      => "Y",
 		]);
-
-		$this->deleteFolder($this->standartModuleCode);
 
 		$this->seeInField("IPROPERTY_TEMPLATES[SECTION_META_TITLE][TEMPLATE]", "test1");
 		$this->seeInField("IPROPERTY_TEMPLATES[SECTION_META_KEYWORDS][TEMPLATE]", "test2");
@@ -243,8 +237,6 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 			"FIELDS[CODE][DEFAULT_VALUE][TRANS_CASE]"                         => "U",
 		]);
 
-		$this->deleteFolder($this->standartModuleCode);
-
 		$this->seeIsChecked("FIELDS[IBLOCK_SECTION][IS_REQUIRED]");
 		$this->seeIsChecked("FIELDS[IBLOCK_SECTION][DEFAULT_VALUE][KEEP_IBLOCK_SECTION_ID]");
 		$this->seeIsChecked("FIELDS[ACTIVE][IS_REQUIRED]");
@@ -326,8 +318,6 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 			]
 		);
 
-		$this->module->deleteFolder();
-
 		$this->seeInField("properties[NAME][0]", "Тест");
 		$this->seeInField("properties[CODE][0]", "TEST");
 		$this->seeIsChecked("properties[MULTIPLE][0]");
@@ -349,7 +339,7 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 	// 		]
 	// 	);
 	//
-	// 	$this->module->deleteFolder();
+	// 	
 	//
 	// 	$this->seeInField("properties[NAME][0]", "Тест");
 	// 	$this->seeInField("properties[CODE][0]", "TEST");
@@ -364,8 +354,6 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 			"GROUP_ID" => "Array('2' => 'X')",
 		]);
 
-		$this->deleteFolder($this->standartModuleCode);
-
 		$this->seeIsSelected("GROUP_ID", "Array('2' => 'X')");
 		$this->seePageIs('/my-bitrix/'.$this->module->id.'/data_storage/ib/'.$ib->id);
 	}
@@ -377,8 +365,6 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 			'CODE' => ''
 		]);
 
-		$this->deleteFolder($this->standartModuleCode);
-
 		$this->see('Поле "Код" обязательно');
 		$this->seePageIs('/my-bitrix/'.$this->module->id.'/data_storage/ib/');
 	}
@@ -389,8 +375,6 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 			'NAME' => '',
 			'CODE' => 'trololo'
 		]);
-
-		$this->deleteFolder($this->standartModuleCode);
 
 		$this->see('Поле "Название" обязательно');
 		$this->seePageIs('/my-bitrix/'.$this->module->id.'/data_storage/ib/');
@@ -405,8 +389,6 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 			'CODE' => ''
 		]);
 
-		$this->deleteFolder($this->standartModuleCode);
-
 		$this->see('The "Code" field is required');
 		$this->seePageIs('/my-bitrix/'.$this->module->id.'/data_storage/ib/');
 	}
@@ -420,8 +402,6 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 			'CODE' => 'trololo'
 		]);
 
-		$this->deleteFolder($this->standartModuleCode);
-
 		$this->see('The "Name" field is required');
 		$this->seePageIs('/my-bitrix/'.$this->module->id.'/data_storage/ib/');
 	}
@@ -434,7 +414,6 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 			'CODE' => 'trololo',
 			'SORT' => '1487',
 		]);
-		$this->module->deleteFolder();
 
 		$this->seeInField('NAME', 'Trololo');
 		$this->seeInField('CODE', 'trololo');
@@ -454,7 +433,6 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 			'CODE'        => 'trololo',
 			'props[TEST]' => 'test',
 		]);
-		$this->module->deleteFolder();
 
 		$this->seeInField('NAME', 'Trololo');
 		$this->seeInField('CODE', 'trololo');
@@ -475,7 +453,6 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 			'props[TEST][0]' => 'one',
 			'props[TEST][1]' => 'two',
 		]);
-		$this->module->deleteFolder();
 
 		$this->seeInField('NAME', 'Trololo');
 		$this->seeInField('CODE', 'trololo');
@@ -490,7 +467,6 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 		$this->visit('/my-bitrix/'.$this->module->id.$this->path);
 		$this->attach($file, 'file');
 		$this->press('import');
-		$this->module->deleteFolder();
 
 		$this->seeInField('NAME', 'Тест');
 		$this->seeInField('CODE', 'test');
@@ -510,7 +486,6 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 		$this->visit('/my-bitrix/'.$this->module->id.$this->path);
 		$this->attach($file, 'file');
 		$this->press('import');
-		$this->module->deleteFolder();
 
 		$this->seeInField('properties[NAME][0]', 'Тестовое свойство');
 		$this->seeInField('properties[CODE][0]', 'TESTOVOE_SVOISVTO');
@@ -532,7 +507,6 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 		$this->visit('/my-bitrix/'.$this->module->id.$this->path);
 		$this->attach($file, 'file');
 		$this->press('import');
-		$this->module->deleteFolder();
 
 		$iblock = BitrixInfoblocks::where('code', "test")->first();
 		$element1 = BitrixIblocksElements::where('name', "Тест")->where('iblock_id', $iblock->id)->first();
@@ -558,7 +532,7 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 	//
 	// 	$iblock = $this->createIblockOnForm($this->module);
 	// 	$this->removeIblock($this->module, $iblock);
-	// 	$this->module->deleteFolder();
+	// 	
 	//
 	// 	$this->visit('/my-bitrix/'.$this->module->id.'/data_storage/')->dontSee('bitrix');
 	// }
