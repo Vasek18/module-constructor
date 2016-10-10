@@ -15,6 +15,19 @@ class CreateUserGroupsTable extends Migration{
 			$table->string('code')->unique();
 			$table->string('name')->unique();
 		});
+
+		DB::table('user_groups')->insert(
+			array(
+				'code' => 'admin',
+				'name' => 'Админы',
+			)
+		);
+		DB::table('user_groups')->insert(
+			array(
+				'code' => 'holops',
+				'name' => 'Простые пользователи',
+			)
+		);
 	}
 
 	/**
