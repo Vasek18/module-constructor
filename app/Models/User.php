@@ -53,6 +53,11 @@ class User extends Model implements AuthenticatableContract,
 		$this->save();
 	}
 
+
+	public function getNameAttribute(){
+		return $this->last_name.' '.$this->first_name;
+	}
+
 	public function bitrixes(){
 		return $this->hasMany('App\Models\Modules\Bitrix\Bitrix');
 	}

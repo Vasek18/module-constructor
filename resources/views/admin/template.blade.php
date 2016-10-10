@@ -9,7 +9,7 @@
                        class="list-group-item">
                         Пользователи
                     </a>
-                    <a href="#"
+                    <a href="{{ action('Admin\AdminController@modules') }}"
                        class="list-group-item">Модули
                     </a>
                     <a href="#"
@@ -18,6 +18,8 @@
                     <a href="#"
                        class="list-group-item">Рейтинг функционала
                     </a>
+                    <a href="#"
+                       class="list-group-item">Основные настройки
                     </a>
                 </div>
             </div>

@@ -6,7 +6,7 @@
     <h2>Модули на Битриксе</h2>
     <div class="list-group">
         @foreach($bitrixes as $bitrix)
-            <a href="#"
+            <a href="{{ action('Admin\AdminController@modulesDetail', ['bitrix' => $bitrix]) }}"
                class="list-group-item">
                 {{ $bitrix->name }} ({{ $bitrix->full_id }})
             </a>

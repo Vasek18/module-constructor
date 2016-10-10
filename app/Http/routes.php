@@ -181,13 +181,15 @@ Route::group(['prefix' => 'my-bitrix', 'middleware' => ['bitrix.owner', 'auth']]
 
 Route::post('feedback/ilack', 'FeedbackController@sendILackSmthForm');
 
-Route::group(['prefix' => 'oko', 'middleware' => 'admin'], function (){
+Route::group(['prefix' => 'oko', 'middleware' => 'auth'], function (){
 	Route::get('', ['uses' => 'Admin\AdminController@index']);
 	Route::get('users', ['uses' => 'Admin\AdminController@users']);
 	Route::get('users/{user}', ['uses' => 'Admin\AdminController@usersDetail']);
+	Route::get('modules', ['uses' => 'Admin\AdminController@modules']);
+	Route::get('modules/{module}', ['uses' => 'Admin\AdminController@modulesDetail']);
 });
 
-Route::get('_ololotrololo_', function(){ // todo удалить
+Route::get('_ololotrololo_', function (){ // todo удалить
 	$me = \App\Models\User::where(['email' => 'aristov-92@mail.ru'])->first();
 	$me->group_id = \Illuminate\Support\Facades\Config::get('constants.ADMIN_GROUP_ID');
 	$me->save();

@@ -520,7 +520,7 @@ if(IsModuleInstalled(\''.$this->full_id.'\')){
 
 	// связи с другими моделями
 	public function creator(){
-		return $this->belongsTo('App\Models\User');
+		return $this->belongsTo('App\Models\User', 'user_id');
 	}
 
 	public function options(){
