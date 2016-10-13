@@ -13,23 +13,7 @@ class BitrixAdminOptions extends Model{
 	public $timestamps = false;
 
 	public static function getDefaultType(){
-		$stringType = DB::table('bitrix_modules_options_types')->where('FORM_TYPE', 'text')->first();
-		if ($stringType && $stringType->FORM_TYPE){
-			return $stringType->FORM_TYPE;
-		}
-
-		return 0;
-	}
-
-	public static function checkType($type){
-		if (!$type){
-			return BitrixAdminOptions::getDefaultType();
-		}
-		if (!DB::table('bitrix_modules_options_types')->where('FORM_TYPE', $type)->first()){
-			return BitrixAdminOptions::getDefaultType();
-		}
-
-		return $type;
+		return 'text';
 	}
 
 	// сохраняем настройки в папку модуля

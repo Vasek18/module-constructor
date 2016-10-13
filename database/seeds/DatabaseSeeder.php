@@ -24,16 +24,6 @@ class DatabaseSeeder extends Seeder{
 			'group_id'       => 1,
 		]);
 
-		// группы пользователей
-		DB::table('user_groups')->insert([
-			'code' => 'admin',
-			'name' => 'Админы',
-		]);
-		DB::table('user_groups')->insert([
-			'code' => 'holops',
-			'name' => 'Простые пользователи',
-		]);
-
 		$this->call(BitrixStuffSeeder::class);
 
 		Model::reguard();

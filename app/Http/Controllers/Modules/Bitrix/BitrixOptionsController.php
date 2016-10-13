@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\Modules\Bitrix;
 
+use App\Http\Utilities\Bitrix\AdminOptionsTypes;
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Modules\Bitrix\Bitrix;
 use App\Models\Modules\Bitrix\BitrixAdminOptions;
-use Illuminate\Support\Facades\DB;
 use App\Models\Modules\Bitrix\BitrixAdminOptionsVals;
 use App\Http\Controllers\Traits\UserOwnModule;
 use Illuminate\Support\Facades\Auth;
@@ -25,7 +24,7 @@ class BitrixOptionsController extends Controller{
 			$options[$i]->vals = BitrixAdminOptionsVals::where('option_id', $option->id)->get();
 		}
 		//dd($options);
-		$options_types = DB::table('bitrix_modules_options_types')->orderBy('sort', 'asc')->get();
+		$options_types = AdminOptionsTypes::all();
 
 		$data = [
 			'module'        => $module,
@@ -65,7 +64,7 @@ class BitrixOptionsController extends Controller{
 			$prop["code"] = $option_code;
 			$prop["name"] = $request['option_name'][$i];
 			$prop["module_id"] = $request['module_id'][$i];
-			$prop["type"] = BitrixAdminOptions::checkType($request['option_type'][$i]);
+			$prop["type"] = $request['option_type'][$i];
 			$prop["height"] = $request['option_height'][$i];
 			$prop["width"] = $request['option_width'][$i];
 			$prop["spec_vals"] = $request['option_'.$i.'_vals_type'];

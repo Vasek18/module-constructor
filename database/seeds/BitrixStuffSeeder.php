@@ -13,33 +13,6 @@ class BitrixStuffSeeder extends Seeder{
 	public function run(){
 		Model::unguard();
 
-		// типы опций для страницы настройки модулей
-		DB::table('bitrix_modules_options_types')->insert([
-			'NAME_RU'   => 'Строка',
-			'sort'      => '1',
-			'FORM_TYPE' => 'text',
-		]);
-		DB::table('bitrix_modules_options_types')->insert([
-			'NAME_RU'   => 'Многострочный текст',
-			'sort'      => '2',
-			'FORM_TYPE' => 'textarea',
-		]);
-		DB::table('bitrix_modules_options_types')->insert([
-			'NAME_RU'   => 'Селект',
-			'sort'      => '3',
-			'FORM_TYPE' => 'selectbox',
-		]);
-		DB::table('bitrix_modules_options_types')->insert([
-			'NAME_RU'   => 'Множественный селект',
-			'sort'      => '4',
-			'FORM_TYPE' => 'multiselectbox',
-		]);
-		DB::table('bitrix_modules_options_types')->insert([
-			'NAME_RU'   => 'Чекбокс',
-			'sort'      => '5',
-			'FORM_TYPE' => 'checkbox',
-		]);
-
 		// модули ядра (используется как минимум для подстановки при создании обработчиков событий)
 		DB::table('bitrix_core_modules')->insert([
 			'code' => 'main',
@@ -72,11 +45,6 @@ class BitrixStuffSeeder extends Seeder{
 			'NAME_EN'   => 'File',
 			'FORM_TYPE' => 'FILE',
 		]);
-		//DB::table('bitrix_modules_options_types')->insert([
-		//	'NAME_RU'   => 'Свой',
-		//	'NAME_EN'   => 'Custom',
-		//	'FORM_TYPE' => 'CUSTOM',
-		//]);
 
 		// стандартные группы опций для arParams компоненты
 		DB::table('bitrix_components_params_groups')->insert([

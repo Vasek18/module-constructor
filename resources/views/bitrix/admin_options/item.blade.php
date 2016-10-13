@@ -34,10 +34,10 @@
                 name="option_type[]"
                 id="option_{{$i}}_type">
             @foreach($options_types as $type)
-                <option @if ($option && $option->type == $type->FORM_TYPE) selected
+                <option @if ($option && $option['type'] == $type['FORM_TYPE']) selected
                         @endif
-                        @if ((!$option || !$option->type) && $type->FORM_TYPE == 'text') selected @endif
-                        value="{{$type->FORM_TYPE}}">{{ trans('bitrix_admin_options.'.$type->FORM_TYPE.'_type') }}</option>
+                        @if ((!$option || !$option['type']) && $type['FORM_TYPE'] == 'text') selected @endif
+                        value="{{$type['FORM_TYPE']}}">{{ trans('bitrix_admin_options.'.$type['FORM_TYPE'].'_type') }}</option>
             @endforeach
         </select>
     </div>
