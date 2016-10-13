@@ -93,9 +93,9 @@ class BitrixComponent extends Model{
 			$path_items[0]->name,
 		);
 
-		$file = 'description.php';
+		$file = '.description.php';
 		if (isset($path_items[1])){
-			$file = 'description2.php';
+			$file = '.description2.php';
 			$search[] = '{MODULE_COMPONENTS_SUBFOLDER_ID}';
 			$search[] = '{MODULE_COMPONENTS_SUBFOLDER_SORT}';
 			$search[] = '{MODULE_COMPONENTS_SUBFOLDER_NAME}';
@@ -103,7 +103,7 @@ class BitrixComponent extends Model{
 			$replace[] = $path_items[1]->sort;
 			$replace[] = $path_items[1]->name;
 			if (isset($path_items[2])){
-				$file = 'description3.php';
+				$file = '.description3.php';
 				$search[] = '{MODULE_COMPONENTS_SUBSUBFOLDER_ID}';
 				$search[] = '{MODULE_COMPONENTS_SUBSUBFOLDER_SORT}';
 				$search[] = '{MODULE_COMPONENTS_SUBSUBFOLDER_NAME}';
@@ -139,13 +139,13 @@ class BitrixComponent extends Model{
 			$path_items[0]->name,
 		);
 
-		$file = 'description.php';
+		$file = '.description.php';
 		if (isset($path_items[1])){
-			$file = 'description2.php';
+			$file = '.description2.php';
 			$search[] = '{MODULE_COMPONENTS_SUBFOLDER_NAME}';
 			$replace[] = $path_items[1]->name;
 			if (isset($path_items[2])){
-				$file = 'description3.php';
+				$file = '.description3.php';
 				$search[] = '{MODULE_COMPONENTS_SUBSUBFOLDER_NAME}';
 				$replace[] = $path_items[2]->name;
 			}
