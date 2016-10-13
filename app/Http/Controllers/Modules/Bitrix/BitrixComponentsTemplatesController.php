@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers\Modules\Bitrix;
 
+use App\Http\Utilities\Bitrix\BitrixComponentsParamsTypes;
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Modules\Bitrix\Bitrix;
 use App\Models\Modules\Bitrix\BitrixComponentsTemplates;
 use App\Models\Modules\Bitrix\BitrixComponent;
 use App\Http\Controllers\Traits\UserOwnModule;
-use App\Models\Modules\Bitrix\BitrixComponentsParamsTypes;
 use App\Models\Modules\Bitrix\BitrixComponentsParamsGroups;
 
 class BitrixComponentsTemplatesController extends Controller{

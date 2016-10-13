@@ -2,10 +2,10 @@
 
 namespace App\Models\Modules\Bitrix;
 
+use App\Http\Utilities\Bitrix\BitrixComponentsParamsTypes;
 use Illuminate\Database\Eloquent\Model;
 use Chumper\Zipper\Zipper;
 use App\Helpers\vArrParse;
-use App\Models\Modules\Bitrix\BitrixComponentsParamsTypes;
 
 class BitrixComponentsTemplates extends Model{
 	protected $table = 'bitrix_components_templates';
@@ -84,7 +84,7 @@ class BitrixComponentsTemplates extends Model{
 					$newParamParams['name'] = "";
 				}
 				if (isset($param["TYPE"])){
-					if (!BitrixComponentsParamsTypes::where('form_type', $param["TYPE"])->count()){
+					if (!isset(BitrixComponentsParamsTypes::$types[$param["TYPE"]])){
 						$param["TYPE"] = 'STRING';
 					}
 					$newParamParams['type'] = $param["TYPE"];

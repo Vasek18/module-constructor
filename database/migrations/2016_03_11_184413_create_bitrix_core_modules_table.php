@@ -15,6 +15,17 @@ class CreateBitrixCoreModulesTable extends Migration{
 			$table->string('name')->nullable();
 			$table->string('code');
 		});
+
+		// здесь потому что можно добавлять свои
+		DB::table('bitrix_core_modules')->insert([
+			'code' => 'main',
+			'name' => 'Главный',
+		]);
+
+		DB::table('bitrix_core_modules')->insert([
+			'code' => 'iblock',
+			'name' => 'Инфоблоки',
+		]);
 	}
 
 	/**
