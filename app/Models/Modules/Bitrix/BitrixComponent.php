@@ -2,6 +2,7 @@
 
 namespace App\Models\Modules\Bitrix;
 
+use App\Http\Utilities\Bitrix\BitrixHelperFunctions;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use App\Helpers\vArrParse;
@@ -315,7 +316,8 @@ class BitrixComponent extends Model{
 		foreach ($paramsTexts as $templateID => $paramsText){
 			$replace = Array($groupsText, $paramsText, '');
 			if (isset($helperFunctionsArr[$templateID])){
-				$replace[2] = BitrixHelperFunctions::getPhpCodeFromListOfFuncsNames($module, $helperFunctionsArr[$templateID]);
+				$helperFunctions = BitrixHelperFunctions::getPhpCodeFromListOfFuncsNames($helperFunctionsArr[$templateID]);
+				$replace[2] = str_replace(Array('{LANG_KEY}'), Array($module->lang_key), $helperFunctions);
 			}
 
 			if (!$templateID){

@@ -2,10 +2,9 @@
 
 namespace App\Models\Modules\Bitrix;
 
+use App\Http\Utilities\Bitrix\BitrixHelperFunctions;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 use Auth;
-use App\Models\Modules\Bitrix\BitrixHelperFunctions;
 
 class BitrixAdminOptions extends Model{
 	protected $table = 'bitrix_modules_options';
@@ -57,7 +56,8 @@ class BitrixAdminOptions extends Model{
 			}
 
 			// dd($helperFunctionsArr);
-			$helperFunctions = BitrixHelperFunctions::getPhpCodeFromListOfFuncsNames($module, $helperFunctionsArr);
+			$helperFunctions = BitrixHelperFunctions::getPhpCodeFromListOfFuncsNames($helperFunctionsArr);
+			$helperFunctions = str_replace(Array('{LANG_KEY}'), Array($module->lang_key), $helperFunctions);
 		}
 
 		Bitrix::changeVarsInModuleFileAndSave('bitrix/options.php', $module->id, Array("{OPTIONS}", "{HELPER_FUNCTIONS}"), Array($optionsString, $helperFunctions));

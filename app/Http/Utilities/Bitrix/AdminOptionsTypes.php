@@ -20,9 +20,9 @@ class AdminOptionsTypes{
 		[
 			'FORM_TYPE' => 'checkbox',
 		],
-		[
-			'FORM_TYPE' => 'CUSTOM',
-		],
+		// [
+		// 	'FORM_TYPE' => 'CUSTOM',
+		// ],
 	];
 
 	public static function all(){
