@@ -139,40 +139,42 @@ class BitrixDataStorageController extends Controller{
 			}
 		}
 
-		foreach ($arr['Каталог']['Товары']['Товар'] as $itemArr){
-			$elementArr = [
-				'iblock_id' => $iblock->id,
-				'name'      => $itemArr['Наименование'],
-				'active'    => true,
-			];
+		if (is_array($arr['Каталог']['Товары'])){ // todo тест на отсутвие товаров в xml
+			foreach ($arr['Каталог']['Товары']['Товар'] as $itemArr){
+				$elementArr = [
+					'iblock_id' => $iblock->id,
+					'name'      => $itemArr['Наименование'],
+					'active'    => true,
+				];
 
-			$tempPropValArr = [];
-			foreach ($itemArr['ЗначенияСвойств']['ЗначенияСвойства'] as $propValArr){
-				if ($propValArr['Ид'] == 'CML2_CODE'){
-					$elementArr['code'] = $propValArr['Значение'];
-				}
-				if ($propValArr['Ид'] == 'CML2_SORT'){
-					$elementArr['sort'] = $propValArr['Значение'];
-				}
-				if (isset($tempPropArr[$propValArr['Ид']])){
-					$val = $propValArr['Значение'];
-					if (is_array($val)){
-						$val = implode(static::$arrayGlue, $val);
+				$tempPropValArr = [];
+				foreach ($itemArr['ЗначенияСвойств']['ЗначенияСвойства'] as $propValArr){
+					if ($propValArr['Ид'] == 'CML2_CODE'){
+						$elementArr['code'] = $propValArr['Значение'];
 					}
-					if ($val){
-						$prop = BitrixIblocksProps::where('iblock_id', $iblock->id)->where('code', $tempPropArr[$propValArr['Ид']])->first();
-						if (!$prop){
-							continue;
+					if ($propValArr['Ид'] == 'CML2_SORT'){
+						$elementArr['sort'] = $propValArr['Значение'];
+					}
+					if (isset($tempPropArr[$propValArr['Ид']])){
+						$val = $propValArr['Значение'];
+						if (is_array($val)){
+							$val = implode(static::$arrayGlue, $val);
 						}
+						if ($val){
+							$prop = BitrixIblocksProps::where('iblock_id', $iblock->id)->where('code', $tempPropArr[$propValArr['Ид']])->first();
+							if (!$prop){
+								continue;
+							}
 
-						$tempPropValArr[$prop->id] = ['value' => $val];
+							$tempPropValArr[$prop->id] = ['value' => $val];
+						}
 					}
 				}
+
+				$element = BitrixIblocksElements::create($elementArr);
+
+				$element->props()->sync($tempPropValArr);
 			}
-
-			$element = BitrixIblocksElements::create($elementArr);
-
-			$element->props()->sync($tempPropValArr);
 		}
 
 		BitrixInfoblocks::writeInFile($module);
