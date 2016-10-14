@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Modules\Bitrix;
 
+use App\Models\Modules\Bitrix\BitrixIblocksSections;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -247,6 +248,7 @@ class BitrixDataStorageController extends Controller{
 			'iblock'           => $iblock,
 			'properties'       => $iblock->properties()->orderBy('sort', 'asc')->get(),
 			'elements'         => $iblock->elements()->orderBy('sort', 'asc')->get(),
+			'sections'         => $iblock->sections()->orderBy('sort', 'asc')->get(),
 			'properties_types' => BitrixIblocksProps::$types
 		];
 
@@ -371,6 +373,64 @@ class BitrixDataStorageController extends Controller{
 		$module->changeVarInLangFile($element->lang_key."_NAME", "", '/lang/'.$module->default_lang.'/install/index.php');
 
 		$element->delete();
+
+		BitrixInfoblocks::writeInFile($module);
+
+		return back();
+	}
+
+	public function create_section(Bitrix $module, BitrixInfoblocks $iblock, Request $request){
+		$data = [
+			'module' => $module,
+			'iblock' => $iblock,
+		];
+
+		return view("bitrix.data_storage.iblock_tabs.test_data_section_edit", $data);
+	}
+
+	public function store_section(Bitrix $module, BitrixInfoblocks $iblock, Request $request){
+		$section = BitrixIblocksSections::create([
+			'iblock_id' => $iblock->id,
+			'name'      => $request['NAME'],
+			'code'      => $request['CODE'], // todo проверка на уникальность, если она нужна в этом ИБ
+			'sort'      => $request['SORT'],
+			'active'    => $request['ACTIVE'] == 'Y' ? true : false,
+		]);
+
+		BitrixInfoblocks::writeInFile($module);
+
+		return redirect(action('Modules\Bitrix\BitrixDataStorageController@show_section', [$module->id, $iblock->id, $section->id]));
+	}
+
+	public function show_section(Bitrix $module, BitrixInfoblocks $iblock, BitrixIblocksSections $section, Request $request){
+
+		$data = [
+			'module'  => $module,
+			'iblock'  => $iblock,
+			'section' => $section,
+		];
+
+		return view("bitrix.data_storage.iblock_tabs.test_data_section_edit", $data);
+	}
+
+	public function save_section(Bitrix $module, BitrixInfoblocks $iblock, BitrixIblocksSections $section, Request $request){
+
+		$section->update([
+			'name'   => $request['NAME'],
+			'code'   => $request['CODE'], // todo проверка на уникальность, если она нужна в этом ИБ
+			'sort'   => $request['SORT'],
+			'active' => $request['ACTIVE'] == 'Y' ? true : false,
+		]);
+
+		BitrixInfoblocks::writeInFile($module);
+
+		return back();
+	}
+
+	public function delete_section(Bitrix $module, BitrixInfoblocks $iblock, BitrixIblocksSections $section, Request $request){
+		$module->changeVarInLangFile($section->lang_key."_NAME", "", '/lang/'.$module->default_lang.'/install/index.php');
+
+		$section->delete();
 
 		BitrixInfoblocks::writeInFile($module);
 

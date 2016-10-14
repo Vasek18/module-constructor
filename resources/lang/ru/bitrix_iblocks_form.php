@@ -167,4 +167,9 @@ return [
 	'back_to_iblock'                 => 'Вернуться к редактированию инфоблока',
 	'test_element_element_tab_title' => 'Элемент',
 	'test_element_props_values'      => 'Значения свойств',
+
+	'add_section_button'             => 'Добавить раздел',
+	'add_section_page_title'         => 'Добавление тестового раздела инфоблока',
+	'edit_section_page_title'        => 'Редактирование тестового раздела инфоблока',
+	'test_section_section_tab_title' => 'Раздел',
 ];

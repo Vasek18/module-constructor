@@ -4,6 +4,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Models\Modules\Bitrix\BitrixInfoblocks;
 use App\Models\Modules\Bitrix\BitrixIblocksElements;
 
+// todo принадлежность
 // todo чекбоксы
 // todo здесь почему-то папка не удаляется где-то
 class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{

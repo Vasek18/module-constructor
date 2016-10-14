@@ -243,4 +243,8 @@ class BitrixInfoblocks extends Model{
 	public function elements(){
 		return $this->hasMany('App\Models\Modules\Bitrix\BitrixIblocksElements', 'iblock_id');
 	}
+
+	public function sections(){
+		return $this->hasMany('App\Models\Modules\Bitrix\BitrixIblocksSections', 'iblock_id');
+	}
 }
