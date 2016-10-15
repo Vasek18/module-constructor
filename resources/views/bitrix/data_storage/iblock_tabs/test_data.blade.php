@@ -29,7 +29,7 @@
                             <td>{{$section->active ? 'Y' : 'N'}}</td>
                             <td>{{$section->sort}}</td>
                             <td>
-                                <a href="#"
+                                <a href="{{action('Modules\Bitrix\BitrixDataStorageController@show_section', [$module, $iblock, $section])}}"
                                    class="btn btn-default"
                                    id="edit_section_{{$section->id}}">
                                     <span class="glyphicon glyphicon-pencil"

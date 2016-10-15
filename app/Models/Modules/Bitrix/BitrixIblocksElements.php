@@ -7,7 +7,7 @@ use Auth;
 
 class BitrixIblocksElements extends Model{
 	protected $table = 'bitrix_infoblocks_elements';
-	protected $fillable = ['iblock_id', 'name', 'code', 'sort', 'active', 'preview_picture_src', 'preview_text', 'detail_picture_src', 'detail_text'];
+	protected $fillable = ['iblock_id', 'name', 'code', 'sort', 'active', 'preview_picture_src', 'preview_text', 'detail_picture_src', 'detail_text', 'parent_section_id'];
 	public $timestamps = false;
 
 	public function generateCreationCode(){

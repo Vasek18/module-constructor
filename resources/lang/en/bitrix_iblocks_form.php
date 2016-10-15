@@ -165,6 +165,7 @@ Elements detail pictures settings',
 	'back_to_iblock'                 => 'Back to inforblock editing',
 	'test_element_element_tab_title' => 'Element',
 	'test_element_props_values'      => 'Props values',
+	'test_data_tab_parent_section'   => 'Section',
 
 	'add_section_button'             => 'Add section',
 	'add_section_page_title'         => 'Infoblock test section addition',

@@ -85,6 +85,20 @@
                                             {{isset($iblock->params->FIELDS->SORT->IS_REQUIRED) && $iblock->params->FIELDS->SORT->IS_REQUIRED == 'Y'?'required':''}}
                                     >
                                 </div>
+                                @if (count($sections))
+                                    <div class="form-group">
+                                        <label for="SECTION_ID">{{ trans('bitrix_iblocks_form.test_data_tab_parent_section') }}
+                                        </label>
+                                        <select id="SECTION_ID"
+                                                name="SECTION_ID"
+                                                class="form-control">
+                                            <option value="">{{ trans('app.select') }}</option>
+                                            @foreach($sections as $section)
+                                                <option {{isset($element) && $element->parent_section_id == $section->id ? 'selected' : ''}} value="{{ $section->id }}">{{ $section->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                @endif
                                 @if (count($properties))
                                     <hr>
                                     <h2>{{ trans('bitrix_iblocks_form.test_element_props_values') }}</h2>

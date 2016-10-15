@@ -269,6 +269,7 @@ class BitrixDataStorageController extends Controller{
 		$data = [
 			'module'     => $module,
 			'iblock'     => $iblock,
+			'sections'   => $iblock->sections()->orderBy('sort', 'asc')->get(),
 			'properties' => $iblock->properties()->orderBy('sort', 'asc')->get(),
 		];
 
@@ -284,6 +285,7 @@ class BitrixDataStorageController extends Controller{
 			'code'      => $request['CODE'], // todo проверка на уникальность, если она нужна в этом ИБ
 			'sort'      => $request['SORT'],
 			'active'    => $request['ACTIVE'] == 'Y' ? true : false,
+			'parent_section_id' => $request['SECTION_ID'],
 		]);
 
 		if ($request->props){
@@ -327,6 +329,7 @@ class BitrixDataStorageController extends Controller{
 			'element'    => $element,
 			'props_vals' => $props_vals,
 			'properties' => $iblock->properties()->orderBy('sort', 'asc')->get(),
+			'sections'   => $iblock->sections()->orderBy('sort', 'asc')->get(),
 		];
 
 		//dd($data);
@@ -339,10 +342,11 @@ class BitrixDataStorageController extends Controller{
 		// dd($request->all());
 
 		$element->update([
-			'name'   => $request['NAME'],
-			'code'   => $request['CODE'], // todo проверка на уникальность, если она нужна в этом ИБ
-			'sort'   => $request['SORT'],
-			'active' => $request['ACTIVE'] == 'Y' ? true : false,
+			'name'              => $request['NAME'],
+			'code'              => $request['CODE'], // todo проверка на уникальность, если она нужна в этом ИБ
+			'sort'              => $request['SORT'],
+			'active'            => $request['ACTIVE'] == 'Y' ? true : false,
+			'parent_section_id' => $request['SECTION_ID'],
 		]);
 
 		$attachArr = [];
