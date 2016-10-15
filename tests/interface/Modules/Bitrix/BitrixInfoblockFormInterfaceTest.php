@@ -526,6 +526,22 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 		$this->seeInField('props[TESTOVOE_SVOISVTO]', '');
 	}
 
+	/** @test */
+	function it_returns_test_section_data(){
+		$ib = $this->createIblockOnForm($this->module);
+		$element = $this->createIblockSectionOnForm($this->module, $ib, [
+			'NAME' => 'Trololo',
+			'CODE' => 'trololo',
+			'SORT' => '1487',
+		]);
+
+		$this->seeInField('NAME', 'Trololo');
+		$this->seeInField('CODE', 'trololo');
+		$this->seeInField('SORT', '1487');
+		$this->seePageIs('/my-bitrix/'.$this->module->id.'/data_storage/ib/'.$ib->id.'/show_section/'.$element->id);
+	}
+
+
 	// /** @test */
 	// function it_can_remove_iblock(){
 	// 	$this->signIn();

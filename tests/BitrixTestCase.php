@@ -8,6 +8,7 @@ use App\Models\Modules\Bitrix\BitrixComponent;
 use App\Models\Modules\Bitrix\BitrixComponentsParams;
 use App\Models\Modules\Bitrix\BitrixComponentsTemplates;
 use App\Models\Modules\Bitrix\BitrixComponentsArbitraryFiles;
+use App\Models\Modules\Bitrix\BitrixIblocksSections;
 use App\Models\Modules\Bitrix\BitrixInfoblocks;
 use App\Models\Modules\Bitrix\BitrixIblocksElements;
 use App\Models\Modules\Bitrix\BitrixMailEvents;
@@ -421,6 +422,17 @@ class BitrixTestCase extends TestCase{
 
 		if ($params["CODE"]){
 			return $prop = BitrixIblocksElements::where('code', $params["CODE"])->where('iblock_id', $iblock->id)->first();
+		}
+
+		return false;
+	}
+
+	function createIblockSectionOnForm($module, $iblock, $params = []){
+		$this->visit('/my-bitrix/'.$module->id.'/data_storage/ib/'.$iblock->id.'/create_section');
+		$this->submitForm('save', $params);
+
+		if ($params["CODE"]){
+			return $prop = BitrixIblocksSections::where('code', $params["CODE"])->where('iblock_id', $iblock->id)->first();
 		}
 
 		return false;

@@ -40,14 +40,18 @@ class BitrixInfoblocks extends Model{
 			$module->addAdditionalInstallHelpersFunctions(['createIblockType', 'removeIblockType', 'createIblock'], 'iblock.php');
 			$issetProp = false;
 			$issetElement = false;
+			$issetSections = false;
 			foreach ($module->infoblocks as $infoblock){
 				if ($infoblock->properties()->count()){
 					$issetProp = true;
-				}else{
-
 				}
+
 				if ($infoblock->elements()->count()){
 					$issetElement = true;
+				}
+
+				if ($infoblock->sections()->count()){
+					$issetSections = true;
 				}
 			}
 
@@ -56,14 +60,21 @@ class BitrixInfoblocks extends Model{
 			}else{
 				$module->removeAdditionalInstallHelpersFunctions(['createIblockProp']);
 			}
+
 			if ($issetElement){
 				$module->addAdditionalInstallHelpersFunctions(['createIblockElement'], 'iblock.php');
 			}else{
 				$module->removeAdditionalInstallHelpersFunctions(['createIblockElement']);
 			}
 
+			if ($issetSections){
+				$module->addAdditionalInstallHelpersFunctions(['createIblockSection'], 'iblock.php');
+			}else{
+				$module->removeAdditionalInstallHelpersFunctions(['createIblockSection']);
+			}
+
 		}else{
-			$module->removeAdditionalInstallHelpersFunctions(['createIblockType', 'removeIblockType', 'createIblock', 'createIblockProp', 'createIblockElement']);
+			$module->removeAdditionalInstallHelpersFunctions(['createIblockType', 'removeIblockType', 'createIblock', 'createIblockProp', 'createIblockElement', 'createIblockSection']);
 		}
 	}
 
@@ -129,6 +140,10 @@ class BitrixInfoblocks extends Model{
 					}
 				}
 			}
+
+			foreach ($iblock->sections as $section){
+				$module->changeVarInLangFile($section->lang_key."_NAME", $section->name, '/lang/'.$module->default_lang.'/install/index.php');
+			}
 		}
 
 		return true;
@@ -152,6 +167,10 @@ class BitrixInfoblocks extends Model{
 
 		foreach ($this->elements as $element){
 			$code .= $element->generateCreationCode();
+		}
+
+		foreach ($this->sections as $section){
+			$code .= $section->generateCreationCode();
 		}
 
 		return $code;

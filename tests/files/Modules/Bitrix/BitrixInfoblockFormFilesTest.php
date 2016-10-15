@@ -83,6 +83,21 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 		return $answer;
 	}
 
+	function getIblockSectionsCreationFuncCallParamsArray($module){
+		$answer = [];
+		$installationFileContent = file_get_contents($module->getFolder(true).'/install/index.php');
+		$gottenInstallationFuncCode = vFuncParse::parseFromText($installationFileContent, 'createNecessaryIblocks');
+		// dd($installationFileContent);
+
+		preg_match_all('/\$this\-\>createIblockSection\(([^\;]+)\);/is', $gottenInstallationFuncCode, $matches);
+		// dd($matches[1]);
+		foreach ($matches[1] as $gottenInstallationFuncCodePart){
+			$answer[] = vArrParse::parseFromText($gottenInstallationFuncCodePart);
+		}
+
+		return $answer;
+	}
+
 	/** @test */
 	function at_first_there_is_no_optional_functions(){
 		$installationFileContent = file_get_contents($this->module->getFolder(true).'/install/index.php');
@@ -237,7 +252,6 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 
 		$this->assertEquals(1, count($gottenInstallationFuncCodeArray));
 		$this->assertEquals($expectedInstallationFuncCodeArray, $gottenInstallationFuncCodeArray[0]);
-		$this->assertArrayHasKey($this->module->lang_key.'_IBLOCK_TROLOLO_NAME', $installFileLangArr);
 		$this->assertEquals($installFileLangArr[$this->module->lang_key.'_IBLOCK_TROLOLO_NAME'], 'Ololo');
 	}
 
@@ -923,6 +937,32 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 	}
 
 	/** @test */
+	function it_writes_creation_code_with_test_section(){
+		$ib = $this->createIblockOnForm($this->module);
+		$this->createIblockSectionOnForm($this->module, $ib, [
+			'NAME' => 'Trololo',
+			'CODE' => 'trololo',
+		]);
+
+		$gottenInstallationSectionsFuncCodeArray = $this->getIblockSectionsCreationFuncCallParamsArray($this->module);
+		$installFileLangArr = $this->getLangFileArray($this->module);
+		$installationFileContent = file_get_contents($this->module->getFolder(true).'/install/index.php');
+
+		$expectedInstallationSectionsFuncCodeArray = [
+			"IBLOCK_ID" => '$iblockID',
+			"ACTIVE"    => "Y",
+			"SORT"      => "500",
+			"CODE"      => "trololo",
+			"NAME"      => 'Loc::getMessage("'.$ib->lang_key.'_SECTION_TROLOLO_NAME")',
+		];
+
+		$this->assertEquals($expectedInstallationSectionsFuncCodeArray, $gottenInstallationSectionsFuncCodeArray[0]);
+		$this->assertEquals($installFileLangArr[$ib->lang_key.'_SECTION_TROLOLO_NAME'], 'Trololo');
+
+		$this->assertNotFalse(strpos($installationFileContent, 'function createIblockSection'));
+	}
+
+	/** @test */
 	function it_removes_creation_code_when_there_is_no_iblock(){
 		$iblock = $this->createIblockOnForm($this->module, [
 			"properties[NAME][0]" => "Тест",
@@ -1155,6 +1195,57 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 		$this->assertArraySubset([$this->module->lang_key.'_IBLOCK_TROLOLO_NAME' => 'Ololo'], $installFileLangArr);
 		$this->assertArrayNotHasKey($iblock->lang_key.'_ELEMENT_TROLOLO_NAME', $installFileLangArr);
 		$this->assertFalse(strpos($installationFileContent, 'function createIblockElement'));
+	}
+
+	/** @test */
+	function it_removes_creation_code_of_test_section(){
+
+		$iblock = $this->createIblockOnForm($this->module);
+		$element = $this->createIblockSectionOnForm($this->module, $iblock, [
+			'NAME' => 'Trololo',
+			'CODE' => 'trololo',
+		]);
+		$this->visit('/my-bitrix/'.$this->module->id.'/data_storage/ib/'.$iblock->id);
+		$this->click('delete_section_'.$element->id);
+
+		$gottenInstallationFuncCodeArray = $this->getIblockCreationFuncCallParamsArray($this->module);
+		$gottenInstallationSectionsFuncCodeArray = $this->getIblockSectionsCreationFuncCallParamsArray($this->module);
+		$installFileLangArr = $this->getLangFileArray($this->module);
+		$installationFileContent = file_get_contents($this->module->getFolder(true).'/install/index.php');
+
+		$expectedInstallationFuncCodeArray = [
+			"IBLOCK_TYPE_ID"   => '$iblockType',
+			"ACTIVE"           => "Y",
+			"LID"              => '$this->getSitesIdsArray()',
+			"VERSION"          => "2",
+			"CODE"             => "trololo",
+			"NAME"             => 'Loc::getMessage("'.$this->module->lang_key.'_IBLOCK_TROLOLO_NAME")',
+			"SORT"             => "555",
+			"LIST_PAGE_URL"    => "#SITE_DIR#/".$this->module->code."/index.php?ID=#IBLOCK_ID##hi",
+			"SECTION_PAGE_URL" => "#SITE_DIR#/".$this->module->code."/list.php?SECTION_ID=#SECTION_ID##hi",
+			"DETAIL_PAGE_URL"  => "#SITE_DIR#/".$this->module->code."/detail.php?ID=#ELEMENT_ID##hi",
+			"FIELDS"           => Array(
+				"ACTIVE"            => Array(
+					"DEFAULT_VALUE" => "Y",
+				),
+				"PREVIEW_TEXT_TYPE" => Array(
+					"DEFAULT_VALUE" => "text",
+				),
+				"DETAIL_TEXT_TYPE"  => Array(
+					"DEFAULT_VALUE" => "text",
+				),
+			),
+			"GROUP_ID"         => [
+				2 => "R"
+			]
+		];
+
+		$this->assertEquals(1, count($gottenInstallationFuncCodeArray));
+		$this->assertEquals($expectedInstallationFuncCodeArray, $gottenInstallationFuncCodeArray[0]);
+		$this->assertEquals(0, count($gottenInstallationSectionsFuncCodeArray));
+		$this->assertArraySubset([$this->module->lang_key.'_IBLOCK_TROLOLO_NAME' => 'Ololo'], $installFileLangArr);
+		$this->assertArrayNotHasKey($iblock->lang_key.'_SECTION_TROLOLO_NAME', $installFileLangArr);
+		$this->assertFalse(strpos($installationFileContent, 'function createIblockSection'));
 	}
 
 	/** @test */

@@ -87,3 +87,14 @@ function createIblockElement($arFields){
 
 	return false;
 }
+
+function createIblockSection($arFields){
+	CModule::IncludeModule("iblock");
+	$el = new CIBlockSection;
+
+	if ($SECTION_ID = $el->Add($arFields)){
+		return $SECTION_ID;
+	}
+
+	return false;
+}

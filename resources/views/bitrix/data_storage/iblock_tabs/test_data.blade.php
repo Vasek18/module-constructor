@@ -56,7 +56,7 @@
                             <td>
                                 <a href="{{action('Modules\Bitrix\BitrixDataStorageController@show_element', [$module, $iblock, $element])}}"
                                    class="btn btn-default"
-                                   id="edit_element_{{$section->id}}">
+                                   id="edit_element_{{$element->id}}">
                                     <span class="glyphicon glyphicon-pencil"
                                           aria-hidden="true"></span>
                                 </a>
