@@ -122,7 +122,7 @@ Route::group(['prefix' => 'my-bitrix', 'middleware' => ['bitrix.owner', 'auth']]
 			Route::get('{iblock}', 'Modules\Bitrix\BitrixDataStorageController@detail_ib');
 			Route::get('{iblock}/delete', 'Modules\Bitrix\BitrixDataStorageController@delete_ib');
 			Route::post('{iblock}/save', 'Modules\Bitrix\BitrixDataStorageController@save_ib');
-			Route::get('{prop}/delete_prop', 'Modules\Bitrix\BitrixDataStorageController@delete_prop'); // todo скорее всего ещё подгруппа
+			Route::get('{iblock}/props/{prop}/delete', 'Modules\Bitrix\BitrixDataStorageController@delete_prop'); // todo скорее всего ещё подгруппа
 
 			Route::get('{iblock}/create_element', ['uses' => 'Modules\Bitrix\BitrixDataStorageController@create_element']); // todo скорее всего ещё подгруппа
 			Route::post('{iblock}/store_element', ['uses' => 'Modules\Bitrix\BitrixDataStorageController@store_element']); // todo скорее всего ещё подгруппа

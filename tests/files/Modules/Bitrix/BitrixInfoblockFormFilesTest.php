@@ -1095,7 +1095,6 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 
 	/** @test */
 	function it_removes_creation_code_of_the_prop(){
-
 		$iblock = $this->createIblockOnForm($this->module, [
 				"properties[NAME][0]" => "Тест",
 				"properties[CODE][0]" => "TEST",
@@ -1199,7 +1198,6 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 
 	/** @test */
 	function it_removes_creation_code_of_test_section(){
-
 		$iblock = $this->createIblockOnForm($this->module);
 		$element = $this->createIblockSectionOnForm($this->module, $iblock, [
 			'NAME' => 'Trololo',
@@ -1800,6 +1798,42 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 		$this->assertEquals($expectedInstallationElementsFuncCodeArray2, $gottenInstallationElementsFuncCodeArray[1]);
 		$this->assertEquals($installFileLangArr[$iblock->lang_key.'_ELEMENT_OLOLO_PROP_ANOTHER_ONE_VALUE'], '447');
 	}
+
+	// /** @test */ // todo
+	// function not_author_cannot_delete_prop_of_anothers_iblock(){
+	// 	$iblock = $this->createIblockOnForm($this->module, [
+	// 			"properties[NAME][0]" => "Тест",
+	// 			"properties[CODE][0]" => "TEST",
+	// 		]
+	// 	);
+	// 	$prop = BitrixIblocksProps::where('code', 'TEST')->where('iblock_id', $iblock->id)->first();
+	//
+	// 	$this->signIn(factory(App\Models\User::class)->create());
+	// 	$module2 = $this->fillNewBitrixForm();
+	// 	$iblock2 = $this->createIblockOnForm($module2, [
+	// 			"properties[NAME][0]" => "Тест",
+	// 			"properties[CODE][0]" => "TEST",
+	// 		]
+	// 	);
+	//
+	// 	$this->visit('/my-bitrix/'.$module2->id.'/data_storage/ib/'.$iblock2->id.'/props/'.$prop->id.'/delete');
+	//
+	// 	$installationFileContent = file_get_contents($this->module->getFolder(true).'/install/index.php');
+	// 	$gottenInstallationPropsFuncCodeArray = $this->getIblockPropsCreationFuncCallParamsArray($this->module);
+	// 	$installFileLangArr = $this->getLangFileArray($this->module);
+	//
+	// 	$this->assertEquals(1, count($gottenInstallationPropsFuncCodeArray));
+	// 	$this->assertEquals($installFileLangArr[$this->module->lang_key.'_IBLOCK_TROLOLO_PARAM_TEST_NAME'], 'Тест');
+	// 	$this->assertNotFalse(strpos($installationFileContent, 'function createIblockProp'));
+	// }
+
+	// /** @test */ // todo
+	// function not_author_cannot_delete_element_of_anothers_iblock(){
+	// }
+	//
+	// /** @test */ // todo
+	// function not_author_cannot_delete_section_of_anothers_iblock(){
+	// }
 }
 
 ?>

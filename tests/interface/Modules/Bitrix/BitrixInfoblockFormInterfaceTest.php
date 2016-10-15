@@ -541,6 +541,26 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 		$this->seePageIs('/my-bitrix/'.$this->module->id.'/data_storage/ib/'.$ib->id.'/show_section/'.$element->id);
 	}
 
+	/** @test */
+	function not_author_cannot_get_to_page_of_anothers_iblock(){
+		$ib = $this->createIblockOnForm($this->module, [
+			'NAME'               => 'Ololo',
+			'CODE'               => 'trololo',
+			"LIST_PAGE_URL"      => "ololo_list",
+			"SECTION_PAGE_URL"   => "ololo/#SECTION_ID#",
+			"DETAIL_PAGE_URL"    => "ololo/#ELEMENT_ID#",
+			"CANONICAL_PAGE_URL" => "test_canon",
+			"INDEX_SECTION"      => "Y",
+			"INDEX_ELEMENT"      => "Y"
+		]);
+
+		$this->signIn(factory(App\Models\User::class)->create());
+		$module2 = $this->fillNewBitrixForm();
+
+		$this->visit('/my-bitrix/'.$module2->id.'/data_storage/ib/'.$ib->id);
+
+		$this->seePageIs('/personal');
+	}
 
 	// /** @test */
 	// function it_can_remove_iblock(){

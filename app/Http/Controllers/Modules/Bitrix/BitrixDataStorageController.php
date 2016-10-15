@@ -184,6 +184,10 @@ class BitrixDataStorageController extends Controller{
 	}
 
 	public function save_ib(Bitrix $module, BitrixInfoblocks $iblock, Requests\InfoblockFormRequest $request){
+		if (!$this->moduleOwnsIblock($module, $iblock)){
+			return $this->unauthorized($request);
+		}
+
 		$params = $request->all();
 		unset($params['_token']);
 
@@ -233,6 +237,10 @@ class BitrixDataStorageController extends Controller{
 	}
 
 	public function delete_ib(Bitrix $module, BitrixInfoblocks $iblock, Request $request){
+		if (!$this->moduleOwnsIblock($module, $iblock)){
+			return $this->unauthorized($request);
+		}
+
 		$iblock->cleanLangFromYourself();
 
 		BitrixInfoblocks::destroy($iblock->id);
@@ -243,6 +251,10 @@ class BitrixDataStorageController extends Controller{
 	}
 
 	public function detail_ib(Bitrix $module, BitrixInfoblocks $iblock, Request $request){
+		if (!$this->moduleOwnsIblock($module, $iblock)){
+			return $this->unauthorized($request);
+		}
+
 		$data = [
 			'module'           => $module,
 			'iblock'           => $iblock,
@@ -255,7 +267,14 @@ class BitrixDataStorageController extends Controller{
 		return view("bitrix.data_storage.add_ib", $data);
 	}
 
-	public function delete_prop(Bitrix $module, BitrixIblocksProps $prop, Request $request){
+	public function delete_prop(Bitrix $module, BitrixInfoblocks $iblock, BitrixIblocksProps $prop, Request $request){
+		if (!$this->moduleOwnsIblock($module, $iblock)){
+			return $this->unauthorized($request);
+		}
+		// if (!$this->iblockOwnsProp($iblock, $prop)){
+		// 	return $this->unauthorized($request);
+		// }
+
 		$module->changeVarInLangFile($prop->lang_key."_NAME", "", '/lang/'.$module->default_lang.'/install/index.php');
 
 		$prop->delete();
@@ -266,6 +285,10 @@ class BitrixDataStorageController extends Controller{
 	}
 
 	public function create_element(Bitrix $module, BitrixInfoblocks $iblock, Request $request){
+		if (!$this->moduleOwnsIblock($module, $iblock)){
+			return $this->unauthorized($request);
+		}
+
 		$data = [
 			'module'     => $module,
 			'iblock'     => $iblock,
@@ -279,12 +302,16 @@ class BitrixDataStorageController extends Controller{
 	}
 
 	public function store_element(Bitrix $module, BitrixInfoblocks $iblock, Request $request){
+		if (!$this->moduleOwnsIblock($module, $iblock)){
+			return $this->unauthorized($request);
+		}
+
 		$element = BitrixIblocksElements::create([
-			'iblock_id' => $iblock->id,
-			'name'      => $request['NAME'],
-			'code'      => $request['CODE'], // todo проверка на уникальность, если она нужна в этом ИБ
-			'sort'      => $request['SORT'],
-			'active'    => $request['ACTIVE'] == 'Y' ? true : false,
+			'iblock_id'         => $iblock->id,
+			'name'              => $request['NAME'],
+			'code'              => $request['CODE'], // todo проверка на уникальность, если она нужна в этом ИБ
+			'sort'              => $request['SORT'],
+			'active'            => $request['ACTIVE'] == 'Y' ? true : false,
 			'parent_section_id' => $request['SECTION_ID'],
 		]);
 
@@ -313,6 +340,12 @@ class BitrixDataStorageController extends Controller{
 	}
 
 	public function show_element(Bitrix $module, BitrixInfoblocks $iblock, BitrixIblocksElements $element, Request $request){
+		if (!$this->moduleOwnsIblock($module, $iblock)){
+			return $this->unauthorized($request);
+		}
+		if (!$this->iblockOwnsElement($iblock, $element)){
+			return $this->unauthorized($request);
+		}
 
 		$props_vals = [];
 		foreach ($element->props as $prop){
@@ -338,6 +371,12 @@ class BitrixDataStorageController extends Controller{
 	}
 
 	public function save_element(Bitrix $module, BitrixInfoblocks $iblock, BitrixIblocksElements $element, Request $request){
+		if (!$this->moduleOwnsIblock($module, $iblock)){
+			return $this->unauthorized($request);
+		}
+		if (!$this->iblockOwnsElement($iblock, $element)){
+			return $this->unauthorized($request);
+		}
 
 		// dd($request->all());
 
@@ -374,6 +413,13 @@ class BitrixDataStorageController extends Controller{
 	}
 
 	public function delete_element(Bitrix $module, BitrixInfoblocks $iblock, BitrixIblocksElements $element, Request $request){
+		if (!$this->moduleOwnsIblock($module, $iblock)){
+			return $this->unauthorized($request);
+		}
+		if (!$this->iblockOwnsElement($iblock, $element)){
+			return $this->unauthorized($request);
+		}
+
 		$module->changeVarInLangFile($element->lang_key."_NAME", "", '/lang/'.$module->default_lang.'/install/index.php');
 
 		$element->delete();
@@ -384,6 +430,10 @@ class BitrixDataStorageController extends Controller{
 	}
 
 	public function create_section(Bitrix $module, BitrixInfoblocks $iblock, Request $request){
+		if (!$this->moduleOwnsIblock($module, $iblock)){
+			return $this->unauthorized($request);
+		}
+
 		$data = [
 			'module' => $module,
 			'iblock' => $iblock,
@@ -393,6 +443,10 @@ class BitrixDataStorageController extends Controller{
 	}
 
 	public function store_section(Bitrix $module, BitrixInfoblocks $iblock, Request $request){
+		if (!$this->moduleOwnsIblock($module, $iblock)){
+			return $this->unauthorized($request);
+		}
+
 		$section = BitrixIblocksSections::create([
 			'iblock_id' => $iblock->id,
 			'name'      => $request['NAME'],
@@ -407,6 +461,12 @@ class BitrixDataStorageController extends Controller{
 	}
 
 	public function show_section(Bitrix $module, BitrixInfoblocks $iblock, BitrixIblocksSections $section, Request $request){
+		if (!$this->moduleOwnsIblock($module, $iblock)){
+			return $this->unauthorized($request);
+		}
+		if (!$this->iblockOwnsSection($iblock, $section)){
+			return $this->unauthorized($request);
+		}
 
 		$data = [
 			'module'  => $module,
@@ -418,6 +478,12 @@ class BitrixDataStorageController extends Controller{
 	}
 
 	public function save_section(Bitrix $module, BitrixInfoblocks $iblock, BitrixIblocksSections $section, Request $request){
+		if (!$this->moduleOwnsIblock($module, $iblock)){
+			return $this->unauthorized($request);
+		}
+		if (!$this->iblockOwnsSection($iblock, $section)){
+			return $this->unauthorized($request);
+		}
 
 		$section->update([
 			'name'   => $request['NAME'],
@@ -432,6 +498,13 @@ class BitrixDataStorageController extends Controller{
 	}
 
 	public function delete_section(Bitrix $module, BitrixInfoblocks $iblock, BitrixIblocksSections $section, Request $request){
+		if (!$this->moduleOwnsIblock($module, $iblock)){
+			return $this->unauthorized($request);
+		}
+		if (!$this->iblockOwnsSection($iblock, $section)){
+			return $this->unauthorized($request);
+		}
+
 		$module->changeVarInLangFile($section->lang_key."_NAME", "", '/lang/'.$module->default_lang.'/install/index.php');
 
 		$section->delete();

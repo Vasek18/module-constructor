@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers\Traits;
 
+use App\Models\Modules\Bitrix\BitrixIblocksElements;
+use App\Models\Modules\Bitrix\BitrixIblocksProps;
+use App\Models\Modules\Bitrix\BitrixIblocksSections;
+use App\Models\Modules\Bitrix\BitrixInfoblocks;
 use Illuminate\Http\Request;
 use App\Models\Modules\Bitrix\Bitrix;
 use App\Models\Modules\Bitrix\BitrixComponent;
@@ -59,6 +63,22 @@ trait UserOwnModule{
 
 	protected function mailEventOwnsTemplate(BitrixMailEvents $event, BitrixMailEventsTemplate $template){
 		return $template->mailEvent->id == $event->id;
+	}
+
+	protected function moduleOwnsIblock(Bitrix $module, BitrixInfoblocks $iblock){
+		return $iblock->module_id == $module->id;
+	}
+
+	protected function iblockOwnsProp(BitrixInfoblocks $iblock, BitrixIblocksProps $prop){
+		return $prop->iblock_id == $iblock->id;
+	}
+
+	protected function iblockOwnsElement(BitrixInfoblocks $iblock, BitrixIblocksElements $element){
+		return $element->iblock_id == $iblock->id;
+	}
+
+	protected function iblockOwnsSection(BitrixInfoblocks $iblock, BitrixIblocksSections $section){
+		return $section->iblock_id == $iblock->id;
 	}
 }
 

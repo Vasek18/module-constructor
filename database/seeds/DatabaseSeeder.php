@@ -24,6 +24,15 @@ class DatabaseSeeder extends Seeder{
 			'group_id'       => 1,
 		]);
 
+		// todo del
+		DB::table('users')->insert([
+			'first_name'     => 'Ололоша',
+			'last_name'      => '',
+			'email'          => 'ololo@trololo.ru',
+			'password'       => bcrypt("12345678"),
+			'remember_token' => str_random(10),
+		]);
+
 		$this->call(BitrixStuffSeeder::class);
 
 		Model::reguard();
