@@ -1147,7 +1147,6 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 
 	/** @test */
 	function it_removes_creation_code_of_test_element(){
-
 		$iblock = $this->createIblockOnForm($this->module);
 		$element = $this->createIblockElementOnForm($this->module, $iblock, [
 			'NAME' => 'Trololo',
@@ -1799,41 +1798,110 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 		$this->assertEquals($installFileLangArr[$iblock->lang_key.'_ELEMENT_OLOLO_PROP_ANOTHER_ONE_VALUE'], '447');
 	}
 
-	// /** @test */ // todo
-	// function not_author_cannot_delete_prop_of_anothers_iblock(){
-	// 	$iblock = $this->createIblockOnForm($this->module, [
-	// 			"properties[NAME][0]" => "Тест",
-	// 			"properties[CODE][0]" => "TEST",
-	// 		]
-	// 	);
-	// 	$prop = BitrixIblocksProps::where('code', 'TEST')->where('iblock_id', $iblock->id)->first();
-	//
-	// 	$this->signIn(factory(App\Models\User::class)->create());
-	// 	$module2 = $this->fillNewBitrixForm();
-	// 	$iblock2 = $this->createIblockOnForm($module2, [
-	// 			"properties[NAME][0]" => "Тест",
-	// 			"properties[CODE][0]" => "TEST",
-	// 		]
-	// 	);
-	//
-	// 	$this->visit('/my-bitrix/'.$module2->id.'/data_storage/ib/'.$iblock2->id.'/props/'.$prop->id.'/delete');
-	//
-	// 	$installationFileContent = file_get_contents($this->module->getFolder(true).'/install/index.php');
-	// 	$gottenInstallationPropsFuncCodeArray = $this->getIblockPropsCreationFuncCallParamsArray($this->module);
-	// 	$installFileLangArr = $this->getLangFileArray($this->module);
-	//
-	// 	$this->assertEquals(1, count($gottenInstallationPropsFuncCodeArray));
-	// 	$this->assertEquals($installFileLangArr[$this->module->lang_key.'_IBLOCK_TROLOLO_PARAM_TEST_NAME'], 'Тест');
-	// 	$this->assertNotFalse(strpos($installationFileContent, 'function createIblockProp'));
-	// }
+	/** @test */
+	function not_author_cannot_delete_prop_of_anothers_iblock(){
+		$iblock = $this->createIblockOnForm($this->module, [
+				"properties[NAME][0]" => "Тест",
+				"properties[CODE][0]" => "TEST",
+			]
+		);
+		$prop = BitrixIblocksProps::where('code', 'TEST')->where('iblock_id', $iblock->id)->first();
+		// $this->visit('/my-bitrix/'.$this->module->id.'/data_storage/ib/'.$iblock->id.'/props/'.$prop->id.'/delete');
 
-	// /** @test */ // todo
-	// function not_author_cannot_delete_element_of_anothers_iblock(){
-	// }
-	//
-	// /** @test */ // todo
-	// function not_author_cannot_delete_section_of_anothers_iblock(){
-	// }
+		$this->signIn(factory(App\Models\User::class)->create());
+		$module2 = $this->fillNewBitrixForm();
+		$iblock2 = $this->createIblockOnForm($module2);
+
+		// удаление
+		$this->visit('/my-bitrix/'.$module2->id.'/data_storage/ib/'.$iblock2->id.'/props/'.$prop->id.'/delete');
+
+		$installationFileContent = file_get_contents($this->module->getFolder(true).'/install/index.php');
+		$gottenInstallationPropsFuncCodeArray = $this->getIblockPropsCreationFuncCallParamsArray($this->module);
+		$installFileLangArr = $this->getLangFileArray($this->module);
+
+		$module2->deleteFolder();
+
+		$this->assertEquals(Array(
+			"IBLOCK_ID"     => '$iblockID',
+			"ACTIVE"        => "Y",
+			"SORT"          => "500",
+			"CODE"          => "TEST",
+			"NAME"          => 'Loc::getMessage("'.$this->module->lang_key.'_IBLOCK_TROLOLO_PARAM_TEST_NAME")',
+			"PROPERTY_TYPE" => "S",
+			"USER_TYPE"     => "",
+			"MULTIPLE"      => "N",
+			"IS_REQUIRED"   => "N",
+		), $gottenInstallationPropsFuncCodeArray[0]);
+		$this->assertEquals($installFileLangArr[$this->module->lang_key.'_IBLOCK_TROLOLO_PARAM_TEST_NAME'], 'Тест');
+		$this->assertNotFalse(strpos($installationFileContent, 'function createIblockProp'));
+	}
+
+	/** @test */
+	function not_author_cannot_delete_element_of_anothers_iblock(){
+		$iblock = $this->createIblockOnForm($this->module);
+		$element = $this->createIblockElementOnForm($this->module, $iblock, [
+			'NAME' => 'Trololo',
+			'CODE' => 'trololo',
+		]);
+		// $this->visit('/'); // это нужно, чтобы back() не вёл на детальную
+		// $this->visit('/my-bitrix/'.$this->module->id.'/data_storage/ib/'.$iblock->id.'/delete_element/'.$element->id);
+
+		$this->signIn(factory(App\Models\User::class)->create());
+		$module2 = $this->fillNewBitrixForm();
+		$iblock2 = $this->createIblockOnForm($module2);
+
+		$this->visit('/my-bitrix/'.$this->module->id.'/data_storage/ib/'.$iblock->id.'/delete_element/'.$element->id);
+		$this->visit('/my-bitrix/'.$module2->id.'/data_storage/ib/'.$iblock->id.'/delete_element/'.$element->id);
+		$this->visit('/my-bitrix/'.$module2->id.'/data_storage/ib/'.$iblock2->id.'/delete_element/'.$element->id);
+
+		$module2->deleteFolder();
+
+		$gottenInstallationElementsFuncCodeArray = $this->getIblockElementsCreationFuncCallParamsArray($this->module);
+		$installFileLangArr = $this->getLangFileArray($this->module);
+		$installationFileContent = file_get_contents($this->module->getFolder(true).'/install/index.php');
+
+		$this->assertEquals(1, count($gottenInstallationElementsFuncCodeArray));
+		$this->assertEquals($installFileLangArr[$iblock->lang_key.'_ELEMENT_TROLOLO_NAME'], 'Trololo');
+		$this->assertNotFalse(strpos($installationFileContent, 'function createIblockElement'));
+	}
+
+	/** @test */
+	function not_author_cannot_delete_section_of_anothers_iblock(){
+		$iblock = $this->createIblockOnForm($this->module);
+		$section = $this->createIblockSectionOnForm($this->module, $iblock, [
+			'NAME' => 'Trololo',
+			'CODE' => 'trololo',
+		]);
+		// $this->visit('/'); // это нужно, чтобы back() не вёл на детальную
+		// $this->visit('/my-bitrix/'.$this->module->id.'/data_storage/ib/'.$iblock->id.'/delete_section/'.$section->id);
+
+		$this->signIn(factory(App\Models\User::class)->create());
+		$module2 = $this->fillNewBitrixForm();
+		$iblock2 = $this->createIblockOnForm($module2);
+
+		$this->visit('/my-bitrix/'.$this->module->id.'/data_storage/ib/'.$iblock->id.'/delete_section/'.$section->id);
+		$this->visit('/my-bitrix/'.$module2->id.'/data_storage/ib/'.$iblock->id.'/delete_section/'.$section->id);
+		$this->visit('/my-bitrix/'.$module2->id.'/data_storage/ib/'.$iblock2->id.'/delete_section/'.$section->id);
+
+		$module2->deleteFolder();
+
+		$gottenInstallationSectionsFuncCodeArray = $this->getIblockSectionsCreationFuncCallParamsArray($this->module);
+		$installFileLangArr = $this->getLangFileArray($this->module);
+		$installationFileContent = file_get_contents($this->module->getFolder(true).'/install/index.php');
+
+		$expectedInstallationSectionsFuncCodeArray = [
+			"IBLOCK_ID" => '$iblockID',
+			"ACTIVE"    => "Y",
+			"SORT"      => "500",
+			"CODE"      => "trololo",
+			"NAME"      => 'Loc::getMessage("'.$iblock->lang_key.'_SECTION_TROLOLO_NAME")',
+		];
+
+		$this->assertEquals($expectedInstallationSectionsFuncCodeArray, $gottenInstallationSectionsFuncCodeArray[0]);
+		$this->assertEquals($installFileLangArr[$iblock->lang_key.'_SECTION_TROLOLO_NAME'], 'Trololo');
+
+		$this->assertNotFalse(strpos($installationFileContent, 'function createIblockSection'));
+	}
 }
 
 ?>

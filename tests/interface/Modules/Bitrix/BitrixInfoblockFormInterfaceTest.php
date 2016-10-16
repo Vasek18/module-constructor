@@ -559,6 +559,8 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 
 		$this->visit('/my-bitrix/'.$module2->id.'/data_storage/ib/'.$ib->id);
 
+		$module2->deleteFolder();
+
 		$this->seePageIs('/personal');
 	}
 

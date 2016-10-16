@@ -271,9 +271,9 @@ class BitrixDataStorageController extends Controller{
 		if (!$this->moduleOwnsIblock($module, $iblock)){
 			return $this->unauthorized($request);
 		}
-		// if (!$this->iblockOwnsProp($iblock, $prop)){
-		// 	return $this->unauthorized($request);
-		// }
+		if (!$this->iblockOwnsProp($iblock, $prop)){
+			return $this->unauthorized($request);
+		}
 
 		$module->changeVarInLangFile($prop->lang_key."_NAME", "", '/lang/'.$module->default_lang.'/install/index.php');
 
