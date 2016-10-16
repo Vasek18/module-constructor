@@ -19,6 +19,9 @@ class BitrixIblocksElements extends Model{
 		$code .= "\t\t\t\t".'"SORT"'." => ".'"'.$this->sort.'",'.PHP_EOL;
 		$code .= "\t\t\t\t".'"CODE"'." => ".'"'.$this->code.'",'.PHP_EOL;
 		$code .= "\t\t\t\t".'"NAME"'." => ".'Loc::getMessage("'.$this->lang_key.'_NAME"),'.PHP_EOL;
+		if ($this->parent_section_id){
+			$code .= "\t\t\t\t".'"IBLOCK_SECTION_ID"'.' => $section'.$this->parent_section_id.'ID,'.PHP_EOL;
+		}
 		$code .= $this->generatePropsArrayCode();
 		$code .= "\t\t\t".')'.PHP_EOL;
 		$code .= "\t\t".');'.PHP_EOL;

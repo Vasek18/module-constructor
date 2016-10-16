@@ -173,4 +173,6 @@ return [
 	'add_section_page_title'         => 'Добавление тестового раздела инфоблока',
 	'edit_section_page_title'        => 'Редактирование тестового раздела инфоблока',
 	'test_section_section_tab_title' => 'Раздел',
+
+	'section_up' => 'Наверх',
 ];

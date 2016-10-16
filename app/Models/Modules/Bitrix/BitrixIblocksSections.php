@@ -11,7 +11,7 @@ class BitrixIblocksSections extends Model{
 
 	public function generateCreationCode(){
 		$code = '';
-		$code .= "\t\t".'$this->createIblockSection('.PHP_EOL;
+		$code .= "\t\t".'$section'.$this->id.'ID = $this->createIblockSection('.PHP_EOL;
 		$code .= "\t\t\t".'Array('.PHP_EOL;
 		$code .= "\t\t\t\t".'"IBLOCK_ID"'." => ".'$iblockID,'.PHP_EOL;
 		$code .= "\t\t\t\t".'"ACTIVE"'." => ".'"Y",'.PHP_EOL;
@@ -30,5 +30,13 @@ class BitrixIblocksSections extends Model{
 
 	public function iblock(){
 		return $this->belongsTo('App\Models\Modules\Bitrix\BitrixInfoblocks');
+	}
+
+	public function elements(){
+		return $this->hasMany('App\Models\Modules\Bitrix\BitrixIblocksElements', 'parent_section_id');
+	}
+
+	public function sections(){
+		return $this->hasMany('App\Models\Modules\Bitrix\BitrixIblocksSections', 'parent_section_id');
 	}
 }

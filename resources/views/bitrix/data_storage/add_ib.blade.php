@@ -10,8 +10,7 @@
 
 @push('styles')
 <link href='/css/iblock_form.css'
-      rel='stylesheet'/>
-@endpush
+      rel='stylesheet'/>@endpush
 
 @section('page')
     @if (count($errors) > 0)
@@ -39,61 +38,71 @@
                             <a href="#infoblok"
                                aria-controls="infoblok"
                                role="tab"
-                               data-toggle="tab">{{ trans('bitrix_iblocks_form.tab_iblock_title') }}</a>
+                               data-toggle="tab"
+                               data-hash="">{{ trans('bitrix_iblocks_form.tab_iblock_title') }}</a>
                         </li>
                         <li role="presentation">
                             <a href="#seo"
                                aria-controls="seo"
                                role="tab"
-                               data-toggle="tab">{{ trans('bitrix_iblocks_form.tab_seo_title') }}</a>
+                               data-toggle="tab"
+                               data-hash="seo">{{ trans('bitrix_iblocks_form.tab_seo_title') }}</a>
                         </li>
                         <li role="presentation">
                             <a href="#fields"
                                aria-controls="fields"
                                role="tab"
-                               data-toggle="tab">{{ trans('bitrix_iblocks_form.tab_fields_title') }}</a>
+                               data-toggle="tab"
+                               data-hash="fields">{{ trans('bitrix_iblocks_form.tab_fields_title') }}</a>
                         </li>
                         <li role="presentation">
                             <a href="#properties"
                                aria-controls="properties"
                                role="tab"
-                               data-toggle="tab">{{ trans('bitrix_iblocks_form.tab_properties_title') }}</a>
+                               data-toggle="tab"
+                               data-hash="properties">{{ trans('bitrix_iblocks_form.tab_properties_title') }}</a>
                         </li>
                         <li role="presentation">
                             <a href="#sections_fields"
                                aria-controls="sections_fields"
                                role="tab"
-                               data-toggle="tab">{{ trans('bitrix_iblocks_form.tab_section_fields_title') }}</a>
+                               data-toggle="tab"
+                               data-hash="sections_fields">{{ trans('bitrix_iblocks_form.tab_section_fields_title') }}</a>
                         </li>
                         <li role="presentation">
                             <a href="#shop_catalog"
                                aria-controls="shop_catalog"
                                role="tab"
-                               data-toggle="tab">{{ trans('bitrix_iblocks_form.tab_shop_catalog_title') }}</a>
+                               data-toggle="tab"
+                               data-hash="shop_catalog">{{ trans('bitrix_iblocks_form.tab_shop_catalog_title') }}</a>
                         </li>
                         <li role="presentation">
                             <a href="#permissions"
                                aria-controls="permissions"
                                role="tab"
-                               data-toggle="tab">{{ trans('bitrix_iblocks_form.tab_permissions_title') }}</a>
+                               data-toggle="tab"
+                               data-hash="permissions">{{ trans('bitrix_iblocks_form.tab_permissions_title') }}</a>
                         </li>
                         <li role="presentation">
                             <a href="#captions"
                                aria-controls="captions"
                                role="tab"
-                               data-toggle="tab">{{ trans('bitrix_iblocks_form.tab_captions_title') }}</a>
+                               data-toggle="tab"
+                               data-hash="captions">{{ trans('bitrix_iblocks_form.tab_captions_title') }}</a>
                         </li>
                         <li role="presentation">
                             <a href="#event_log"
                                aria-controls="event_log"
                                role="tab"
-                               data-toggle="tab">{{ trans('bitrix_iblocks_form.tab_event_log_title') }}</a>
+                               data-toggle="tab"
+                               data-hash="event_log">{{ trans('bitrix_iblocks_form.tab_event_log_title') }}</a>
                         </li>
                         <li role="presentation">
                             <a href="#test_data"
                                aria-controls="test_data"
                                role="tab"
-                               data-toggle="tab">{{ trans('bitrix_iblocks_form.tab_test_data_title') }}</a>
+                               data-toggle="tab"
+                               data-hash="test_data">{{ trans('bitrix_iblocks_form.tab_test_data_title') }}</a>
                         </li>
                     </ul>
                     <div class="tab-content">

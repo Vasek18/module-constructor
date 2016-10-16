@@ -4,9 +4,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Models\Modules\Bitrix\BitrixInfoblocks;
 use App\Models\Modules\Bitrix\BitrixIblocksElements;
 
-// todo принадлежность
 // todo чекбоксы
-// todo здесь почему-то папка не удаляется где-то
 class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 
 	use DatabaseTransactions;
@@ -419,7 +417,7 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 		$this->seeInField('NAME', 'Trololo');
 		$this->seeInField('CODE', 'trololo');
 		$this->seeInField('SORT', '1487');
-		$this->seePageIs('/my-bitrix/'.$this->module->id.'/data_storage/ib/'.$ib->id.'/show_element/'.$element->id);
+		$this->seePageIs('/my-bitrix/'.$this->module->id.'/data_storage/ib/'.$ib->id.'/edit_element/'.$element->id);
 	}
 
 	/** @test */
@@ -438,7 +436,7 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 		$this->seeInField('NAME', 'Trololo');
 		$this->seeInField('CODE', 'trololo');
 		$this->seeInField('props[TEST]', 'test');
-		$this->seePageIs('/my-bitrix/'.$this->module->id.'/data_storage/ib/'.$ib->id.'/show_element/'.$element->id);
+		$this->seePageIs('/my-bitrix/'.$this->module->id.'/data_storage/ib/'.$ib->id.'/edit_element/'.$element->id);
 	}
 
 	/** @test */
@@ -459,7 +457,7 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 		$this->seeInField('CODE', 'trololo');
 		$this->see('one');
 		$this->see('two');
-		$this->seePageIs('/my-bitrix/'.$this->module->id.'/data_storage/ib/'.$ib->id.'/show_element/'.$element->id);
+		$this->seePageIs('/my-bitrix/'.$this->module->id.'/data_storage/ib/'.$ib->id.'/edit_element/'.$element->id);
 	}
 
 	/** @test */
@@ -513,13 +511,13 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 		$element1 = BitrixIblocksElements::where('name', "Тест")->where('iblock_id', $iblock->id)->first();
 		$element2 = BitrixIblocksElements::where('name', "Ололо")->where('iblock_id', $iblock->id)->first();
 
-		$this->visit('/my-bitrix/'.$this->module->id.'/data_storage/ib/'.$iblock->id.'/show_element/'.$element1->id);
+		$this->visit('/my-bitrix/'.$this->module->id.'/data_storage/ib/'.$iblock->id.'/edit_element/'.$element1->id);
 		$this->seeInField('NAME', 'Тест');
 		$this->seeInField('CODE', '');
 		$this->seeInField('SORT', '400');
 		$this->seeInField('props[TESTOVOE_SVOISVTO]', 'Ололо');
 
-		$this->visit('/my-bitrix/'.$this->module->id.'/data_storage/ib/'.$iblock->id.'/show_element/'.$element2->id);
+		$this->visit('/my-bitrix/'.$this->module->id.'/data_storage/ib/'.$iblock->id.'/edit_element/'.$element2->id);
 		$this->seeInField('NAME', 'Ололо');
 		$this->seeInField('CODE', 'ololo');
 		$this->seeInField('SORT', '500');
@@ -529,7 +527,7 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 	/** @test */
 	function it_returns_test_section_data(){
 		$ib = $this->createIblockOnForm($this->module);
-		$element = $this->createIblockSectionOnForm($this->module, $ib, [
+		$section = $this->createIblockSectionOnForm($this->module, $ib, [
 			'NAME' => 'Trololo',
 			'CODE' => 'trololo',
 			'SORT' => '1487',
@@ -538,7 +536,7 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 		$this->seeInField('NAME', 'Trololo');
 		$this->seeInField('CODE', 'trololo');
 		$this->seeInField('SORT', '1487');
-		$this->seePageIs('/my-bitrix/'.$this->module->id.'/data_storage/ib/'.$ib->id.'/show_section/'.$element->id);
+		$this->seePageIs('/my-bitrix/'.$this->module->id.'/data_storage/ib/'.$ib->id.'/edit_section/'.$section->id);
 	}
 
 	/** @test */
@@ -564,6 +562,38 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 		$this->seePageIs('/personal');
 	}
 
+	/** @test */
+	function it_can_bind_element_to_section(){
+		$ib = $this->createIblockOnForm($this->module);
+		$element = $this->createIblockElementOnForm($this->module, $ib, [
+			'NAME' => 'Testelem',
+			'CODE' => 'testelem',
+			'SORT' => '1487',
+		]);
+		$section = $this->createIblockSectionOnForm($this->module, $ib, [
+			'NAME' => 'Mysection',
+			'CODE' => 'mysection',
+			'SORT' => '1487',
+		]);
+		$element2 = $this->createIblockElementOnForm($this->module, $ib, [
+			'NAME'       => 'Fooel',
+			'CODE'       => 'fooel',
+			'SORT'       => '1487',
+			'SECTION_ID' => $section->id,
+		]);
+
+		$this->visit('/my-bitrix/'.$this->module->id.'/data_storage/ib/'.$ib->id);
+		$this->see('Testelem');
+		$this->dontSee('Fooel');
+
+		$this->visit('/my-bitrix/'.$this->module->id.'/data_storage/ib/'.$ib->id.'/section/'.$section->id);
+		$this->see('Fooel');
+		$this->dontSee('Testelem');
+
+		// $this->seeInField('NAME', 'Trololo');
+		// $this->seeInField('CODE', 'trololo');
+		// $this->seeInField('SORT', '1487');
+	}
 	// /** @test */
 	// function it_can_remove_iblock(){
 	// 	$this->signIn();

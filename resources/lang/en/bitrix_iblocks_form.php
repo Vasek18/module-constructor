@@ -171,4 +171,6 @@ Elements detail pictures settings',
 	'add_section_page_title'         => 'Infoblock test section addition',
 	'edit_section_page_title'        => 'Infoblock test section editing',
 	'test_section_section_tab_title' => 'Section',
+
+	'section_up' => 'Up',
 ];

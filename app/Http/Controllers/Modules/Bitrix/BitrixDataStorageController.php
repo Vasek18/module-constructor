@@ -259,8 +259,8 @@ class BitrixDataStorageController extends Controller{
 			'module'           => $module,
 			'iblock'           => $iblock,
 			'properties'       => $iblock->properties()->orderBy('sort', 'asc')->get(),
-			'elements'         => $iblock->elements()->orderBy('sort', 'asc')->get(),
-			'sections'         => $iblock->sections()->orderBy('sort', 'asc')->get(),
+			'elements'         => $iblock->elements()->where('parent_section_id', null)->orWhere('parent_section_id', 0)->orderBy('sort', 'asc')->get(),
+			'sections'         => $iblock->sections()->where('parent_section_id', null)->orWhere('parent_section_id', 0)->orderBy('sort', 'asc')->get(),
 			'properties_types' => BitrixIblocksProps::$types
 		];
 
@@ -336,10 +336,10 @@ class BitrixDataStorageController extends Controller{
 
 		BitrixInfoblocks::writeInFile($module);
 
-		return redirect(action('Modules\Bitrix\BitrixDataStorageController@show_element', [$module->id, $iblock->id, $element->id]));
+		return redirect(action('Modules\Bitrix\BitrixDataStorageController@edit_element', [$module->id, $iblock->id, $element->id]));
 	}
 
-	public function show_element(Bitrix $module, BitrixInfoblocks $iblock, BitrixIblocksElements $element, Request $request){
+	public function edit_element(Bitrix $module, BitrixInfoblocks $iblock, BitrixIblocksElements $element, Request $request){
 		if (!$this->moduleOwnsIblock($module, $iblock)){
 			return $this->unauthorized($request);
 		}
@@ -457,10 +457,31 @@ class BitrixDataStorageController extends Controller{
 
 		BitrixInfoblocks::writeInFile($module);
 
-		return redirect(action('Modules\Bitrix\BitrixDataStorageController@show_section', [$module->id, $iblock->id, $section->id]));
+		return redirect(action('Modules\Bitrix\BitrixDataStorageController@edit_section', [$module->id, $iblock->id, $section->id]));
 	}
 
 	public function show_section(Bitrix $module, BitrixInfoblocks $iblock, BitrixIblocksSections $section, Request $request){
+		if (!$this->moduleOwnsIblock($module, $iblock)){
+			return $this->unauthorized($request);
+		}
+		if (!$this->iblockOwnsSection($iblock, $section)){
+			return $this->unauthorized($request);
+		}
+
+		$data = [
+			'module'           => $module,
+			'iblock'           => $iblock,
+			'properties'       => $iblock->properties()->orderBy('sort', 'asc')->get(),
+			'elements'         => $section->elements()->orderBy('sort', 'asc')->get(),
+			'sections'         => $section->sections()->orderBy('sort', 'asc')->get(),
+			'properties_types' => BitrixIblocksProps::$types,
+			'section'          => $section,
+		];
+
+		return view("bitrix.data_storage.add_ib", $data);
+	}
+
+	public function edit_section(Bitrix $module, BitrixInfoblocks $iblock, BitrixIblocksSections $section, Request $request){
 		if (!$this->moduleOwnsIblock($module, $iblock)){
 			return $this->unauthorized($request);
 		}

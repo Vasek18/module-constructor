@@ -126,13 +126,14 @@ Route::group(['prefix' => 'my-bitrix', 'middleware' => ['bitrix.owner', 'auth']]
 
 			Route::get('{iblock}/create_element', ['uses' => 'Modules\Bitrix\BitrixDataStorageController@create_element']); // todo скорее всего ещё подгруппа
 			Route::post('{iblock}/store_element', ['uses' => 'Modules\Bitrix\BitrixDataStorageController@store_element']); // todo скорее всего ещё подгруппа
-			Route::get('{iblock}/show_element/{element}', ['uses' => 'Modules\Bitrix\BitrixDataStorageController@show_element']); // todo скорее всего ещё подгруппа
+			Route::get('{iblock}/edit_element/{element}', ['uses' => 'Modules\Bitrix\BitrixDataStorageController@edit_element']); // todo скорее всего ещё подгруппа
 			Route::post('{iblock}/save_element/{element}', ['uses' => 'Modules\Bitrix\BitrixDataStorageController@save_element']); // todo скорее всего ещё подгруппа
 			Route::get('{iblock}/delete_element/{element}', ['uses' => 'Modules\Bitrix\BitrixDataStorageController@delete_element']); // todo скорее всего ещё подгруппа
 
 			Route::get('{iblock}/create_section', ['uses' => 'Modules\Bitrix\BitrixDataStorageController@create_section']); // todo скорее всего ещё подгруппа
 			Route::post('{iblock}/store_section', ['uses' => 'Modules\Bitrix\BitrixDataStorageController@store_section']); // todo скорее всего ещё подгруппа
-			Route::get('{iblock}/show_section/{section}', ['uses' => 'Modules\Bitrix\BitrixDataStorageController@show_section']); // todo скорее всего ещё подгруппа
+			Route::get('{iblock}/edit_section/{section}', ['uses' => 'Modules\Bitrix\BitrixDataStorageController@edit_section']); // todo скорее всего ещё подгруппа
+			Route::get('{iblock}/section/{section}', ['uses' => 'Modules\Bitrix\BitrixDataStorageController@show_section']); // todo скорее всего ещё подгруппа
 			Route::post('{iblock}/save_section/{section}', ['uses' => 'Modules\Bitrix\BitrixDataStorageController@save_section']); // todo скорее всего ещё подгруппа
 			Route::get('{iblock}/delete_section/{section}', ['uses' => 'Modules\Bitrix\BitrixDataStorageController@delete_section']); // todo скорее всего ещё подгруппа
 

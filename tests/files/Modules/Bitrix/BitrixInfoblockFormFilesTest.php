@@ -459,7 +459,7 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 
 		$this->assertEquals(1, count($gottenInstallationFuncCodeArray));
 		$this->assertEquals($expectedInstallationFuncCodeArray, $gottenInstallationFuncCodeArray[0]);
-		$this->assertArraySubset([$this->module->lang_key.'_IBLOCK_TROLOLO_NAME' => 'Ololo'], $installFileLangArr);
+		$this->assertEquals($installFileLangArr[$this->module->lang_key.'_IBLOCK_TROLOLO_NAME'], 'Ololo');
 	}
 
 	/** @test */
@@ -641,8 +641,8 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 		$this->assertEquals(1, count($gottenInstallationFuncCodeArray));
 		$this->assertEquals($expectedInstallationFuncCodeArray, $gottenInstallationFuncCodeArray[0]);
 		$this->assertEquals($expectedPropCreationCodeArray, $gottenInstallationPropsFuncCodeArray[0], 'Prop array doesnt match');
-		$this->assertArraySubset([$this->module->lang_key.'_IBLOCK_TROLOLO_NAME' => 'Ololo'], $installFileLangArr);
-		$this->assertArraySubset([$this->module->lang_key.'_IBLOCK_TROLOLO_PARAM_TEST_NAME' => 'Тест'], $installFileLangArr);
+		$this->assertEquals($installFileLangArr[$this->module->lang_key.'_IBLOCK_TROLOLO_NAME'], 'Ololo');
+		$this->assertEquals($installFileLangArr[$this->module->lang_key.'_IBLOCK_TROLOLO_PARAM_TEST_NAME'], 'Тест');
 	}
 
 	/** @test */
@@ -1396,7 +1396,6 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 
 		$this->assertEquals(1, count($gottenInstallationFuncCodeArray));
 		$this->assertEquals($expectedInstallationFuncCodeArray, $gottenInstallationFuncCodeArray[0]);
-		$this->assertArrayHasKey($this->module->lang_key.'_IBLOCK_TROLOLO_NAME', $installFileLangArr);
 		$this->assertEquals($installFileLangArr[$this->module->lang_key.'_IBLOCK_TROLOLO_NAME'], 'Ololo');
 	}
 
@@ -1789,9 +1788,7 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 		];
 
 		$this->assertEquals($expectedInstallationElementsFuncCodeArray, $gottenInstallationElementsFuncCodeArray[0]);
-		$this->assertArrayHasKey($iblock->lang_key.'_ELEMENT__NAME', $installFileLangArr);
 		$this->assertEquals($installFileLangArr[$iblock->lang_key.'_ELEMENT__NAME'], 'Тест');
-		$this->assertArrayHasKey($iblock->lang_key.'_ELEMENT__PROP_TESTOVOE_SVOISVTO_VALUE', $installFileLangArr);
 		$this->assertEquals($installFileLangArr[$iblock->lang_key.'_ELEMENT__PROP_TESTOVOE_SVOISVTO_VALUE'], 'Ололо');
 
 		$this->assertEquals($expectedInstallationElementsFuncCodeArray2, $gottenInstallationElementsFuncCodeArray[1]);
@@ -1901,6 +1898,46 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 		$this->assertEquals($installFileLangArr[$iblock->lang_key.'_SECTION_TROLOLO_NAME'], 'Trololo');
 
 		$this->assertNotFalse(strpos($installationFileContent, 'function createIblockSection'));
+	}
+
+	/** @test */
+	function it_can_bind_element_to_section(){
+		$iblock = $this->createIblockOnForm($this->module);
+		$element = $this->createIblockElementOnForm($this->module, $iblock, [
+			'NAME' => 'Testelem',
+			'CODE' => 'testelem',
+		]);
+		$section = $this->createIblockSectionOnForm($this->module, $iblock, [
+			'NAME' => 'Mysection',
+			'CODE' => 'mysection',
+		]);
+		$element2 = $this->createIblockElementOnForm($this->module, $iblock, [
+			'NAME'       => 'Fooel',
+			'CODE'       => 'fooel',
+			'SECTION_ID' => $section->id,
+		]);
+
+		$gottenInstallationSectionsFuncCodeArray = $this->getIblockSectionsCreationFuncCallParamsArray($this->module);
+		$gottenInstallationElementsFuncCodeArray = $this->getIblockElementsCreationFuncCallParamsArray($this->module);
+
+		$expectedInstallationElementFuncCodeArray1 = [
+			"IBLOCK_ID" => '$iblockID',
+			"ACTIVE"    => "Y",
+			"SORT"      => "500",
+			"CODE"      => "testelem",
+			"NAME"      => 'Loc::getMessage("'.$iblock->lang_key.'_ELEMENT_TESTELEM_NAME")',
+		];
+		$expectedInstallationElementFuncCodeArray2 = [
+			"IBLOCK_ID"         => '$iblockID',
+			"ACTIVE"            => "Y",
+			"SORT"              => "500",
+			"CODE"              => "fooel",
+			"NAME"              => 'Loc::getMessage("'.$iblock->lang_key.'_ELEMENT_FOOEL_NAME")',
+			"IBLOCK_SECTION_ID" => '$section'.$section->id.'ID',
+		];
+
+		$this->assertEquals($expectedInstallationElementFuncCodeArray1, $gottenInstallationElementsFuncCodeArray[0]);
+		$this->assertEquals($expectedInstallationElementFuncCodeArray2, $gottenInstallationElementsFuncCodeArray[1]);
 	}
 }
 

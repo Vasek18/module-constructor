@@ -1,4 +1,6 @@
 (function() {
+  var hash;
+
   $(document).on("change", "[data-transform]", function() {
     var input, transform, val;
     input = $(this);
@@ -26,6 +28,27 @@
   });
 
   $('[data-toggle="popover"]').popover();
+
+  $(document).on("shown.bs.tab", 'a[data-toggle="tab"]', function() {
+    var hash;
+    hash = $(this).attr('data-hash');
+    if (hash) {
+      window.location.hash = hash;
+    } else {
+      window.location.hash = '';
+    }
+  });
+
+  hash = window.location.hash.replace(/#/, '');
+
+  if (hash) {
+    if ($(".tab-pane#" + hash).length) {
+      $("[data-toggle='tab']").parent('li').removeClass('active');
+      $("[data-toggle='tab'][href='#" + hash + "']").parent('li').addClass('active');
+      $(".tab-pane").removeClass('active');
+      $(".tab-pane#" + hash).addClass('active');
+    }
+  }
 
 }).call(this);
 

@@ -41,3 +41,27 @@ $(document).on "click", ".human_ajax_deletion", ->
 	return false
 
 $('[data-toggle="popover"]').popover()
+
+# по клику на таб добавляем хеш
+$(document).on "shown.bs.tab", 'a[data-toggle="tab"]', ->
+	hash = $(this).attr 'data-hash'
+
+	if hash
+		window.location.hash = hash;
+	else
+		window.location.hash = '';
+
+	return
+
+
+# если есть хеш, то показываем нужную вкладку активной
+hash = window.location.hash.replace(/#/, '')
+if (hash)
+	if $(".tab-pane##{hash}").length
+		# заголовок
+		$("[data-toggle='tab']").parent('li').removeClass 'active'
+		$("[data-toggle='tab'][href='##{hash}']").parent('li').addClass 'active'
+
+		# содержание
+		$(".tab-pane").removeClass 'active'
+		$(".tab-pane##{hash}").addClass 'active'

@@ -165,12 +165,12 @@ class BitrixInfoblocks extends Model{
 			$code .= $property->generateCreationCode();
 		}
 
-		foreach ($this->elements as $element){
-			$code .= $element->generateCreationCode();
-		}
-
 		foreach ($this->sections as $section){
 			$code .= $section->generateCreationCode();
+		}
+		
+		foreach ($this->elements as $element){
+			$code .= $element->generateCreationCode();
 		}
 
 		return $code;

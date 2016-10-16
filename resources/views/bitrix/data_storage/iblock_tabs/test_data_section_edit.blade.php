@@ -11,7 +11,7 @@
 @section('page')
     <p>
         <a class="btn btn-primary"
-           href="{{ action('Modules\Bitrix\BitrixDataStorageController@detail_ib', [$module->id, $iblock->id]) }}">
+           href="{{ action('Modules\Bitrix\BitrixDataStorageController@detail_ib', [$module->id, $iblock->id]) }}#test_data">
             {{ trans('bitrix_iblocks_form.back_to_iblock') }}
         </a>
     </p>
