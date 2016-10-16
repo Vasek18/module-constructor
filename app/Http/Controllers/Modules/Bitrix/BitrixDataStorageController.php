@@ -140,7 +140,24 @@ class BitrixDataStorageController extends Controller{
 			}
 		}
 
+		$sections = [];
+		if (is_array($arr['Классификатор']['Группы'])){
+			foreach ($arr['Классификатор']['Группы'] as $itemArr){
+				$sectionArr = [
+					'iblock_id' => $iblock->id,
+					'name'      => $itemArr['Наименование'],
+					'active'    => true,
+					'code'      => $itemArr['БитриксКод'],
+				];
+
+				$sections[$itemArr['Ид']] = BitrixIblocksSections::create($sectionArr);
+			}
+		}
+
 		if (is_array($arr['Каталог']['Товары'])){ // todo тест на отсутвие товаров в xml
+			if (isset($arr['Каталог']['Товары']['Товар']['Ид'])){ // случай одного товар
+				$arr['Каталог']['Товары']['Товар'] = Array($arr['Каталог']['Товары']['Товар']);
+			}
 			foreach ($arr['Каталог']['Товары']['Товар'] as $itemArr){
 				$elementArr = [
 					'iblock_id' => $iblock->id,
@@ -169,6 +186,13 @@ class BitrixDataStorageController extends Controller{
 
 							$tempPropValArr[$prop->id] = ['value' => $val];
 						}
+					}
+				}
+
+				// привязка к группе
+				if (isset($itemArr['Группы'])){
+					if (isset($itemArr['Группы']['Ид']) && isset($sections[$itemArr['Группы']['Ид']])){
+						$elementArr['parent_section_id'] = $sections[$itemArr['Группы']['Ид']]->id;
 					}
 				}
 

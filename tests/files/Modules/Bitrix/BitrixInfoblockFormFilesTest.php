@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Modules\Bitrix\BitrixIblocksSections;
 use App\Models\Modules\Bitrix\BitrixInfoblocks;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Helpers\vArrParse;
@@ -1938,6 +1939,59 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 
 		$this->assertEquals($expectedInstallationElementFuncCodeArray1, $gottenInstallationElementsFuncCodeArray[0]);
 		$this->assertEquals($expectedInstallationElementFuncCodeArray2, $gottenInstallationElementsFuncCodeArray[1]);
+	}
+
+	/** @test */
+	function it_imports_iblock_section_with_element_in_it_from_xml(){
+		$file = public_path().'/for_tests/test_iblock_with_section.xml';
+		$this->visit('/my-bitrix/'.$this->module->id.$this->path);
+		$this->attach($file, 'file');
+		$this->press('import');
+
+		$iblock = BitrixInfoblocks::where('code', "test")->first();
+		$gottenInstallationElementsFuncCodeArray = $this->getIblockElementsCreationFuncCallParamsArray($this->module);
+		$gottenInstallationSectionsFuncCodeArray = $this->getIblockSectionsCreationFuncCallParamsArray($this->module);
+		$installFileLangArr = $this->getLangFileArray($this->module);
+		$section = BitrixIblocksSections::where('code', 'testovyy_razdel')->first();
+
+		$expectedInstallationElementFuncCodeArray = [
+			"IBLOCK_ID"         => '$iblockID',
+			"ACTIVE"            => "Y",
+			"SORT"              => "500",
+			"CODE"              => "vlogennyy_element",
+			"NAME"              => 'Loc::getMessage("'.$iblock->lang_key.'_ELEMENT_VLOGENNYY_ELEMENT_NAME")',
+			"IBLOCK_SECTION_ID" => '$section'.$section->id.'ID',
+			"PROPERTY_VALUES"   => Array(
+				"ANOTHER_ONE" => 'Loc::getMessage("'.$iblock->lang_key.'_ELEMENT_VLOGENNYY_ELEMENT_PROP_ANOTHER_ONE_VALUE")',
+			)
+		];
+		$expectedInstallationSectionFuncCodeArray = [
+			"IBLOCK_ID" => '$iblockID',
+			"ACTIVE"    => "Y",
+			"SORT"      => "500",
+			"CODE"      => "testovyy_razdel",
+			"NAME"      => 'Loc::getMessage("'.$iblock->lang_key.'_SECTION_TESTOVYY_RAZDEL_NAME")',
+		];
+
+		$this->assertEquals($expectedInstallationElementFuncCodeArray, $gottenInstallationElementsFuncCodeArray[0]);
+		$this->assertEquals($installFileLangArr[$iblock->lang_key.'_ELEMENT_VLOGENNYY_ELEMENT_NAME'], 'Вложенный элемент');
+
+		$this->assertEquals($expectedInstallationSectionFuncCodeArray, $gottenInstallationSectionsFuncCodeArray[0]);
+		$this->assertEquals($installFileLangArr[$iblock->lang_key.'_SECTION_TESTOVYY_RAZDEL_NAME'], 'Тестовый раздел');
+	}
+
+	/** @test */
+	function it_imports_empty_iblock_from_xml(){
+		$file = public_path().'/for_tests/test_empty_iblock.xml';
+		$this->visit('/my-bitrix/'.$this->module->id.$this->path);
+		$this->attach($file, 'file');
+		$this->press('import');
+
+		$gottenInstallationElementsFuncCodeArray = $this->getIblockElementsCreationFuncCallParamsArray($this->module);
+		$gottenInstallationSectionsFuncCodeArray = $this->getIblockSectionsCreationFuncCallParamsArray($this->module);
+
+		$this->assertEquals(0, count($gottenInstallationElementsFuncCodeArray));
+		$this->assertEquals(0, count($gottenInstallationSectionsFuncCodeArray));
 	}
 }
 
