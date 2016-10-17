@@ -45,33 +45,32 @@ class BitrixIblocksProps extends Model{
 		]
 	];
 
-	public function generateCreationCode(){
+	public function generateCreationCode($startingTabs = 0){
 		$type = $this->type;
 		$user_type = '';
 		if (strpos($this->type, ':')){
 			list($type, $user_type) = explode(':', $this->type);
 		}
 		$code = '';
-		$code .= "\t\t".'$this->createIblockProp('.PHP_EOL;
-		$code .= "\t\t\t".'Array('.PHP_EOL;
-		$code .= "\t\t\t\t".'"IBLOCK_ID"'." => ".'$iblockID,'.PHP_EOL;
-		$code .= "\t\t\t\t".'"ACTIVE"'." => ".'"Y",'.PHP_EOL;
-		$code .= "\t\t\t\t".'"SORT"'." => ".'"'.$this->sort.'",'.PHP_EOL;
-		$code .= "\t\t\t\t".'"CODE"'." => ".'"'.$this->code.'",'.PHP_EOL;
-		$code .= "\t\t\t\t".'"NAME"'." => ".'Loc::getMessage("'.$this->lang_key.'_NAME"),'.PHP_EOL;
-		$code .= "\t\t\t\t".'"PROPERTY_TYPE"'." => ".'"'.$type.'",'.PHP_EOL;
-		$code .= "\t\t\t\t".'"USER_TYPE"'." => ".'"'.$user_type.'",'.PHP_EOL;
-		$code .= "\t\t\t\t".'"MULTIPLE"'.' => "'.($this->multiple ? 'Y' : 'N').'",'.PHP_EOL;
-		$code .= "\t\t\t\t".'"IS_REQUIRED"'." => ".'"'.($this->is_required ? 'Y' : 'N').'",'.PHP_EOL;
+		$code .= str_repeat("\t", $startingTabs).'$prop'.$this->id.'ID = $this->createIblockProp('.PHP_EOL;
+		$code .= str_repeat("\t", $startingTabs)."\t".'Array('.PHP_EOL;
+		$code .= str_repeat("\t", $startingTabs)."\t\t".'"IBLOCK_ID"'." => ".'$iblockID,'.PHP_EOL;
+		$code .= str_repeat("\t", $startingTabs)."\t\t".'"ACTIVE"'." => ".'"Y",'.PHP_EOL;
+		$code .= str_repeat("\t", $startingTabs)."\t\t".'"SORT"'." => ".'"'.$this->sort.'",'.PHP_EOL;
+		$code .= str_repeat("\t", $startingTabs)."\t\t".'"CODE"'." => ".'"'.$this->code.'",'.PHP_EOL;
+		$code .= str_repeat("\t", $startingTabs)."\t\t".'"NAME"'." => ".'Loc::getMessage("'.$this->lang_key.'_NAME"),'.PHP_EOL;
+		$code .= str_repeat("\t", $startingTabs)."\t\t".'"PROPERTY_TYPE"'." => ".'"'.$type.'",'.PHP_EOL;
+		$code .= str_repeat("\t", $startingTabs)."\t\t".'"USER_TYPE"'." => ".'"'.$user_type.'",'.PHP_EOL;
+		$code .= str_repeat("\t", $startingTabs)."\t\t".'"MULTIPLE"'.' => "'.($this->multiple ? 'Y' : 'N').'",'.PHP_EOL;
+		$code .= str_repeat("\t", $startingTabs)."\t\t".'"IS_REQUIRED"'." => ".'"'.($this->is_required ? 'Y' : 'N').'",'.PHP_EOL;
+		$code .= str_repeat("\t", $startingTabs)."\t".')'.PHP_EOL;
+		$code .= str_repeat("\t", $startingTabs).');'.PHP_EOL;
+
 		if ($this->values()->count()){
-			$code .= "\t\t\t\t".'"VALUES"'.' => Array('.PHP_EOL;
 			foreach ($this->values as $value){
-				$code .= $value->generateCreationCode(5);
+				$code .= $value->generateCreationCode($startingTabs);
 			}
-			$code .= "\t\t\t\t".'),'.PHP_EOL;
 		}
-		$code .= "\t\t\t".')'.PHP_EOL;
-		$code .= "\t\t".');'.PHP_EOL;
 
 		return $code;
 	}

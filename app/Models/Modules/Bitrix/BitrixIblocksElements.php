@@ -34,6 +34,8 @@ class BitrixIblocksElements extends Model{
 		$code = '';
 		if ($this->props){
 			foreach ($this->props as $prop){
+				$replaceByLoc = true;
+
 				$val = $prop->pivot->value;
 
 				if (strpos($val, '_###_') !== false){
@@ -46,11 +48,21 @@ class BitrixIblocksElements extends Model{
 					}
 				}
 
+				if ($prop->type == 'L'){
+					$val = '$val'.$val.'ID';
+					$replaceByLoc = false;
+				}
+
 				if (!$val){
 					continue;
 				}
 
+				if ($replaceByLoc){
 				$propsCode .= "\t\t\t\t\t".'"'.$prop->code.'"'." => ".'Loc::getMessage("'.$this->lang_key.'_PROP_'.$prop->code.'_VALUE"),'.PHP_EOL;
+			}
+			else{
+				$propsCode .= "\t\t\t\t\t".'"'.$prop->code.'"'." => ".$val.','.PHP_EOL;
+			}
 			}
 		}
 

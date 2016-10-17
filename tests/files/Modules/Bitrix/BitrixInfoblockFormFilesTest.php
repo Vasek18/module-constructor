@@ -1,12 +1,12 @@
 <?php
 
+use App\Models\Modules\Bitrix\BitrixIblocksPropsVals;
 use App\Models\Modules\Bitrix\BitrixIblocksSections;
 use App\Models\Modules\Bitrix\BitrixInfoblocks;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Helpers\vArrParse;
 use App\Helpers\vFuncParse;
 use App\Models\Modules\Bitrix\BitrixIblocksProps;
-use App\Models\Modules\Bitrix\BitrixIblocksElements;
 
 // todo чёрт ногу сломит
 // todo отключение чекбоксов
@@ -91,6 +91,21 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 		// dd($installationFileContent);
 
 		preg_match_all('/\$this\-\>createIblockSection\(([^\;]+)\);/is', $gottenInstallationFuncCode, $matches);
+		// dd($matches[1]);
+		foreach ($matches[1] as $gottenInstallationFuncCodePart){
+			$answer[] = vArrParse::parseFromText($gottenInstallationFuncCodePart);
+		}
+
+		return $answer;
+	}
+
+	function getIblockPropsValsCreationFuncCallParamsArray($module){
+		$answer = [];
+		$installationFileContent = file_get_contents($module->getFolder(true).'/install/index.php');
+		$gottenInstallationFuncCode = vFuncParse::parseFromText($installationFileContent, 'createNecessaryIblocks');
+		// dd($installationFileContent);
+
+		preg_match_all('/\$this\-\>createIblockPropVal\(([^\;]+)\);/is', $gottenInstallationFuncCode, $matches);
 		// dd($matches[1]);
 		foreach ($matches[1] as $gottenInstallationFuncCodePart){
 			$answer[] = vArrParse::parseFromText($gottenInstallationFuncCodePart);
@@ -1797,6 +1812,136 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 	}
 
 	/** @test */
+	function it_imports_iblock_section_with_element_in_it_from_xml(){
+		$file = public_path().'/for_tests/test_iblock_with_section.xml';
+		$this->visit('/my-bitrix/'.$this->module->id.$this->path);
+		$this->attach($file, 'file');
+		$this->press('import');
+
+		$iblock = BitrixInfoblocks::where('code', "test")->first();
+		$gottenInstallationElementsFuncCodeArray = $this->getIblockElementsCreationFuncCallParamsArray($this->module);
+		$gottenInstallationSectionsFuncCodeArray = $this->getIblockSectionsCreationFuncCallParamsArray($this->module);
+		$installFileLangArr = $this->getLangFileArray($this->module);
+		$section = BitrixIblocksSections::where('code', 'testovyy_razdel')->first();
+
+		$expectedInstallationElementFuncCodeArray = [
+			"IBLOCK_ID"         => '$iblockID',
+			"ACTIVE"            => "Y",
+			"SORT"              => "500",
+			"CODE"              => "vlogennyy_element",
+			"NAME"              => 'Loc::getMessage("'.$iblock->lang_key.'_ELEMENT_VLOGENNYY_ELEMENT_NAME")',
+			"IBLOCK_SECTION_ID" => '$section'.$section->id.'ID',
+			"PROPERTY_VALUES"   => Array(
+				"ANOTHER_ONE" => 'Loc::getMessage("'.$iblock->lang_key.'_ELEMENT_VLOGENNYY_ELEMENT_PROP_ANOTHER_ONE_VALUE")',
+			)
+		];
+		$expectedInstallationSectionFuncCodeArray = [
+			"IBLOCK_ID" => '$iblockID',
+			"ACTIVE"    => "Y",
+			"SORT"      => "500",
+			"CODE"      => "testovyy_razdel",
+			"NAME"      => 'Loc::getMessage("'.$iblock->lang_key.'_SECTION_TESTOVYY_RAZDEL_NAME")',
+		];
+
+		$this->assertEquals($expectedInstallationElementFuncCodeArray, $gottenInstallationElementsFuncCodeArray[0]);
+		$this->assertEquals($installFileLangArr[$iblock->lang_key.'_ELEMENT_VLOGENNYY_ELEMENT_NAME'], 'Вложенный элемент');
+
+		$this->assertEquals($expectedInstallationSectionFuncCodeArray, $gottenInstallationSectionsFuncCodeArray[0]);
+		$this->assertEquals($installFileLangArr[$iblock->lang_key.'_SECTION_TESTOVYY_RAZDEL_NAME'], 'Тестовый раздел');
+	}
+
+	/** @test */
+	function it_imports_empty_iblock_from_xml(){
+		$file = public_path().'/for_tests/test_empty_iblock.xml';
+		$this->visit('/my-bitrix/'.$this->module->id.$this->path);
+		$this->attach($file, 'file');
+		$this->press('import');
+
+		$gottenInstallationElementsFuncCodeArray = $this->getIblockElementsCreationFuncCallParamsArray($this->module);
+		$gottenInstallationSectionsFuncCodeArray = $this->getIblockSectionsCreationFuncCallParamsArray($this->module);
+
+		$this->assertEquals(0, count($gottenInstallationElementsFuncCodeArray));
+		$this->assertEquals(0, count($gottenInstallationSectionsFuncCodeArray));
+	}
+
+	/** @test */
+	function it_imports_list_prop_from_xml(){
+		$file = public_path().'/for_tests/test_iblock_with_list_prop.xml';
+		$this->visit('/my-bitrix/'.$this->module->id.$this->path);
+		$this->attach($file, 'file');
+		$this->press('import');
+
+		$gottenInstallationPropsFuncCodeArray = $this->getIblockPropsCreationFuncCallParamsArray($this->module);
+		$gottenInstallationElementsFuncCodeArray = $this->getIblockElementsCreationFuncCallParamsArray($this->module);
+		$gottenInstallationPropsValsFuncCodeArray = $this->getIblockPropsValsCreationFuncCallParamsArray($this->module);
+
+		$prop = BitrixIblocksProps::where('code', 'COLOR')->first();
+		$val1 = BitrixIblocksPropsVals::where('value', 'Зелёный')->first();
+		$val2 = BitrixIblocksPropsVals::where('value', 'Любви')->first();
+		$val3 = BitrixIblocksPropsVals::where('value', 'Синий')->first();
+
+		$propArray = Array(
+			"IBLOCK_ID"     => '$iblockID',
+			"ACTIVE"        => "Y",
+			"SORT"          => "500",
+			"CODE"          => "COLOR",
+			"NAME"          => 'Loc::getMessage("'.$this->module->lang_key.'_IBLOCK_TEST_PARAM_COLOR_NAME")',
+			"PROPERTY_TYPE" => "L",
+			"USER_TYPE"     => "",
+			"MULTIPLE"      => "N",
+			"IS_REQUIRED"   => "N",
+		);
+
+		$val1Arr = Array(
+			"VALUE"       => 'Loc::getMessage("'.$this->module->lang_key.'_IBLOCK_TEST_PARAM_COLOR_VAL_'.$val1->id.'_VALUE")',
+			"DEF"         => "Y",
+			"SORT"        => "100",
+			"PROPERTY_ID" => '$prop'.$prop->id."ID",
+		);
+		$val2Arr = Array(
+			"VALUE"       => 'Loc::getMessage("'.$this->module->lang_key.'_IBLOCK_TEST_PARAM_COLOR_VAL_'.$val2->id.'_VALUE")',
+			"DEF"         => "N",
+			"SORT"        => "200",
+			"PROPERTY_ID" => '$prop'.$prop->id."ID",
+		);
+		$val3Arr = Array(
+			"VALUE"       => 'Loc::getMessage("'.$this->module->lang_key.'_IBLOCK_TEST_PARAM_COLOR_VAL_'.$val3->id.'_VALUE")',
+			"DEF"         => "N",
+			"SORT"        => "300",
+			"PROPERTY_ID" => '$prop'.$prop->id."ID",
+		);
+
+		$elArr1 = Array(
+			"IBLOCK_ID" => '$iblockID',
+			"ACTIVE" => "Y",
+			"SORT" => "500",
+			"CODE" => "",
+			"NAME" => 'Loc::getMessage("'.$this->module->lang_key.'_IBLOCK_TEST_ELEMENT__NAME")',
+			"PROPERTY_VALUES" => Array(
+				"COLOR" => '$val'.$val1->id.'ID',
+			),
+		);
+
+		$elArr2 = Array(
+			"IBLOCK_ID" => '$iblockID',
+			"ACTIVE" => "Y",
+			"SORT" => "500",
+			"CODE" => "",
+			"NAME" => 'Loc::getMessage("'.$this->module->lang_key.'_IBLOCK_TEST_ELEMENT__NAME")',
+			"PROPERTY_VALUES" => Array(
+				"COLOR" => '$val'.$val2->id.'ID',
+			),
+		);
+
+		$this->assertEquals($propArray, $gottenInstallationPropsFuncCodeArray[0]);
+		$this->assertEquals($val1Arr, $gottenInstallationPropsValsFuncCodeArray[0]);
+		$this->assertEquals($val2Arr, $gottenInstallationPropsValsFuncCodeArray[1]);
+		$this->assertEquals($val3Arr, $gottenInstallationPropsValsFuncCodeArray[2]);
+		$this->assertEquals($elArr1, $gottenInstallationElementsFuncCodeArray[0]);
+		$this->assertEquals($elArr2, $gottenInstallationElementsFuncCodeArray[1]);
+	}
+
+	/** @test */
 	function not_author_cannot_delete_prop_of_anothers_iblock(){
 		$iblock = $this->createIblockOnForm($this->module, [
 				"properties[NAME][0]" => "Тест",
@@ -1939,59 +2084,6 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 
 		$this->assertEquals($expectedInstallationElementFuncCodeArray1, $gottenInstallationElementsFuncCodeArray[0]);
 		$this->assertEquals($expectedInstallationElementFuncCodeArray2, $gottenInstallationElementsFuncCodeArray[1]);
-	}
-
-	/** @test */
-	function it_imports_iblock_section_with_element_in_it_from_xml(){
-		$file = public_path().'/for_tests/test_iblock_with_section.xml';
-		$this->visit('/my-bitrix/'.$this->module->id.$this->path);
-		$this->attach($file, 'file');
-		$this->press('import');
-
-		$iblock = BitrixInfoblocks::where('code', "test")->first();
-		$gottenInstallationElementsFuncCodeArray = $this->getIblockElementsCreationFuncCallParamsArray($this->module);
-		$gottenInstallationSectionsFuncCodeArray = $this->getIblockSectionsCreationFuncCallParamsArray($this->module);
-		$installFileLangArr = $this->getLangFileArray($this->module);
-		$section = BitrixIblocksSections::where('code', 'testovyy_razdel')->first();
-
-		$expectedInstallationElementFuncCodeArray = [
-			"IBLOCK_ID"         => '$iblockID',
-			"ACTIVE"            => "Y",
-			"SORT"              => "500",
-			"CODE"              => "vlogennyy_element",
-			"NAME"              => 'Loc::getMessage("'.$iblock->lang_key.'_ELEMENT_VLOGENNYY_ELEMENT_NAME")',
-			"IBLOCK_SECTION_ID" => '$section'.$section->id.'ID',
-			"PROPERTY_VALUES"   => Array(
-				"ANOTHER_ONE" => 'Loc::getMessage("'.$iblock->lang_key.'_ELEMENT_VLOGENNYY_ELEMENT_PROP_ANOTHER_ONE_VALUE")',
-			)
-		];
-		$expectedInstallationSectionFuncCodeArray = [
-			"IBLOCK_ID" => '$iblockID',
-			"ACTIVE"    => "Y",
-			"SORT"      => "500",
-			"CODE"      => "testovyy_razdel",
-			"NAME"      => 'Loc::getMessage("'.$iblock->lang_key.'_SECTION_TESTOVYY_RAZDEL_NAME")',
-		];
-
-		$this->assertEquals($expectedInstallationElementFuncCodeArray, $gottenInstallationElementsFuncCodeArray[0]);
-		$this->assertEquals($installFileLangArr[$iblock->lang_key.'_ELEMENT_VLOGENNYY_ELEMENT_NAME'], 'Вложенный элемент');
-
-		$this->assertEquals($expectedInstallationSectionFuncCodeArray, $gottenInstallationSectionsFuncCodeArray[0]);
-		$this->assertEquals($installFileLangArr[$iblock->lang_key.'_SECTION_TESTOVYY_RAZDEL_NAME'], 'Тестовый раздел');
-	}
-
-	/** @test */
-	function it_imports_empty_iblock_from_xml(){
-		$file = public_path().'/for_tests/test_empty_iblock.xml';
-		$this->visit('/my-bitrix/'.$this->module->id.$this->path);
-		$this->attach($file, 'file');
-		$this->press('import');
-
-		$gottenInstallationElementsFuncCodeArray = $this->getIblockElementsCreationFuncCallParamsArray($this->module);
-		$gottenInstallationSectionsFuncCodeArray = $this->getIblockSectionsCreationFuncCallParamsArray($this->module);
-
-		$this->assertEquals(0, count($gottenInstallationElementsFuncCodeArray));
-		$this->assertEquals(0, count($gottenInstallationSectionsFuncCodeArray));
 	}
 }
 

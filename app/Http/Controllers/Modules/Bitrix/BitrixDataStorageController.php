@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Modules\Bitrix;
 
+use App\Models\Modules\Bitrix\BitrixIblocksPropsVals;
 use App\Models\Modules\Bitrix\BitrixIblocksSections;
 use Illuminate\Http\Request;
 
@@ -118,9 +119,10 @@ class BitrixDataStorageController extends Controller{
 			]);
 
 		$tempPropArr = [];
+		$vals = [];
 		foreach ($arr["Классификатор"]["Свойства"]['Свойство'] as $propArr){
 			if (isset($propArr["БитриксТипСвойства"])){ // считаем, что свойство от прочих элементов отличает именно это поле
-				BitrixIblocksProps::updateOrCreate(
+				$prop = BitrixIblocksProps::updateOrCreate(
 					[
 						'iblock_id' => $iblock->id,
 						'code'      => $propArr['БитриксКод']
@@ -135,6 +137,24 @@ class BitrixDataStorageController extends Controller{
 						'is_required' => ($propArr["БитриксОбязательное"] == 'true') ? true : false
 					]
 				);
+
+				if (isset($propArr['ВариантыЗначений']['Вариант'])){
+					// dd($propArr['ВариантыЗначений']['Вариант']);
+					foreach ($propArr['ВариантыЗначений']['Вариант'] as $valArr){
+						$vals[$valArr['Ид']] = BitrixIblocksPropsVals::updateOrCreate(
+							[
+								'prop_id' => $prop->id,
+								'value'   => $valArr['Значение']
+							],
+							[
+								'prop_id' => $prop->id,
+								'value'   => $valArr['Значение'],
+								'sort'    => $valArr["Сортировка"],
+								'default' => ($valArr["ПоУмолчанию"] == 'true') ? true : false
+							]
+						);
+					}
+				}
 
 				$tempPropArr[$propArr['Ид']] = $propArr['БитриксКод'];
 			}
@@ -182,6 +202,10 @@ class BitrixDataStorageController extends Controller{
 							$prop = BitrixIblocksProps::where('iblock_id', $iblock->id)->where('code', $tempPropArr[$propValArr['Ид']])->first();
 							if (!$prop){
 								continue;
+							}
+
+							if (isset($vals[$val])){ // типа xml_id варианта значения
+								$val = $vals[$val]->id;
 							}
 
 							$tempPropValArr[$prop->id] = ['value' => $val];

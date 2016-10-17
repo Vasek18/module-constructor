@@ -12,11 +12,14 @@ class BitrixIblocksPropsVals extends Model{
 
 	public function generateCreationCode($startingTabs = 0){
 		$code = '';
-		$code .= str_repeat("\t", $startingTabs)."".'Array('.PHP_EOL;
-		$code .= str_repeat("\t", $startingTabs)."\t".'"VALUE"'." => ".'Loc::getMessage("'.$this->lang_key.'_VALUE"),'.PHP_EOL;
-		$code .= str_repeat("\t", $startingTabs)."\t".'"DEF"'." => ".'"'.($this->default ? 'Y' : 'N').'",'.PHP_EOL;
-		$code .= str_repeat("\t", $startingTabs)."\t".'"SORT"'." => ".'"'.$this->sort.'",'.PHP_EOL;
-		$code .= str_repeat("\t", $startingTabs)."".'),'.PHP_EOL;
+		$code .= str_repeat("\t", $startingTabs).'$val'.$this->id.'ID = $this->createIblockPropVal('.PHP_EOL;
+		$code .= str_repeat("\t", $startingTabs)."\t".'Array('.PHP_EOL;
+		$code .= str_repeat("\t", $startingTabs)."\t\t".'"PROPERTY_ID"'." => ".'$prop'.$this->prop_id.'ID,'.PHP_EOL;
+		$code .= str_repeat("\t", $startingTabs)."\t\t".'"VALUE"'." => ".'Loc::getMessage("'.$this->lang_key.'_VALUE"),'.PHP_EOL;
+		$code .= str_repeat("\t", $startingTabs)."\t\t".'"DEF"'." => ".'"'.($this->default ? 'Y' : 'N').'",'.PHP_EOL;
+		$code .= str_repeat("\t", $startingTabs)."\t\t".'"SORT"'." => ".'"'.$this->sort.'",'.PHP_EOL;
+		$code .= str_repeat("\t", $startingTabs)."\t".')'.PHP_EOL;
+		$code .= str_repeat("\t", $startingTabs).');'.PHP_EOL;
 
 		return $code;
 	}

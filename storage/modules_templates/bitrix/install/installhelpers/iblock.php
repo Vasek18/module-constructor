@@ -98,3 +98,14 @@ function createIblockSection($arFields){
 
 	return false;
 }
+
+function createIblockPropVal($arFields){
+	CModule::IncludeModule("iblock");
+	$el = new CIBlockPropertyEnum;
+
+	if ($PROP_ID = $el->Add($arFields)){
+		return $PROP_ID;
+	}
+
+	return false;
+}

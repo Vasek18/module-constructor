@@ -39,11 +39,17 @@ class BitrixInfoblocks extends Model{
 		if ($module->infoblocks()->count()){
 			$module->addAdditionalInstallHelpersFunctions(['createIblockType', 'removeIblockType', 'createIblock'], 'iblock.php');
 			$issetProp = false;
+			$issetPropVals = false;
 			$issetElement = false;
 			$issetSections = false;
 			foreach ($module->infoblocks as $infoblock){
 				if ($infoblock->properties()->count()){
 					$issetProp = true;
+					foreach ($infoblock->properties as $property){
+						if ($property->values()->count()){
+							$issetPropVals = true;
+						}
+					}
 				}
 
 				if ($infoblock->elements()->count()){
@@ -61,6 +67,12 @@ class BitrixInfoblocks extends Model{
 				$module->removeAdditionalInstallHelpersFunctions(['createIblockProp']);
 			}
 
+			if ($issetPropVals){
+				$module->addAdditionalInstallHelpersFunctions(['createIblockPropVal'], 'iblock.php');
+			}else{
+				$module->removeAdditionalInstallHelpersFunctions(['createIblockPropVal']);
+			}
+
 			if ($issetElement){
 				$module->addAdditionalInstallHelpersFunctions(['createIblockElement'], 'iblock.php');
 			}else{
@@ -74,7 +86,7 @@ class BitrixInfoblocks extends Model{
 			}
 
 		}else{
-			$module->removeAdditionalInstallHelpersFunctions(['createIblockType', 'removeIblockType', 'createIblock', 'createIblockProp', 'createIblockElement', 'createIblockSection']);
+			$module->removeAdditionalInstallHelpersFunctions(['createIblockType', 'removeIblockType', 'createIblock', 'createIblockProp', 'createIblockElement', 'createIblockSection', 'createIblockPropVal']);
 		}
 	}
 
@@ -166,7 +178,7 @@ class BitrixInfoblocks extends Model{
 		$code .= "\t\t".');'.PHP_EOL;
 
 		foreach ($this->properties as $property){
-			$code .= $property->generateCreationCode();
+			$code .= $property->generateCreationCode(2);
 		}
 
 		foreach ($this->sections as $section){
