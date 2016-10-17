@@ -113,6 +113,10 @@ class BitrixInfoblocks extends Model{
 
 			foreach ($iblock->properties as $property){
 				$module->changeVarInLangFile($property->lang_key."_NAME", $property->name, '/lang/'.$module->default_lang.'/install/index.php');
+
+				foreach ($property->values as $val){
+					$module->changeVarInLangFile($val->lang_key."_VALUE", $val->value, '/lang/'.$module->default_lang.'/install/index.php');
+				}
 			}
 
 			foreach ($iblock->elements as $element){
@@ -168,7 +172,7 @@ class BitrixInfoblocks extends Model{
 		foreach ($this->sections as $section){
 			$code .= $section->generateCreationCode();
 		}
-		
+
 		foreach ($this->elements as $element){
 			$code .= $element->generateCreationCode();
 		}
@@ -232,6 +236,10 @@ class BitrixInfoblocks extends Model{
 
 		foreach ($this->properties as $property){
 			$this->module()->first()->changeVarInLangFile($property->lang_key."_NAME", "", '/lang/'.$this->module->default_lang.'/install/index.php');
+
+			foreach ($property->values as $val){
+				$this->module()->first()->changeVarInLangFile($val->lang_key."_VALUE", "", '/lang/'.$this->module->default_lang.'/install/index.php');
+			}
 		}
 
 		foreach ($this->elements as $element){

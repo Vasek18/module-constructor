@@ -63,6 +63,13 @@ class BitrixIblocksProps extends Model{
 		$code .= "\t\t\t\t".'"USER_TYPE"'." => ".'"'.$user_type.'",'.PHP_EOL;
 		$code .= "\t\t\t\t".'"MULTIPLE"'.' => "'.($this->multiple ? 'Y' : 'N').'",'.PHP_EOL;
 		$code .= "\t\t\t\t".'"IS_REQUIRED"'." => ".'"'.($this->is_required ? 'Y' : 'N').'",'.PHP_EOL;
+		if ($this->values()->count()){
+			$code .= "\t\t\t\t".'"VALUES"'.' => Array('.PHP_EOL;
+			foreach ($this->values as $value){
+				$code .= $value->generateCreationCode(5);
+			}
+			$code .= "\t\t\t\t".'),'.PHP_EOL;
+		}
 		$code .= "\t\t\t".')'.PHP_EOL;
 		$code .= "\t\t".');'.PHP_EOL;
 
@@ -75,5 +82,9 @@ class BitrixIblocksProps extends Model{
 
 	public function iblock(){
 		return $this->belongsTo('App\Models\Modules\Bitrix\BitrixInfoblocks');
+	}
+
+	public function values(){
+		return $this->hasMany('App\Models\Modules\Bitrix\BitrixIblocksPropsVals', 'prop_id');
 	}
 }
