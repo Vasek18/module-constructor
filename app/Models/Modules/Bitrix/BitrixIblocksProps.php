@@ -83,7 +83,11 @@ class BitrixIblocksProps extends Model{
 		return $this->belongsTo('App\Models\Modules\Bitrix\BitrixInfoblocks');
 	}
 
-	public function values(){
+	public function values(){ // todo заменить на vals для единобразия
+		return $this->hasMany('App\Models\Modules\Bitrix\BitrixIblocksPropsVals', 'prop_id');
+	}
+
+	public function vals(){
 		return $this->hasMany('App\Models\Modules\Bitrix\BitrixIblocksPropsVals', 'prop_id');
 	}
 }

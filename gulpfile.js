@@ -25,5 +25,6 @@ elixir(function(mix){
 		.coffee('bitrix_mail_event_create_form.coffee')
 		.coffee('bitrix_mail_template_form.coffee')
 		.coffee('bitrix_component_logic_wizard.coffee')
+		.coffee('bitrix_iblock.coffee')
 		.copy('node_modules/sweetalert/dist/sweetalert-dev.js', 'public/js/sweetalert.js')
 });

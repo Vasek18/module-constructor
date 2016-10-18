@@ -8,11 +8,16 @@
     @endif
 @stop
 
-@push('styles')
-<link href='/css/iblock_form.css'
-      rel='stylesheet'/>@endpush
-
 @section('page')
+    @push('scripts')
+    <script src="/js/bitrix_iblock.js"></script>
+    @endpush
+
+    @push('styles')
+    <link href='/css/iblock_form.css'
+          rel='stylesheet'/>
+    @endpush
+
     @if (count($errors) > 0)
         <div class="alert alert-danger">
             <strong>{{trans('validation.error')}}</strong> {{trans('validation.there_occur_errors')}}:<br><br>

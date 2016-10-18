@@ -173,4 +173,8 @@ Elements detail pictures settings',
 	'test_section_section_tab_title' => 'Section',
 
 	'section_up' => 'Up',
+
+	'val_xml_id' => 'XML_ID',
+	'val_value'  => 'Value',
+	'val_sort'   => 'Sorting',
 ];

@@ -71,7 +71,7 @@ class BitrixDataStorageController extends Controller{
 				continue;
 			}
 
-			BitrixIblocksProps::updateOrCreate(
+			$prop = BitrixIblocksProps::updateOrCreate(
 				[
 					'iblock_id' => $iblock->id,
 					'code'      => $properties["CODE"][$c]
@@ -86,6 +86,25 @@ class BitrixDataStorageController extends Controller{
 					'is_required' => isset($properties["IS_REQUIRED"][$c]) && $properties["IS_REQUIRED"][$c] == "Y" ? true : false
 				]
 			);
+
+			if ($prop->type = 'L' && isset($properties["VALUES"][$c])){
+				foreach ($properties["VALUES"][$c]["VALUE"] as $vc => $valueVal){
+					if ($valueVal){
+						$val = BitrixIblocksPropsVals::updateOrCreate(
+							[
+								'prop_id' => $prop->id,
+								'value'   => $valueVal
+							],
+							[
+								'prop_id' => $prop->id,
+								'value'   => $valueVal,
+								'sort'    => $properties["VALUES"][$c]["SORT"][$vc],
+								'default' => isset($properties["VALUES"][$c]["DEFAULT"]) && $properties["VALUES"][$c]["DEFAULT"] == $vc,
+							]
+						);
+					}
+				}
+			}
 		}
 
 		BitrixInfoblocks::writeInFile($module);
@@ -250,7 +269,7 @@ class BitrixDataStorageController extends Controller{
 			'params' => json_encode($params, JSON_FORCE_OBJECT) // предыдущие пару параметров дублируются здесь специально, чтобы можно было создавать массив по одному лишь params
 		]);
 
-		//dd($properties);
+		// dd($properties);
 
 		foreach ($properties["NAME"] as $c => $name){
 			if (!$name){
@@ -260,7 +279,7 @@ class BitrixDataStorageController extends Controller{
 				continue;
 			}
 
-			BitrixIblocksProps::updateOrCreate(
+			$prop = BitrixIblocksProps::updateOrCreate(
 				[
 					'iblock_id' => $iblock->id,
 					'code'      => $properties["CODE"][$c]
@@ -275,6 +294,25 @@ class BitrixDataStorageController extends Controller{
 					'is_required' => isset($properties["IS_REQUIRED"][$c]) && $properties["IS_REQUIRED"][$c] == "Y" ? true : false
 				]
 			);
+
+			if ($prop->type = 'L' && isset($properties["VALUES"][$c])){
+				foreach ($properties["VALUES"][$c]["VALUE"] as $vc => $valueVal){
+					if ($valueVal){
+						$val = BitrixIblocksPropsVals::updateOrCreate(
+							[
+								'prop_id' => $prop->id,
+								'value'   => $valueVal
+							],
+							[
+								'prop_id' => $prop->id,
+								'value'   => $valueVal,
+								'sort'    => $properties["VALUES"][$c]["SORT"][$vc],
+								'default' => isset($properties["VALUES"][$c]["DEFAULT"]) && $properties["VALUES"][$c]["DEFAULT"] == $vc,
+							]
+						);
+					}
+				}
+			}
 		}
 
 		BitrixInfoblocks::writeInFile($module);

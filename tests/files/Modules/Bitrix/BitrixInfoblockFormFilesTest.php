@@ -1912,22 +1912,22 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 		);
 
 		$elArr1 = Array(
-			"IBLOCK_ID" => '$iblockID',
-			"ACTIVE" => "Y",
-			"SORT" => "500",
-			"CODE" => "",
-			"NAME" => 'Loc::getMessage("'.$this->module->lang_key.'_IBLOCK_TEST_ELEMENT__NAME")',
+			"IBLOCK_ID"       => '$iblockID',
+			"ACTIVE"          => "Y",
+			"SORT"            => "500",
+			"CODE"            => "",
+			"NAME"            => 'Loc::getMessage("'.$this->module->lang_key.'_IBLOCK_TEST_ELEMENT__NAME")',
 			"PROPERTY_VALUES" => Array(
 				"COLOR" => '$val'.$val1->id.'ID',
 			),
 		);
 
 		$elArr2 = Array(
-			"IBLOCK_ID" => '$iblockID',
-			"ACTIVE" => "Y",
-			"SORT" => "500",
-			"CODE" => "",
-			"NAME" => 'Loc::getMessage("'.$this->module->lang_key.'_IBLOCK_TEST_ELEMENT__NAME")',
+			"IBLOCK_ID"       => '$iblockID',
+			"ACTIVE"          => "Y",
+			"SORT"            => "500",
+			"CODE"            => "",
+			"NAME"            => 'Loc::getMessage("'.$this->module->lang_key.'_IBLOCK_TEST_ELEMENT__NAME")',
 			"PROPERTY_VALUES" => Array(
 				"COLOR" => '$val'.$val2->id.'ID',
 			),
@@ -2084,6 +2084,175 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 
 		$this->assertEquals($expectedInstallationElementFuncCodeArray1, $gottenInstallationElementsFuncCodeArray[0]);
 		$this->assertEquals($expectedInstallationElementFuncCodeArray2, $gottenInstallationElementsFuncCodeArray[1]);
+	}
+
+	/** @test */
+	function it_writes_creation_code_of_list_prop_with_vals(){
+		$ib = $this->createIblockOnForm($this->module, [
+				'VERSION'                         => '2',
+				'NAME'                            => 'Ololo',
+				'CODE'                            => 'trololo',
+				"SORT"                            => "555",
+				"LIST_PAGE_URL"                   => "#SITE_DIR#/".$this->module->code."/index.php?ID=#IBLOCK_ID##hi",
+				"SECTION_PAGE_URL"                => "#SITE_DIR#/".$this->module->code."/list.php?SECTION_ID=#SECTION_ID##hi",
+				"DETAIL_PAGE_URL"                 => "#SITE_DIR#/".$this->module->code."/detail.php?ID=#ELEMENT_ID##hi",
+				"properties[NAME][0]"             => "Цвет",
+				"properties[CODE][0]"             => "COLOR",
+				"properties[TYPE][0]"             => "L",
+				"properties[VALUES][0][VALUE][0]" => "Зелёный",
+				"properties[VALUES][0][VALUE][1]" => "Любви",
+				"properties[VALUES][0][VALUE][2]" => "Синий",
+				"properties[VALUES][0][SORT][0]"  => "100",
+				"properties[VALUES][0][SORT][1]"  => "200",
+				"properties[VALUES][0][SORT][2]"  => "300",
+				"properties[VALUES][0][DEFAULT]"  => "0",
+			]
+		);
+
+		$gottenInstallationPropsFuncCodeArray = $this->getIblockPropsCreationFuncCallParamsArray($this->module);
+		$gottenInstallationPropsValsFuncCodeArray = $this->getIblockPropsValsCreationFuncCallParamsArray($this->module);
+
+		$prop = BitrixIblocksProps::where('code', 'COLOR')->first();
+		$val1 = BitrixIblocksPropsVals::where('value', 'Зелёный')->first();
+		$val2 = BitrixIblocksPropsVals::where('value', 'Любви')->first();
+		$val3 = BitrixIblocksPropsVals::where('value', 'Синий')->first();
+
+		$propArray = Array(
+			"IBLOCK_ID"     => '$iblockID',
+			"ACTIVE"        => "Y",
+			"SORT"          => "500",
+			"CODE"          => "COLOR",
+			"NAME"          => 'Loc::getMessage("'.$this->module->lang_key.'_IBLOCK_TROLOLO_PARAM_COLOR_NAME")',
+			"PROPERTY_TYPE" => "L",
+			"USER_TYPE"     => "",
+			"MULTIPLE"      => "N",
+			"IS_REQUIRED"   => "N",
+		);
+
+		$val1Arr = Array(
+			"VALUE"       => 'Loc::getMessage("'.$this->module->lang_key.'_IBLOCK_TROLOLO_PARAM_COLOR_VAL_'.$val1->id.'_VALUE")',
+			"DEF"         => "Y",
+			"SORT"        => "100",
+			"PROPERTY_ID" => '$prop'.$prop->id."ID",
+		);
+		$val2Arr = Array(
+			"VALUE"       => 'Loc::getMessage("'.$this->module->lang_key.'_IBLOCK_TROLOLO_PARAM_COLOR_VAL_'.$val2->id.'_VALUE")',
+			"DEF"         => "N",
+			"SORT"        => "200",
+			"PROPERTY_ID" => '$prop'.$prop->id."ID",
+		);
+		$val3Arr = Array(
+			"VALUE"       => 'Loc::getMessage("'.$this->module->lang_key.'_IBLOCK_TROLOLO_PARAM_COLOR_VAL_'.$val3->id.'_VALUE")',
+			"DEF"         => "N",
+			"SORT"        => "300",
+			"PROPERTY_ID" => '$prop'.$prop->id."ID",
+		);
+
+		$elArr1 = Array(
+			"IBLOCK_ID"       => '$iblockID',
+			"ACTIVE"          => "Y",
+			"SORT"            => "500",
+			"CODE"            => "",
+			"NAME"            => 'Loc::getMessage("'.$this->module->lang_key.'_IBLOCK_TROLOLO_ELEMENT__NAME")',
+			"PROPERTY_VALUES" => Array(
+				"COLOR" => '$val'.$val1->id.'ID',
+			),
+		);
+
+		$this->assertEquals($propArray, $gottenInstallationPropsFuncCodeArray[0]);
+		$this->assertEquals($val1Arr, $gottenInstallationPropsValsFuncCodeArray[0]);
+		$this->assertEquals($val2Arr, $gottenInstallationPropsValsFuncCodeArray[1]);
+		$this->assertEquals($val3Arr, $gottenInstallationPropsValsFuncCodeArray[2]);
+	}
+
+	/** @test */
+	function it_writes_creation_code_of_list_prop_with_vals_in_created_iblock(){
+		$ib = $this->createIblockOnForm($this->module, [
+				'VERSION'          => '2',
+				'NAME'             => 'Ololo',
+				'CODE'             => 'trololo',
+				"SORT"             => "555",
+				"LIST_PAGE_URL"    => "#SITE_DIR#/".$this->module->code."/index.php?ID=#IBLOCK_ID##hi",
+				"SECTION_PAGE_URL" => "#SITE_DIR#/".$this->module->code."/list.php?SECTION_ID=#SECTION_ID##hi",
+				"DETAIL_PAGE_URL"  => "#SITE_DIR#/".$this->module->code."/detail.php?ID=#ELEMENT_ID##hi",
+			]
+		);
+
+		$this->changeIblockOnForm($this->module, $ib, [
+				'VERSION'                         => '2',
+				'NAME'                            => 'Ololo',
+				'CODE'                            => 'trololo',
+				"SORT"                            => "555",
+				"LIST_PAGE_URL"                   => "#SITE_DIR#/".$this->module->code."/index.php?ID=#IBLOCK_ID##hi",
+				"SECTION_PAGE_URL"                => "#SITE_DIR#/".$this->module->code."/list.php?SECTION_ID=#SECTION_ID##hi",
+				"DETAIL_PAGE_URL"                 => "#SITE_DIR#/".$this->module->code."/detail.php?ID=#ELEMENT_ID##hi",
+				"properties[NAME][0]"             => "Цвет",
+				"properties[CODE][0]"             => "COLOR",
+				"properties[TYPE][0]"             => "L",
+				"properties[VALUES][0][VALUE][0]" => "Зелёный",
+				"properties[VALUES][0][VALUE][1]" => "Любви",
+				"properties[VALUES][0][VALUE][2]" => "Синий",
+				"properties[VALUES][0][SORT][0]"  => "100",
+				"properties[VALUES][0][SORT][1]"  => "200",
+				"properties[VALUES][0][SORT][2]"  => "300",
+				"properties[VALUES][0][DEFAULT]"  => "0",
+			]
+		);
+
+		$gottenInstallationPropsFuncCodeArray = $this->getIblockPropsCreationFuncCallParamsArray($this->module);
+		$gottenInstallationPropsValsFuncCodeArray = $this->getIblockPropsValsCreationFuncCallParamsArray($this->module);
+
+		$prop = BitrixIblocksProps::where('code', 'COLOR')->first();
+		$val1 = BitrixIblocksPropsVals::where('value', 'Зелёный')->first();
+		$val2 = BitrixIblocksPropsVals::where('value', 'Любви')->first();
+		$val3 = BitrixIblocksPropsVals::where('value', 'Синий')->first();
+
+		$propArray = Array(
+			"IBLOCK_ID"     => '$iblockID',
+			"ACTIVE"        => "Y",
+			"SORT"          => "500",
+			"CODE"          => "COLOR",
+			"NAME"          => 'Loc::getMessage("'.$this->module->lang_key.'_IBLOCK_TROLOLO_PARAM_COLOR_NAME")',
+			"PROPERTY_TYPE" => "L",
+			"USER_TYPE"     => "",
+			"MULTIPLE"      => "N",
+			"IS_REQUIRED"   => "N",
+		);
+
+		$val1Arr = Array(
+			"VALUE"       => 'Loc::getMessage("'.$this->module->lang_key.'_IBLOCK_TROLOLO_PARAM_COLOR_VAL_'.$val1->id.'_VALUE")',
+			"DEF"         => "Y",
+			"SORT"        => "100",
+			"PROPERTY_ID" => '$prop'.$prop->id."ID",
+		);
+		$val2Arr = Array(
+			"VALUE"       => 'Loc::getMessage("'.$this->module->lang_key.'_IBLOCK_TROLOLO_PARAM_COLOR_VAL_'.$val2->id.'_VALUE")',
+			"DEF"         => "N",
+			"SORT"        => "200",
+			"PROPERTY_ID" => '$prop'.$prop->id."ID",
+		);
+		$val3Arr = Array(
+			"VALUE"       => 'Loc::getMessage("'.$this->module->lang_key.'_IBLOCK_TROLOLO_PARAM_COLOR_VAL_'.$val3->id.'_VALUE")',
+			"DEF"         => "N",
+			"SORT"        => "300",
+			"PROPERTY_ID" => '$prop'.$prop->id."ID",
+		);
+
+		$elArr1 = Array(
+			"IBLOCK_ID"       => '$iblockID',
+			"ACTIVE"          => "Y",
+			"SORT"            => "500",
+			"CODE"            => "",
+			"NAME"            => 'Loc::getMessage("'.$this->module->lang_key.'_IBLOCK_TROLOLO_ELEMENT__NAME")',
+			"PROPERTY_VALUES" => Array(
+				"COLOR" => '$val'.$val1->id.'ID',
+			),
+		);
+
+		$this->assertEquals($propArray, $gottenInstallationPropsFuncCodeArray[0]);
+		$this->assertEquals($val1Arr, $gottenInstallationPropsValsFuncCodeArray[0]);
+		$this->assertEquals($val2Arr, $gottenInstallationPropsValsFuncCodeArray[1]);
+		$this->assertEquals($val3Arr, $gottenInstallationPropsValsFuncCodeArray[2]);
 	}
 }
 

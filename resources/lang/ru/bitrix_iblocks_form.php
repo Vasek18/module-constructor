@@ -175,4 +175,8 @@ return [
 	'test_section_section_tab_title' => 'Раздел',
 
 	'section_up' => 'Наверх',
+
+	'val_xml_id' => 'XML_ID',
+	'val_value'  => 'Значение',
+	'val_sort'   => 'Сортировка',
 ];
