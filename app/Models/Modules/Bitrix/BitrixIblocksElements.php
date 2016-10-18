@@ -76,7 +76,7 @@ class BitrixIblocksElements extends Model{
 	}
 
 	public function getLangKeyAttribute(){
-		return strtoupper($this->iblock()->first()->lang_key.'_ELEMENT_'.strtoupper($this->code));
+		return strtoupper($this->iblock()->first()->lang_key.'_ELEMENT_'.strtoupper($this->id));
 	}
 
 	public function iblock(){
