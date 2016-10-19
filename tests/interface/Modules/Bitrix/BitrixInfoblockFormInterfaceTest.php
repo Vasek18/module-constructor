@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Modules\Bitrix\BitrixIblocksProps;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Models\Modules\Bitrix\BitrixInfoblocks;
 use App\Models\Modules\Bitrix\BitrixIblocksElements;
@@ -427,15 +428,16 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 			"properties[CODE][0]"        => "TEST",
 			"properties[IS_REQUIRED][0]" => "Y",
 		]);
+		$prop = BitrixIblocksProps::where('code', 'TEST')->first();
 		$element = $this->createIblockElementOnForm($this->module, $ib, [
-			'NAME'        => 'Trololo',
-			'CODE'        => 'trololo',
-			'props[TEST]' => 'test',
+			'NAME'                 => 'Trololo',
+			'CODE'                 => 'trololo',
+			'props['.$prop->id.']' => 'test',
 		]);
 
 		$this->seeInField('NAME', 'Trololo');
 		$this->seeInField('CODE', 'trololo');
-		$this->seeInField('props[TEST]', 'test');
+		$this->seeInField('props['.$prop->id.']', 'test');
 		$this->seePageIs('/my-bitrix/'.$this->module->id.'/data_storage/ib/'.$ib->id.'/edit_element/'.$element->id);
 	}
 
@@ -446,11 +448,12 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 			"properties[CODE][0]" => "TEST",
 			"properties[TYPE][0]" => "S:map_google",
 		]);
+		$prop = BitrixIblocksProps::where('code', 'TEST')->first();
 		$element = $this->createIblockElementOnForm($this->module, $ib, [
-			'NAME'           => 'Trololo',
-			'CODE'           => 'trololo',
-			'props[TEST][0]' => 'one',
-			'props[TEST][1]' => 'two',
+			'NAME'                    => 'Trololo',
+			'CODE'                    => 'trololo',
+			'props['.$prop->id.'][0]' => 'one',
+			'props['.$prop->id.'][1]' => 'two',
 		]);
 
 		$this->seeInField('NAME', 'Trololo');
@@ -510,18 +513,19 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 		$iblock = BitrixInfoblocks::where('code', "test")->first();
 		$element1 = BitrixIblocksElements::where('name', "Тест")->where('iblock_id', $iblock->id)->first();
 		$element2 = BitrixIblocksElements::where('name', "Ололо")->where('iblock_id', $iblock->id)->first();
+		$prop = BitrixIblocksProps::where('code', 'TESTOVOE_SVOISVTO')->first();
 
 		$this->visit('/my-bitrix/'.$this->module->id.'/data_storage/ib/'.$iblock->id.'/edit_element/'.$element1->id);
 		$this->seeInField('NAME', 'Тест');
 		$this->seeInField('CODE', '');
 		$this->seeInField('SORT', '400');
-		$this->seeInField('props[TESTOVOE_SVOISVTO]', 'Ололо');
+		$this->seeInField('props['.$prop->id.']', 'Ололо');
 
 		$this->visit('/my-bitrix/'.$this->module->id.'/data_storage/ib/'.$iblock->id.'/edit_element/'.$element2->id);
 		$this->seeInField('NAME', 'Ололо');
 		$this->seeInField('CODE', 'ololo');
 		$this->seeInField('SORT', '500');
-		$this->seeInField('props[TESTOVOE_SVOISVTO]', '');
+		$this->seeInField('props['.$prop->id.']', '');
 	}
 
 	/** @test */
