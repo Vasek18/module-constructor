@@ -229,6 +229,57 @@ class MyClass{
 
 		$this->assertFileExists($this->module->getFolder().'/lib/eventhandlers/myclass.php');
 	}
+
+	/** @test */
+	function it_doesnt_duplicates_event_handlers_function(){
+		$handler1 = $this->createEventHandlerOnForm($this->module, 0, [
+			'from_module' => 'main',
+			'event'       => 'OnProlog',
+			'class'       => 'MyClass',
+			'method'      => 'Handler',
+			'php_code'    => '<?="ololo";?>',
+		]);
+		$handler2 = $this->createEventHandlerOnForm($this->module, 1, [
+			'from_module' => 'main',
+			'event'       => 'OnEpilog',
+			'class'       => 'MyClass',
+			'method'      => 'Handler',
+			'php_code'    => '<?="trololo";?>',
+		]);
+
+		$installationArr = $this->getEventHandlersCreationFuncCallParamsArray($this->module);
+		// $langArr = $this->getLangFileArray($this->module);
+		$file = file_get_contents($this->module->getFolder().'/lib/eventhandlers/myclass.php');
+
+		$expectedArr = [
+			"main",
+			"OnProlog",
+			'$this->MODULE_ID',
+			'\\'.$this->module->namespace.'\EventHandlers\MyClass',
+			"Handler",
+		];
+		$expectedArr2 = [
+			"main",
+			"OnEpilog",
+			'$this->MODULE_ID',
+			'\\'.$this->module->namespace.'\EventHandlers\MyClass',
+			"Handler",
+		];
+
+		$this->assertEquals($expectedArr, $installationArr[0]);
+		$this->assertEquals($expectedArr2, $installationArr[1]);
+
+		$this->assertEquals(preg_split('/\r\n|\r|\n/', $file),
+			preg_split('/\r\n|\r|\n/', '<?
+namespace '.$this->module->namespace.'\EventHandlers;
+
+class MyClass{
+	static public function Handler(){
+		<?="ololo";?>
+	}
+
+}'));
+	}
 }
 
 ?>

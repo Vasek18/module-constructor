@@ -3,6 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
+// todo можно нормализовать разделив на таблицы модуль-событие и класс обработчик (много к одному)
 class CreateBitrixEventsHandlersTable extends Migration{
 	/**
 	 * Run the migrations.

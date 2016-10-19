@@ -73,7 +73,7 @@ class BitrixEventHandlersController extends Controller{
 		}
 
 		// записываем в папку модуля
-		BitrixEventsHandlers::saveEventsInFolder($module->id);
+		BitrixEventsHandlers::saveEventsInFolder($module);
 
 		return back();
 	}

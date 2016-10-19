@@ -5,9 +5,6 @@
 @stop
 
 @section('page')
-    @push('scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/ace.js"></script>
-    @endpush
     <datalist id="core_modules_list">
         @foreach($core_modules as $core_module)
             <option>{{$core_module->code}}</option>
@@ -61,4 +58,7 @@
             </div>
         </div>
     </form>
+    @push('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/ace.js"></script>
+    @endpush
 @stop
