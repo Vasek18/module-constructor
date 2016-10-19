@@ -207,6 +207,11 @@ Route::get('_ololotrololo_', function (){ // todo удалить
 	return redirect('/');
 });
 
+Route::get('test', function (){ // todo удалить
+	$file = Illuminate\Support\Facades\Storage::disk('modules_templates')->get('\bitrix\install\components\component_name\.description.php');
+	dd($file);
+});
+
 //Route::post('my/bitrix/{bitrix}/download', 'Modules\Bitrix\BitrixController@download_zip');
 //Route::resource('my/bitrix', 'Modules\Bitrix\BitrixController', [
 //	'names' => [
