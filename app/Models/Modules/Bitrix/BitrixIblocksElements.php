@@ -58,11 +58,10 @@ class BitrixIblocksElements extends Model{
 				}
 
 				if ($replaceByLoc){
-				$propsCode .= "\t\t\t\t\t".'"'.$prop->code.'"'." => ".'Loc::getMessage("'.$this->lang_key.'_PROP_'.$prop->code.'_VALUE"),'.PHP_EOL;
-			}
-			else{
-				$propsCode .= "\t\t\t\t\t".'"'.$prop->code.'"'." => ".$val.','.PHP_EOL;
-			}
+					$propsCode .= "\t\t\t\t\t".'$prop'.$prop->id.'ID'." => ".'Loc::getMessage("'.$this->lang_key.'_PROP_'.$prop->id.'_VALUE"),'.PHP_EOL;
+				}else{
+					$propsCode .= "\t\t\t\t\t".'$prop'.$prop->id.'ID'." => ".$val.','.PHP_EOL;
+				}
 			}
 		}
 

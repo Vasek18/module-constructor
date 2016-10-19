@@ -152,7 +152,7 @@ class BitrixInfoblocks extends Model{
 					}
 
 					if ($val){
-						$module->changeVarInLangFile($element->lang_key.'_PROP_'.$prop->code.'_VALUE', $val, '/lang/'.$module->default_lang.'/install/index.php');
+						$module->changeVarInLangFile($element->lang_key.'_PROP_'.$prop->id.'_VALUE', $val, '/lang/'.$module->default_lang.'/install/index.php');
 					}
 				}
 			}

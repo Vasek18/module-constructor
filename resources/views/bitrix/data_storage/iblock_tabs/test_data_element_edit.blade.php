@@ -105,13 +105,13 @@
                                     <hr>
                                     @foreach($properties as $i => $property)
                                         <div class="form-group">
-                                            <label for="{{$property->code}}">{{$property->name}}</label>
+                                            <label for="{{$property->id}}">{{$property->name}}</label>
                                             @if ($property->type == 'S')
                                                 <input type="text"
-                                                       id="{{$property->code}}"
-                                                       name="props[{{$property->code}}]"
+                                                       id="{{$property->id}}"
+                                                       name="props[{{$property->id}}]"
                                                        class="form-control"
-                                                       value="{{isset($props_vals[$property->code]) ? $props_vals[$property->code] : ''}}"
+                                                       value="{{isset($props_vals[$property->id]) ? $props_vals[$property->id] : ''}}"
                                                         {{ $property->is_required ? 'required' : '' }}
                                                 >
                                             @endif
@@ -119,25 +119,38 @@
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <input type="text"
-                                                               id="{{$property->code}}0"
-                                                               name="props[{{$property->code}}][]"
+                                                               id="{{$property->id}}0"
+                                                               name="props[{{$property->id}}][]"
                                                                class="form-control"
                                                                placeholder="Широта"
-                                                               value="{{isset($props_vals[$property->code]) ? $props_vals[$property->code][0] : ''}}"
+                                                               value="{{isset($props_vals[$property->id]) ? $props_vals[$property->id][0] : ''}}"
                                                                 {{ $property->is_required ? 'required' : '' }}
                                                         >
                                                     </div>
                                                     <div class="col-md-6">
                                                         <input type="text"
-                                                               id="{{$property->code}}1"
-                                                               name="props[{{$property->code}}][]"
+                                                               id="{{$property->id}}1"
+                                                               name="props[{{$property->id}}][]"
                                                                class="form-control"
                                                                placeholder="Долгота"
-                                                               value="{{isset($props_vals[$property->code]) ? $props_vals[$property->code][1] : ''}}"
+                                                               value="{{isset($props_vals[$property->id]) ? $props_vals[$property->id][1] : ''}}"
                                                                 {{ $property->is_required ? 'required' : '' }}
                                                         >
                                                     </div>
                                                 </div>
+                                            @endif
+                                            @if ($property->type == 'L')
+                                                <select name="props[{{$property->id}}]"
+                                                        id="{{$property->id}}"
+                                                        class="form-control"
+                                                        {{ $property->is_required ? 'required' : '' }}>
+                                                    <option value="">{{ trans('app.select') }}</option>
+                                                    @foreach($property->vals as $value)
+                                                        <option value="{{ $value->id }}"
+                                                                {{isset($props_vals[$property->id]) && $props_vals[$property->id] == $value->id ? 'selected' : ''}}
+                                                        >{{ $value->value }}</option>
+                                                    @endforeach
+                                                </select>
                                             @endif
                                         </div>
                                     @endforeach

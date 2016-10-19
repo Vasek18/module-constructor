@@ -403,11 +403,11 @@ class BitrixDataStorageController extends Controller{
 
 		if ($request->props){
 			$attachArr = [];
-			foreach ($request->props as $code => $val){
+			foreach ($request->props as $id => $val){
 				if (!$val){
 					continue;
 				}
-				$prop = BitrixIblocksProps::where('iblock_id', $iblock->id)->where('code', $code)->first();
+				$prop = BitrixIblocksProps::where('iblock_id', $iblock->id)->where('id', $id)->first();
 				if (!$prop){
 					continue;
 				}
@@ -439,7 +439,7 @@ class BitrixDataStorageController extends Controller{
 			if (strpos($val, static::$arrayGlue) !== false){
 				$val = explode(static::$arrayGlue, $val);
 			}
-			$props_vals[$prop->code] = $val;
+			$props_vals[$prop->id] = $val;
 		}
 
 		$data = [
@@ -476,11 +476,11 @@ class BitrixDataStorageController extends Controller{
 
 		$attachArr = [];
 		if ($request->props){
-			foreach ($request->props as $code => $val){
+			foreach ($request->props as $id => $val){
 				if (!$val){
 					continue;
 				}
-				$prop = BitrixIblocksProps::where('iblock_id', $iblock->id)->where('code', $code)->first();
+				$prop = BitrixIblocksProps::where('iblock_id', $iblock->id)->where('id', $id)->first();
 				if (!$prop){
 					continue;
 				}
