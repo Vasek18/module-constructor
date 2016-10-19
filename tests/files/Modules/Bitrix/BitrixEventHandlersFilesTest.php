@@ -88,6 +88,43 @@ class MyClass{
 	}
 
 	/** @test */
+	function it_saves_event_handler_with_params(){
+		$this->createEventHandlerOnForm($this->module, 0, [
+			'from_module' => 'main',
+			'event'       => 'OnProlog',
+			'class'       => 'MyClass',
+			'method'      => 'Handler',
+			'params'      => '$arFields',
+			'php_code'    => '<?="ololo";?>',
+		]);
+
+		$installationArr = $this->getEventHandlersCreationFuncCallParamsArray($this->module);
+		// $langArr = $this->getLangFileArray($this->module);
+		$file = file_get_contents($this->module->getFolder().'/lib/eventhandlers/myclass.php');
+
+		$expectedArr = [
+			"main",
+			"OnProlog",
+			'$this->MODULE_ID',
+			'\\'.$this->module->namespace.'\EventHandlers\MyClass',
+			"Handler",
+		];
+
+		$this->assertEquals($expectedArr, $installationArr[0]);
+
+		$this->assertEquals(preg_split('/\r\n|\r|\n/', $file),
+			preg_split('/\r\n|\r|\n/', '<?
+namespace '.$this->module->namespace.'\EventHandlers;
+
+class MyClass{
+	static public function Handler($arFields){
+		<?="ololo";?>
+	}
+
+}'));
+	}
+
+	/** @test */
 	function it_edits_event_handler(){
 		$this->createEventHandlerOnForm($this->module, 0, [
 			'from_module' => 'main',

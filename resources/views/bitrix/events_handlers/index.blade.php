@@ -42,7 +42,7 @@
                 <label>{{ trans('bitrix_event_handlers.method') }}</label>
             </div>
             <div class="col-md-2">
-                <label>{{ trans('bitrix_event_handlers.code') }}</label>
+                <label>{{ trans('bitrix_event_handlers.params') }}</label>
             </div>
         </div>
         @foreach($handlers as $i => $handler)

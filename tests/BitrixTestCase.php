@@ -502,6 +502,9 @@ class BitrixTestCase extends TestCase{
 		if (isset($params['method'])){
 			$inputs['method['.$rowNumber.']'] = $params['method'];
 		}
+		if (isset($params['params'])){
+			$inputs['params['.$rowNumber.']'] = $params['params'];
+		}
 		if (isset($params['php_code'])){
 			$inputs['php_code['.$rowNumber.']'] = $params['php_code'];
 		}

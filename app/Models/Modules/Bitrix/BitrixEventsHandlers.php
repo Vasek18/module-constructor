@@ -9,7 +9,7 @@ use Auth;
 class BitrixEventsHandlers extends Model{
 	protected $table = 'bitrix_events_handlers';
 
-	protected $fillable = ['from_module', 'event', 'class', 'method', 'php_code'];
+	protected $fillable = ['from_module', 'event', 'class', 'method', 'params', 'php_code'];
 
 	public $timestamps = false;
 
@@ -58,12 +58,12 @@ class BitrixEventsHandlers extends Model{
 				if (isset($classes[$handler->class]) && $classes[$handler->class]['method'] == $handler->method){ // исключаем случаи создания двух одинаковых функций в одном файле
 					continue;
 				}
-				if (!isset($classes[$handler->class])){
+				if (!isset($classes[$handler->class])){ // если этого класса ещё не было
 					$classes[$handler->class]['method'] = $handler->method;
-					$classes[$handler->class]['functionsCode'] = $handler->getHandlerCode();
 					$classes[$handler->class]['class_namespace'] = $handler->class_namespace;
 					$classes[$handler->class]['class'] = $handler->class;
-				}else{
+					$classes[$handler->class]['functionsCode'] = $handler->getHandlerCode();
+				}else{ // другой метод класса
 					$classes[$handler->class]['functionsCode'] .= $handler->getHandlerCode();
 				}
 			}
@@ -84,37 +84,42 @@ class BitrixEventsHandlers extends Model{
 		}
 	}
 
-	protected
-	static function writeHandlerRegisterAndUnregisterCodeInInstallFile($module, $installHandlersCode, $uninstallHandlersCode){
+	protected static function writeHandlerRegisterAndUnregisterCodeInInstallFile($module, $installHandlersCode, $uninstallHandlersCode){
 		$file = $module->disk()->get($module->module_folder.'/install/index.php');
 		$file = preg_replace('/function InstallEvents\(\)\{[^\}]+\}/i', 'function InstallEvents(){'.PHP_EOL.$installHandlersCode.PHP_EOL.'}', $file);
 		$file = preg_replace('/function UnInstallEvents\(\)\{[^\}]+\}/i', 'function UnInstallEvents(){'.PHP_EOL.$uninstallHandlersCode.PHP_EOL.'}', $file);
 		$module->disk()->put($module->module_folder.'/install/index.php', $file);
 	}
 
-	protected
-	function getHandlerCode(){
-		$handlerFunctionTemplate = "\t".'static public function {METHOD}(){'."\n"."\t"."\t".'{PHP_CODE}'."\n"."\t".'}'."\n";
+	protected function getHandlerCode(){
+		$handlerFunctionTemplate = "\t".'static public function {METHOD}({PARAMS}){'."\n"."\t"."\t".'{PHP_CODE}'."\n"."\t".'}'."\n";
 
-		$template_search = Array('{METHOD}', '{PHP_CODE}');
-		$template_replace = Array($this->method, $this->php_code);
+		$template_search = Array('{METHOD}', '{PARAMS}', '{PHP_CODE}');
+		$template_replace = Array($this->method, $this->params, $this->php_code);
 		$handlerCode = str_replace($template_search, $template_replace, $handlerFunctionTemplate);
 
 		return $handlerCode;
 	}
 
-	public
-	function getClassNamespaceAttribute(){
+	public function getFileCodeAttribute(){
+		$disk = $this->module()->first()->disk();
+		$path = $this->module->module_folder.'/lib/eventhandlers/'.strtolower($this->class).'.php';
+		if ($disk->exists($path)){
+			return $disk->get($path);
+		}
+
+		return false;
+	}
+
+	public function getClassNamespaceAttribute(){
 		return studly_case($this->class);
 	}
 
-	public
-	function getFileAttribute(){
+	public function getFileAttribute(){
 		return $this->module->module_folder.'/lib/eventhandlers/'.strtolower($this->class).'.php';
 	}
 
-	public
-	function module(){
+	public function module(){
 		return $this->belongsTo('App\Models\Modules\Bitrix\Bitrix');
 	}
 }

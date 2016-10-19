@@ -30,7 +30,7 @@ class BitrixEventHandlersController extends Controller{
 			'core_events' => $core_events
 		];
 
-		return view("bitrix.events_handlers.events_handlers", $data); // передаём данные из таблицы пользователей, чтобы подставлять их в формы
+		return view("bitrix.events_handlers.index", $data); // передаём данные из таблицы пользователей, чтобы подставлять их в формы
 	}
 
 	// сохранение обработчиков
@@ -65,6 +65,7 @@ class BitrixEventHandlersController extends Controller{
 			$handler["from_module"] = $request['from_module'][$i];
 			$handler["class"] = $request['class'][$i];
 			$handler["method"] = $request['method'][$i];
+			$handler["params"] = $request['params'][$i];
 			$handler["php_code"] = trim($request['php_code'][$i]);
 			//dd($handler);
 
@@ -90,7 +91,7 @@ class BitrixEventHandlersController extends Controller{
 		BitrixEventsHandlers::destroy($handler->id);
 
 		// производим замены в папке модуля
-		BitrixEventsHandlers::saveEventsInFolder($module->id);
+		BitrixEventsHandlers::saveEventsInFolder($module);
 
 		// удаляем обработчик
 		$module->disk()->delete($handler->file);

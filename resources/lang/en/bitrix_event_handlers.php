@@ -7,4 +7,5 @@ return [
 	'class'  => 'Handler class',
 	'method' => 'Handler method',
 	'code'   => 'Handler code',
+	'params' => 'Input params',
 ];

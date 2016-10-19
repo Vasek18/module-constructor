@@ -42,58 +42,70 @@
                value="{{$handler?$handler->method:''}}">
     </div>
     <div class="col-md-2">
-        <a href="#"
-           class="btn btn-default"
-           data-toggle="modal"
-           data-target="#php_code_window_{{$i}}">{{ trans('app.edit') }}</a>
-        <div class="modal fade"
-             tabindex="-1"
-             role="dialog"
-             id="php_code_window_{{$i}}">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button"
-                                class="close"
-                                data-dismiss="modal"
-                                aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <h4 class="modal-title">{{ trans('bitrix_event_handlers.code') }}</h4>
-                    </div>
-                    <div class="modal-body">
-                        <label class="sr-only"
-                               for="php_code_{{$i}}">{{ trans('bitrix_event_handlers.code') }}</label>
-                        <div id="editor_{{$i}}"
-                             style="height: 500px">{{$handler?$handler->php_code:''}}</div>
-                        @push('scripts')
-                        <script>
-                            var editor_{{$i}}   = ace.edit("editor_{{$i}}");
-                            editor_{{$i}}.getSession().setMode("ace/mode/php");
-                            {{--editor.setValue("{!!$handler?$handler->php_code:''!!}");--}}
-                            editor_{{$i}}.getSession().on('change', function(e){
-                                var text = editor_{{$i}}.getSession().getValue();
-                                $("#php_code_{{$i}}").val(text);
-                            });
-                        </script>
-                        @endpush
-                        <input type="hidden"
-                               name="php_code[]"
-                               id="php_code_{{$i}}"
-                               value="{{$handler?$handler->php_code:''}}">
-                    </div>
-                </div>
-            </div>
-        </div>
+        <input type="text"
+               class="form-control"
+               name="params[]"
+               id="params_{{$i}}"
+               placeholder="{{ trans('bitrix_event_handlers.params') }}"
+               value="{{$handler?$handler->params:''}}">
     </div>
     <div class="col-md-1">
         @if ($handler)
+            <a href="#"
+               class="btn btn-sm btn-default"
+               data-toggle="modal"
+               data-target="#php_code_window_{{$i}}">
+            <span class="glyphicon glyphicon-console"
+                  aria-hidden="true"></span>
+            </a>
+        @endif
+        @if ($handler)
             <a href="{{ action('Modules\Bitrix\BitrixEventHandlersController@destroy', [$module, $handler]) }}"
-               class="btn btn-danger human_ajax_deletion"
+               class="btn btn-sm btn-danger human_ajax_deletion"
                id="delete_handler_{{$handler->id}}">
                 <span class="glyphicon glyphicon-trash"
                       aria-hidden="true"></span>
             </a>
         @endif
+    </div>
+</div>
+<div class="modal fade"
+     tabindex="-1"
+     role="dialog"
+     id="php_code_window_{{$i}}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">{{ trans('bitrix_event_handlers.code') }} {{ $handler ? '('.$handler->from_module.' -> '.$handler->event.')' : '' }}
+                    <br>{{ trans('bitrix_event_handlers.params') }} - ({{ $handler ? $handler->params : '' }})</h4>
+            </div>
+            <div class="modal-body">
+                <label class="sr-only"
+                       for="php_code_{{$i}}">{{ trans('bitrix_event_handlers.code') }}</label>
+                <div id="editor_{{$i}}"
+                     style="height: 500px">{{ $handler ? $handler->php_code : '' }}</div>
+                @push('scripts')
+                <script>
+                    var editor_{{$i}}   = ace.edit("editor_{{$i}}");
+                    editor_{{$i}}.getSession().setMode("ace/mode/php");
+                    {{--editor.setValue("{!!$handler?$handler->php_code:''!!}");--}}
+                    editor_{{$i}}.getSession().on('change', function(e){
+                        var text = editor_{{$i}}.getSession().getValue();
+                        $("#php_code_{{$i}}").val(text);
+                    });
+                </script>
+                @endpush
+                <input type="hidden"
+                       name="php_code[]"
+                       id="php_code_{{$i}}"
+                       value="{{$handler?$handler->php_code:''}}">
+            </div>
+        </div>
     </div>
 </div>
