@@ -208,8 +208,10 @@ Route::get('_ololotrololo_', function (){ // todo удалить
 });
 
 Route::get('test', function (){ // todo удалить
-	$file = Illuminate\Support\Facades\Storage::disk('modules_templates')->get('\bitrix\install\components\component_name\.description.php');
-	dd($file);
+	// $file = Illuminate\Support\Facades\Storage::disk('modules_templates')->get('\bitrix\install\components\component_name\.description.php');
+	echo file_get_contents(base_path().'\storage\modules_templates\bitrix\install\components\component_name\.description.php');
+	// $file = Illuminate\Support\Facades\Storage::disk('modules_templates')->getRoot();
+	// dd($file);
 });
 
 //Route::post('my/bitrix/{bitrix}/download', 'Modules\Bitrix\BitrixController@download_zip');
