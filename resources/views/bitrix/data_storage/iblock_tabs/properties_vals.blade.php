@@ -3,8 +3,7 @@
         <input class="form-control"
                type="text"
                name="properties[VALUES][{{$i}}][XML_ID][]"
-               value="{{$val ? $val->xml_id: ''}}"
-               disabled>
+               value="{{$val ? $val->xml_id: ''}}">
     </div>
     <div class="col-md-4">
         <input class="form-control"
