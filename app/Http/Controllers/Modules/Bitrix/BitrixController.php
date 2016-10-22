@@ -3,13 +3,11 @@
 namespace App\Http\Controllers\Modules\Bitrix;
 
 use App\Models\Modules\Bitrix\Bitrix;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
 use App\Models\User;
 use App\Http\Requests;
-use App\Http\Controllers\Traits\UserOwnModule;
 use Illuminate\Support\Facades\Response;
 
 /*
@@ -78,13 +76,10 @@ class BitrixController extends Controller{
 
 	// детальная страница модуля
 	public function show(Bitrix $module){
-
-		//dd($id);
 		$data = [
 			'module' => $module
 		];
 
-		//dd(Bitrix::where("id", $id)->get());
 		return view("bitrix.detail", $data);
 	}
 

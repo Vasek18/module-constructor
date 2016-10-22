@@ -33,7 +33,7 @@ class BitrixLangController extends Controller{
 
 		$phrases = vLang::getAllPotentialPhrases($contentOriginal);
 		foreach ($phrases as $c => $phrase){
-			if ($phrase["is_comment"] && translit($phrase["phrase"]) == $phrase["phrase"]){ // скорее всего уже исправленный коммент коммент
+			if (translit($phrase["phrase"]) == $phrase["phrase"]){ // не будем тут показывать то, что может не быть лангом из-за содержания, позднее просто дадим функционал вытаскивания произволной фиггни в ланг, а не только явного
 				unset($phrases[$c]);
 			}
 		}
@@ -111,19 +111,25 @@ class BitrixLangController extends Controller{
 		$phrase = $request['phrase_'.$id];
 		$lang = $request['lang_'.$id];
 		$contentOriginal = $module->disk()->get($filePath);
+		$phrase_len = strlen($phrase);
 
 		if ($action == 'translit'){
-			$newContent = substr_replace($contentOriginal, translit($phrase), $start_pos, strlen($phrase));
+			$newContent = substr_replace($contentOriginal, translit($phrase), $start_pos, $phrase_len);
 		}
 
 		if ($action == 'save'){
 			if ($code_type == 'html'){
 				$langReplacement = '<?=GetMessage('.strtoupper('"'.$code.'"').');?>';
 			}
-			if (!$langReplacement){
+			if ($code_type == 'php'){
+				$langReplacement = 'GetMessage('.strtoupper('"'.$code.'"').')';
+				$start_pos -= 1; // захватываем кавычку
+				$phrase_len += 2; // захватываем кавычку (не забываем, что начало уменьшили на один)
+			}
+			if (!isset($langReplacement)){
 				return back();
 			}
-			$newContent = substr_replace($contentOriginal, $langReplacement, $start_pos, strlen($phrase));
+			$newContent = substr_replace($contentOriginal, $langReplacement, $start_pos, $phrase_len);
 
 			$langRootForFile = $module->getLangRootForFile($filePath);
 			$langFilePath = $langRootForFile.'/lang/'.$lang.str_replace($langRootForFile, '', $filePath);

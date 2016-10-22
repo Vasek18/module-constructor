@@ -90,7 +90,8 @@ class vLang{
 
 		$phrases = array_merge($phrases, static::getAllPotentialPhrasesInPhpVarsAssignment($content));
 		$phrases = array_merge($phrases, static::getAllPotentialPhrasesInPhpComments($content));
-		$phrases = static::testThatPhraseIsNotFunctionCall($phrases);
+		$phrases = array_merge($phrases, static::getAllPotentialPhrasesInFunctionsCallsParams($content));
+		$phrases = static::testThatPhraseIsNotFunctionCall($phrases); // todo скорее всего явно лишнее, не знаю даже зачем я добавлял эту проверку
 
 		return $phrases;
 	}
@@ -122,6 +123,52 @@ class vLang{
 		$phrases = [];
 
 		$phrases = array_merge($phrases, static::getAllPotentialPhrasesInPhpSingleComments($content));
+
+		return $phrases;
+	}
+
+	private static function getAllPotentialPhrasesInFunctionsCallsParams($content){
+		$phrases = [];
+
+		preg_match_all('/\(([^\)\(]+?)\)/is', $content, $paramsStrings, PREG_OFFSET_CAPTURE); // собираем параметры вызовов функций
+		if (isset($paramsStrings[1])){
+
+			// собираем параметры из разных вызовов функций
+			$params = [];
+			foreach ($paramsStrings[1] as $c => $paramsString){
+				$tempParams = explode(',', $paramsString[0]);
+				foreach ($tempParams as $tempParam){
+					$params[] = [
+						'param'  => $tempParam,
+						'start'  => $paramsString[1], // начальная позиция строки с параметрами
+						'string' => $paramsString[0], // сама строка с параметрами
+					];
+				}
+			}
+
+			foreach ($params as $paramArr){
+				$param = trim($paramArr['param']);
+				if (!strlen($param)){
+					continue;
+				}
+				$firstSymbol = substr($param, 0, 1);
+				if (!in_array($firstSymbol, ['"', "'"])){ // если параметр не в кавычках
+					continue;
+				}
+				preg_match('/^'.$firstSymbol.'([^'.$firstSymbol.']+)'.$firstSymbol.'$/is', $param, $matches); // убираем обрамляющие кавычки
+				if (!isset($matches[1])){ // если это был, например, "a" => "b"
+					continue;
+				}
+				$param = $matches[1];
+
+				$phrases[] = [
+					'phrase'     => $param,
+					'start_pos'  => strpos($paramArr['string'], $param) + $paramArr['start'],
+					'is_comment' => false,
+					'code_type'  => 'php',
+				];
+			}
+		}
 
 		return $phrases;
 	}

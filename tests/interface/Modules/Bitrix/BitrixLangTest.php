@@ -67,27 +67,27 @@ class BitrixLangInterfaceTest extends BitrixTestCase{
 
 	/** @test */
 	function it_can_find_untranslated_text_in_tag_when_there_is_lang_file(){
-		$this->module->disk()->put($this->module->module_folder.'/ololo.php', '<? ololo(); ?><p>ololo</p>');
+		$this->module->disk()->put($this->module->module_folder.'/ololo.php', '<? ololo(); ?><p>ололо</p>');
 		$this->module->disk()->put($this->module->module_folder.'/lang/ru/ololo.php', '<? $MESS["TEST"] = "Test";?>');
 
 		$this->visit('/my-bitrix/'.$this->module->id.$this->path.'/edit?file=%2Fololo.php');
-		$this->see('<span class="bg-danger">ololo</span>');
+		$this->see('<span class="bg-danger">ололо</span>');
 		$this->seeInField('code_1', 'ololo');
 	}
 
 	/** @test */
 	function it_can_find_untranslated_text_in_tag_when_there_is_no_lang_file(){
-		$this->module->disk()->put($this->module->module_folder.'/ololo.php', '<? ololo(); ?><p>ololo</p>');
+		$this->module->disk()->put($this->module->module_folder.'/ololo.php', '<? ololo(); ?><p>ололо</p>');
 
 		$this->visit('/my-bitrix/'.$this->module->id.$this->path.'/edit?file=%2Fololo.php');
-		$this->see('<span class="bg-danger">ololo</span>');
+		$this->see('<span class="bg-danger">ололо</span>');
 		$this->seeInField('code_0', 'ololo');
 	}
 
 	/** @test */
 	function it_can_extract_untranslated_text_in_tag_when_there_is_lang_file(){
-		$this->module->disk()->put($this->module->module_folder.'/ololo.php', '<? ololo(); ?><p>ololo</p>');
-		$this->module->disk()->put($this->module->module_folder.'/lang/ru/ololo.php', '<? $MESS["TEST"] = "Test";?>');
+		$this->module->disk()->put($this->module->module_folder.'/ololo.php', '<? ololo(); ?><p>ололо</p>');
+		$this->module->disk()->put($this->module->module_folder.'/lang/ru/ololo.php', '<? $MESS["TEST"] = "Тест";?>');
 
 		$this->visit('/my-bitrix/'.$this->module->id.$this->path.'/edit?file=%2Fololo.php');
 		$this->press('save_1');
@@ -98,13 +98,24 @@ class BitrixLangInterfaceTest extends BitrixTestCase{
 
 	/** @test */
 	function it_can_extract_untranslated_text_in_tag_when_there_is_no_lang_file(){
-		$this->module->disk()->put($this->module->module_folder.'/ololo.php', '<? ololo(); ?><p>ololo</p>');
+		$this->module->disk()->put($this->module->module_folder.'/ololo.php', '<? ololo(); ?><p>ололо</p>');
 
 		$this->visit('/my-bitrix/'.$this->module->id.$this->path.'/edit?file=%2Fololo.php');
 		$this->press('save_0');
 
 		$this->see('&lt;p&gt;&lt;?=GetMessage("OLOLO");?&gt;&lt;/p&gt;');
 		$this->see('<p class="form-control-static">OLOLO</p>');
+	}
+
+	/** @test */
+	function it_can_extract_untranslated_text_in_function_call_param(){
+		$this->module->disk()->put($this->module->module_folder.'/ololo.php', '<? ololo("тест"); ?>');
+
+		$this->visit('/my-bitrix/'.$this->module->id.$this->path.'/edit?file=%2Fololo.php');
+		$this->press('save_0');
+
+		$this->see('GetMessage("TEST")');
+		$this->see('<p class="form-control-static">TEST</p>');
 	}
 
 	/** @test */

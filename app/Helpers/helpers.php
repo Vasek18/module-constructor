@@ -159,7 +159,7 @@ function translit($text){
 		$text = str_replace($search, $replace, $text);
 	}
 	$text = preg_replace('/__+/', '_', $text);
-	$text = preg_replace('/^_*(.+)_*$/', '$1', $text);
+	$text = preg_replace('/^_*([^\_].*?[^\_])_*$/', '$1', $text);
 
 	return $text;
 }
