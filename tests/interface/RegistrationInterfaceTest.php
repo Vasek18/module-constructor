@@ -20,7 +20,7 @@ class RegistrationInterfaceTest extends TestCase{
 			'last_name'             => 'Аристов',
 			'company_name'          => 'Aristov',
 			'site'                  => 'http://aristov-vasiliy.ru/',
-			'email'                 => 'ololo@trololo.ru',
+			'email'                 => 'ololo@test.ru',
 			'password'              => '12345678',
 			'password_confirmation' => '12345678',
 		]);
@@ -68,7 +68,7 @@ class RegistrationInterfaceTest extends TestCase{
 			'last_name'             => 'Аристов',
 			'company_name'          => 'Aristov',
 			'site'                  => 'http://aristov-vasiliy.ru/',
-			'email'                 => 'ololo@trololo.ru',
+			'email'                 => 'ololo@test.ru',
 			'password'              => '',
 			'password_confirmation' => '12345678',
 		]);
@@ -85,7 +85,7 @@ class RegistrationInterfaceTest extends TestCase{
 			'last_name'             => 'Аристов',
 			'company_name'          => 'Aristov',
 			'site'                  => 'http://aristov-vasiliy.ru/',
-			'email'                 => 'ololo@trololo.ru',
+			'email'                 => 'ololo@test.ru',
 			'password'              => '',
 			'password_confirmation' => '12345678',
 		]);
@@ -100,7 +100,7 @@ class RegistrationInterfaceTest extends TestCase{
 			'last_name'             => 'Аристов',
 			'company_name'          => 'Aristov',
 			'site'                  => 'http://aristov-vasiliy.ru/',
-			'email'                 => 'ololo@trololo.ru',
+			'email'                 => 'ololo@test.ru',
 			'password'              => '12345678',
 			'password_confirmation' => '12345678',
 		]);
@@ -117,7 +117,7 @@ class RegistrationInterfaceTest extends TestCase{
 			'last_name'             => 'Аристов',
 			'company_name'          => 'Aristov',
 			'site'                  => 'http://aristov-vasiliy.ru/',
-			'email'                 => 'ololo@trololo.ru',
+			'email'                 => 'ololo@test.ru',
 			'password'              => '12345678',
 			'password_confirmation' => '12345678',
 		]);
@@ -128,7 +128,7 @@ class RegistrationInterfaceTest extends TestCase{
 	/** @test */
 	function it_returns_error_when_the_email_is_already_taken_ru(){
 		factory(App\Models\User::class)->create([
-			'email'    => 'ololo@trololo.ru',
+			'email'    => 'ololo@test.ru',
 			'password' => bcrypt("12345678"),
 		]);
 
@@ -137,7 +137,7 @@ class RegistrationInterfaceTest extends TestCase{
 			'last_name'             => 'Аристов',
 			'company_name'          => 'Aristov',
 			'site'                  => 'http://aristov-vasiliy.ru/',
-			'email'                 => 'ololo@trololo.ru',
+			'email'                 => 'ololo@test.ru',
 			'password'              => '12345678',
 			'password_confirmation' => '12345678',
 		]);
@@ -150,7 +150,7 @@ class RegistrationInterfaceTest extends TestCase{
 		$this->setLang('en');
 
 		factory(App\Models\User::class)->create([
-			'email'    => 'ololo@trololo.ru',
+			'email'    => 'ololo@test.ru',
 			'password' => bcrypt("12345678"),
 		]);
 
@@ -159,7 +159,7 @@ class RegistrationInterfaceTest extends TestCase{
 			'last_name'             => 'Аристов',
 			'company_name'          => 'Aristov',
 			'site'                  => 'http://aristov-vasiliy.ru/',
-			'email'                 => 'ololo@trololo.ru',
+			'email'                 => 'ololo@test.ru',
 			'password'              => '12345678',
 			'password_confirmation' => '12345678',
 		]);
@@ -174,7 +174,7 @@ class RegistrationInterfaceTest extends TestCase{
 			'last_name'             => 'Аристов',
 			'company_name'          => 'Aristov',
 			'site'                  => 'http://aristov-vasiliy.ru/',
-			'email'                 => 'ololo@trololo.ru',
+			'email'                 => 'ololo@test.ru',
 			'password'              => '12345',
 			'password_confirmation' => '12345',
 		]);
@@ -191,7 +191,7 @@ class RegistrationInterfaceTest extends TestCase{
 			'last_name'             => 'Аристов',
 			'company_name'          => 'Aristov',
 			'site'                  => 'http://aristov-vasiliy.ru/',
-			'email'                 => 'ololo@trololo.ru',
+			'email'                 => 'ololo@test.ru',
 			'password'              => '12345',
 			'password_confirmation' => '12345',
 		]);
@@ -206,7 +206,7 @@ class RegistrationInterfaceTest extends TestCase{
 			'last_name'             => 'Аристов',
 			'company_name'          => 'Aristov',
 			'site'                  => 'http://aristov-vasiliy.ru/',
-			'email'                 => 'ololo@trololo.ru',
+			'email'                 => 'ololo@test.ru',
 			'password'              => '12345678',
 			'password_confirmation' => '123456789',
 		]);
@@ -223,7 +223,7 @@ class RegistrationInterfaceTest extends TestCase{
 			'last_name'             => 'Аристов',
 			'company_name'          => 'Aristov',
 			'site'                  => 'http://aristov-vasiliy.ru/',
-			'email'                 => 'ololo@trololo.ru',
+			'email'                 => 'ololo@test.ru',
 			'password'              => '12345678',
 			'password_confirmation' => '123456789',
 		]);
@@ -270,13 +270,13 @@ class RegistrationInterfaceTest extends TestCase{
 			'last_name'             => 'Аристов',
 			'company_name'          => 'Aristov',
 			'site'                  => 'http://aristov-vasiliy.ru/',
-			'email'                 => 'ololo@trololo.ru',
+			'email'                 => 'ololo@test.ru',
 			'password'              => '12345678',
 			'password_confirmation' => '12345678',
 		]);
 
 		$this->seeInDatabase('users', [
-			'email'      => 'ololo@trololo.ru',
+			'email'      => 'ololo@test.ru',
 			'payed_days' => Config::get('constants.DAYS_TRIAL')
 		]);
 	}

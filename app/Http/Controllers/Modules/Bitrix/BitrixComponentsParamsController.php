@@ -6,7 +6,6 @@ use App\Http\Utilities\Bitrix\BitrixComponentsParamsTypes;
 use App\Models\Modules\Bitrix\BitrixComponentsParams;
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Modules\Bitrix\Bitrix;
 use App\Models\Modules\Bitrix\BitrixComponent;
@@ -181,7 +180,7 @@ class BitrixComponentsParamsController extends Controller{
 		}
 
 		// удаляем ланг
-		$langFilePath = $component->getFolder().'\lang\ru\.parameters.php';
+		$langFilePath = $component->getFolder().DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.'ru'.DIRECTORY_SEPARATOR.'.parameters.php';
 		$module->changeVarInLangFile($param->lang_key.'_NAME', '', $langFilePath);
 		foreach ($param->vals as $val){
 			$module->changeVarInLangFile($val->lang_key.'_VALUE', '', $langFilePath);

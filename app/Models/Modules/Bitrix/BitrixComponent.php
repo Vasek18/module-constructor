@@ -4,7 +4,6 @@ namespace App\Models\Modules\Bitrix;
 
 use App\Http\Utilities\Bitrix\BitrixHelperFunctions;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
 use App\Helpers\vArrParse;
 use Illuminate\Support\Facades\Storage;
 
@@ -14,10 +13,10 @@ class BitrixComponent extends Model{
 	protected $fillable = ['module_id', 'name', 'sort', 'code', 'icon_path', 'desc', 'namespace'];
 	public $timestamps = false;
 	public $nonArbitraryFiles = [
-		'/component.php',
-		'/class.php',
-		'/.description.php',
-		'/.parameters.php'
+		DIRECTORY_SEPARATOR.'component.php',
+		DIRECTORY_SEPARATOR.'class.php',
+		DIRECTORY_SEPARATOR.'.description.php',
+		DIRECTORY_SEPARATOR.'.parameters.php'
 	];
 
 	public function createDefaultPath(){
@@ -39,9 +38,9 @@ class BitrixComponent extends Model{
 	}
 
 	public function createDefaultComponentPhp(){
-		$component_php = Storage::disk('modules_templates')->get('bitrix\install\components\component_name\component.php');
+		$component_php = Storage::disk('modules_templates')->get('bitrix'.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'component_name'.DIRECTORY_SEPARATOR.'component.php');
 
-		$this->module()->first()->disk()->put($this->getFolder().'\component.php', $component_php);
+		$this->module()->first()->disk()->put($this->getFolder().DIRECTORY_SEPARATOR.'component.php', $component_php);
 
 		$this->saveStep(4);
 	}
@@ -57,7 +56,7 @@ class BitrixComponent extends Model{
 
 		$template_php = 'Hello World';
 
-		$this->module()->first()->disk()->put($template->getFolder().'\template.php', $template_php);
+		$this->module()->first()->disk()->put($template->getFolder().DIRECTORY_SEPARATOR.'template.php', $template_php);
 
 		$this->saveStep(6);
 	}
@@ -115,7 +114,7 @@ class BitrixComponent extends Model{
 
 		//dd($file);
 
-		Bitrix::changeVarsInModuleFileAndSave('bitrix\install\components\component_name\\'.$file, $module->id, $search, $replace, $this->getFolder().'\.description.php');
+		Bitrix::changeVarsInModuleFileAndSave('bitrix'.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'component_name'.DIRECTORY_SEPARATOR.$file, $module->id, $search, $replace, $this->getFolder().DIRECTORY_SEPARATOR.'.description.php');
 	}
 
 	public function saveDescriptionLangFileInFolder(){
@@ -153,7 +152,7 @@ class BitrixComponent extends Model{
 
 		//dd($replace);
 
-		Bitrix::changeVarsInModuleFileAndSave('bitrix\install\components\component_name\lang\ru\\'.$file, $module->id, $search, $replace, $this->getFolder().'\lang\ru\.description.php');
+		Bitrix::changeVarsInModuleFileAndSave('bitrix'.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'component_name'.DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.'ru'.DIRECTORY_SEPARATOR.$file, $module->id, $search, $replace, $this->getFolder().DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.'ru'.DIRECTORY_SEPARATOR.'.description.php');
 	}
 
 	public function saveStep($step){
@@ -193,7 +192,7 @@ class BitrixComponent extends Model{
 		$module = $this->module()->first();
 		$module_folder = $module->getFolder($full);
 
-		return $module_folder.'\install\components\\'.$this->namespace.'\\'.$this->code;
+		return $module_folder.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.$this->namespace.DIRECTORY_SEPARATOR.$this->code;
 	}
 
 	public function createFolder(){
@@ -205,7 +204,7 @@ class BitrixComponent extends Model{
 	}
 
 	public function generateZip(){
-		$archiveName = public_path().'/user_downloads/'.$this->code.".zip";
+		$archiveName = public_path().DIRECTORY_SEPARATOR.'user_downloads'.DIRECTORY_SEPARATOR.$this->code.".zip";
 
 		//dd(glob($this->getFolder(true). '/{,.[a-zA-Z]}*', GLOB_BRACE));
 
@@ -226,7 +225,7 @@ class BitrixComponent extends Model{
 		$paramsTexts = [];
 		$helperFunctionsArr = [];
 
-		$langFilePath = $this->getFolder().'\lang\ru\.parameters.php';
+		$langFilePath = $this->getFolder().DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.'ru'.DIRECTORY_SEPARATOR.'.parameters.php';
 
 		foreach ($params as $param){
 			if ($param->template_id){
@@ -245,7 +244,7 @@ class BitrixComponent extends Model{
 			if (!$param->template_id){
 				$module->changeVarInLangFile($param->lang_key.'_NAME', $param->name, $langFilePath);
 			}else{
-				$module->changeVarInLangFile($param->lang_key.'_NAME', $param->name, $template->getFolder().'\lang\ru\.parameters.php');
+				$module->changeVarInLangFile($param->lang_key.'_NAME', $param->name, $template->getFolder().DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.'ru'.DIRECTORY_SEPARATOR.'.parameters.php');
 			}
 			if ($param->refresh){
 				$paramText .= "\t\t\t".'"REFRESH" => "Y",'.PHP_EOL;
@@ -279,7 +278,7 @@ class BitrixComponent extends Model{
 							if (!$param->template_id){
 								$module->changeVarInLangFile($val->lang_key.'_VALUE', $val->value, $langFilePath);
 							}else{
-								$module->changeVarInLangFile($val->lang_key.'_VALUE', $val->value, $template->getFolder().'\lang\ru\.parameters.php');
+								$module->changeVarInLangFile($val->lang_key.'_VALUE', $val->value, $template->getFolder().DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.'ru'.DIRECTORY_SEPARATOR.'.parameters.php');
 							}
 						}
 						$paramText .= "\t\t\t";
@@ -321,17 +320,17 @@ class BitrixComponent extends Model{
 			}
 
 			if (!$templateID){
-				Bitrix::changeVarsInModuleFileAndSave('bitrix\install\components\component_name\.parameters.php', $module->id, $search, $replace, $this->getFolder().'\.parameters.php');
-				$module->changeVarInLangFile($module->lang_key.'_SELECT', trans('app.select'), $this->getFolder().'\lang\ru\.parameters.php');
+				Bitrix::changeVarsInModuleFileAndSave('bitrix'.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'component_name'.DIRECTORY_SEPARATOR.'.parameters.php', $module->id, $search, $replace, $this->getFolder().DIRECTORY_SEPARATOR.'.parameters.php');
+				$module->changeVarInLangFile($module->lang_key.'_SELECT', trans('app.select'), $this->getFolder().DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.'ru'.DIRECTORY_SEPARATOR.'.parameters.php');
 			}else{
 				$template = BitrixComponentsTemplates::find($templateID);
-				Bitrix::changeVarsInModuleFileAndSave('bitrix\install\components\component_name\template_code\.parameters.php', $module->id, $search, $replace, $template->getFolder().'\.parameters.php');
-				$module->changeVarInLangFile($module->lang_key.'_SELECT', trans('app.select'), $template->getFolder().'\lang\ru\.parameters.php');
+				Bitrix::changeVarsInModuleFileAndSave('bitrix'.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'component_name'.DIRECTORY_SEPARATOR.'template_code'.DIRECTORY_SEPARATOR.'.parameters.php', $module->id, $search, $replace, $template->getFolder().DIRECTORY_SEPARATOR.'.parameters.php');
+				$module->changeVarInLangFile($module->lang_key.'_SELECT', trans('app.select'), $template->getFolder().DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.'ru'.DIRECTORY_SEPARATOR.'.parameters.php');
 			}
 		}
 		if (empty($paramsTexts)){
 			$replace = Array($groupsText, '');
-			Bitrix::changeVarsInModuleFileAndSave('bitrix\install\components\component_name\.parameters.php', $module->id, $search, $replace, $this->getFolder().'\.parameters.php');
+			Bitrix::changeVarsInModuleFileAndSave('bitrix'.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'component_name'.DIRECTORY_SEPARATOR.'.parameters.php', $module->id, $search, $replace, $this->getFolder().DIRECTORY_SEPARATOR.'.parameters.php');
 		}
 
 		return true;
@@ -340,9 +339,9 @@ class BitrixComponent extends Model{
 
 	public function parseDescriptionFile(){
 		$vArrParse = new vArrParse;
-		$info = $vArrParse->parseFromFile($this->getFolder(true).'/.description.php', 'arComponentDescription');
-		$this->name = extractLangVal($info['NAME'], $this->getFolder(true).'/lang/ru/.description.php');
-		$this->desc = extractLangVal($info['DESCRIPTION'], $this->getFolder(true).'/lang/ru/.description.php');
+		$info = $vArrParse->parseFromFile($this->getFolder(true).DIRECTORY_SEPARATOR.'.description.php', 'arComponentDescription');
+		$this->name = extractLangVal($info['NAME'], $this->getFolder(true).DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.'ru'.DIRECTORY_SEPARATOR.'.description.php');
+		$this->desc = extractLangVal($info['DESCRIPTION'], $this->getFolder(true).DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.'ru'.DIRECTORY_SEPARATOR.'.description.php');
 		if (isset($info['ICON'])){
 			$this->icon_path = $info['ICON'];
 		}
@@ -407,7 +406,7 @@ class BitrixComponent extends Model{
 						$pathItem['code'] = $info['PATH']["CHILD"]["CHILD"]['ID'];
 					}
 					if (isset($info['PATH']["CHILD"]["CHILD"]['NAME'])){
-						$pathItem['name'] = extractLangVal($info['PATH']["CHILD"]["CHILD"]['NAME'], $this->getFolder(true).'/lang/ru/.description.php');
+						$pathItem['name'] = extractLangVal($info['PATH']["CHILD"]["CHILD"]['NAME'], $this->getFolder(true).DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.'ru'.DIRECTORY_SEPARATOR.'.description.php');
 					}
 					if (isset($info['PATH']["CHILD"]["CHILD"]['SORT'])){
 						$pathItem['sort'] = $info['PATH']["CHILD"]["CHILD"]['SORT'];
@@ -431,7 +430,7 @@ class BitrixComponent extends Model{
 		// todo подтягивать имена стандартных значений, если они не указаны (например CACHE_TIME)
 
 		$vArrParse = new vArrParse;
-		$info = $vArrParse->parseFromFile($this->getFolder(true).'/.parameters.php', 'arComponentParameters');
+		$info = $vArrParse->parseFromFile($this->getFolder(true).DIRECTORY_SEPARATOR.'.parameters.php', 'arComponentParameters');
 		foreach ($info['PARAMETERS'] as $code => $param){
 			$newParamParams = [
 				'code'         => $code,
@@ -478,7 +477,7 @@ class BitrixComponent extends Model{
 			if (isset($param["VALUES"])){ // не думаю, что здесь нужна проверка на тип свойства, но всё же можно подумать об этом
 				if (!is_array($param["VALUES"])){ // todo как вообще сюда мог массив попасть? я же не исполняю файлы! (проверить можно на news)
 					if (ifStringIsValName($param["VALUES"])){
-						$vals = $vArrParse->parseFromFile($this->getFolder(true).'/.parameters.php', $param["VALUES"]);
+						$vals = $vArrParse->parseFromFile($this->getFolder(true).DIRECTORY_SEPARATOR.'.parameters.php', $param["VALUES"]);
 						// todo вариант, когда параметры вписаны в само значение в виде Array(...)
 						if (count($vals)){
 							$newParam->spec_vals = 'array';
@@ -515,11 +514,11 @@ class BitrixComponent extends Model{
 				continue;
 			}
 
-			if (strpos($file, '/templates/') !== false){
+			if (strpos($file, DIRECTORY_SEPARATOR.'templates'.DIRECTORY_SEPARATOR) !== false){
 				continue;
 			}
 
-			if (strpos($file, '/lang/') !== false){ // todo обрабатывать и ланги
+			if (strpos($file, DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR) !== false){ // todo обрабатывать и ланги
 				continue;
 			}
 
@@ -533,8 +532,8 @@ class BitrixComponent extends Model{
 	}
 
 	public function parseTemplates(){
-		$dir = str_replace('\\', '/', $this->getFolder()); // todo к чему такие сложности
-		$dirs = $this->module->disk()->directories($dir.'/templates');
+		$dir = str_replace(Array('\\'), '/', $this->getFolder()).'/templates'; // тут почему-то нужен именно такой слеш
+		$dirs = $this->module->disk()->directories($dir);
 		foreach ($dirs as $dir){
 			$templatePathArr = explode('/', $dir);
 			$templateCode = $templatePathArr[count($templatePathArr) - 1];
@@ -556,8 +555,8 @@ class BitrixComponent extends Model{
 
 	public function getClassPhp($functionsCodes = []){
 		$functionsCodes[] = 'for all';
-		$class_php = Storage::disk('modules_templates')->get('bitrix\install\components\component_name\class.php');
-		$class_functions_php = Storage::disk('modules_templates')->get('bitrix\install\components\component_name\class_functions.php');
+		$class_php = Storage::disk('modules_templates')->get('bitrix'.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'component_name'.DIRECTORY_SEPARATOR.'class.php');
+		$class_functions_php = Storage::disk('modules_templates')->get('bitrix'.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'component_name'.DIRECTORY_SEPARATOR.'class_functions.php');
 
 		$functions = preg_split('/(\/\/.+)/im', $class_functions_php, null, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE); // без s чтобы в . не было переноса строк
 		// dd($functions);
@@ -596,7 +595,7 @@ class BitrixComponent extends Model{
 
 	public function getComponentPhpAttribute(){
 		$disk = $this->module()->first()->disk();
-		$path = $this->getFolder().'\component.php';
+		$path = $this->getFolder().DIRECTORY_SEPARATOR.'component.php';
 		if ($disk->exists($path)){
 			return $disk->get($path);
 		}
@@ -606,7 +605,7 @@ class BitrixComponent extends Model{
 
 	public function getClassPhpAttribute(){
 		$disk = $this->module()->first()->disk();
-		$path = $this->getFolder().'\class.php';
+		$path = $this->getFolder().DIRECTORY_SEPARATOR.'class.php';
 		if ($disk->exists($path)){
 			return $disk->get($path);
 		}

@@ -14,9 +14,9 @@ class BitrixAdminMenuItems extends Model{
 
 	public static function storeInModuleFolder(Bitrix $module){
 		// сначала чистим от всего, что было раньше
-		$module->disk()->deleteDirectory($module->module_folder.'/admin/');
+		$module->disk()->deleteDirectory($module->module_folder.DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR);
 
-		$menuFilePath = '/admin/menu.php';
+		$menuFilePath = DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR.'menu.php';
 		if ($module->adminMenuPages()->count()){
 			Bitrix::changeVarsInModuleFileAndSave('bitrix'.$menuFilePath, $module->id); // подготавливаем файл
 			$funcName = 'global_menu_'.$module->class_name;
@@ -35,7 +35,7 @@ class BitrixAdminMenuItems extends Model{
 				$menuArrString .= "\t".');'.PHP_EOL.PHP_EOL;
 
 				// сохраняем файл с кодом страницы
-				$module->disk()->put($module->module_folder.'/admin/'.$admin_menu_page->file_name, $admin_menu_page->php_code);
+				$module->disk()->put($module->module_folder.DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR.$admin_menu_page->file_name, $admin_menu_page->php_code);
 			}
 			$menuArrString .= '}';
 
@@ -51,14 +51,14 @@ class BitrixAdminMenuItems extends Model{
 
 	public static function writeLangs(Bitrix $module){
 		// сначала чистим от всего, что было раньше
-		$module->disk()->deleteDirectory($module->module_folder.'/lang/'.$module->default_lang.'/admin/');
+		$module->disk()->deleteDirectory($module->module_folder.DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.$module->default_lang.DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR);
 
 		foreach ($module->adminMenuPages()->get() as $admin_menu_page){
-			$module->changeVarInLangFile($admin_menu_page->lang_key."_TEXT", $admin_menu_page->text, '/lang/'.$module->default_lang.'/admin/menu.php');
-			$module->changeVarInLangFile($admin_menu_page->lang_key."_TITLE", $admin_menu_page->title ? $admin_menu_page->title : $admin_menu_page->text, '/lang/'.$module->default_lang.'/admin/menu.php');
+			$module->changeVarInLangFile($admin_menu_page->lang_key."_TEXT", $admin_menu_page->text, DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.$module->default_lang.DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR.'menu.php');
+			$module->changeVarInLangFile($admin_menu_page->lang_key."_TITLE", $admin_menu_page->title ? $admin_menu_page->title : $admin_menu_page->text, DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.$module->default_lang.DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR.'menu.php');
 
 			// сохраняем файл с лангом страницы
-			$module->disk()->put($module->module_folder.'/lang/'.$module->default_lang.'/admin/'.$admin_menu_page->file_name, $admin_menu_page->lang_code);
+			$module->disk()->put($module->module_folder.DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.$module->default_lang.DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR.$admin_menu_page->file_name, $admin_menu_page->lang_code);
 		}
 	}
 

@@ -51,7 +51,7 @@ class BitrixComponentsTemplates extends Model{
 	public function getFolder($full = false){
 		$component_folder = $this->component()->first()->getFolder($full);
 
-		return $component_folder.'\templates\\'.$this->code;
+		return $component_folder.DIRECTORY_SEPARATOR.'templates'.DIRECTORY_SEPARATOR.$this->code;
 	}
 
 	public function disk(){
@@ -171,7 +171,7 @@ class BitrixComponentsTemplates extends Model{
 
 	public function getTemplatePhpAttribute(){
 		$code = "";
-		$path = $this->getFolder().'\template.php';
+		$path = $this->getFolder().DIRECTORY_SEPARATOR.'template.php';
 		if ($this->disk()->exists($path)){
 			$code = $this->disk()->get($path);
 		}
@@ -181,7 +181,7 @@ class BitrixComponentsTemplates extends Model{
 
 	public function getStyleCssAttribute(){
 		$code = "";
-		$path = $this->getFolder().'\style.css';
+		$path = $this->getFolder().DIRECTORY_SEPARATOR.'style.css';
 		if ($this->disk()->exists($path)){
 			$code = $this->disk()->get($path);
 		}
@@ -191,7 +191,7 @@ class BitrixComponentsTemplates extends Model{
 
 	public function getScriptJsAttribute(){
 		$code = "";
-		$path = $this->getFolder().'\script.js';
+		$path = $this->getFolder().DIRECTORY_SEPARATOR.'script.js';
 		if ($this->disk()->exists($path)){
 			$code = $this->disk()->get($path);
 		}
@@ -201,7 +201,7 @@ class BitrixComponentsTemplates extends Model{
 
 	public function getResultModifierPhpAttribute(){
 		$code = "";
-		$path = $this->getFolder().'\result_modifier.php';
+		$path = $this->getFolder().DIRECTORY_SEPARATOR.'result_modifier.php';
 		if ($this->disk()->exists($path)){
 			$code = $this->disk()->get($path);
 		}
@@ -211,7 +211,7 @@ class BitrixComponentsTemplates extends Model{
 
 	public function getComponentEpilogPhpAttribute(){
 		$code = "";
-		$path = $this->getFolder().'\component_epilog.php';
+		$path = $this->getFolder().DIRECTORY_SEPARATOR.'component_epilog.php';
 		if ($this->disk()->exists($path)){
 			$code = $this->disk()->get($path);
 		}

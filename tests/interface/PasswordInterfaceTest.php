@@ -10,7 +10,7 @@ class PasswordInterfaceTest extends TestCase{
 		parent::setUp();
 
 		factory(App\Models\User::class)->create([
-			'email'    => 'ololo@trololo.ru',
+			'email'    => 'ololo@test.ru',
 			'password' => bcrypt("12345678"),
 		]);
 
@@ -43,10 +43,10 @@ class PasswordInterfaceTest extends TestCase{
 	// 	$this->app['mailer']->setSwiftMailer($mock);
 	//
 	// 	$mock->shouldReceive('send')->once()->andReturnUsing(function ($message){
-	// 		$this->assertArrayhasKey('ololo@trololo.ru', $message->getTo());
+	// 		$this->assertArrayhasKey('ololo@test.ru', $message->getTo());
 	// 	});
 	// 	$this->submitForm('send', [
-	// 		'email' => 'ololo@trololo.ru',
+	// 		'email' => 'ololo@test.ru',
 	// 	]);
 	// }
 }

@@ -3,8 +3,6 @@
 namespace App\Models\Modules\Bitrix;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Modules\Bitrix\BitrixComponent;
-use App\Models\Modules\Bitrix\BitrixComponentsTemplates;
 
 class BitrixComponentsArbitraryFiles extends Model{
 	protected $table = 'bitrix_components_arbitrary_files';

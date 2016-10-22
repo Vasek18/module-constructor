@@ -20,7 +20,7 @@ class BitrixAdminOptions extends Model{
 		$optionsString = '';
 		$helperFunctionsArr = [];
 		$helperFunctions = "";
-		Bitrix::changeVarsInModuleFileAndSave('bitrix/lang/'.$module->default_lang.'/options.php', $module->id);
+		Bitrix::changeVarsInModuleFileAndSave('bitrix'.DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.$module->default_lang.DIRECTORY_SEPARATOR.'options.php', $module->id);
 		if ($module->options()->count()){
 			$options = $module->options()->orderBy('sort', 'asc')->get();
 
@@ -42,14 +42,14 @@ class BitrixAdminOptions extends Model{
 
 				$optionsString .= $string;
 
-				$module->changeVarInLangFile($option->lang_key.'_TITLE', $option->name, 'lang/'.$module->default_lang.'/options.php');
+				$module->changeVarInLangFile($option->lang_key.'_TITLE', $option->name, 'lang'.DIRECTORY_SEPARATOR.$module->default_lang.DIRECTORY_SEPARATOR.'options.php');
 				if ($option->default_value){
-					$module->changeVarInLangFile($option->lang_key."_DEFAULT_VALUE", $option->default_value, 'lang/'.$module->default_lang.'/options.php');
+					$module->changeVarInLangFile($option->lang_key."_DEFAULT_VALUE", $option->default_value, 'lang'.DIRECTORY_SEPARATOR.$module->default_lang.DIRECTORY_SEPARATOR.'options.php');
 				}
 				if ($option->type == 'selectbox' || $option->type == 'multiselectbox'){
 					if ($option->vals->count()){
 						foreach ($option->vals as $val){
-							$module->changeVarInLangFile($val->lang_key, $val->value, 'lang/'.$module->default_lang.'/options.php'); // todo, а это всегда надо?
+							$module->changeVarInLangFile($val->lang_key, $val->value, 'lang'.DIRECTORY_SEPARATOR.$module->default_lang.DIRECTORY_SEPARATOR.'options.php'); // todo, а это всегда надо?
 						}
 					}
 				}
@@ -60,7 +60,7 @@ class BitrixAdminOptions extends Model{
 			$helperFunctions = str_replace(Array('{LANG_KEY}'), Array($module->lang_key), $helperFunctions);
 		}
 
-		Bitrix::changeVarsInModuleFileAndSave('bitrix/options.php', $module->id, Array("{OPTIONS}", "{HELPER_FUNCTIONS}"), Array($optionsString, $helperFunctions));
+		Bitrix::changeVarsInModuleFileAndSave('bitrix'.DIRECTORY_SEPARATOR.'options.php', $module->id, Array("{OPTIONS}", "{HELPER_FUNCTIONS}"), Array($optionsString, $helperFunctions));
 	}
 
 	public function getNeededHelperFunctionName(){

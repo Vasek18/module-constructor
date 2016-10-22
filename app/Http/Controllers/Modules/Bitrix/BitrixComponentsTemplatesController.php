@@ -63,19 +63,19 @@ class BitrixComponentsTemplatesController extends Controller{
 		$disk = $module->disk();
 
 		if ($request->template_php){
-			$disk->put($template->getFolder().'\template.php', $request->template_php);
+			$disk->put($template->getFolder().DIRECTORY_SEPARATOR.'template.php', $request->template_php);
 		}
 		if ($request->style_css){
-			$disk->put($template->getFolder().'\style.css', $request->style_css);
+			$disk->put($template->getFolder().DIRECTORY_SEPARATOR.'style.css', $request->style_css);
 		}
 		if ($request->script_js){
-			$disk->put($template->getFolder().'\script.js', $request->script_js);
+			$disk->put($template->getFolder().DIRECTORY_SEPARATOR.'script.js', $request->script_js);
 		}
 		if ($request->result_modifier_php){
-			$disk->put($template->getFolder().'\result_modifier.php', $request->result_modifier_php);
+			$disk->put($template->getFolder().DIRECTORY_SEPARATOR.'result_modifier.php', $request->result_modifier_php);
 		}
 		if ($request->component_epilog_php){
-			$disk->put($template->getFolder().'\component_epilog.php', $request->component_epilog_php);
+			$disk->put($template->getFolder().DIRECTORY_SEPARATOR.'component_epilog.php', $request->component_epilog_php);
 		}
 
 		return redirect(action('Modules\Bitrix\BitrixComponentsTemplatesController@show', [$module->id, $component->id, $template->id]));
@@ -102,7 +102,7 @@ class BitrixComponentsTemplatesController extends Controller{
 		$archive = $request->file('files');
 		if (!$archive){
 			$template_php = ''; // todo
-			$module->disk()->put($template->getFolder().'\template.php', $template_php);
+			$module->disk()->put($template->getFolder().DIRECTORY_SEPARATOR.'template.php', $template_php);
 		}else{
 			$template->extractUploadedZip($archive);
 		}
@@ -146,19 +146,19 @@ class BitrixComponentsTemplatesController extends Controller{
 		);
 
 		if ($request->template_php){
-			$disk->put($template->getFolder().'\template.php', $request->template_php);
+			$disk->put($template->getFolder().DIRECTORY_SEPARATOR.'template.php', $request->template_php);
 		}
 		if ($request->style_css){
-			$disk->put($template->getFolder().'\style.css', $request->style_css);
+			$disk->put($template->getFolder().DIRECTORY_SEPARATOR.'style.css', $request->style_css);
 		}
 		if ($request->script_js){
-			$disk->put($template->getFolder().'\script.js', $request->script_js);
+			$disk->put($template->getFolder().DIRECTORY_SEPARATOR.'script.js', $request->script_js);
 		}
 		if ($request->result_modifier_php){
-			$disk->put($template->getFolder().'\result_modifier.php', $request->result_modifier_php);
+			$disk->put($template->getFolder().DIRECTORY_SEPARATOR.'result_modifier.php', $request->result_modifier_php);
 		}
 		if ($request->component_epilog_php){
-			$disk->put($template->getFolder().'\component_epilog.php', $request->component_epilog_php);
+			$disk->put($template->getFolder().DIRECTORY_SEPARATOR.'component_epilog.php', $request->component_epilog_php);
 		}
 
 		return back();

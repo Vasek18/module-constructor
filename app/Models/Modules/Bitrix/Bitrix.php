@@ -11,10 +11,8 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use App\Helpers\vArrParse;
 use Illuminate\Filesystem\Filesystem;
-use PhpParser\Node\Scalar\MagicConst\File;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
-use Symfony\Component\Finder\Finder;
 use ZipArchive;
 
 class Bitrix extends Model{
@@ -45,8 +43,8 @@ class Bitrix extends Model{
 	protected $fillable = ['name', 'description', 'code', 'PARTNER_NAME', 'PARTNER_URI', 'PARTNER_CODE', 'version', 'default_lang', 'download_counter', 'last_download'];
 
 	public static $requiredFiles = [
-		'/include.php',
-		'/install/version.php',
+		''.DIRECTORY_SEPARATOR.'include.php',
+		''.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'version.php',
 	];
 
 	// создание папки с модулем на серваке
@@ -62,24 +60,24 @@ class Bitrix extends Model{
 		}
 
 		// воссоздаём начальную структуру
-		$this->disk()->makeDirectory($module_folder."/install");
-		$this->disk()->makeDirectory($module_folder."/lib");
+		$this->disk()->makeDirectory($module_folder.DIRECTORY_SEPARATOR."install");
+		$this->disk()->makeDirectory($module_folder.DIRECTORY_SEPARATOR."lib");
 
 		// подставляем значения в шаблон индексного файла и шагов установки
-		Bitrix::changeVarsInModuleFileAndSave('bitrix/install/index.php', $this->id);
-		Bitrix::changeVarsInModuleFileAndSave('bitrix/install/step.php', $this->id);
-		Bitrix::changeVarsInModuleFileAndSave('bitrix/install/unstep.php', $this->id);
+		Bitrix::changeVarsInModuleFileAndSave('bitrix'.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'index.php', $this->id);
+		Bitrix::changeVarsInModuleFileAndSave('bitrix'.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'step.php', $this->id);
+		Bitrix::changeVarsInModuleFileAndSave('bitrix'.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'unstep.php', $this->id);
 
 		// подставляем значения в файл версии
-		Bitrix::changeVarsInModuleFileAndSave('bitrix/install/version.php', $this->id);
+		Bitrix::changeVarsInModuleFileAndSave('bitrix'.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'version.php', $this->id);
 
 		// этот файл просто до сих пор обязательный
-		Bitrix::changeVarsInModuleFileAndSave('bitrix/include.php', $this->id);
+		Bitrix::changeVarsInModuleFileAndSave('bitrix'.DIRECTORY_SEPARATOR.'include.php', $this->id);
 
 		// воссоздаём начальную структуру для ланга
-		$this->disk()->makeDirectory($module_folder."/lang/".$this->default_lang."/install");
+		$this->disk()->makeDirectory($module_folder.DIRECTORY_SEPARATOR."lang".DIRECTORY_SEPARATOR.$this->default_lang.DIRECTORY_SEPARATOR."install");
 		// подставляем значения в шаблон индексного файла
-		Bitrix::changeVarsInModuleFileAndSave('bitrix/lang/'.$this->default_lang.'/install/index.php', $this->id);
+		Bitrix::changeVarsInModuleFileAndSave('bitrix'.DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.$this->default_lang.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'index.php', $this->id);
 
 		return true;
 	}
@@ -154,16 +152,16 @@ class Bitrix extends Model{
 			$archiveName = $this->version;
 			$rootFolder = $this->version;
 		}
-		$archiveFullName = 'user_downloads/'.$archiveName.'.zip';
+		$archiveFullName = 'user_downloads'.DIRECTORY_SEPARATOR.$archiveName.'.zip';
 
 		$path = $this->copyToPublicAndEncode($encoding, $files, $rootFolder);
 
 		if (!$fresh && $updater){
-			file_put_contents($path.'/'.$rootFolder.'/updater.php', $updater);
+			file_put_contents($path.DIRECTORY_SEPARATOR.$rootFolder.DIRECTORY_SEPARATOR.'updater.php', $updater);
 		}
 		if (!$fresh){ // todo нужные языки
-			file_put_contents($path.'/'.$rootFolder.'/description.en', mb_convert_encoding($description, $encoding, 'UTF-8'));
-			file_put_contents($path.'/'.$rootFolder.'/description.ru', mb_convert_encoding($description, $encoding, 'UTF-8'));
+			file_put_contents($path.DIRECTORY_SEPARATOR.$rootFolder.DIRECTORY_SEPARATOR.'description.en', mb_convert_encoding($description, $encoding, 'UTF-8'));
+			file_put_contents($path.DIRECTORY_SEPARATOR.$rootFolder.DIRECTORY_SEPARATOR.'description.ru', mb_convert_encoding($description, $encoding, 'UTF-8'));
 		}
 
 		// $zipper = new \Chumper\Zipper\Zipper;
@@ -222,7 +220,7 @@ class Bitrix extends Model{
 	public function upgradeVersion($version){
 		$this->update(['version' => $version]);
 
-		Bitrix::changeVarsInModuleFileAndSave('bitrix/install/version.php', $this->id);
+		Bitrix::changeVarsInModuleFileAndSave('bitrix'.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'version.php', $this->id);
 
 		return true;
 	}

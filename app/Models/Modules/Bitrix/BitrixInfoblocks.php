@@ -244,21 +244,21 @@ class BitrixInfoblocks extends Model{
 	}
 
 	public function cleanLangFromYourself(){
-		$this->module()->first()->changeVarInLangFile($this->lang_key."_NAME", "", '/lang/'.$this->module->default_lang.'/install/index.php');
+		$this->module()->first()->changeVarInLangFile($this->lang_key."_NAME", "", DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.$this->module->default_lang.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'index.php');
 
 		foreach ($this->properties as $property){
-			$this->module()->first()->changeVarInLangFile($property->lang_key."_NAME", "", '/lang/'.$this->module->default_lang.'/install/index.php');
+			$this->module()->first()->changeVarInLangFile($property->lang_key."_NAME", "", DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.$this->module->default_lang.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'index.php');
 
 			foreach ($property->values as $val){
-				$this->module()->first()->changeVarInLangFile($val->lang_key."_VALUE", "", '/lang/'.$this->module->default_lang.'/install/index.php');
+				$this->module()->first()->changeVarInLangFile($val->lang_key."_VALUE", "", DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.$this->module->default_lang.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'index.php');
 			}
 		}
 
 		foreach ($this->elements as $element){
-			$this->module()->first()->changeVarInLangFile($element->lang_key."_NAME", "", '/lang/'.$this->module->default_lang.'/install/index.php');
+			$this->module()->first()->changeVarInLangFile($element->lang_key."_NAME", "", DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.$this->module->default_lang.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'index.php');
 
 			foreach ($element->props as $prop){
-				$this->module()->first()->changeVarInLangFile($element->lang_key.'_PROP_'.$prop->code.'_VALUE', "", '/lang/'.$this->module->default_lang.'/install/index.php');
+				$this->module()->first()->changeVarInLangFile($element->lang_key.'_PROP_'.$prop->code.'_VALUE', "", DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.$this->module->default_lang.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'index.php');
 			}
 		}
 	}

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Modules\Bitrix;
 
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Modules\Bitrix\Bitrix;
 use App\Models\Modules\Bitrix\BitrixComponentsPathItem;
@@ -239,7 +238,7 @@ class BitrixComponentsController extends Controller{
 		$component_php = $request->component_php;
 		$class_php = $request->class_php;
 
-		$pathToComponentPhp = $component->getFolder().'\component.php';
+		$pathToComponentPhp = $component->getFolder().DIRECTORY_SEPARATOR.'component.php';
 		if ($component_php){
 			$module->disk()->put($pathToComponentPhp, $component_php);
 		}else{
@@ -248,7 +247,7 @@ class BitrixComponentsController extends Controller{
 			}
 		}
 
-		$pathToClassPhp = $component->getFolder().'\class.php';
+		$pathToClassPhp = $component->getFolder().DIRECTORY_SEPARATOR.'class.php';
 		if ($class_php){
 			$module->disk()->put($pathToClassPhp, $class_php);
 		}else{
@@ -287,7 +286,7 @@ class BitrixComponentsController extends Controller{
 		$fileName = $this->moveComponentToPublic($request);
 		$this->extractComponentToModuleFolder($module, $fileName);
 		$componentCode = $this->getComponentCodeFromFolder($fileName);
-		unlink(public_path().'/user_upload/'.$fileName);
+		unlink(public_path().DIRECTORY_SEPARATOR.'user_upload'.DIRECTORY_SEPARATOR.$fileName);
 		$component = $this->createEmptyComponent($module, $componentCode);
 		$component->parseDescriptionFile();
 		$component->parseParamsFile();
@@ -304,26 +303,26 @@ class BitrixComponentsController extends Controller{
 	public function moveComponentToPublic(Request $request){
 		$archive = $request->file('archive');
 		$fileName = time().$archive->getClientOriginalName();
-		$archive->move(public_path().'/user_upload/', $fileName);
+		$archive->move(public_path().DIRECTORY_SEPARATOR.'user_upload'.DIRECTORY_SEPARATOR, $fileName);
 
 		return $fileName;
 	}
 
 	public function extractComponentToModuleFolder(Bitrix $module, $fileName){
 		// если вдруг папки для компонентов нет => создаём её
-		$module->disk()->makeDirectory($module->module_full_id."/install/components/".$module->module_full_id);
+		$module->disk()->makeDirectory($module->module_full_id.DIRECTORY_SEPARATOR."install".DIRECTORY_SEPARATOR."components".DIRECTORY_SEPARATOR.$module->module_full_id);
 
 		$moduleFolder = $module->getFolder();
 		$zipper = new Zipper;
-		$zipper->make(public_path().'/user_upload/'.$fileName);
-		$zipper->extractTo($moduleFolder.'/install/components/'.$module->module_full_id);
+		$zipper->make(public_path().DIRECTORY_SEPARATOR.'user_upload'.DIRECTORY_SEPARATOR.$fileName);
+		$zipper->extractTo($moduleFolder.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.$module->module_full_id);
 
 		return true;
 	}
 
 	public function getComponentCodeFromFolder($fileName){ // todo мб есть способ покрасивее
 		$zipper = new Zipper;
-		$zipper->make(public_path().'/user_upload/'.$fileName);
+		$zipper->make(public_path().DIRECTORY_SEPARATOR.'user_upload'.DIRECTORY_SEPARATOR.$fileName);
 		$files = $zipper->listFiles();
 		$path = explode('/', $files[0]);
 

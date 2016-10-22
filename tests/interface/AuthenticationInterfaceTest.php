@@ -10,7 +10,7 @@ class AuthenticationInterfaceTest extends TestCase{
 		parent::setUp();
 
 		factory(App\Models\User::class)->create([
-			'email'    => 'ololo@trololo.ru',
+			'email'    => 'ololo@test.ru',
 			'password' => bcrypt("12345678"),
 		]);
 
@@ -20,7 +20,7 @@ class AuthenticationInterfaceTest extends TestCase{
 	/** @test */
 	function user_can_log_in(){
 		$this->submitForm('login', [
-			'email'    => 'ololo@trololo.ru',
+			'email'    => 'ololo@test.ru',
 			'password' => '12345678',
 		]);
 
@@ -40,7 +40,7 @@ class AuthenticationInterfaceTest extends TestCase{
 	/** @test */
 	function it_returns_error_when_there_is_no_password_ru(){
 		$this->submitForm('login', [
-			'email'    => 'ololo@trololo.ru',
+			'email'    => 'ololo@test.ru',
 			'password' => '',
 		]);
 
@@ -64,7 +64,7 @@ class AuthenticationInterfaceTest extends TestCase{
 		$this->setLang('en');
 
 		$this->submitForm('login', [
-			'email'    => 'ololo@trololo.ru',
+			'email'    => 'ololo@test.ru',
 			'password' => '',
 		]);
 
@@ -96,7 +96,7 @@ class AuthenticationInterfaceTest extends TestCase{
 	/** @test */
 	function it_returns_error_when_there_is_wrong_password_ru(){
 		$this->submitForm('login', [
-			'email'    => 'ololo@trololo.ru',
+			'email'    => 'ololo@test.ru',
 			'password' => '123456789',
 		]);
 
@@ -108,7 +108,7 @@ class AuthenticationInterfaceTest extends TestCase{
 		$this->setLang('en');
 
 		$this->submitForm('login', [
-			'email'    => 'ololo@trololo.ru',
+			'email'    => 'ololo@test.ru',
 			'password' => '123456789',
 		]);
 

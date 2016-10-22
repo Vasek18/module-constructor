@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Response;
 */
 
 class BitrixController extends Controller{
-	protected $rootFolder = '/construct/bitrix/'; // корневая папка модуля
+	protected $rootFolder = DIRECTORY_SEPARATOR.'construct'.DIRECTORY_SEPARATOR.'bitrix'.DIRECTORY_SEPARATOR; // корневая папка модуля
 
 	protected $request;
 
@@ -95,19 +95,19 @@ class BitrixController extends Controller{
 			$module->name = $this->request->name;
 			$module->save();
 
-			$module->changeVarsInModuleFileAndSave('bitrix/lang/'.$module->default_lang.'/install/index.php', $module->id);
+			$module->changeVarsInModuleFileAndSave('bitrix'.DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.$module->default_lang.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'index.php', $module->id);
 		}
 		if ($this->request->description){
 			$module->description = $this->request->description;
 			$module->save();
 
-			$module->changeVarsInModuleFileAndSave('bitrix/lang/'.$module->default_lang.'/install/index.php', $module->id);
+			$module->changeVarsInModuleFileAndSave('bitrix'.DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.$module->default_lang.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'index.php', $module->id);
 		}
 		if ($this->request->version){
 			$module->version = $this->request->version;
 			$module->save();
 
-			$module->changeVarsInModuleFileAndSave('bitrix/install/version.php', $module->id);
+			$module->changeVarsInModuleFileAndSave('bitrix'.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'version.php', $module->id);
 		}
 
 		if (!$this->request->ajax()){
