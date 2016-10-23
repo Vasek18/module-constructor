@@ -882,6 +882,54 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 	}
 
 	/** @test */
+	function it_writes_creation_code_with_test_element_with_html_text_prop_value(){
+		$ib = $this->createIblockOnForm($this->module, [
+			"properties[NAME][0]" => "Тест",
+			"properties[CODE][0]" => "TEST",
+			"properties[TYPE][0]" => "S:HTML",
+		]);
+		$prop = BitrixIblocksProps::where('code', 'TEST')->first();
+		$element = $this->createIblockElementOnForm($this->module, $ib, [
+			'NAME'                 => 'Trololo',
+			'CODE'                 => 'trololo',
+			'props['.$prop->id.']' => 'Big text',
+		]);
+
+		$gottenInstallationPropsFuncCodeArray = $this->getIblockPropsCreationFuncCallParamsArray($this->module);
+		$gottenInstallationElementsFuncCodeArray = $this->getIblockElementsCreationFuncCallParamsArray($this->module);
+		$installFileLangArr = $this->getLangFileArray($this->module);
+
+		$expectedInstallationElementsFuncCodeArray = [
+			"IBLOCK_ID"       => '$iblockID',
+			"ACTIVE"          => "Y",
+			"SORT"            => "500",
+			"CODE"            => "trololo",
+			"NAME"            => 'Loc::getMessage("'.$ib->lang_key.'_ELEMENT_'.$element->id.'_NAME")',
+			"PROPERTY_VALUES" => Array(
+				'$prop'.$prop->id.'ID' => 'Loc::getMessage("'.$ib->lang_key.'_ELEMENT_'.$element->id.'_PROP_'.$prop->id.'_VALUE")',
+			)
+		];
+		$expectedPropCreationCodeArray = [
+			"IBLOCK_ID"     => '$iblockID',
+			"ACTIVE"        => "Y",
+			"SORT"          => "500",
+			"CODE"          => "TEST",
+			"NAME"          => 'Loc::getMessage("'.$this->module->lang_key.'_IBLOCK_TROLOLO_PARAM_'.$prop->id.'_NAME")',
+			"PROPERTY_TYPE" => "S",
+			"USER_TYPE"     => "HTML",
+			"MULTIPLE"      => "N",
+			"IS_REQUIRED"   => "N",
+		];
+
+		$this->assertEquals($expectedInstallationElementsFuncCodeArray, $gottenInstallationElementsFuncCodeArray[0]);
+		$this->assertEquals($expectedPropCreationCodeArray, $gottenInstallationPropsFuncCodeArray[0]);
+		$this->assertEquals($installFileLangArr[$this->module->lang_key.'_IBLOCK_TROLOLO_NAME'], 'Ololo');
+		$this->assertEquals($installFileLangArr[$this->module->lang_key.'_IBLOCK_TROLOLO_PARAM_'.$prop->id.'_NAME'], 'Тест');
+		$this->assertEquals($installFileLangArr[$ib->lang_key.'_ELEMENT_'.$element->id.'_NAME'], 'Trololo');
+		$this->assertEquals($installFileLangArr[$ib->lang_key.'_ELEMENT_'.$element->id.'_PROP_'.$prop->id.'_VALUE'], 'Big text');
+	}
+
+	/** @test */
 	function it_writes_creation_code_with_test_element_with_google_map_prop_value(){
 		$ib = $this->createIblockOnForm($this->module, [
 			"properties[NAME][0]" => "Тест",

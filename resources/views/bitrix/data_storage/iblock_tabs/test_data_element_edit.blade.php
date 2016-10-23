@@ -115,6 +115,13 @@
                                                         {{ $property->is_required ? 'required' : '' }}
                                                 >
                                             @endif
+                                            @if ($property->type == 'S:HTML')
+                                                <textarea id="{{$property->id}}"
+                                                          name="props[{{$property->id}}]"
+                                                          class="form-control"
+                                                          rows="10"
+                                                        {{ $property->is_required ? 'required' : '' }}>{{isset($props_vals[$property->id]) ? $props_vals[$property->id] : ''}}</textarea>
+                                            @endif
                                             @if ($property->type == 'S:map_google')
                                                 <div class="row">
                                                     <div class="col-md-6">
