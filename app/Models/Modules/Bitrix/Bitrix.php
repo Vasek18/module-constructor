@@ -168,7 +168,7 @@ class Bitrix extends Model{
 		// $zipper->make(public_path().'/'.$archiveFullName)->folder($rootFolder)->add($path)->close();
 
 		$zip = new ZipArchive();
-		$zip->open(public_path().'/'.$archiveFullName, ZipArchive::CREATE | ZipArchive::OVERWRITE);
+		$zip->open(public_path().DIRECTORY_SEPARATOR.$archiveFullName, ZipArchive::CREATE | ZipArchive::OVERWRITE);
 
 		$files = new RecursiveIteratorIterator(
 			new RecursiveDirectoryIterator($path),
@@ -192,8 +192,8 @@ class Bitrix extends Model{
 	public function copyToPublicAndEncode($encoding = 'UTF-8', $files, $rootFolder){
 		$moduleFolder = $this->getFolder(true);
 
-		$tempFolder = public_path().'/'.time().rand(0, 100);
-		$publicFolder = $tempFolder.'/'.$rootFolder;
+		$tempFolder = public_path().DIRECTORY_SEPARATOR.time().rand(0, 100);
+		$publicFolder = $tempFolder.DIRECTORY_SEPARATOR.$rootFolder;
 		// mkdir($publicFolder);
 
 		$dontConvertExts = ['jpg', 'png'];
