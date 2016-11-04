@@ -63,7 +63,7 @@ class BitrixEventHandlersController extends Controller{
 			//dd($handler);
 
 			// записываем в бд
-			$handler = BitrixEventsHandlers::store($module, $handlerParams);
+			$handler = $module->handlers()->create($handlerParams);
 
 			// записываем события к которым привязан обработчик
 			foreach ($request["event_".$i] as $j => $event){

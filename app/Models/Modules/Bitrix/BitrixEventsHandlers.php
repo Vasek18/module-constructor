@@ -13,27 +13,6 @@ class BitrixEventsHandlers extends Model{
 
 	public $timestamps = false;
 
-	public static function store(Bitrix $module, $fields){
-		// todo почему я должен так явно всё это расписывать?
-		if (!isset($fields['class'])){
-			return false;
-		}
-		if (!isset($fields['method'])){
-			return false;
-		}
-		if (!$module->ownedBy(Auth::user())){
-			return false;
-		}
-
-		$handler = new BitrixEventsHandlers($fields);
-
-		if ($module->handlers()->save($handler)){
-			return $handler;
-		}
-
-		return false;
-	}
-
 	// сохраняем обработчики в папку модуля
 	static public function saveEventsInFolder(Bitrix $module){
 		if (BitrixEventsHandlers::where('module_id', $module->id)->count()){
