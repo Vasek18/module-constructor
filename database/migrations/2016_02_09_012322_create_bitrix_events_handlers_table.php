@@ -15,8 +15,6 @@ class CreateBitrixEventsHandlersTable extends Migration{
 			$table->increments('id');
 			$table->integer('module_id')->unsigned();
 			$table->foreign('module_id')->references('id')->on('bitrixes')->onDelete('cascade');
-			$table->string('from_module');
-			$table->string('event');
 			$table->string('class');
 			$table->string('method');
 			$table->string('params')->nullable();

@@ -24,10 +24,10 @@ class BitrixEventHandlersController extends Controller{
 		$core_modules = DB::table('bitrix_core_modules')->get();
 		$core_events = DB::table('bitrix_core_events')->get();
 		$data = [
-			'module'   => $module,
-			'handlers' => $handlers,
+			'module'       => $module,
+			'handlers'     => $handlers,
 			'core_modules' => $core_modules,
-			'core_events' => $core_events
+			'core_events'  => $core_events
 		];
 
 		return view("bitrix.events_handlers.index", $data); // передаём данные из таблицы пользователей, чтобы подставлять их в формы
@@ -38,18 +38,16 @@ class BitrixEventHandlersController extends Controller{
 		if (!$this->userCreatedModule($module->id)){
 			return $this->unauthorized($request);
 		}
-		//dd($request);
+		// dd($request->all());
+
 		// удаляем старые обработчики, чтобы при изменение уже заполненной строчки, старые данные с этой строчки не существовали
 		$module->handlers()->delete();
-		// удаляем удаляем их файлы
+		// удаляем их файлы
 		$module->disk()->deleteDirectory($module->module_folder."/lib/eventhandlers");
 
 		// перебираем все строки полей
-		foreach ($request->event as $i => $event){
-			$handler = [];
-			if (!$event){ // отметаем пустые строки
-				continue;
-			}
+		foreach ($request["method"] as $i => $method){
+			$handlerParams = [];
 			// обязательные поля
 			if (!$request['class'][$i]){
 				continue;
@@ -57,20 +55,25 @@ class BitrixEventHandlersController extends Controller{
 			if (!$request['method'][$i]){
 				continue;
 			}
-			if (!$request['from_module'][$i]){
-				continue;
-			}
 
-			$handler["event"] = $event;
-			$handler["from_module"] = $request['from_module'][$i];
-			$handler["class"] = $request['class'][$i];
-			$handler["method"] = $request['method'][$i];
-			$handler["params"] = $request['params'][$i];
-			$handler["php_code"] = trim($request['php_code'][$i]);
+			$handlerParams["class"] = $request['class'][$i];
+			$handlerParams["method"] = $request['method'][$i];
+			$handlerParams["params"] = $request['params'][$i];
+			$handlerParams["php_code"] = trim($request['php_code'][$i]);
 			//dd($handler);
 
 			// записываем в бд
-			BitrixEventsHandlers::store($module, $handler);
+			$handler = BitrixEventsHandlers::store($module, $handlerParams);
+
+			// записываем события к которым привязан обработчик
+			foreach ($request["event_".$i] as $j => $event){
+				if ($request['from_module_'.$i][$j] && $request['event_'.$i][$j]){
+					$handler->events()->create([
+						'from_module' => $request['from_module_'.$i][$j],
+						'event'       => $request['event_'.$i][$j],
+					]);
+				}
+			}
 		}
 
 		// записываем в папку модуля

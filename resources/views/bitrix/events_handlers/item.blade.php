@@ -1,25 +1,45 @@
 <div class="row option deletion_wrapper">
     <div class="col-md-2">
-        <label class="sr-only"
-               for="from_module_{{$i}}">{{ trans('bitrix_event_handlers.module') }}</label>
-        <input type="text"
-               class="form-control"
-               name="from_module[]"
-               id="from_module_{{$i}}"
-               placeholder="{{ trans('bitrix_event_handlers.module') }}"
-               value="{{$handler?$handler->from_module:''}}"
-               list="core_modules_list">
+        @if ($handler && count($handler->events))
+            @foreach($handler->events as $event)
+                <input type="text"
+                       class="form-control"
+                       name="from_module_{{$i}}[]"
+                       placeholder="{{ trans('bitrix_event_handlers.module') }}"
+                       value="{{$event->from_module}}"
+                       list="core_modules_list">
+                <br>
+            @endforeach
+        @endif
+        @for($j = 1; $j <= 3; $j++)
+            <input type="text"
+                   class="form-control"
+                   name="from_module_{{$i}}[]"
+                   placeholder="{{ trans('bitrix_event_handlers.module') }}"
+                   list="core_modules_list">
+            <br>
+        @endfor
     </div>
     <div class="col-md-3">
-        <label class="sr-only"
-               for="event_{{$i}}">{{ trans('bitrix_event_handlers.event') }}</label>
-        <input type="text"
-               class="form-control"
-               name="event[]"
-               id="event_{{$i}}"
-               placeholder="{{ trans('bitrix_event_handlers.event') }}"
-               value="{{$handler?$handler->event:''}}"
-               list="core_events_list">
+        @if ($handler && count($handler->events))
+            @foreach($handler->events as $event)
+                <input type="text"
+                       class="form-control"
+                       name="event_{{$i}}[]"
+                       placeholder="{{ trans('bitrix_event_handlers.event') }}"
+                       value="{{$event->event}}"
+                       list="core_events_list">
+                <br>
+            @endforeach
+        @endif
+        @for($j = 1; $j <= 3; $j++)
+            <input type="text"
+                   class="form-control"
+                   name="event_{{$i}}[]"
+                   placeholder="{{ trans('bitrix_event_handlers.event') }}"
+                   list="core_events_list">
+            <br>
+        @endfor
     </div>
     <div class="col-md-2">
         <label class="sr-only"

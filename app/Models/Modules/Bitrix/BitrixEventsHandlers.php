@@ -9,18 +9,12 @@ use Auth;
 class BitrixEventsHandlers extends Model{
 	protected $table = 'bitrix_events_handlers';
 
-	protected $fillable = ['from_module', 'event', 'class', 'method', 'params', 'php_code'];
+	protected $fillable = ['class', 'method', 'params', 'php_code'];
 
 	public $timestamps = false;
 
 	public static function store(Bitrix $module, $fields){
 		// todo почему я должен так явно всё это расписывать?
-		if (!isset($fields['from_module'])){
-			return false;
-		}
-		if (!isset($fields['event'])){
-			return false;
-		}
 		if (!isset($fields['class'])){
 			return false;
 		}
@@ -121,5 +115,9 @@ class BitrixEventsHandlers extends Model{
 
 	public function module(){
 		return $this->belongsTo('App\Models\Modules\Bitrix\Bitrix');
+	}
+
+	public function events(){
+		return $this->hasMany('App\Models\Modules\Bitrix\BitrixEventsHandlersEvents', 'handler_id');
 	}
 }
