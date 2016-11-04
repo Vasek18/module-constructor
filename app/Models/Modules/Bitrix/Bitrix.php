@@ -143,16 +143,19 @@ class Bitrix extends Model{
 	// создаёт архив модуля для скачивания
 	// todo проверки на успех
 	public function generateZip($encoding, $fresh, $files, $updater = '', $description = ''){
-		// чтобы работали файлы с точки, нужно в Illuminate\Filesystem\Filesystem заменить строчку в методе files c $glob = glob($directory.'/*'); на $glob = glob($directory. '/{,.}*', GLOB_BRACE);
-
 		if ($fresh){
-			$archiveName = "last_version";
+			$archiveName = ".last_version";
 			$rootFolder = ".last_version";
 		}else{
 			$archiveName = $this->version;
 			$rootFolder = $this->version;
 		}
 		$archiveFullName = 'user_downloads'.DIRECTORY_SEPARATOR.$archiveName.'.zip';
+
+		// если нет папки куда класть архивы, то создаём её, (иначе зип упадёт)
+		if (!file_exists(public_path().DIRECTORY_SEPARATOR.'user_downloads') && !is_dir(public_path().DIRECTORY_SEPARATOR.'user_downloads')){
+			mkdir(public_path().DIRECTORY_SEPARATOR.'user_downloads', 0777, true);
+		}
 
 		$path = $this->copyToPublicAndEncode($encoding, $files, $rootFolder);
 
@@ -183,6 +186,7 @@ class Bitrix extends Model{
 		}
 		$zip->close();
 
+		// todo как проще?
 		$Filesystem = new Filesystem;
 		$Filesystem->deleteDirectory($path);
 
@@ -199,15 +203,17 @@ class Bitrix extends Model{
 		$dontConvertExts = ['jpg', 'png'];
 
 		foreach ($files as $file){
-			$dirPath = preg_replace('#^(.*?[\\\/])[^\\\/]+$#', '$1', $file);
-			$ext = preg_replace('#^.*\.([^\.]+)#', '$1', $file);
+			$dirPath = preg_replace('#^(.*?[\\\/])[^\\\/]+$#', '$1', $file); // путь до файла
+			$ext = preg_replace('#^.*\.([^\.]+)#', '$1', $file); // получаем расширение
 
+			// повторяем структуру папок
 			if (!file_exists($publicFolder.$dirPath) && !is_dir($publicFolder.$dirPath)){
 				mkdir($publicFolder.$dirPath, 0777, true);
 			}
 
 			$content = file_get_contents($moduleFolder.$file);
 			if (!in_array($ext, $dontConvertExts)){
+				// меняем кодировку
 				$content = mb_convert_encoding($content, $encoding, 'UTF-8');
 			}
 			file_put_contents($publicFolder.$file, $content);
