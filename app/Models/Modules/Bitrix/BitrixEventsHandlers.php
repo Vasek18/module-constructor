@@ -46,9 +46,10 @@ class BitrixEventsHandlers extends Model{
 			$handlers = BitrixEventsHandlers::where('module_id', $module->id)->get();
 
 			foreach ($handlers as $handler){
-				$installHandlersCode .= "\t\t".'\Bitrix\Main\EventManager::getInstance()->registerEventHandler("'.$handler->from_module.'", "'.$handler->event.'", $this->MODULE_ID, \'\\'.$module->namespace.'\\EventHandlers\\'.$handler->class.'\', "'.$handler->method.'");'.PHP_EOL;
-				$uninstallHandlersCode .= "\t\t".'\Bitrix\Main\EventManager::getInstance()->unRegisterEventHandler("'.$handler->from_module.'", "'.$handler->event.'", $this->MODULE_ID, \'\\'.$module->namespace.'\\EventHandlers\\'.$handler->class.'\', "'.$handler->method.'");'.PHP_EOL;
-
+				foreach ($handler->events as $event){
+					$installHandlersCode .= "\t\t".'\Bitrix\Main\EventManager::getInstance()->registerEventHandler("'.$event->from_module.'", "'.$event->event.'", $this->MODULE_ID, \'\\'.$module->namespace.'\\EventHandlers\\'.$handler->class.'\', "'.$handler->method.'");'.PHP_EOL;
+					$uninstallHandlersCode .= "\t\t".'\Bitrix\Main\EventManager::getInstance()->unRegisterEventHandler("'.$event->from_module.'", "'.$event->event.'", $this->MODULE_ID, \'\\'.$module->namespace.'\\EventHandlers\\'.$handler->class.'\', "'.$handler->method.'");'.PHP_EOL;
+				}
 				if (isset($classes[$handler->class]) && $classes[$handler->class]['method'] == $handler->method){ // исключаем случаи создания двух одинаковых функций в одном файле
 					continue;
 				}
