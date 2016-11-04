@@ -125,6 +125,52 @@ class MyClass{
 	}
 
 	/** @test */
+	function it_saves_event_handler_with_multiple_events(){
+		$this->createEventHandlerOnForm($this->module, 0, [
+			'from_module'  => 'main',
+			'event'        => 'OnProlog',
+			'from_module1' => 'iblock',
+			'event1'       => 'OnAfterIBlockElementAdd',
+			'class'        => 'MyClass',
+			'method'       => 'Handler',
+			'php_code'     => '<?="ololo";?>',
+		]);
+
+		$installationArr = $this->getEventHandlersCreationFuncCallParamsArray($this->module);
+		// dd($installationArr);
+		$file = file_get_contents($this->module->getFolder().'/lib/eventhandlers/myclass.php');
+
+		$expectedArr = [
+			"main",
+			"OnProlog",
+			'$this->MODULE_ID',
+			'\\'.$this->module->namespace.'\EventHandlers\MyClass',
+			"Handler",
+		];
+		$expectedArr1 = [
+			"iblock",
+			"OnAfterIBlockElementAdd",
+			'$this->MODULE_ID',
+			'\\'.$this->module->namespace.'\EventHandlers\MyClass',
+			"Handler",
+		];
+
+		$this->assertEquals($expectedArr, $installationArr[0]);
+		$this->assertEquals($expectedArr1, $installationArr[1]);
+
+		$this->assertEquals(preg_split('/\r\n|\r|\n/', $file),
+			preg_split('/\r\n|\r|\n/', '<?
+namespace '.$this->module->namespace.'\EventHandlers;
+
+class MyClass{
+	static public function Handler(){
+		<?="ololo";?>
+	}
+
+}'));
+	}
+
+	/** @test */
 	function it_edits_event_handler(){
 		$this->createEventHandlerOnForm($this->module, 0, [
 			'from_module' => 'main',

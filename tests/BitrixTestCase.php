@@ -491,10 +491,16 @@ class BitrixTestCase extends TestCase{
 		$this->visit('/my-bitrix/'.$module->id.'/events_handlers');
 		$inputs = [];
 		if (isset($params['from_module'])){
-			$inputs['from_module['.$rowNumber.']'] = $params['from_module'];
+			$inputs['from_module_'.$rowNumber.'[0]'] = $params['from_module'];
 		}
 		if (isset($params['event'])){
-			$inputs['event['.$rowNumber.']'] = $params['event'];
+			$inputs['event_'.$rowNumber.'[0]'] = $params['event'];
+		}
+		if (isset($params['from_module1'])){
+			$inputs['from_module_'.$rowNumber.'[1]'] = $params['from_module1'];
+		}
+		if (isset($params['event1'])){
+			$inputs['event_'.$rowNumber.'[1]'] = $params['event1'];
 		}
 		if (isset($params['class'])){
 			$inputs['class['.$rowNumber.']'] = $params['class'];
