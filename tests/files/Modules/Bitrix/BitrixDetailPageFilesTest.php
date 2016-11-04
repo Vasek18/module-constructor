@@ -48,11 +48,11 @@ class BitrixDetailPageFilesTest extends BitrixTestCase{
 		$this->visit('/my-bitrix/'.$this->module->id);
 		$this->submitForm('module_download', [
 			'version'        => '0.0.2',
-			'download_as'    => 'new',
+			'download_as'    => 'fresh',
 			'files_encoding' => 'utf-8',
 		]);
-		$this->assertFileExists(public_path().'/user_downloads/last_version.zip');
-		unlink(public_path().'/user_downloads/last_version.zip');
+		$this->assertFileExists(public_path().'/user_downloads/.last_version.zip');
+		unlink(public_path().'/user_downloads/.last_version.zip');
 	}
 
 	/** @test */
@@ -87,24 +87,23 @@ class BitrixDetailPageFilesTest extends BitrixTestCase{
 		$this->visit('/my-bitrix/'.$this->module->id);
 		$this->submitForm('module_download', [
 			'version'        => '0.0.1',
-			'download_as'    => 'new',
+			'download_as'    => 'fresh',
 			'files_encoding' => 'utf-8',
 		]);
-		$this->assertFileExists(public_path().'/user_downloads/last_version.zip');
+		$this->assertFileExists(public_path().'/user_downloads/.last_version.zip');
 
 		// тут конечно не всё, но главное, чтобы версия совпадала и хоть какие-то файлы были
 		$zipper = new Zipper;
-		$zipper->make(public_path().'/user_downloads/last_version.zip');
+		$zipper->make(public_path().'/user_downloads/.last_version.zip');
 		$include_php = $zipper->getFileContent('.last_version\include.php');
 		$install_index_php = $zipper->getFileContent('.last_version\install\index.php');
 		$version_php = $zipper->getFileContent('.last_version\install\version.php');
 		$zipper->close();
 
-		unlink(public_path().'/user_downloads/last_version.zip');
+		unlink(public_path().'/user_downloads/.last_version.zip');
 
 		$this->assertRegExp('/0\.0\.1/is', $version_php); // todo здесь всегд 0.0.1 будет?
 	}
-
 
 	/** @test */
 	function archive_contains_folder_starting_with_dot(){
@@ -118,17 +117,31 @@ class BitrixDetailPageFilesTest extends BitrixTestCase{
 		$this->visit('/my-bitrix/'.$this->module->id);
 		$this->submitForm('module_download', [
 			'version'        => '0.0.1',
-			'download_as'    => 'new',
+			'download_as'    => 'fresh',
 			'files_encoding' => 'utf-8',
 		]);
-		$this->assertFileExists(public_path().'/user_downloads/last_version.zip');
+		$this->assertFileExists(public_path().'/user_downloads/.last_version.zip');
 
+		// проверка, что файл в принципе есть
 		$zipper = new Zipper;
-		$zipper->make(public_path().'/user_downloads/last_version.zip');
+		$zipper->make(public_path().'/user_downloads/.last_version.zip');
 		$template_php = $zipper->getFileContent('.last_version\install\components\\'.$this->module->full_id.'\ololo\templates\.default\template.php');
 		$zipper->close();
 
-		unlink(public_path().'/user_downloads/last_version.zip');
+		unlink(public_path().'/user_downloads/.last_version.zip');
+	}
+
+	/** @test */
+	function smn_can_download_zip_as_folder_for_test(){
+		$this->payDays(1);
+		$this->visit('/my-bitrix/'.$this->module->id);
+		$this->submitForm('module_download', [
+			'version'        => '0.0.1',
+			'download_as'    => 'for_test',
+			'files_encoding' => 'utf-8',
+		]);
+		$this->assertFileExists(public_path().'/user_downloads/'.$this->module->module_folder.'.zip');
+		unlink(public_path().'/user_downloads/'.$this->module->module_folder.'.zip');
 	}
 }
 

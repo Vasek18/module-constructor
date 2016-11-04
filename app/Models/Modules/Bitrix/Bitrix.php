@@ -142,17 +142,24 @@ class Bitrix extends Model{
 
 	// создаёт архив модуля для скачивания
 	// todo проверки на успех
-	public function generateZip($encoding, $fresh, $files, $updater = '', $description = ''){
-		if ($fresh){
+	public function generateZip($encoding, $download_as, $files, $updater = '', $description = ''){
+		$fresh = $download_as == 'new' ? true : false;
+
+		if ($download_as == 'fresh'){
 			$archiveName = ".last_version";
 			$rootFolder = ".last_version";
-		}else{
+		}
+		if ($download_as == 'update'){
 			$archiveName = $this->version;
 			$rootFolder = $this->version;
 		}
+		if ($download_as == 'for_test'){
+			$archiveName = $this->module_folder;
+			$rootFolder = $this->module_folder;
+		}
 		$archiveFullName = 'user_downloads'.DIRECTORY_SEPARATOR.$archiveName.'.zip';
 
-		// если нет папки куда класть архивы, то создаём её, (иначе зип упадёт)
+		// если нет папки куда класть архивы, то создаём её, (иначе зип упадёт) // todo мб тест запилить
 		if (!file_exists(public_path().DIRECTORY_SEPARATOR.'user_downloads') && !is_dir(public_path().DIRECTORY_SEPARATOR.'user_downloads')){
 			mkdir(public_path().DIRECTORY_SEPARATOR.'user_downloads', 0777, true);
 		}
@@ -166,9 +173,6 @@ class Bitrix extends Model{
 			file_put_contents($path.DIRECTORY_SEPARATOR.$rootFolder.DIRECTORY_SEPARATOR.'description.en', mb_convert_encoding($description, $encoding, 'UTF-8'));
 			file_put_contents($path.DIRECTORY_SEPARATOR.$rootFolder.DIRECTORY_SEPARATOR.'description.ru', mb_convert_encoding($description, $encoding, 'UTF-8'));
 		}
-
-		// $zipper = new \Chumper\Zipper\Zipper;
-		// $zipper->make(public_path().'/'.$archiveFullName)->folder($rootFolder)->add($path)->close();
 
 		$zip = new ZipArchive();
 		$zip->open(public_path().DIRECTORY_SEPARATOR.$archiveFullName, ZipArchive::CREATE | ZipArchive::OVERWRITE);

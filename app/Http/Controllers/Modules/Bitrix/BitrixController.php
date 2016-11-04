@@ -120,13 +120,12 @@ class BitrixController extends Controller{
 		}
 
 		$inputs = $request->all();
-		$fresh = $request->download_as == 'new' ? true : false;
 
 		$module->upgradeVersion($this->request->version);
 		$module->updateDownloadCount();
 		$module->updateDownloadTime();
 
-		if ($pathToZip = $module->generateZip($request->files_encoding, $fresh, $inputs['files'], $request->updater, $request->description)){
+		if ($pathToZip = $module->generateZip($request->files_encoding, $inputs["download_as"], $inputs['files'], $request->updater, $request->description)){
 			if ($module->code != 'ololo_from_test'){ // для тестов, иначе эксепшион ловлю // todo придумать что-то поумнее
 				$response = Response::download($pathToZip)->deleteFileAfterSend(true);
 				ob_end_clean(); // без этого архив скачивается поверждённым

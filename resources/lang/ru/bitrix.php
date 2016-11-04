@@ -45,6 +45,7 @@ return [
 
 	'module_download'           => 'Скачивание модуля',
 	'download_as_new_or_update' => 'Скачать как',
+	'download_as_for_test'      => 'папку для тестирования',
 	'download_as_new'           => 'свежий модуль',
 	'download_as_update'        => 'обновление',
 	'version_description'       => 'Описание обновления',

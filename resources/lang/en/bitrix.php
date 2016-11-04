@@ -45,6 +45,7 @@ return [
 
 	'module_download'           => 'Module download',
 	'download_as_new_or_update' => 'Download as',
+	'download_as_for_test'      => 'folder for tests',
 	'download_as_new'           => 'fresh module',
 	'download_as_update'        => 'update',
 	'version_description'       => 'Version description',
