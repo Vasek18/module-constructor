@@ -98,6 +98,7 @@ class BitrixDataStorageController extends Controller{
 							[
 								'prop_id' => $prop->id,
 								'value'   => $valueVal,
+								'xml_id'  => $properties["VALUES"][$c]["XML_ID"][$vc],
 								'sort'    => $properties["VALUES"][$c]["SORT"][$vc],
 								'default' => isset($properties["VALUES"][$c]["DEFAULT"]) && $properties["VALUES"][$c]["DEFAULT"] == $vc,
 							]
@@ -306,6 +307,7 @@ class BitrixDataStorageController extends Controller{
 							[
 								'prop_id' => $prop->id,
 								'value'   => $valueVal,
+								'xml_id'  => $properties["VALUES"][$c]["XML_ID"][$vc],
 								'sort'    => $properties["VALUES"][$c]["SORT"][$vc],
 								'default' => isset($properties["VALUES"][$c]["DEFAULT"]) && $properties["VALUES"][$c]["DEFAULT"] == $vc,
 							]

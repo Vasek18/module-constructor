@@ -14,6 +14,7 @@ class CreateBitrixInfoblocksPropsValsTable extends Migration{
 			$table->increments('id');
 			$table->integer('prop_id')->unsigned();
 			$table->foreign('prop_id')->references('id')->on('bitrix_infoblocks_props')->onDelete('cascade');
+			$table->string('xml_id')->nullable();
 			$table->string('value');
 			$table->integer('sort')->unsigned()->default(500);
 			$table->boolean('default')->nullable()->default(false);

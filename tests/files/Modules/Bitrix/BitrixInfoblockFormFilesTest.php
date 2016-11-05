@@ -606,6 +606,34 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 	}
 
 	/** @test */
+	function it_writes_creation_code_with_list_prop(){
+		$ib = $this->createIblockOnForm($this->module, [
+				"properties[NAME][0]"              => "Тест",
+				"properties[CODE][0]"              => "TEST",
+				"properties[TYPE][0]"              => "L",
+				"properties[VALUES][0][XML_ID][0]" => "green",
+				"properties[VALUES][0][VALUE][0]"  => "Зелёный",
+			]
+		);
+
+		$installFileLangArr = $this->getLangFileArray($this->module);
+		$gottenInstallationPropsValsFuncCodeArray = $this->getIblockPropsValsCreationFuncCallParamsArray($this->module);
+
+		$prop = BitrixIblocksProps::where('CODE', 'TEST')->first();
+		$val1 = BitrixIblocksPropsVals::where('value', 'Зелёный')->first();
+
+		$val1Arr = Array(
+			"VALUE"       => 'Loc::getMessage("'.$this->module->lang_key.'_IBLOCK_TROLOLO_PARAM_'.$prop->id.'_VAL_'.$val1->id.'_VALUE")',
+			"DEF"         => "N",
+			"XML_ID"      => "green",
+			"SORT"        => "500",
+			"PROPERTY_ID" => '$prop'.$prop->id."ID",
+		);
+
+		$this->assertEquals($val1Arr, $gottenInstallationPropsValsFuncCodeArray[0]);
+	}
+
+	/** @test */
 	function it_writes_creation_code_with_required_string_prop(){
 		$ib = $this->createIblockOnForm($this->module, [
 				"properties[NAME][0]"        => "Тест",
