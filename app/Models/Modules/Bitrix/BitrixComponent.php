@@ -225,12 +225,7 @@ class BitrixComponent extends Model{
 		$paramsTexts = [];
 		$helperFunctionsArr = [];
 
-		$langFilePath = $this->getFolder().DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.'ru'.DIRECTORY_SEPARATOR.'.parameters.php';
-
 		foreach ($params as $param){
-			if ($param->template_id){
-				$template = BitrixComponentsTemplates::find($param->template_id);
-			}
 			//dd($param);
 			if ($param->group_id){
 				$parentCode = BitrixComponentsParamsGroups::find($param->group_id)->code;
@@ -241,11 +236,7 @@ class BitrixComponent extends Model{
 			"NAME" => GetMessage("'.$param->lang_key.'_NAME"),
 			"TYPE" => "'.$param->type.'",'.PHP_EOL;
 
-			if (!$param->template_id){
-				$module->changeVarInLangFile($param->lang_key.'_NAME', $param->name, $langFilePath);
-			}else{
-				$module->changeVarInLangFile($param->lang_key.'_NAME', $param->name, $template->getFolder().DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.'ru'.DIRECTORY_SEPARATOR.'.parameters.php');
-			}
+			$module->changeVarInLangFile($param->lang_key.'_NAME', $param->name, $param->lang_file_path);
 			if ($param->refresh){
 				$paramText .= "\t\t\t".'"REFRESH" => "Y",'.PHP_EOL;
 			}
@@ -259,8 +250,9 @@ class BitrixComponent extends Model{
 				$paramText .= "\t\t\t".'"SIZE" => "'.$param->size.'",'.PHP_EOL;
 			}
 			if ($param->default){
+				$module->changeVarInLangFile($param->lang_key.'_DEFAULT', $param->default, $param->lang_file_path);
 				if (strpos($param->default, 'GetMessage') === false){
-					$param->default = "'".$param->default."'";
+					$param->default = 'GetMessage("'.$param->lang_key.'_DEFAULT")';
 				}
 				$paramText .= "\t\t\t"."'DEFAULT' => ".$param->default.','.PHP_EOL;
 			}
@@ -275,11 +267,7 @@ class BitrixComponent extends Model{
 						$paramText .= PHP_EOL;
 						foreach ($param->vals as $val){
 							$paramText .= "\t\t\t\t".'"'.$val->key.'" => GetMessage("'.$val->lang_key.'_VALUE"),'.PHP_EOL;
-							if (!$param->template_id){
-								$module->changeVarInLangFile($val->lang_key.'_VALUE', $val->value, $langFilePath);
-							}else{
-								$module->changeVarInLangFile($val->lang_key.'_VALUE', $val->value, $template->getFolder().DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.'ru'.DIRECTORY_SEPARATOR.'.parameters.php');
-							}
+							$module->changeVarInLangFile($val->lang_key.'_VALUE', $val->value, $param->lang_file_path);
 						}
 						$paramText .= "\t\t\t";
 					}
@@ -581,6 +569,12 @@ class BitrixComponent extends Model{
 		$class_php = str_replace(['{COMPONENT_CLASS_PHP_CLASS}', '{FUNCTIONS}'], [$this->class_php_class, implode('', $neededFunctions)], $class_php);
 
 		return $class_php;
+	}
+
+	public function getParametersLangFilePathAttribute(){
+		$langId = $this->module->default_lang;
+
+		return $this->getFolder().DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.$langId.DIRECTORY_SEPARATOR.'.parameters.php';
 	}
 
 	public function getStepsAttribute($value){

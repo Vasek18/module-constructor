@@ -169,6 +169,11 @@ class BitrixComponentsTemplates extends Model{
 		}
 	}
 
+	public function getParametersLangFilePathAttribute(){
+		$langId = $this->component->module->default_lang;
+		return $this->getFolder().DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.$langId.DIRECTORY_SEPARATOR.'.parameters.php';
+	}
+
 	public function getTemplatePhpAttribute(){
 		$code = "";
 		$path = $this->getFolder().DIRECTORY_SEPARATOR.'template.php';

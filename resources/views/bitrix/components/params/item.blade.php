@@ -18,6 +18,7 @@
                id="param_{{$i}}_id"
                placeholder="{{ trans('bitrix_components.params_field_code') }}"
                value="{{$param ? $param->code : ''}}"
+               data-transform="uppercase"
                @unless ($param) data-translit_from="param_{{$i}}_name" @endif>
     </div>
     <div class="col-md-2">

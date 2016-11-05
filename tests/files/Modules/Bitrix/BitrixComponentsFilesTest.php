@@ -226,7 +226,7 @@ class BitrixComponentsFilesTest extends BitrixTestCase{
 		$this->visit('/my-bitrix/'.$this->module->id.'/components/'.$component->id.'/component_php/get_templates?items_list=items_list');
 
 		$templates = json_decode($this->response->getContent());
-		
+
 		$this->assertEquals('', $templates->component_php);
 		$this->see('function generateArOrder');
 		$this->see('function generateArFilter');
@@ -324,11 +324,12 @@ class BitrixComponentsFilesTest extends BitrixTestCase{
 			"TYPE"     => "STRING",
 			'MULTIPLE' => 'Y',
 			'COLS'     => '20',
-			'DEFAULT'  => 'vregions',
+			'DEFAULT'  => 'GetMessage("'.$component->lang_key.'_PARAM_TROLOLO_DEFAULT")',
 		];
 		$this->assertEquals($paramArrExpected, $params_arr["PARAMETERS"]["TROLOLO"]);
 
 		$this->assertEquals('Ololo', $params_lang_arr[$component->lang_key.'_PARAM_TROLOLO_NAME']);
+		$this->assertEquals('vregions', $params_lang_arr[$component->lang_key.'_PARAM_TROLOLO_DEFAULT']);
 	}
 
 	/** @test */

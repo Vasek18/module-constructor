@@ -180,11 +180,7 @@ class BitrixComponentsParamsController extends Controller{
 		}
 
 		// удаляем ланг
-		$langFilePath = $component->getFolder().DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.'ru'.DIRECTORY_SEPARATOR.'.parameters.php';
-		$module->changeVarInLangFile($param->lang_key.'_NAME', '', $langFilePath);
-		foreach ($param->vals as $val){
-			$module->changeVarInLangFile($val->lang_key.'_VALUE', '', $langFilePath);
-		}
+		$param->cleanLangFromYourself();
 
 		// удаляем запись из БД
 		BitrixComponentsParams::destroy($param->id);

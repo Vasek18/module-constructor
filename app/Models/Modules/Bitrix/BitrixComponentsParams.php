@@ -127,6 +127,25 @@ class BitrixComponentsParams extends Model{
 		}
 	}
 
+	public function cleanLangFromYourself(){
+		$module = $this->component->module;
+		$module->changeVarInLangFile($this->lang_key.'_NAME', '', $this->lang_file_path);
+		$module->changeVarInLangFile($this->lang_key.'_DEFAULT', '', $this->lang_file_path);
+		foreach ($this->vals as $val){
+			$module->changeVarInLangFile($val->lang_key.'_VALUE', '', $this->lang_file_path);
+		}
+	}
+
+	public function getLangFilePathAttribute(){
+		if ($this->template_id){
+			$template = BitrixComponentsTemplates::find($this->template_id);
+
+			return $template->parameters_lang_file_path;
+		}else{
+			return $this->component->parameters_lang_file_path;
+		}
+	}
+
 	public function getSpecValsFunctionCallAttribute(){
 		return $this->spec_vals ? "$".$this->spec_vals."(".$this->spec_vals_args.")" : '""';
 	}
