@@ -216,6 +216,17 @@
                                list="params_variables_list"
                                @if ($param && $param->spec_vals == 'iblock_props_list') value="{{$param->spec_vals_args}}" @endif>
                     </div>
+                    <div>{{ trans('bitrix_components.params_dop_or' ) }}</div>
+                    <div class="item">
+                        <label>
+                            <input type="radio"
+                                   name="param_{{$i}}_vals_type"
+                                   value="pager_templates_list"
+                                   @if ($param && $param->spec_vals == 'pager_templates_list') checked
+                                    @endif>
+                            <b>{{ trans('bitrix_components.params_dop_pager_templates_list') }}</b>
+                        </label>
+                    </div>
                 </div>
                 <div class="form-group"
                      data-for_types="">

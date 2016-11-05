@@ -81,6 +81,7 @@ return [
 	'params_dop_or'                   => 'or',
 	'params_dop_iblock_elements_list' => 'Infoblock elements list',
 	'params_dop_iblock_props_list'    => 'Infoblock props list',
+	'params_dop_pager_templates_list' => 'Pager templates list',
 	'params_dop_iblock_type'          => 'Infoblock type',
 	'params_dop_iblock'               => 'Infoblock',
 	'params_dop_template_id'          => 'Only for template',

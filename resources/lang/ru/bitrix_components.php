@@ -81,6 +81,7 @@ return [
 	'params_dop_or'                   => 'или',
 	'params_dop_iblock_elements_list' => 'Список элементов инфоблока',
 	'params_dop_iblock_props_list'    => 'Список свойств инфоблока',
+	'params_dop_pager_templates_list' => 'Список шаблонов постраничной навигации',
 	'params_dop_iblock_type'          => 'Тип инфоблоков',
 	'params_dop_iblock'               => 'Инфоблок',
 	'params_dop_template_id'          => 'Только для шаблона',

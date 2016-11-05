@@ -125,6 +125,9 @@ class BitrixComponentsParams extends Model{
 		if ($this->spec_vals == 'iblock_props_list'){
 			return 'iblock_props_list';
 		}
+		if ($this->spec_vals == 'pager_templates_list'){
+			return 'pager_templates_list';
+		}
 	}
 
 	public function cleanLangFromYourself(){

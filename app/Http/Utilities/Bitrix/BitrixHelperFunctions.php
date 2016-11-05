@@ -1,5 +1,8 @@
 <?php
 
+
+// надо бы хранить их все в файлах
+// тем более, что инфоблоки по-моему как раз лишь файлы используют
 namespace App\Http\Utilities\Bitrix;
 
 class BitrixHelperFunctions{
@@ -22,6 +25,7 @@ class BitrixHelperFunctions{
 
 	return $select;
 '],
+
 		// список инфоблоков
 		'iblocks_list'       => [
 			'is_closure' => true,
@@ -43,6 +47,7 @@ class BitrixHelperFunctions{
 				['name' => 'IBLOCK_TYPE']
 			]
 		],
+
 		// собираем свойства
 		'iblock_props_list'  => [
 			'is_closure' => true,
@@ -82,6 +87,23 @@ class BitrixHelperFunctions{
 			'args'       => [
 				['name' => 'IBLOCK_ID']
 			]
+		],
+
+		// список шаблонов постраничной навигации
+		'pager_templates_list'  => [
+			'is_closure' => true,
+			'name'       => 'pager_templates_list',
+			'body'       => '
+	$select = Array();
+	$select[] = GetMessage("{LANG_KEY}_SELECT");
+
+	$templatesList = CComponentUtil::GetTemplatesList("bitrix:system.pagenavigation");
+	foreach ($templatesList as $templateArr){
+		$select[$templateArr["NAME"]] = $templateArr["NAME"];
+	}
+
+	return $select;
+',
 		],
 	];
 
