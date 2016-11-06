@@ -12,6 +12,15 @@ class Article extends Model{
 		return $query->where('section_id', $section->id);
 	}
 
+	public static function useCasesArticles(){
+		$section = ArticleSection::where('code', 'use_cases')->first();
+		if ($section){
+			return Article::where('section_id', $section->id);
+		}else{
+			return false;
+		}
+	}
+
 	public function getLinkAttribute(){
 		if ($this->section_id){
 			return action('ArticleController@show', [$this->section->code, $this->code]);
