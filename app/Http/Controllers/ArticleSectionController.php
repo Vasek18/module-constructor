@@ -45,6 +45,10 @@ class ArticleSectionController extends Controller{
 	public function show($code){
 		$section = ArticleSection::where('code', $code)->first();
 
+		if (!$section){
+			abort(404);
+		}
+		
 		$data = [
 			'section' => $section
 		];

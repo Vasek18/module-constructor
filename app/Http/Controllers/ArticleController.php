@@ -48,7 +48,11 @@ class ArticleController extends Controller{
 		if ($section){
 			$article = Article::parentSection($section)->where('code', $article_code)->first();
 		}else{
-			return back(); // todo 404
+			abort(404);
+		}
+
+		if (!$article){
+			abort(404);
 		}
 
 		$data = [
