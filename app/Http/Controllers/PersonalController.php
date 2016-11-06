@@ -7,6 +7,7 @@ use Auth;
 class PersonalController extends Controller{
 
 	public function __construct(){
+		parent::__construct();
 		$this->middleware('auth');
 	}
 
