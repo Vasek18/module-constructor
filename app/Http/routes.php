@@ -208,6 +208,7 @@ Route::get('_ololotrololo_', function (){ // todo удалить
 });
 
 Route::get('{section_code}/{article_code}', ['uses' => 'ArticleController@show']);
+Route::get('{section_code}', ['uses' => 'ArticleSectionController@show']);
 
 //Route::post('my/bitrix/{bitrix}/download', 'Modules\Bitrix\BitrixController@download_zip');
 //Route::resource('my/bitrix', 'Modules\Bitrix\BitrixController', [
