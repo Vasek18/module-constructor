@@ -12,7 +12,7 @@ class CreateArticlesTable extends Migration{
 	public function up(){
 		Schema::create('articles', function (Blueprint $table){
 			$table->increments('id');
-			$table->integer('section_id')->unsigned();
+			$table->integer('section_id')->unsigned()->nullable();
 			$table->foreign('section_id')->references('id')->on('article_sections')->onDelete('cascade');
 			$table->string('code');
 			$table->string('name');

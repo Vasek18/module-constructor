@@ -54,8 +54,9 @@ class BitrixInScopeOfPayTest extends BitrixTestCase{
 		$this->see('Скачать');
 
 		$response = $this->call('POST', action('Modules\Bitrix\BitrixController@download_zip', $this->module->id), array(
-			'_token' => csrf_token(),
-			'files'  => ['/include.php'],
+			'_token'      => csrf_token(),
+			'download_as' => 'fresh',
+			'files'       => ['/include.php'],
 		));
 
 		$this->assertEquals(302, $response->getStatusCode()); // 302 - перенаправление, так что тоже подходит
