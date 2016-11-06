@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Article;
+use App\Models\ArticleSection;
 use App\Models\Modules\Bitrix\Bitrix;
 use App\Models\User;
 use Illuminate\Support\Facades\Config;
@@ -56,7 +58,8 @@ class AdminController extends Controller{
 
 	public function articles(){
 		$data = [
-
+			'sections' => ArticleSection::all(),
+			'articles' => Article::all(),
 		];
 
 		return view("admin.articles", $data);
