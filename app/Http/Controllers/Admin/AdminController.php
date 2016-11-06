@@ -53,4 +53,12 @@ class AdminController extends Controller{
 
 		return view("admin.settings", $data);
 	}
+
+	public function articles(){
+		$data = [
+
+		];
+
+		return view("admin.articles", $data);
+	}
 }

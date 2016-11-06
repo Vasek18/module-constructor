@@ -197,6 +197,7 @@ Route::group(['prefix' => 'oko', 'middleware' => 'admin'], function (){
 	Route::get('modules', ['uses' => 'Admin\AdminController@modules']);
 	Route::get('modules/{module}', ['uses' => 'Admin\AdminController@modulesDetail']);
 	Route::get('settings', ['uses' => 'Admin\AdminController@settings']);
+	Route::get('articles', ['uses' => 'Admin\AdminController@articles']);
 });
 
 Route::get('_ololotrololo_', function (){ // todo удалить
