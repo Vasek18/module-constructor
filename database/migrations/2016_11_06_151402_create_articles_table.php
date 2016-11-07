@@ -12,6 +12,8 @@ class CreateArticlesTable extends Migration{
 	public function up(){
 		Schema::create('articles', function (Blueprint $table){
 			$table->increments('id');
+			$table->boolean('active')->default(false);
+			$table->integer('sort')->nullable();
 			$table->integer('section_id')->unsigned()->nullable();
 			$table->foreign('section_id')->references('id')->on('article_sections')->onDelete('cascade');
 			$table->string('code');
@@ -19,6 +21,9 @@ class CreateArticlesTable extends Migration{
 			$table->text('preview_text')->nullable();
 			$table->longText('detail_text')->nullable();
 			$table->string('picture')->nullable();
+			$table->string('seo_title')->nullable();
+			$table->string('seo_keywords')->nullable();
+			$table->string('seo_description')->nullable();
 			$table->timestamps();
 		});
 	}

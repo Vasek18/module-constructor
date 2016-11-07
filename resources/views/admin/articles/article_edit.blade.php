@@ -14,6 +14,24 @@
         @else
             {{ method_field('POST') }}
         @endif
+        <div class="checkbox">
+            <label>
+                <input type="hidden" name="active" value="0">
+                <input type="checkbox"
+                       value="1"
+                       name="active"
+                        {{ isset($article) && $article->active ? 'checked' : '' }}>
+                Активно
+            </label>
+        </div>
+        <div class="form-group">
+            <label for="sort">Сортировка</label>
+            <input type="text"
+                   id="sort"
+                   name="sort"
+                   class="form-control"
+                   value="{{ isset($article) && $article->sort ? $article->sort : '500' }}">
+        </div>
         <div class="form-group">
             <label for="section_id">Категория</label>
             <select name="section_id"
@@ -59,6 +77,29 @@
                       name="detail_text"
                       class="form-control"
                       rows="10">{{ isset($article) ? $article->detail_text: '' }}</textarea>
+        </div>
+        <hr>
+        <div class="form-group">
+            <label for="seo_title">Тайтл</label>
+            <input type="text"
+                   id="seo_title"
+                   name="seo_title"
+                   class="form-control"
+                   value="{{ isset($article) ? $article->seo_title: '' }}">
+        </div>
+        <div class="form-group">
+            <label for="seo_keywords">Кейвордс</label>
+            <textarea id="seo_keywords"
+                      name="seo_keywords"
+                      class="form-control"
+                      rows="3">{{ isset($article) ? $article->seo_keywords: '' }}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="seo_description">Дескрипшион</label>
+            <textarea id="seo_description"
+                      name="seo_description"
+                      class="form-control"
+                      rows="3">{{ isset($article) ? $article->seo_description: '' }}</textarea>
         </div>
         <div class="form-group">
             <button class="btn btn-primary"

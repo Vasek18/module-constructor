@@ -12,11 +12,16 @@ class CreateArticleSectionsTable extends Migration{
 	public function up(){
 		Schema::create('article_sections', function (Blueprint $table){
 			$table->increments('id');
+			$table->boolean('active')->default(false);
+			$table->integer('sort')->nullable();
 			$table->string('code');
 			$table->string('name');
 			$table->text('preview_text')->nullable();
 			$table->text('detail_text')->nullable();
 			$table->string('picture')->nullable();
+			$table->string('seo_title')->nullable();
+			$table->string('seo_keywords')->nullable();
+			$table->string('seo_description')->nullable();
 			$table->timestamps();
 		});
 	}

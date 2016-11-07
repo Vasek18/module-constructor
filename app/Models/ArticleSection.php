@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ArticleSection extends Model{
 	protected $table = 'article_sections';
-	protected $fillable = ['code', 'name', 'preview_text', 'detail_text', 'picture',];
+	protected $fillable = ['code', 'sort', 'name', 'preview_text', 'detail_text', 'picture', 'active', 'seo_title', 'seo_keywords', 'seo_description'];
 
 	public function getLinkAttribute(){
 		return action('ArticleSectionController@show', [$this->code]);

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Article extends Model{
 	protected $table = 'articles';
-	protected $fillable = ['section_id', 'code', 'name', 'preview_text', 'detail_text', 'picture',];
+	protected $fillable = ['section_id', 'sort', 'code', 'name', 'preview_text', 'detail_text', 'picture', 'active', 'seo_title', 'seo_keywords', 'seo_description'];
 
 	public function scopeParentSection($query, ArticleSection $section){
 		return $query->where('section_id', $section->id);
