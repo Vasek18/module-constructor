@@ -62,6 +62,6 @@ class AdminController extends Controller{
 			'articles' => Article::all(),
 		];
 
-		return view("admin.articles", $data);
+		return view("admin.articles.index", $data);
 	}
 }

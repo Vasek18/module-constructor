@@ -13,7 +13,7 @@ class AdminArticleSectionsController extends Controller{
 	}
 
 	public function create(){
-		return view("admin.section_edit");
+		return view("admin.articles.section_edit");
 	}
 
 	public function store(Request $request){
@@ -23,11 +23,14 @@ class AdminArticleSectionsController extends Controller{
 	}
 
 	public function show(ArticleSection $section){
-		//
+		return view("admin.articles.section", [
+			'section' => $section,
+			'articles' => $section->articles,
+		]);
 	}
 
 	public function edit(ArticleSection $section){
-		return view("admin.section_edit", ['section' => $section]);
+		return view("admin.articles.section_edit", ['section' => $section]);
 	}
 
 	public function update(Request $request, ArticleSection $section){

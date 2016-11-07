@@ -42,7 +42,9 @@
                       rows="10">{{ isset($section) ? $section->detail_text: '' }}</textarea>
         </div>
         <div class="form-group">
-            <button class="btn btn-primary">Сохранить</button>
+            <button class="btn btn-primary"
+                    name="save">Сохранить
+            </button>
         </div>
     </form>
 @stop
