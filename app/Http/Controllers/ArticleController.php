@@ -46,7 +46,7 @@ class ArticleController extends Controller{
 	public function show($section_code, $article_code){
 		$section = ArticleSection::where('code', $section_code)->first();
 		if ($section){
-			$article = Article::parentSection($section)->where('code', $article_code)->first();
+			$article = Article::parentSection($section)->where('code', $article_code)->active()->first();
 		}else{
 			abort(404);
 		}

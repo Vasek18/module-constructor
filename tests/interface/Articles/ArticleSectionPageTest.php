@@ -13,10 +13,12 @@ class ArticleSectionPageTest extends TestCase{
 	/** @test */
 	function it_can_show_section_page(){
 		$section = ArticleSection::create([
-			'code' => 'test',
-			'name' => 'Тестовая категория',
+			'active' => true,
+			'code'   => 'test',
+			'name'   => 'Тестовая категория',
 		]);
 		$article = Article::create([
+			'active'     => true,
 			'section_id' => $section->id,
 			'code'       => 'test',
 			'name'       => 'Тестовая статья',
@@ -27,7 +29,6 @@ class ArticleSectionPageTest extends TestCase{
 		$this->see('Тестовая статья');
 		$this->seePageIs('/test');
 	}
-
 }
 
 ?>

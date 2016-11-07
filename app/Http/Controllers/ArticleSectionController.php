@@ -43,7 +43,7 @@ class ArticleSectionController extends Controller{
 	 * @return \Illuminate\Http\Response
 	 */
 	public function show($code){
-		$section = ArticleSection::where('code', $code)->first();
+		$section = ArticleSection::where('code', $code)->active()->first();
 
 		if (!$section){
 			abort(404);

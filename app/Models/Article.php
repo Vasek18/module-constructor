@@ -21,6 +21,10 @@ class Article extends Model{
 		}
 	}
 
+	public function scopeActive($query){
+		return $query->where('active', true);
+	}
+
 	public function getLinkAttribute(){
 		if ($this->section_id){
 			return action('ArticleController@show', [$this->section->code, $this->code]);

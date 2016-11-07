@@ -20,6 +20,8 @@ abstract class Controller extends BaseController{
 
 		view()->share('signedIn', Auth::check());
 		view()->share('user', $this->user);
-		view()->share('use_cases_articles', Article::useCasesArticles()); // статьи о примерах использования
+		if (Article::useCasesArticles()){
+			view()->share('use_cases_articles', Article::useCasesArticles()->active()->orderBy('sort')); // статьи о примерах использования
+		}
 	}
 }

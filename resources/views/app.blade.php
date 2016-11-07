@@ -39,7 +39,7 @@
                 <div class="collapse navbar-collapse"
                      id="top-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        @if ($use_cases_articles->count())
+                        @if (isset($use_cases_articles) && $use_cases_articles->count())
                             <li class="dropdown">
                                 <a href="use_cases"
                                    class="dropdown-toggle"

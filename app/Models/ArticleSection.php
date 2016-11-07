@@ -8,6 +8,10 @@ class ArticleSection extends Model{
 	protected $table = 'article_sections';
 	protected $fillable = ['code', 'sort', 'name', 'preview_text', 'detail_text', 'picture', 'active', 'seo_title', 'seo_keywords', 'seo_description'];
 
+	public function scopeActive($query){
+		return $query->where('active', true);
+	}
+
 	public function getLinkAttribute(){
 		return action('ArticleSectionController@show', [$this->code]);
 	}

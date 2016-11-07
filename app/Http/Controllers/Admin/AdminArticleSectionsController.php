@@ -25,7 +25,7 @@ class AdminArticleSectionsController extends Controller{
 	public function show(ArticleSection $section){
 		return view("admin.articles.section", [
 			'section'  => $section,
-			'articles' => $section->articles,
+			'articles' => $section->articles()->orderBy('sort')->get(),
 		]);
 	}
 
