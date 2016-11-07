@@ -198,6 +198,15 @@ Route::group(['prefix' => 'oko', 'middleware' => 'admin'], function (){
 	Route::get('modules/{module}', ['uses' => 'Admin\AdminController@modulesDetail']);
 	Route::get('settings', ['uses' => 'Admin\AdminController@settings']);
 	Route::get('articles', ['uses' => 'Admin\AdminController@articles']);
+
+	// категории статей
+	Route::group(['prefix' => 'article_sections'], function (){
+		Route::get('create', ['uses' => 'Admin\AdminArticleSectionsController@create']);
+		Route::post('', ['uses' => 'Admin\AdminArticleSectionsController@store']);
+		Route::get('{section}', ['uses' => 'Admin\AdminArticleSectionsController@show']);
+		Route::get('{section}/edit', ['uses' => 'Admin\AdminArticleSectionsController@edit']);
+		Route::put('{section}', ['uses' => 'Admin\AdminArticleSectionsController@update']);
+	});
 });
 
 Route::get('_ololotrololo_', function (){ // todo удалить
