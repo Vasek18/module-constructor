@@ -6,7 +6,7 @@
         <a href="{{ action('Admin\AdminArticleSectionsController@create') }}"
            class="btn btn-primary">Добавить раздел
         </a>
-        <a href="#"
+        <a href="{{ action('Admin\AdminArticlesController@create') }}"
            class="btn btn-success">Добавить элемент
         </a>
     </div>

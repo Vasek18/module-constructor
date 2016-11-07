@@ -207,6 +207,15 @@ Route::group(['prefix' => 'oko', 'middleware' => 'admin'], function (){
 		Route::get('{section}/edit', ['uses' => 'Admin\AdminArticleSectionsController@edit']);
 		Route::put('{section}', ['uses' => 'Admin\AdminArticleSectionsController@update']);
 	});
+
+	// статьи
+	Route::group(['prefix' => 'articles'], function (){
+		Route::get('create', ['uses' => 'Admin\AdminArticlesController@create']);
+		Route::post('', ['uses' => 'Admin\AdminArticlesController@store']);
+		Route::get('{article}', ['uses' => 'Admin\AdminArticlesController@show']);
+		Route::get('{article}/edit', ['uses' => 'Admin\AdminArticlesController@edit']);
+		Route::put('{article}', ['uses' => 'Admin\AdminArticlesController@update']);
+	});
 });
 
 Route::get('_ololotrololo_', function (){ // todo удалить

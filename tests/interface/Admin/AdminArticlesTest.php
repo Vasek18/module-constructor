@@ -104,4 +104,31 @@ class AdminArticlesTest extends TestCase{
 		$this->see('Тестовая категория');
 		$this->see('Трололошный');
 	}
+
+	/** @test */
+	function it_can_add_article(){
+		$this->signIn(null, [
+			'group_id' => $this->adminUserGroup
+		]);
+
+		$section1 = ArticleSection::create([
+			'code' => 'test',
+			'name' => 'Тестовая категория',
+		]);
+
+		$this->visit('/oko/articles/create');
+
+		$this->submitForm('save', [
+			'section_id'   => $section1->id,
+			'name'         => 'Тестовый',
+			'code'         => 'tester',
+			'preview_text' => 'Текст анонса',
+			'detail_text'  => 'Детальный текст',
+		]);
+
+		$this->visit('/oko/article_sections/'.$section1->id);
+
+		$this->see('Тестовый');
+		$this->see('tester');
+	}
 }
