@@ -131,4 +131,50 @@ class AdminArticlesTest extends TestCase{
 		$this->see('Тестовый');
 		$this->see('tester');
 	}
+
+	/** @test */
+	function it_can_delete_category(){
+		$this->signIn(null, [
+			'group_id' => $this->adminUserGroup
+		]);
+
+		$section1 = ArticleSection::create([
+			'code' => 'test',
+			'name' => 'Тестовая категория',
+		]);
+
+		$this->visit('/oko/'.$this->path);
+
+		$this->see('Тестовая категория');
+
+		$this->click('delete'.$section1->id);
+
+		$this->dontSee('Тестовая категория');
+	}
+
+	/** @test */
+	function it_can_delete_article(){
+		$this->signIn(null, [
+			'group_id' => $this->adminUserGroup
+		]);
+
+		$section1 = ArticleSection::create([
+			'code' => 'test',
+			'name' => 'Тестовая категория',
+		]);
+
+		$element1 = Article::create([
+			'section_id' => $section1->id,
+			'code'       => 'ololo',
+			'name'       => 'Трололошный',
+		]);
+
+		$this->visit('/oko/article_sections/'.$section1->id);
+
+		$this->see('Трололошный');
+
+		$this->click('delete'.$element1->id);
+
+		$this->dontSee('Трололошный');
+	}
 }

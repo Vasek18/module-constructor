@@ -24,7 +24,7 @@ class AdminArticleSectionsController extends Controller{
 
 	public function show(ArticleSection $section){
 		return view("admin.articles.section", [
-			'section' => $section,
+			'section'  => $section,
 			'articles' => $section->articles,
 		]);
 	}
@@ -40,7 +40,9 @@ class AdminArticleSectionsController extends Controller{
 
 	}
 
-	public function destroy($id){
-		//
+	public function destroy(ArticleSection $section){
+		$section->delete();
+
+		return back();
 	}
 }

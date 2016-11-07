@@ -206,6 +206,7 @@ Route::group(['prefix' => 'oko', 'middleware' => 'admin'], function (){
 		Route::get('{section}', ['uses' => 'Admin\AdminArticleSectionsController@show']);
 		Route::get('{section}/edit', ['uses' => 'Admin\AdminArticleSectionsController@edit']);
 		Route::put('{section}', ['uses' => 'Admin\AdminArticleSectionsController@update']);
+		Route::get('{section}/delete', ['uses' => 'Admin\AdminArticleSectionsController@destroy']);
 	});
 
 	// статьи
@@ -215,6 +216,7 @@ Route::group(['prefix' => 'oko', 'middleware' => 'admin'], function (){
 		Route::get('{article}', ['uses' => 'Admin\AdminArticlesController@show']);
 		Route::get('{article}/edit', ['uses' => 'Admin\AdminArticlesController@edit']);
 		Route::put('{article}', ['uses' => 'Admin\AdminArticlesController@update']);
+		Route::get('{article}/delete', ['uses' => 'Admin\AdminArticlesController@destroy']);
 	});
 });
 

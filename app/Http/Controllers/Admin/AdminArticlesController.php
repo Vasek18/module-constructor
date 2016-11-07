@@ -45,7 +45,9 @@ class AdminArticlesController extends Controller{
 
 	}
 
-	public function destroy($id){
-		//
+	public function destroy(Article $article){
+		$article->delete();
+
+		return back();
 	}
 }

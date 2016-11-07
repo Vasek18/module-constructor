@@ -19,6 +19,12 @@
                     <span class="glyphicon glyphicon-pencil"
                           aria-hidden="true"></span>
                 </a>
+                <a class="btn btn-danger btn-sm"
+                   id="delete{{ $section->id }}"
+                   href="{{ action('Admin\AdminArticleSectionsController@destroy', [$section]) }}">
+                    <span class="glyphicon glyphicon-trash"
+                          aria-hidden="true"></span>
+                </a>
                 <a href="{{ action('Admin\AdminArticleSectionsController@show', [$section]) }}">
                     {{ $section->name }} ({{ $section->code }})
                 </a>
