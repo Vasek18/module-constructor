@@ -16,7 +16,9 @@ class BitrixAdminOptionsFormFilesTest extends BitrixTestCase{
 	function tearDown(){
 		parent::tearDown();
 
-		$this->module->deleteFolder();
+		if ($this->module){
+			$this->module->deleteFolder();
+		}
 	}
 
 	function getPropsArrayFromFile($module){

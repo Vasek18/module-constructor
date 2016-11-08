@@ -169,6 +169,12 @@ function flash(){
 }
 
 // получить настройку
-function setting($code){
-	return \App\Models\Setting::where('code', $code)->first()->value;
+function setting($code, $default = null){
+	$setting = \App\Models\Setting::where('code', $code)->first();
+
+	if ($setting){
+		return $setting->value;
+	}else{
+		return $default;
+	}
 }

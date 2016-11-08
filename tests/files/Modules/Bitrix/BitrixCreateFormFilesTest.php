@@ -72,9 +72,7 @@ class BitrixCreateFormFilesTest extends BitrixTestCase{
 	function it_fills_right_version_file_at_creation(){
 		$this->signIn();
 
-		$this->fillNewBitrixForm();
-
-		$module = $this->getModuleModel();
+		$module = $this->fillNewBitrixForm();
 
 		$versionFileContent = $this->disk()->get($module->module_folder.'/install/version.php');
 

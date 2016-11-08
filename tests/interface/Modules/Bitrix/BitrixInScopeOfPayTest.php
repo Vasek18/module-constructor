@@ -10,7 +10,9 @@ class BitrixInScopeOfPayTest extends BitrixTestCase{
 	function setUp(){
 		parent::setUp();
 
-		$this->signIn();
+		$this->signIn(null, [
+			'payed_days' => 0
+		]);
 	}
 
 	function tearDown(){

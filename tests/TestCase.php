@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class TestCase extends Illuminate\Foundation\Testing\TestCase{
 	/**
@@ -11,6 +12,15 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase{
 	 */
 	protected $baseUrl = 'http://constructor.local';
 	protected $user;
+
+	public function tearDown(){
+		// иначе ошибка количества подключений
+		$this->beforeApplicationDestroyed(function(){
+			DB::disconnect();
+		});
+
+		parent::tearDown();
+	}
 
 	/**
 	 * Creates the application.
@@ -28,6 +38,9 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase{
 	}
 
 	public function signIn($user = null, $params = []){
+		if (!isset($params["payed_days"])){
+			$params["payed_days"] = setting('demo_days', 2);
+		}
 		if (!$user){
 			$user = factory(App\Models\User::class)->create($params);
 		}

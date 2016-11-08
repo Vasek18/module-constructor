@@ -22,8 +22,10 @@ class BitrixArbitraryFilesFilesTest extends BitrixTestCase{
 
 	function tearDown(){
 		parent::tearDown();
-
-		unlink($this->file);
+		
+		if ($this->module){
+			unlink($this->file);
+		}
 	}
 
 	/** @test */
