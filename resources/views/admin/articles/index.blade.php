@@ -15,6 +15,7 @@
         <tr>
             <th>Название</th>
             <th>Код</th>
+            <th>Сортировка</th>
             <th>Активность</th>
             <th>Действия</th>
         </tr>
@@ -24,6 +25,7 @@
                     <a href="{{ action('Admin\AdminArticleSectionsController@show', [$section]) }}">{{ $section->name }} </a>
                 </td>
                 <td>{{ $section->code }}</td>
+                <td>{{ $section->sort }}</td>
                 <td>{{ $section->active ? 'Да' : 'Нет' }}</td>
                 <td>
                     <a class="btn btn-default btn-sm"

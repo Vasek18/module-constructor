@@ -58,8 +58,7 @@ class AdminController extends Controller{
 
 	public function articles(){
 		$data = [
-			'sections' => ArticleSection::all(),
-			'articles' => Article::all(),
+			'sections' => ArticleSection::orderBy('sort')->get(),
 		];
 
 		return view("admin.articles.index", $data);

@@ -14,6 +14,7 @@
         <tr>
             <th>Название</th>
             <th>Код</th>
+            <th>Сортировка</th>
             <th>Активность</th>
             <th>Действия</th>
         </tr>
@@ -21,6 +22,7 @@
             <tr>
                 <td>{{ $article->name }}</td>
                 <td>{{ $article->code }}</td>
+                <td>{{ $article->sort }}</td>
                 <td>{{ $article->active ? 'Да' : 'Нет' }}</td>
                 <td>
                     <a class="btn btn-default btn-sm"
