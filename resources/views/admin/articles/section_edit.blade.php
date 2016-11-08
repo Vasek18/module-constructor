@@ -74,6 +74,7 @@
                    id="seo_title"
                    name="seo_title"
                    class="form-control"
+                   data-copy_from="name"
                    value="{{ isset($section) ? $section->seo_title: '' }}">
         </div>
         <div class="form-group">

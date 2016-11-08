@@ -93,15 +93,14 @@
 
   $(document).ready(function() {
     $("[data-translit_from]").each(function(index, element) {
-      var elToListenID;
+      var elToChange, elToListenID;
       elToListenID = $(element).attr('data-translit_from');
-      $("#" + elToListenID).attr('data-translit_to', $(element).attr('id'));
+      elToChange = $(element);
       $(document).on("change", "#" + elToListenID, function() {
-        var elToChangeID, val;
+        var val;
         val = $(this).val();
-        elToChangeID = $(this).attr('data-translit_to');
-        $("#" + elToChangeID).val(translit(val));
-        $("#" + elToChangeID).change();
+        elToChange.val(translit(val));
+        elToChange.change();
       });
     });
   });

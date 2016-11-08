@@ -50,6 +50,20 @@
     }
   }
 
+  $(document).ready(function() {
+    $("[data-copy_from]").each(function(index, element) {
+      var elToChange, elToListenID;
+      elToListenID = $(element).attr('data-copy_from');
+      elToChange = $(element);
+      $(document).on("change", "#" + elToListenID, function() {
+        var val;
+        val = $(this).val();
+        elToChange.val(val);
+        elToChange.change();
+      });
+    });
+  });
+
 }).call(this);
 
 //# sourceMappingURL=app.js.map

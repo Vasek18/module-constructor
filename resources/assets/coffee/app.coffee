@@ -65,3 +65,22 @@ if (hash)
 		# содержание
 		$(".tab-pane").removeClass 'active'
 		$(".tab-pane##{hash}").addClass 'active'
+
+
+# копирование текста из инпута в инпут
+$(document).ready(->
+	$("[data-copy_from]").each((index, element) ->
+		elToListenID = $(element).attr('data-copy_from')
+		elToChange = $(element)
+
+		$(document).on "change", "##{elToListenID}", () ->
+			val = $(this).val()
+			elToChange.val(val)
+			elToChange.change()
+
+			return
+
+		return
+	)
+	return
+)

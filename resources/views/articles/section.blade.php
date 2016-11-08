@@ -1,5 +1,17 @@
 @extends('app')
 
+@if ($section->seo_title)
+    @section('title', $section->seo_title)
+@endif
+
+@if ($section->seo_keywords)
+    @section('keywords', $section->seo_keywords)
+@endif
+
+@if ($section->seo_description)
+    @section('description', $section->seo_description)
+@endif
+
 @section('content')
     <section class="container">
         <h1>{{ $section->name }}</h1>

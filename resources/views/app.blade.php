@@ -6,7 +6,11 @@
           content="IE=edge">
     <meta name="viewport"
           content="width=device-width, initial-scale=1">
-    <title>{{trans('app.site_name')}}</title>
+    <title>@yield('title', trans('app.site_name'))</title>
+    <meta name="keywords"
+          content="@yield('keywords')">
+    <meta name="description"
+          content="@yield('description')">
     <link rel="stylesheet"
           href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet"
