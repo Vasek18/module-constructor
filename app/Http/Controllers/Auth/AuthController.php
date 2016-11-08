@@ -73,7 +73,7 @@ class AuthController extends Controller{
 	 * @return User
 	 */
 	protected function create(array $data){
-		$daysTrial = Config::get('constants.DAYS_TRIAL');
+		$daysTrial = setting('demo_days');
 
 		$user = User::create([
 			'first_name'   => $data['first_name'],

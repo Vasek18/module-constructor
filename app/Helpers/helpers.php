@@ -167,3 +167,8 @@ function translit($text){
 function flash(){
 	return app('App\Http\Flash');
 }
+
+// получить настройку
+function setting($code){
+	return \App\Models\Setting::where('code', $code)->first()->value;
+}
