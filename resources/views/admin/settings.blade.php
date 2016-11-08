@@ -25,7 +25,9 @@
                                    value="{{ $setting->value }}">
                         </div>
                         <div class="col-md-4">
-                            <button class="btn btn-primary">Сохранить</button>
+                            <button class="btn btn-primary"
+                                    name="save_{{ $setting->code }}">Сохранить
+                            </button>
                         </div>
                     </form>
                 </td>

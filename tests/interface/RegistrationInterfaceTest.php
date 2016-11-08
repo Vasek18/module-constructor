@@ -7,6 +7,8 @@ class RegistrationInterfaceTest extends TestCase{
 
 	use DatabaseTransactions;
 
+	protected $adminUserGroup = 1;
+
 	function setUp(){
 		parent::setUp();
 
@@ -277,7 +279,36 @@ class RegistrationInterfaceTest extends TestCase{
 
 		$this->seeInDatabase('users', [
 			'email'      => 'ololo@test.ru',
-			'payed_days' => Config::get('constants.DAYS_TRIAL')
+			'payed_days' => setting('demo_days')
+		]);
+	}
+
+	/** @test */
+	function i_can_change_demo_days_count_at_settings_page(){
+		$this->signIn(null, [
+			'group_id' => $this->adminUserGroup
+		]);
+		$this->visit('/oko/settings');
+		$this->submitForm('save_demo_days', [
+			'value' => '5',
+		]);
+
+		$this->logOut();
+
+		$this->visit('/personal/reg');
+		$this->submitForm('signup', [
+			'first_name'            => 'Вася',
+			'last_name'             => 'Аристов',
+			'company_name'          => 'Aristov',
+			'site'                  => 'http://aristov-vasiliy.ru/',
+			'email'                 => 'ololo@test.ru',
+			'password'              => '12345678',
+			'password_confirmation' => '12345678',
+		]);
+
+		$this->seeInDatabase('users', [
+			'email'      => 'ololo@test.ru',
+			'payed_days' => 5
 		]);
 	}
 }

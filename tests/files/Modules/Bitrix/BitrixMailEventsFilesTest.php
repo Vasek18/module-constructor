@@ -21,7 +21,9 @@ class BitrixMailEventsFilesTest extends BitrixTestCase{
 	function tearDown(){
 		parent::tearDown();
 
-		$this->module->deleteFolder();
+		if ($this->module){
+			$this->module->deleteFolder();
+		}
 	}
 
 	function getMailEventsCreationFuncCallParamsArray($module){
