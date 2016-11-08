@@ -29,6 +29,22 @@ class ArticleSectionPageTest extends TestCase{
 		$this->see('Тестовая статья');
 		$this->seePageIs('/test');
 	}
+	/** @test */
+	function it_doesnt_show_inactive_section_page(){
+		$section = ArticleSection::create([
+			'code'   => 'test',
+			'name'   => 'Тестовая категория',
+		]);
+		$article = Article::create([
+			'active'     => true,
+			'section_id' => $section->id,
+			'code'       => 'test',
+			'name'       => 'Тестовая статья',
+		]);
+
+		$this->call('GET', $section->link);
+		$this->assertResponseStatus(404);
+	}
 }
 
 ?>
