@@ -12,8 +12,10 @@ class CreateArticleSectionsTable extends Migration{
 	public function up(){
 		Schema::create('article_sections', function (Blueprint $table){
 			$table->increments('id');
+			$table->integer('section_id')->unsigned()->nullable();
+			$table->foreign('section_id')->references('id')->on('article_sections');
 			$table->boolean('active')->default(false);
-			$table->integer('sort')->nullable();
+			$table->integer('sort')->nullable()->default(500);
 			$table->string('code');
 			$table->string('name');
 			$table->text('preview_text')->nullable();
