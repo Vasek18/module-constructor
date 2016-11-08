@@ -218,6 +218,11 @@ Route::group(['prefix' => 'oko', 'middleware' => 'admin'], function (){
 		Route::put('{article}', ['uses' => 'Admin\AdminArticlesController@update']);
 		Route::get('{article}/delete', ['uses' => 'Admin\AdminArticlesController@destroy']);
 	});
+
+	// статьи
+	Route::group(['prefix' => 'settings'], function (){
+		Route::post('{setting}/set', ['uses' => 'Admin\AdminSettingsController@set']);
+	});
 });
 
 Route::get('_ololotrololo_', function (){ // todo удалить
