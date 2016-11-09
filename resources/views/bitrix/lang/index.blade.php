@@ -17,4 +17,6 @@
         </ul>
     @endif
 
+    <hr>
+    <p class="description">{!! trans('bitrix_lang.step_description') !!}</p>
 @stop

@@ -181,17 +181,17 @@ class BitrixInScopeOfPayTest extends BitrixTestCase{
 		$this->module->deleteFolder();
 	}
 
-	/** @test */
-	function free_user_cannot_store_class_php(){
-		$this->module = $this->fillNewBitrixForm();
-		$component = $this->createComponentOnForm($this->module);
-
-		$this->visit('/my-bitrix/'.$this->module->id.'/components/'.$component->id.'/component_php');
-
-		$this->dontSee('name="class_php"');
-
-		$this->module->deleteFolder();
-	}
+	// /** @test */ // я убрал плату за это
+	// function free_user_cannot_store_class_php(){
+	// 	$this->module = $this->fillNewBitrixForm();
+	// 	$component = $this->createComponentOnForm($this->module);
+	//
+	// 	$this->visit('/my-bitrix/'.$this->module->id.'/components/'.$component->id.'/component_php');
+	//
+	// 	$this->dontSee('name="class_php"');
+	//
+	// 	$this->module->deleteFolder();
+	// }
 
 	/** @test */
 	function paid_user_can_store_class_php(){
@@ -212,17 +212,17 @@ class BitrixInScopeOfPayTest extends BitrixTestCase{
 		$this->module->deleteFolder();
 	}
 
-	/** @test */
-	function free_user_cannot_see_class_php_templates(){
-		$this->module = $this->fillNewBitrixForm();
-		$component = $this->createComponentOnForm($this->module);
-
-		$this->visit('/my-bitrix/'.$this->module->id.'/components/'.$component->id.'/component_php/get_templates?items_list=items_list');
-
-		$this->module->deleteFolder();
-
-		$this->seePageIs('personal');
-	}
+	// /** @test */ // я убрал плату за это
+	// function free_user_cannot_see_class_php_templates(){
+	// 	$this->module = $this->fillNewBitrixForm();
+	// 	$component = $this->createComponentOnForm($this->module);
+	//
+	// 	$this->visit('/my-bitrix/'.$this->module->id.'/components/'.$component->id.'/component_php/get_templates?items_list=items_list');
+	//
+	// 	$this->module->deleteFolder();
+	//
+	// 	$this->seePageIs('personal');
+	// }
 }
 
 ?>
