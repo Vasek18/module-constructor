@@ -74,7 +74,22 @@ class AdminUsersTest extends TestCase{
 		$this->see($user->created_at);
 		$this->see($module->name);
 		$this->see($module->code);
+	}
 
+	/** @test */
+	function admin_can_change_payed_days_for_users(){
+		$this->signIn(null, [
+			'group_id' => $this->adminUserGroup
+		]);
+
+		$user = User::first();
+		$this->visit('/oko/users/'.$user->id);
+
+		$this->submitForm('save', [
+			'payed_days' => 14
+		]);
+
+		$this->seeInField('payed_days', 14);
 	}
 }
 

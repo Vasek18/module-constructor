@@ -192,8 +192,11 @@ Route::post('feedback/ilack', 'FeedbackController@sendILackSmthForm');
 
 Route::group(['prefix' => 'oko', 'middleware' => 'admin'], function (){
 	Route::get('', ['uses' => 'Admin\AdminController@index']);
-	Route::get('users', ['uses' => 'Admin\AdminController@users']);
-	Route::get('users/{user}', ['uses' => 'Admin\AdminController@usersDetail']);
+	Route::group(['prefix' => 'users'], function (){
+		Route::get('', ['uses' => 'Admin\AdminUsersController@index']);
+		Route::get('{user}', ['uses' => 'Admin\AdminUsersController@show']);
+		Route::post('{user}', ['uses' => 'Admin\AdminUsersController@update']);
+	});
 	Route::get('modules', ['uses' => 'Admin\AdminController@modules']);
 	Route::get('modules/{module}', ['uses' => 'Admin\AdminController@modulesDetail']);
 	Route::get('settings', ['uses' => 'Admin\AdminController@settings']);

@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="list-group">
-                    <a href="{{ action('Admin\AdminController@users') }}"
+                    <a href="{{ action('Admin\AdminUsersController@index') }}"
                        class="list-group-item">
                         Пользователи
                     </a>
