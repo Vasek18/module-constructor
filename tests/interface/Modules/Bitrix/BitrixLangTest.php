@@ -174,4 +174,15 @@ class BitrixLangInterfaceTest extends BitrixTestCase{
 		$this->dontSee('<tr class="bg-danger">');
 		$this->dontSee('<p class="form-control-static">TEST</p>');
 	}
+
+	/** @test */
+	function free_user_cannot_see_file_content(){
+		$this->user->paid_days = 0;
+
+		$this->module->disk()->put($this->module->module_folder.'/ololo.php', '<? ololo(); ?><p>ололо</p>');
+
+		$this->visit('/my-bitrix/'.$this->module->id.$this->path.'/edit?file=%2Fololo.php');
+
+		$this->dontSee('<span class="bg-danger">ололо</span>');
+	}
 }

@@ -68,27 +68,23 @@
                 <div class="collapse"
                      id="class_php_wrap">
                     <h2>Class.php</h2>
-                    @if ($user->canSeePaidFiles())
-                        @push('scripts')
-                        <script>
-                            var editor_class = window.editor_class = ace.edit("class_php_editor");
-                            editor_class.getSession().setMode("ace/mode/php");
-                            editor_class.getSession().on('change', function(e){
-                                var text = editor_class.getSession().getValue();
-                                console.log(text);
-                                $("#class_php").val(text);
-                            });
-                        </script>
-                        @endpush
-                        <div id="class_php_editor"
-                             style="height: 500px">{{$component->class_php}}</div>
-                        <input type="hidden"
-                               name="class_php"
-                               id="class_php"
-                               value="{{$component->class_php}}">
-                    @else
-                        {{ trans('app.this_is_paid_functionality') }}
-                    @endif
+                    @push('scripts')
+                    <script>
+                        var editor_class = window.editor_class = ace.edit("class_php_editor");
+                        editor_class.getSession().setMode("ace/mode/php");
+                        editor_class.getSession().on('change', function(e){
+                            var text = editor_class.getSession().getValue();
+                            console.log(text);
+                            $("#class_php").val(text);
+                        });
+                    </script>
+                    @endpush
+                    <div id="class_php_editor"
+                         style="height: 500px">{{$component->class_php}}</div>
+                    <input type="hidden"
+                           name="class_php"
+                           id="class_php"
+                           value="{{$component->class_php}}">
                 </div>
             </div>
         </div>

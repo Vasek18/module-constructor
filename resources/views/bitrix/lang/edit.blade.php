@@ -10,7 +10,11 @@
     <div>
         <div>
             <div class="file-content">
-                {!! $content !!}
+                @if ($user->canSeePaidFiles())
+                    {!! $content !!}
+                @else
+                    <p class="text-danger">{{ trans('app.this_is_paid_functionality') }}</p>
+                @endif
             </div>
         </div>
         <div>
