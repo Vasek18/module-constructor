@@ -1,10 +1,10 @@
 <a href="#"
    data-toggle="modal"
-   data-target="#on_this_page_i_lack_modal">{{ trans('feedback.on_this_page_i_lack') }}</a>
+   data-target="#i_found_a_bug_modal">{{ trans('feedback.i_found_a_bug') }}</a>
 <div class="modal fade"
      tabindex="-1"
      role="dialog"
-     id="on_this_page_i_lack_modal">
+     id="i_found_a_bug_modal">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -14,26 +14,17 @@
                         aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title">{{ trans('feedback.on_this_page_i_lack_title') }}</h4>
+                <h4 class="modal-title">{{ trans('feedback.i_found_a_bug_title') }}</h4>
             </div>
             <div class="modal-body">
                 <form method="post"
-                      action="{{ action('FeedbackController@sendILackSmthForm') }}">
+                      action="{{ action('FeedbackController@sendBugReportForm') }}">
                     {{ csrf_field() }}
                     <input type="hidden"
                            name="page"
                            value="{{ Request::url() }}">
                     <div class="form-group">
-                        <label for="email">{{ trans('feedback.on_this_page_i_lack_email') }}</label>
-                        <input class="form-control"
-                               name="email"
-                               id="email"
-                               type="email"
-                               placeholder="{{ trans('feedback.on_this_page_i_lack_why_email') }}"
-                               required>
-                    </div>
-                    <div class="form-group">
-                        <label for="text">{{ trans('feedback.on_this_page_i_lack_text') }}</label>
+                        <label for="text">{{ trans('feedback.i_found_a_bug_text') }}</label>
                         <textarea class="form-control"
                                   name="text"
                                   id="text"
@@ -45,8 +36,6 @@
                             name="send">{{ trans('app.send') }}
                     </button>
                 </form>
-                <br>
-                <p>{{ trans('feedback.on_this_page_i_lack_desc') }}</p>
             </div>
         </div>
     </div>

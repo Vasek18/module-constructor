@@ -89,7 +89,10 @@
 </div>
 <footer>
     <div class="row footer-actions">
-        <div class="col-md-3 col-md-offset-9">
+        <div class="col-md-3 col-md-offset-1">
+            @include('i_found_a_bag_modal')
+        </div>
+        <div class="col-md-3 col-md-offset-5">
             @include('on_this_page_i_lack_modal')
         </div>
     </div>

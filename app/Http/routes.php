@@ -189,6 +189,7 @@ Route::group(['prefix' => 'my-bitrix', 'middleware' => ['bitrix.owner', 'auth']]
 });
 
 Route::post('feedback/ilack', 'FeedbackController@sendILackSmthForm');
+Route::post('feedback/bug_report', 'FeedbackController@sendBugReportForm');
 
 Route::group(['prefix' => 'oko', 'middleware' => 'admin'], function (){
 	Route::get('', ['uses' => 'Admin\AdminController@index']);

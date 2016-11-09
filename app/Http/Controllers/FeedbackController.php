@@ -17,4 +17,12 @@ class FeedbackController extends Controller{
 
 		return back();
 	}
+
+	public function sendBugReportForm(Request $request){
+		Mail::send('emails.bug_report', ['page' => $request->page, 'text' => $request->text], function ($m){
+			$m->to($this->emailto)->subject('Сообщение об ошибке');
+		});
+
+		return back();
+	}
 }
