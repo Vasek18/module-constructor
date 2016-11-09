@@ -21,15 +21,15 @@ class User extends Model implements AuthenticatableContract,
 	public static $defaultGroup = 2;
 
 	public function canDownloadModule(){
-		if ($this->payed_days){
+		if ($this->paid_days){
 			return true;
 		}
 
 		return false;
 	}
 
-	public function canSeePayedFiles(){
-		if ($this->payed_days){
+	public function canSeePaidFiles(){
+		if ($this->paid_days){
 			return true;
 		}
 
@@ -45,11 +45,11 @@ class User extends Model implements AuthenticatableContract,
 	}
 
 	public function payForDay(){
-		$days = $this->payed_days;
+		$days = $this->paid_days;
 		if ($days){
 			$days--;
 		}
-		$this->payed_days = $days;
+		$this->paid_days = $days;
 		$this->save();
 	}
 

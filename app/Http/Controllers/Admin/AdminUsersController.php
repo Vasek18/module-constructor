@@ -26,8 +26,8 @@ class AdminUsersController extends Controller{
 	}
 
 	public function update(User $user, Request $request){
-		if ($request->payed_days){
-			$user->payed_days = $request->payed_days;
+		if ($request->paid_days){
+			$user->paid_days = $request->paid_days;
 			$user->save();
 		}
 

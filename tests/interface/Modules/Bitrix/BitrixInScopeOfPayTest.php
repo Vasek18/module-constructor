@@ -11,7 +11,7 @@ class BitrixInScopeOfPayTest extends BitrixTestCase{
 		parent::setUp();
 
 		$this->signIn(null, [
-			'payed_days' => 0
+			'paid_days' => 0
 		]);
 	}
 
@@ -48,7 +48,7 @@ class BitrixInScopeOfPayTest extends BitrixTestCase{
 	}
 
 	/** @test */
-	function payed_user_can_download_module(){
+	function paid_user_can_download_module(){
 		$this->module = $this->fillNewBitrixForm();
 		$this->payDays(1);
 
@@ -84,7 +84,7 @@ class BitrixInScopeOfPayTest extends BitrixTestCase{
 	}
 
 	/** @test */
-	function payed_user_see_admin_options_files(){
+	function paid_user_see_admin_options_files(){
 		$this->payDays(1);
 		$this->module = $this->fillNewBitrixForm();
 
@@ -123,7 +123,7 @@ class BitrixInScopeOfPayTest extends BitrixTestCase{
 	}
 
 	/** @test */
-	function payed_user_can_download_component(){
+	function paid_user_can_download_component(){
 		$this->module = $this->fillNewBitrixForm();
 		$this->payDays(1);
 
@@ -165,7 +165,7 @@ class BitrixInScopeOfPayTest extends BitrixTestCase{
 	}
 
 	/** @test */
-	function payed_user_see_component_params_files(){
+	function paid_user_see_component_params_files(){
 		$this->payDays(1);
 		$this->module = $this->fillNewBitrixForm();
 		$component = $this->createComponentOnForm($this->module);
@@ -194,7 +194,7 @@ class BitrixInScopeOfPayTest extends BitrixTestCase{
 	}
 
 	/** @test */
-	function payed_user_can_store_class_php(){
+	function paid_user_can_store_class_php(){
 		$this->module = $this->fillNewBitrixForm();
 		$component = $this->createComponentOnForm($this->module);
 		$this->payDays(1);

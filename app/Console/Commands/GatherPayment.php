@@ -18,7 +18,7 @@ class GatherPayment extends Command{
 	 *
 	 * @var string
 	 */
-	protected $description = 'Gather daily payment from payed users';
+	protected $description = 'Gather daily payment from paid users';
 
 	/**
 	 * Execute the console command.

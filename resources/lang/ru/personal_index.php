@@ -6,5 +6,5 @@ return [
 	'bitrix'               => 'Битрикс',
 	'create_bitrix_module' => 'Создать модуль на Битриксе',
 	'empty'                => 'Пусто',
-	'payed_days'           => 'оплачено дней',
+	'paid_days'           => 'оплачено дней',
 ];

@@ -77,7 +77,7 @@ class AdminUsersTest extends TestCase{
 	}
 
 	/** @test */
-	function admin_can_change_payed_days_for_users(){
+	function admin_can_change_paid_days_for_users(){
 		$this->signIn(null, [
 			'group_id' => $this->adminUserGroup
 		]);
@@ -86,10 +86,10 @@ class AdminUsersTest extends TestCase{
 		$this->visit('/oko/users/'.$user->id);
 
 		$this->submitForm('save', [
-			'payed_days' => 14
+			'paid_days' => 14
 		]);
 
-		$this->seeInField('payed_days', 14);
+		$this->seeInField('paid_days', 14);
 	}
 }
 

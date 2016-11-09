@@ -85,7 +85,7 @@ class AuthController extends Controller{
 			'group_id'     => User::$defaultGroup,
 		]);
 
-		$user->payed_days = $daysTrial;
+		$user->paid_days = $daysTrial;
 		$user->save();
 
 		flash()->success(trans('reg.you_ve_registered').'\n'.trans_choice('reg.trial_provided', $daysTrial, ['days' => $daysTrial]));

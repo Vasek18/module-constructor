@@ -38,8 +38,8 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase{
 	}
 
 	public function signIn($user = null, $params = []){
-		if (!isset($params["payed_days"])){
-			$params["payed_days"] = setting('demo_days', 2);
+		if (!isset($params["paid_days"])){
+			$params["paid_days"] = setting('demo_days', 2);
 		}
 		if (!$user){
 			$user = factory(App\Models\User::class)->create($params);
@@ -73,9 +73,9 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase{
 		// почему-то оба работают в разных местах
 
 		$user = User::find(Auth::id());
-		$user->payed_days = intval($days);
+		$user->paid_days = intval($days);
 		$user->save();
 
-		$this->user->payed_days = intval($days);
+		$this->user->paid_days = intval($days);
 	}
 }

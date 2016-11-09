@@ -8,7 +8,7 @@
             <div class="list-group-item clearfix">
                 <a href="{{ action('Admin\AdminController@modulesDetail', ['bitrix' => $bitrix]) }}"
                    class="pull-left">{{ $bitrix->name }} {{ $bitrix->code }}</a>
-                <a href="{{ action('Admin\AdminController@usersDetail', ['user' => $user]) }}"
+                <a href="{{ action('Admin\AdminUsersController@show', ['user' => $user]) }}"
                    class="pull-right">{{ $bitrix->creator->name }}</a>
             </div>
         @endforeach

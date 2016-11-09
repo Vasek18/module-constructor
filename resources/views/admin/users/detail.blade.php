@@ -10,12 +10,12 @@
                   method="post">
                 {{ csrf_field() }}
                 <div class="form-group">
-                    <label for="payed_days">Оплаченных дней</label>
+                    <label for="paid_days">Оплаченных дней</label>
                     <input type="text"
-                           id="payed_days"
-                           name="payed_days"
+                           id="paid_days"
+                           name="paid_days"
                            class="form-control"
-                           value="{{ $user->payed_days }}">
+                           value="{{ $user->paid_days }}">
                 </div>
                 <div class="form-group">
                     <button class="btn btn-primary"

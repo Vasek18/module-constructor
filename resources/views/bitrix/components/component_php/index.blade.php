@@ -68,7 +68,7 @@
                 <div class="collapse"
                      id="class_php_wrap">
                     <h2>Class.php</h2>
-                    @if ($user->canSeePayedFiles())
+                    @if ($user->canSeePaidFiles())
                         @push('scripts')
                         <script>
                             var editor_class = window.editor_class = ace.edit("class_php_editor");

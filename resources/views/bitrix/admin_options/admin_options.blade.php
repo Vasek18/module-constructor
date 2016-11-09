@@ -9,8 +9,8 @@
     <script src="/js/bitrix_module_admin_options.js"></script>
     @endpush
     
-    @include('bitrix.button_n_modal_for_file_copy', ['path' => '\options.php', 'show' => $user->canSeePayedFiles(), 'is_lang' => false])
-    @include('bitrix.button_n_modal_for_file_copy', ['path' => '\lang\ru\options.php', 'show' => $user->canSeePayedFiles(), 'is_lang' => true, 'add_id' => '_lang'])
+    @include('bitrix.button_n_modal_for_file_copy', ['path' => '\options.php', 'show' => $user->canSeePaidFiles(), 'is_lang' => false])
+    @include('bitrix.button_n_modal_for_file_copy', ['path' => '\lang\ru\options.php', 'show' => $user->canSeePaidFiles(), 'is_lang' => true, 'add_id' => '_lang'])
 
     <br><br>
     <form role="form"

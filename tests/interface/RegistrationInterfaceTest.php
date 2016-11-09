@@ -279,7 +279,7 @@ class RegistrationInterfaceTest extends TestCase{
 
 		$this->seeInDatabase('users', [
 			'email'      => 'ololo@test.ru',
-			'payed_days' => setting('demo_days')
+			'paid_days' => setting('demo_days')
 		]);
 	}
 
@@ -308,7 +308,7 @@ class RegistrationInterfaceTest extends TestCase{
 
 		$this->seeInDatabase('users', [
 			'email'      => 'ololo@test.ru',
-			'payed_days' => 5
+			'paid_days' => 5
 		]);
 	}
 }

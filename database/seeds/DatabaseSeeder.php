@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder{
 			'password'       => bcrypt("12345678"),
 			'remember_token' => str_random(10),
 			'rubles'         => 1487,
-			'payed_days'     => 1487,
+			'paid_days'     => 1487,
 			'group_id'       => 1,
 		]);
 
