@@ -30,5 +30,6 @@ class AdminSettingsController extends Controller{
 			'value' => $request->value
 		]);
 
+		return back();
 	}
 }
