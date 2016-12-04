@@ -42,6 +42,6 @@ class AdminUsersController extends Controller{
 
 		$user->delete();
 
-		return action('Admin\AdminUsersController@index');
+		return redirect(action('Admin\AdminUsersController@index'));
 	}
 }
