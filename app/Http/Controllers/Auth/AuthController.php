@@ -37,6 +37,10 @@ class AuthController extends Controller{
 		parent::__construct();
 
 		$this->middleware('guest', ['except' => 'getLogout']);
+
+		if (setting('disallow_auth')){
+			abort(404);
+		}
 	}
 
 	/**

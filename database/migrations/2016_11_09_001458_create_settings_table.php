@@ -31,6 +31,12 @@ class CreateSettingsTable extends Migration{
 			'name'  => 'Цена за день',
 			'value' => '100',
 		]);
+
+		DB::table('settings')->insert([
+			'code'  => 'disallow_auth',
+			'name'  => 'Запретить регистрацию',
+			'value' => '0',
+		]);
 	}
 
 	/**
