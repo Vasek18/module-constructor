@@ -49,14 +49,6 @@ class AdminController extends Controller{
 		return view("admin.module_detail", $data);
 	}
 
-	public function settings(){
-		$data = [
-			'settings' => Setting::all()
-		];
-
-		return view("admin.settings", $data);
-	}
-
 	public function articles(){
 		$data = [
 			'sections' => ArticleSection::orderBy('sort')->get(),

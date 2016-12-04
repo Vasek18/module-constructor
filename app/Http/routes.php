@@ -201,7 +201,10 @@ Route::group(['prefix' => 'oko', 'middleware' => 'admin'], function (){
 	});
 	Route::get('modules', ['uses' => 'Admin\AdminController@modules']);
 	Route::get('modules/{module}', ['uses' => 'Admin\AdminController@modulesDetail']);
-	Route::get('settings', ['uses' => 'Admin\AdminController@settings']);
+	Route::group(['prefix' => 'settings'], function (){
+		Route::get('', ['uses' => 'Admin\AdminSettingsController@index']);
+		Route::post('', ['uses' => 'Admin\AdminSettingsController@store']);
+	});
 	Route::get('articles', ['uses' => 'Admin\AdminController@articles']);
 
 	// категории статей

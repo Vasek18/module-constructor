@@ -18,7 +18,7 @@
                     <a href="#"
                        class="list-group-item">Рейтинг функционала
                     </a>
-                    <a href="{{ action('Admin\AdminController@settings') }}"
+                    <a href="{{ action('Admin\AdminSettingsController@index') }}"
                        class="list-group-item">Основные настройки
                     </a>
                     <a href="{{ action('Admin\AdminController@articles') }}"

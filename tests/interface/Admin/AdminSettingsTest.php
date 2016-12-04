@@ -56,9 +56,28 @@ class AdminSettingsTest extends TestCase{
 		$this->assertEquals(2, setting('demo_days'));
 
 		$this->submitForm('save_demo_days', [
-			'value'  => '5',
+			'value' => '5',
 		]);
 
 		$this->assertEquals(5, setting('demo_days'));
 	}
+
+	/** @test */
+	function it_can_create_setting(){
+		$this->signIn(null, [
+			'group_id' => $this->adminUserGroup
+		]);
+
+		$this->visit('/oko/'.$this->path);
+
+		$this->submitForm('create', [
+			'name'  => 'Тест',
+			'code'  => 'test',
+			'value' => '1487',
+		]);
+
+		$this->see('Тест');
+		$this->see('1487');
+	}
+
 }

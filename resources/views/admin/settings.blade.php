@@ -34,4 +34,43 @@
             </tr>
         @endforeach
     </table>
+    <div class="row">
+        <div class="col-md-6">
+            <form action="{{ action('Admin\AdminSettingsController@store') }}"
+                  method="post">
+                {{ csrf_field() }}
+                <h2>Создать настройку</h2>
+                <div class="form-group">
+                    <label for="name">Имя</label>
+                    <input type="text"
+                           id="name"
+                           name="name"
+                           class="form-control"
+                           required>
+                </div>
+                <div class="form-group">
+                    <label for="code">Код</label>
+                    <input type="text"
+                           id="code"
+                           name="code"
+                           class="form-control"
+                           required>
+                </div>
+                <div class="form-group">
+                    <label for="value">Значение</label>
+                    <input type="text"
+                           id="value"
+                           name="value"
+                           class="form-control"
+                           required>
+                </div>
+                <div class="form-group">
+                    <button id="create"
+                            name="create"
+                            class="btn btn-success">Сохранить
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 @stop
