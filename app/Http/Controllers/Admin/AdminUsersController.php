@@ -33,4 +33,15 @@ class AdminUsersController extends Controller{
 
 		return back();
 	}
+
+	public function destroy(User $user, Request $request){
+		foreach ($user->modules as $module){
+			$module->deleteFolder();
+			$module->delete();
+		}
+
+		$user->delete();
+
+		return action('Admin\AdminUsersController@index');
+	}
 }

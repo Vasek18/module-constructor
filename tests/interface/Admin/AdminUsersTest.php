@@ -91,6 +91,25 @@ class AdminUsersTest extends TestCase{
 
 		$this->seeInField('paid_days', 14);
 	}
+
+	/** @test */
+	function admin_can_delete_user(){
+		$module = factory(App\Models\Modules\Bitrix\Bitrix::class)->create();
+		$user = User::first();
+
+		$this->signIn(null, [
+			'group_id' => $this->adminUserGroup
+		]);
+
+		$this->visit('/oko/modules');
+		$this->see($module->name);
+
+		$this->visit('/oko/users/'.$user->id);
+		$this->click('deleteUser');
+
+		$this->visit('/oko/modules');
+		$this->dontSee($module->name);
+	}
 }
 
 ?>

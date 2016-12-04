@@ -1,9 +1,16 @@
 @extends("admin.template")
 
 @section("page")
-    <h1>{{ $user->last_name }} {{ $user->first_name }}</h1>
     <div class="row">
         <div class="col-md-5">
+            <h1>{{ $user->last_name }} {{ $user->first_name }}
+                <a href="{{ action('Admin\AdminUsersController@destroy', [$user]) }}"
+                   class="btn btn-danger"
+                id="deleteUser">
+                <span class="glyphicon glyphicon-trash"
+                      aria-hidden="true"></span>
+                </a>
+            </h1>
             <p>Зарегистрировался: {{ $user->created_at }}</p>
             <form action="{{ action('Admin\AdminUsersController@update', [$user]) }}"
                   class="form"

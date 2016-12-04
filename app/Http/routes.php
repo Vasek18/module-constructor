@@ -197,6 +197,7 @@ Route::group(['prefix' => 'oko', 'middleware' => 'admin'], function (){
 		Route::get('', ['uses' => 'Admin\AdminUsersController@index']);
 		Route::get('{user}', ['uses' => 'Admin\AdminUsersController@show']);
 		Route::post('{user}', ['uses' => 'Admin\AdminUsersController@update']);
+		Route::get('{user}/delete', ['uses' => 'Admin\AdminUsersController@destroy']);
 	});
 	Route::get('modules', ['uses' => 'Admin\AdminController@modules']);
 	Route::get('modules/{module}', ['uses' => 'Admin\AdminController@modulesDetail']);
