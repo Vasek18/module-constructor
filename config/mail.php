@@ -54,7 +54,7 @@ return [
     |
     */
 
-    'from' => ['address' => "admin@modules-constructor.ru", 'name' => "Admin constructors"],
+    'from' => ['address' => "admin@modules-constructor.ru", 'name' => "Администратор"],
 
     /*
     |--------------------------------------------------------------------------
