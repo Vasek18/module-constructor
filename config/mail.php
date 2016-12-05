@@ -54,7 +54,7 @@ return [
     |
     */
 
-    'from' => ['address' => "yourreligionisnothing@gmail.com", 'name' => "Admin constructors"],
+    'from' => ['address' => "admin@modules-constructor.ru", 'name' => "Admin constructors"],
 
     /*
     |--------------------------------------------------------------------------
@@ -106,7 +106,7 @@ return [
     |
     */
 
-    'sendmail' => '\"C:\xampp\sendmail\sendmail.exe\" -t',
+    'sendmail' => env('SENDMAIL', '\"C:\xampp\sendmail\sendmail.exe\" -t'),
 
     /*
     |--------------------------------------------------------------------------
