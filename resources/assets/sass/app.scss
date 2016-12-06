@@ -11,6 +11,9 @@ html, body{
   font-family : Lato, sans-serif;
   color       : $fontColor;
 }
+p.big-text{
+  font-size : 17px;
+}
 #wrap{
   min-height : 100%;
   margin     : 0 auto $footerHeightReverse auto;
@@ -130,4 +133,12 @@ a.you-can-change{
 }
 .list-group-item{
   line-height : 34px;
+}
+.oplata-table{
+  font-size     : 20px;
+  margin-top    : 20px;
+  margin-bottom : 20px;
+}
+.oplata-table > tbody > tr > th, .oplata-table > tbody > tr > td{
+  border : none;
 }

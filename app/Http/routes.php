@@ -241,6 +241,8 @@ Route::get('_ololotrololo_', function (){ // todo удалить
 	return redirect('/');
 });
 
+Route::get('oplata', ['uses' => 'HtmlPagesController@oplata']);
+
 Route::get('{section_code}/{article_code}', ['uses' => 'ArticleController@show']);
 Route::get('{section_code}', ['uses' => 'ArticleSectionController@show']);
 
