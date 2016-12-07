@@ -242,6 +242,8 @@ Route::get('_ololotrololo_', function (){ // todo удалить
 });
 
 Route::get('oplata', ['uses' => 'HtmlPagesController@oplata']);
+Route::get('contacts', ['uses' => 'HtmlPagesController@contacts']);
+Route::get('requisites', ['uses' => 'HtmlPagesController@requisites']);
 
 Route::get('{section_code}/{article_code}', ['uses' => 'ArticleController@show']);
 Route::get('{section_code}', ['uses' => 'ArticleSectionController@show']);

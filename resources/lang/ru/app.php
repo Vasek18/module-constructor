@@ -7,6 +7,8 @@ return [
 	'link_to_use_cases_articles_title' => 'Примеры',
 	'link_to_info'                     => 'Информация',
 	'link_to_oplata'                   => 'Оплата',
+	'link_to_contacts'                 => 'Контакты',
+	'link_to_contacts'                 => 'Контакты',
 	'link_to_auth_title'               => 'Авторизация',
 	'link_to_reg_title'                => 'Регистрация',
 	'link_to_personal_title'           => 'Личный кабинет',

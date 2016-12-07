@@ -75,6 +75,9 @@
                                 <li>
                                     <a href="/oplata/">{{ trans('app.link_to_oplata') }}</a>
                                 </li>
+                                <li>
+                                    <a href="/contacts/">{{ trans('app.link_to_contacts') }}</a>
+                                </li>
                             </ul>
                         </li>
                     </ul>
