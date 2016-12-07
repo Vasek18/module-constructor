@@ -62,6 +62,21 @@
                                 </ul>
                             </li>
                         @endif
+                        <li class="dropdown">
+                            <a href="use_cases"
+                               class="dropdown-toggle"
+                               data-toggle="dropdown"
+                               role="button"
+                               aria-haspopup="true"
+                               aria-expanded="false">{{ trans('app.link_to_info') }}
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="/oplata/">{{ trans('app.link_to_oplata') }}</a>
+                                </li>
+                            </ul>
+                        </li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         @if (!Auth::check())

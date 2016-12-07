@@ -178,3 +178,9 @@ function setting($code, $default = null){
 		return $default;
 	}
 }
+
+function convertCurrency($price){
+	$CP = new \App\Helpers\ConvertPrice;
+
+	return $CP->convert($price);
+}

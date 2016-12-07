@@ -2,20 +2,19 @@
 
 @section('content')
     <div class="container">
-        <h1>Оплата</h1>
-        <p class="big-text">Тут можно регистрироваться и трогать весь функционал бесплатно.</p>
-        <p class="big-text">Но скачивание архива вне демо-периода мы сделали платным. А поскольку в разделе перевода можно увидеть
-            содержимое каждого файла, он также доступен только оплаченным пользователям.
-        </p>
+        <h1>{{ trans('oplata.h1') }}</h1>
+        <p class="big-text">{{ trans('oplata.p1') }}</p>
+        <p class="big-text">{!! trans('oplata.p2') !!}</p>
+        <h2>{{ trans('oplata.h_actual_numbers') }}</h2>
         <div class="row">
             <div class="col-md-6">
                 <table class="oplata-table table table-striped">
                     <tr>
-                        <th>Цена за день в рублях</th>
-                        <td><kbd class="bg-primary">{{ setting('day_price') }}</kbd></td>
+                        <th>{{ trans('oplata.price') }}</th>
+                        <td><kbd class="bg-primary">{{ convertCurrency(setting('day_price')) }}</kbd></td>
                     </tr>
                     <tr>
-                        <th>Длительность демо-периода в днях</th>
+                        <th>{{ trans('oplata.demo_days') }}</th>
                         <td><kbd class="bg-primary">{{ setting('demo_days') }}</kbd></td>
                     </tr>
                 </table>
