@@ -103,16 +103,18 @@
     <div id="push"></div>
 </div>
 <footer>
-    <div class="row footer-actions">
-        <div class="col-md-3 col-md-offset-1">
-            @include('i_found_a_bag_modal')
+    <div class="container-fluid">
+        <div class="row footer-actions">
+            <div class="col-md-3 col-md-offset-1">
+                @include('i_found_a_bag_modal')
+            </div>
+            <div class="col-md-3 col-md-offset-5">
+                @include('on_this_page_i_lack_modal')
+            </div>
         </div>
-        <div class="col-md-3 col-md-offset-5">
-            @include('on_this_page_i_lack_modal')
+        <div class="creator">
+            <a href="http://aristov-vasiliy.ru/">{{trans('app.site_developer')}}</a>
         </div>
-    </div>
-    <div class="creator">
-        <a href="http://aristov-vasiliy.ru/">{{trans('app.site_developer')}}</a>
     </div>
 </footer>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
