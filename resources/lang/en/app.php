@@ -8,6 +8,7 @@ return [
 	'link_to_info'                     => 'Info',
 	'link_to_oplata'                   => 'Payment',
 	'link_to_contacts'                 => 'Contacts',
+	'link_to_requisites'               => 'Requisites',
 	'link_to_auth_title'               => 'Authentication',
 	'link_to_reg_title'                => 'Registration',
 	'link_to_personal_title'           => 'Personal',

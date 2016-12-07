@@ -78,6 +78,9 @@
                                 <li>
                                     <a href="/contacts/">{{ trans('app.link_to_contacts') }}</a>
                                 </li>
+                                <li>
+                                    <a href="/requisites/">{{ trans('app.link_to_requisites') }}</a>
+                                </li>
                             </ul>
                         </li>
                     </ul>
