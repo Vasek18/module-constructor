@@ -4,13 +4,12 @@
     <div class="container">
         <div class="row">
             <div class="welcome-block">
-                <h1>Помощник в создании модулей для <b>Битрикс</b></h1>
-                <p>Помогает создать модуль с нуля, расширять и поддерживать его функционал,<br> меньше задумываясь о коде.
-                </p>
+                <h1>{!! trans('home.welcome_header') !!}</h1>
+                <p>{!! trans('home.welcome_p') !!}</p>
                 <p>
                     <a class="btn btn-success btn-lg"
                        href="{{ action('Auth\AuthController@index_reg') }}"
-                       role="button">Регистрация
+                       role="button">{!! trans('home.welcome_action') !!}
                     </a>
                 </p>
             </div>

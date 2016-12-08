@@ -1,6 +1,9 @@
 <?php
 
 return [
+	'welcome_header'     => 'Help in creation modules for the <b>Bitrix</b>',
+	'welcome_p'          => 'It helps to create a module from scratch, expand and maintain its functionality, <br> less worrying about code.',
+	'welcome_action'     => 'Registration',
 	'little_earnings'    => 'Do you making websites but earn less than 5k per month?',
 	'bitrix_difficult'   => 'Do you can not create a module for Bitrix, because it is too difficult?',
 	'code_repeat'        => 'Do you often repeat your code?',
