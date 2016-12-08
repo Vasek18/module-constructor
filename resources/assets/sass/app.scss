@@ -4,7 +4,7 @@ $footerHeight : 70px;
 $footerHeightReverse : -70px;
 $hoverBackgroundColor : #eee;
 $fontColor : #777;
-$borderDefaulColor : #e7e7e7;
+$borderDefaultColor : #e7e7e7;
 
 html, body{
   height      : 100%;
@@ -34,7 +34,7 @@ p.big-text{
 footer{
   width            : 100%;
   height           : $footerHeight;
-  border-top       : 1px solid $borderDefaulColor;
+  border-top       : 1px solid $borderDefaultColor;
   background-color : #f8f8f8;
 }
 .footer-actions{
@@ -58,7 +58,7 @@ footer{
 }
 .banner-on-main{
   padding       : 30px 0;
-  border-bottom : 1px solid $borderDefaulColor;
+  border-bottom : 1px solid $borderDefaultColor;
   h2{
     font-size  : 63px;
     text-align : center;
@@ -80,7 +80,8 @@ footer{
   padding-bottom : 30px;
   font-size      : 20px;
   text-align     : center;
-  border-bottom  : 1px solid $borderDefaulColor;
+  border-bottom  : 1px solid $borderDefaultColor;
+  border-top     : 1px solid $borderDefaultColor;
   h2{
     padding-top    : 0px;
     padding-bottom : 20px;
@@ -90,10 +91,10 @@ footer{
 .modules-created{
   font-size     : 50px;
   text-align    : center;
-  border        : 2px solid #000;
+  border        : 2px solid $borderDefaultColor;
   border-radius : 5px;
   margin-top    : 20px;
-  margin-bottom : 20px;
+  margin-bottom : 100px;
 }
 .modules-created strong{
   font-size : 55px;
@@ -141,4 +142,19 @@ a.you-can-change{
 }
 .oplata-table > tbody > tr > th, .oplata-table > tbody > tr > td{
   border : none;
+}
+.welcome-block{
+  text-align  : center;
+  font-size   : 20px;
+  font-family : 'Roboto', sans-serif;
+  margin      : 150px 0px;
+}
+.welcome-block h1{
+  font-size : 55px;
+}
+.welcome-block p{
+  margin : 30px 0px;
+}
+.welcome-block .btn{
+  font-size : 30px;
 }

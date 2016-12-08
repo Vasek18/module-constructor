@@ -1305,6 +1305,7 @@ footer {
   font-size: 20px;
   text-align: center;
   border-bottom: 1px solid #e7e7e7;
+  border-top: 1px solid #e7e7e7;
 }
 
 .project-goal h2 {
@@ -1316,10 +1317,10 @@ footer {
 .modules-created {
   font-size: 50px;
   text-align: center;
-  border: 2px solid #000;
+  border: 2px solid #e7e7e7;
   border-radius: 5px;
   margin-top: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 100px;
 }
 
 .modules-created strong {
@@ -1371,4 +1372,23 @@ a.you-can-change:hover {
 .oplata-table > tbody > tr > th,
 .oplata-table > tbody > tr > td {
   border: none;
+}
+
+.welcome-block {
+  text-align: center;
+  font-size: 20px;
+  font-family: 'Roboto', sans-serif;
+  margin: 150px 0px;
+}
+
+.welcome-block h1 {
+  font-size: 55px;
+}
+
+.welcome-block p {
+  margin: 30px 0px;
+}
+
+.welcome-block .btn {
+  font-size: 30px;
 }

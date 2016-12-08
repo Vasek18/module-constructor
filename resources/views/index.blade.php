@@ -3,27 +3,16 @@
 @section("content")
     <div class="container">
         <div class="row">
-            <div class="banner-on-main clearfix">
-                <div class="col-md-8">
-                    <strong>{{trans('home.little_earnings')}}</strong>
-                </div>
-            </div>
-            <div class="banner-on-main clearfix">
-                <div class="col-md-8 col-md-offset-4">
-                    <strong>{{trans('home.bitrix_difficult')}}</strong>
-                </div>
-            </div>
-            <div class="banner-on-main clearfix">
-                <div class="col-md-8">
-                    <strong>{{trans('home.code_repeat')}}</strong>
-                </div>
-            </div>
-            <div class="banner-on-main clearfix">
-                <div class="col-md-8 col-md-offset-4">
-                    <strong>{{trans('home.stop_it')}}</strong>
-                    <p>{!! trans('home.why_stop_it') !!}
-                    </p>
-                </div>
+            <div class="welcome-block">
+                <h1>Помощник в создании модулей для <b>Битрикс</b></h1>
+                <p>Помогает создать модуль с нуля, расширять и поддерживать его функционал,<br> меньше задумываясь о коде.
+                </p>
+                <p>
+                    <a class="btn btn-success btn-lg"
+                       href="{{ action('Auth\AuthController@index_reg') }}"
+                       role="button">Регистрация
+                    </a>
+                </p>
             </div>
             <div class="col-md-8 col-md-offset-2 project-goal">
                 <h2>{{trans('home.project_goal_title')}}</h2>
