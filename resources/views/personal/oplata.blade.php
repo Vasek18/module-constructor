@@ -3,7 +3,6 @@
 @section("content")
     <div class="container">
         @include('personal.header')
-        <h2>{{trans('personal_index.modules_list')}}</h2>
-        @include('personal.bitrix_block')
+        <h2>Оплата</h2>
     </div>
 @stop

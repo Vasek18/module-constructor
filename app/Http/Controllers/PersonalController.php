@@ -26,4 +26,8 @@ class PersonalController extends Controller{
 
 		return view("personal.index", $data);
 	}
+
+	public function oplata(){
+		return view("personal.oplata");
+	}
 }
