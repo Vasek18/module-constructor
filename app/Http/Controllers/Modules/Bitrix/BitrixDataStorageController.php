@@ -161,18 +161,20 @@ class BitrixDataStorageController extends Controller{
 				if (isset($propArr['ВариантыЗначений']['Вариант'])){
 					// dd($propArr['ВариантыЗначений']['Вариант']);
 					foreach ($propArr['ВариантыЗначений']['Вариант'] as $valArr){
-						$vals[$valArr['Ид']] = BitrixIblocksPropsVals::updateOrCreate(
-							[
-								'prop_id' => $prop->id,
-								'value'   => $valArr['Значение']
-							],
-							[
-								'prop_id' => $prop->id,
-								'value'   => $valArr['Значение'],
-								'sort'    => $valArr["Сортировка"],
-								'default' => ($valArr["ПоУмолчанию"] == 'true') ? true : false
-							]
-						);
+						if (isset($valArr['Ид'])){
+							$vals[$valArr['Ид']] = BitrixIblocksPropsVals::updateOrCreate(
+								[
+									'prop_id' => $prop->id,
+									'value'   => $valArr['Значение']
+								],
+								[
+									'prop_id' => $prop->id,
+									'value'   => $valArr['Значение'],
+									'sort'    => $valArr["Сортировка"],
+									'default' => ($valArr["ПоУмолчанию"] == 'true') ? true : false
+								]
+							);
+						}
 					}
 				}
 
@@ -183,14 +185,16 @@ class BitrixDataStorageController extends Controller{
 		$sections = [];
 		if (is_array($arr['Классификатор']['Группы'])){
 			foreach ($arr['Классификатор']['Группы'] as $itemArr){
-				$sectionArr = [
-					'iblock_id' => $iblock->id,
-					'name'      => $itemArr['Наименование'],
-					'active'    => true,
-					'code'      => $itemArr['БитриксКод'],
-				];
+				if (isset($itemArr['Ид'])){
+					$sectionArr = [
+						'iblock_id' => $iblock->id,
+						'name'      => isset($itemArr['Наименование']) ? $itemArr['Наименование'] : '',
+						'active'    => true,
+						'code'      => isset($itemArr['БитриксКод']) ? $itemArr['БитриксКод'] : '',
+					];
 
-				$sections[$itemArr['Ид']] = BitrixIblocksSections::create($sectionArr);
+					$sections[$itemArr['Ид']] = BitrixIblocksSections::create($sectionArr);
+				}
 			}
 		}
 
