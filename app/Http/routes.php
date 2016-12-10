@@ -245,9 +245,18 @@ Route::get('_ololotrololo_', function (){ // todo удалить
 	return redirect('/');
 });
 
+// просто страницы
 Route::get('oplata', ['uses' => 'HtmlPagesController@oplata']);
 Route::get('contacts', ['uses' => 'HtmlPagesController@contacts']);
 Route::get('requisites', ['uses' => 'HtmlPagesController@requisites']);
+
+// яндекс.касса
+Route::group(['prefix' => 'yandex_kassa'], function (){
+	Route::get('check_order', ['uses' => 'YandexKassaController@checkOrder']);
+	Route::get('payment_aviso', ['uses' => 'YandexKassaController@paymentAviso']);
+	Route::get('success', ['uses' => 'YandexKassaController@success']);
+	Route::get('fail', ['uses' => 'YandexKassaController@fail']);
+});
 
 Route::get('{section_code}/{article_code}', ['uses' => 'ArticleController@show']);
 Route::get('{section_code}', ['uses' => 'ArticleSectionController@show']);
