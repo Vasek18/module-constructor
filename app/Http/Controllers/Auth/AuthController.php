@@ -37,10 +37,6 @@ class AuthController extends Controller{
 		parent::__construct();
 
 		$this->middleware('guest', ['except' => 'getLogout']);
-
-		if (setting('disallow_auth')){
-			abort(404);
-		}
 	}
 
 	/**
@@ -53,6 +49,10 @@ class AuthController extends Controller{
 	}
 
 	public function index_reg(){
+		if (setting('disallow_auth')){
+			abort(404);
+		}
+
 		return view("auth.register");
 	}
 
@@ -77,6 +77,10 @@ class AuthController extends Controller{
 	 * @return User
 	 */
 	protected function create(array $data){
+		if (setting('disallow_auth')){
+			abort(404);
+		}
+
 		$daysTrial = setting('demo_days');
 
 		$user = User::create([
