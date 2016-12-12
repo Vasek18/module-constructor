@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Log;
 class YandexKassaController extends Controller{
 
 	public function checkOrder(Request $request){
-		Log::info('YK checkOrder ', $request->all());
+		Log::info('YK checkOrder '.$request->fullUrl());
 
 		$code = $this->isValidHash($request);
 
@@ -20,19 +20,19 @@ class YandexKassaController extends Controller{
 	}
 
 	public function paymentAviso(Request $request){
-		Log::info('YK paymentAviso ', $request->all());
+		Log::info('YK paymentAviso '.$request->fullUrl());
 
 		return 'paymentAviso';
 	}
 
 	public function success(Request $request){
-		Log::info('YK success ', $request->all());
+		Log::info('YK success '.$request->fullUrl());
 
 		return 'success';
 	}
 
 	public function fail(Request $request){
-		Log::info('YK fail ', $request->all());
+		Log::info('YK fail '.$request->fullUrl());
 
 		return 'fail';
 	}
