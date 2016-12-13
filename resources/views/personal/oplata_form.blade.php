@@ -4,7 +4,6 @@
             <input type="hidden" name="shopId" value="{{ env('YANDEX_KASSA_SHOP_ID') }}">
             <input type="hidden" name="scid" value="{{ env('YANDEX_KASSA_SCID') }}">
             <input name="customerNumber" value="{{ $user->id }}" type="hidden">
-            <input name="paymentType" value="" type="hidden">
             <div class="form-group">
                 <label for="sum">{{ trans('oplata_form.sum') }}, {{ trans('oplata_form.rubles') }}</label>
                 <select id="sum"
