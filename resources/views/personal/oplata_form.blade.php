@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-md-4">
-        <form action="https://money.yandex.ru/eshop.xml" method="post">
+        <form action="{{ env('YANDEX_KASSA_FORM_ACTION') }}" method="post">
             <input type="hidden" name="shopId" value="{{ env('YANDEX_KASSA_SHOP_ID') }}">
             <input type="hidden" name="scid" value="{{ env('YANDEX_KASSA_SCID') }}">
             <input name="customerNumber" value="{{ $user->id }}" type="hidden">
