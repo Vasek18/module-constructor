@@ -28,13 +28,17 @@ class YandexKassaController extends Controller{
 	public function success(Request $request){
 		Log::info('YK success '.$request->fullUrl());
 
-		return 'success';
+		flash()->overlay(trans('oplata.oplata_success_title'), trans('oplata.oplata_success_p'));
+
+		return redirect(action('PersonalController@index'));
 	}
 
 	public function fail(Request $request){
 		Log::info('YK fail '.$request->fullUrl());
 
-		return 'fail';
+		flash()->overlay(trans('oplata.oplata_fail_title'), trans('oplata.oplata_fail_p'), 'error');
+
+		return redirect(action('PersonalController@oplata'));
 	}
 
 	public function isValidHash(Request $request){

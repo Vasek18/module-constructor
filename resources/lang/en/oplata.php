@@ -8,4 +8,9 @@ return [
 	'h_actual_numbers' => 'Actual values',
 	'price'            => 'Prices per day in US dollars',
 	'demo_days'        => 'The duration of the trial period in days',
+
+	'oplata_success_title' => 'Thanks',
+	'oplata_success_p'     => 'Payment credited',
+	'oplata_fail_title'    => 'Payment failed',
+	'oplata_fail_p'        => 'Try again later',
 ];

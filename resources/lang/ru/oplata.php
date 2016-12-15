@@ -9,4 +9,9 @@ return [
 	'h_actual_numbers' => 'Актуальные цифры',
 	'price'            => 'Цена за день в рублях',
 	'demo_days'        => 'Длительность демо-периода в днях',
+
+	'oplata_success_title' => 'Спасибо',
+	'oplata_success_p'     => 'Оплата зачислена',
+	'oplata_fail_title'    => 'Оплата не прошла',
+	'oplata_fail_p'        => 'Попробуйте позже',
 ];
