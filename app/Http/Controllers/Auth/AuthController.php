@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Mail;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
@@ -95,6 +96,11 @@ class AuthController extends Controller{
 
 		$user->paid_days = $daysTrial;
 		$user->save();
+
+		// письмо мне
+		Mail::send('emails.admin.new_user', ['user' => $user], function ($m){
+			$m->to(env('GOD_EMAIL'))->subject('Зарегался новый пользователь');
+		});
 
 		flash()->success(trans('reg.you_ve_registered').'\n'.trans_choice('reg.trial_provided', $daysTrial, ['days' => $daysTrial]));
 

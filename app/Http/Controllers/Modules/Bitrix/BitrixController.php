@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Auth;
 use App\Models\User;
 use App\Http\Requests;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Response;
 
 /*
@@ -65,6 +66,12 @@ class BitrixController extends Controller{
 			if (!$bitrix->createFolder()){
 				return back()->withErrors([trans('bitrix_create.folder_creation_failure')]);;
 			}
+
+
+			// письмо мне
+			Mail::send('emails.admin.new_bitrix_module', ['user' => $this->user, 'module' => $bitrix], function ($m){
+				$m->to(env('GOD_EMAIL'))->subject('Создан новый Битрикс модуль');
+			});
 
 			flash()->success(trans('bitrix.module_created'));
 
