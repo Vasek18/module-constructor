@@ -24,6 +24,9 @@
                     <a href="{{ action('Admin\AdminController@articles') }}"
                        class="list-group-item">Статьи
                     </a>
+                    <a href="{{ action('Admin\AdminLogsController@index') }}"
+                       class="list-group-item">Логи
+                    </a>
                 </div>
             </div>
             <div class="col-md-9">

@@ -210,6 +210,11 @@ Route::group(['prefix' => 'oko', 'middleware' => 'admin'], function (){
 		Route::post('', ['uses' => 'Admin\AdminSettingsController@store']);
 	});
 	Route::get('articles', ['uses' => 'Admin\AdminController@articles']);
+	Route::group(['prefix' => 'logs'], function (){
+		Route::get('', ['uses' => 'Admin\AdminLogsController@index']);
+		Route::get('{file_name}', ['uses' => 'Admin\AdminLogsController@show']);
+		Route::get('{file_name}/delete', ['uses' => 'Admin\AdminLogsController@delete']);
+	});
 
 	// категории статей
 	Route::group(['prefix' => 'article_sections'], function (){
