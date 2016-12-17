@@ -85,6 +85,25 @@
                                 </li>
                             </ul>
                         </li>
+                            @if (isset($about_service_articles) && $about_service_articles->count())
+                                <li class="dropdown">
+                                    <a href="use_cases"
+                                       class="dropdown-toggle"
+                                       data-toggle="dropdown"
+                                       role="button"
+                                       aria-haspopup="true"
+                                       aria-expanded="false">{{ trans('app.link_to_about_service_articles_title') }}
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        @foreach($about_service_articles->get() as $article)
+                                            <li>
+                                                <a href="{{ $article->link }}">{{ $article->name }}</a>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </li>
+                            @endif
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         @if (!Auth::check())

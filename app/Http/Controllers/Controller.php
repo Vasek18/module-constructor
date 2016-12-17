@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ArticleSection;
 use Auth;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
@@ -22,6 +23,9 @@ abstract class Controller extends BaseController{
 		view()->share('user', $this->user);
 		if (Article::useCasesArticles()){
 			view()->share('use_cases_articles', Article::useCasesArticles()->active()->orderBy('sort')); // статьи о примерах использования
+		}
+		if ($sectionAbout = ArticleSection::where('code', 'about')->first()){
+			view()->share('about_service_articles', Article::parentSection($sectionAbout)->active()->orderBy('sort')); // статьи о сервисе
 		}
 	}
 }
