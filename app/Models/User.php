@@ -53,6 +53,18 @@ class User extends Model implements AuthenticatableContract,
 		$this->save();
 	}
 
+	public function addRubles($rubles){
+		$this->rubles = $rubles;
+		$this->save();
+	}
+
+	public function convertRublesToDays(){
+		$days = intval(intval($this->rubles) / intval(setting('day_price')));
+		$this->paid_days = $days;
+		$this->save();
+
+		return $days;
+	}
 
 	public function getNameAttribute(){
 		return $this->last_name.' '.$this->first_name;

@@ -2,29 +2,49 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class YandexKassaController extends Controller{
 
+	// проверка возможности платежа
 	public function checkOrder(Request $request){
 		Log::info('YK checkOrder '.$request->fullUrl());
 
 		$code = $this->isValidHash($request);
 
-		$response = $this->generateResponseContent($request, $code);
+		$response = $this->generateResponseContent($request, $code, 'checkOrderResponse');
 
 		return response($response, 200, [
 			'Content-type' => 'application/xml'
 		]);
 	}
 
+	// перевод денег
 	public function paymentAviso(Request $request){
 		Log::info('YK paymentAviso '.$request->fullUrl());
 
-		return 'paymentAviso';
+		$code = $this->isValidHash($request);
+
+		$response = $this->generateResponseContent($request, $code, 'paymentAvisoResponse');
+
+		// зачисление средств на счёт
+		$user = User::find($request->customerNumber);
+		$user->addRubles($request->orderSumAmount);
+		$days = $user->convertRublesToDays();
+
+		// письмо мне
+		Mail::send('emails.admin.user_paid', ['user' => $user, 'sum' => $request->orderSumAmount, 'days' => $days], function ($m){
+			$m->to(env('GOD_EMAIL'))->subject('Создан новый Битрикс модуль');
+		});
+
+		return response($response, 200, [
+			'Content-type' => 'application/xml'
+		]);
 	}
 
+	// возвращение пользователя после успешной оплаты
 	public function success(Request $request){
 		Log::info('YK success '.$request->fullUrl());
 
@@ -33,6 +53,7 @@ class YandexKassaController extends Controller{
 		return redirect(action('PersonalController@index'));
 	}
 
+	// возвращение пользователя после неуспешной оплаты
 	public function fail(Request $request){
 		Log::info('YK fail '.$request->fullUrl());
 
@@ -41,6 +62,7 @@ class YandexKassaController extends Controller{
 		return redirect(action('PersonalController@oplata'));
 	}
 
+	// проверка md5 суммы
 	public function isValidHash(Request $request){
 		$hash = md5(htmlspecialchars($request->action).';'.htmlspecialchars($request->orderSumAmount).';'.htmlspecialchars($request->orderSumCurrencyPaycash).';'.htmlspecialchars($request->orderSumBankPaycash).';'.env('YANDEX_KASSA_SHOP_ID').';'.htmlspecialchars($request->invoiceId).';'.htmlspecialchars($request->customerNumber).';'.env('YANDEX_KASSA_SHOP_PASSWORD'));
 		if (strtolower($hash) != strtolower($request->md5)){
@@ -50,8 +72,9 @@ class YandexKassaController extends Controller{
 		}
 	}
 
-	public function generateResponseContent(Request $request, $code){
+	// генерация xml содержимого
+	public function generateResponseContent(Request $request, $code, $tagName){
 		return '<?xml version="1.0" encoding="UTF-8"?>
-		<checkOrderResponse performedDatetime="'.htmlspecialchars($request->requestDatetime).'" code="'.$code.'"'.' invoiceId="'.htmlspecialchars($request->invoiceId).'" shopId="'.env('YANDEX_KASSA_SHOP_ID').'"/>';
+		<'.$tagName.' performedDatetime="'.htmlspecialchars($request->requestDatetime).'" code="'.$code.'"'.' invoiceId="'.htmlspecialchars($request->invoiceId).'" shopId="'.env('YANDEX_KASSA_SHOP_ID').'"/>';
 	}
 }
