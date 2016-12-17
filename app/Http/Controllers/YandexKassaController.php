@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class YandexKassaController extends Controller{
 
@@ -29,15 +30,17 @@ class YandexKassaController extends Controller{
 
 		$response = $this->generateResponseContent($request, $code, 'paymentAvisoResponse');
 
-		// зачисление средств на счёт
-		$user = User::find($request->customerNumber);
-		$user->addRubles($request->orderSumAmount);
-		$days = $user->convertRublesToDays();
+		if ($request->customerNumber){
+			// зачисление средств на счёт
+			$user = User::find($request->customerNumber);
+			$user->addRubles($request->orderSumAmount);
+			$days = $user->convertRublesToDays();
 
-		// письмо мне
-		Mail::send('emails.admin.user_paid', ['user' => $user, 'sum' => $request->orderSumAmount, 'days' => $days], function ($m){
-			$m->to(env('GOD_EMAIL'))->subject('Создан новый Битрикс модуль');
-		});
+			// письмо мне
+			Mail::send('emails.admin.user_paid', ['user' => $user, 'sum' => $request->orderSumAmount, 'days' => $days], function ($m){
+				$m->to(env('GOD_EMAIL'))->subject('Создан новый Битрикс модуль');
+			});
+		}
 
 		return response($response, 200, [
 			'Content-type' => 'application/xml'
