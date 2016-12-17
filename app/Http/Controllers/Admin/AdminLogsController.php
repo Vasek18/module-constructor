@@ -32,6 +32,8 @@ class AdminLogsController extends Controller{
 	public function show($file_name, Request $request){
 		$content = $this->disk()->get($file_name);
 
+		$content = nl2br($content);
+
 		$data = [
 			'file_name' => $file_name,
 			'content'   => $content

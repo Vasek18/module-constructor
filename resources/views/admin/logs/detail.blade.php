@@ -15,6 +15,6 @@
         </div>
     </div>
     <div class="content">
-        {{ $content }}
+        {!! $content !!}
     </div>
 @stop
