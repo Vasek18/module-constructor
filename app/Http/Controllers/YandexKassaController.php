@@ -38,7 +38,7 @@ class YandexKassaController extends Controller{
 
 			// письмо мне
 			Mail::send('emails.admin.user_paid', ['user' => $user, 'sum' => $request->orderSumAmount, 'days' => $days], function ($m){
-				$m->to(env('GOD_EMAIL'))->subject('Создан новый Битрикс модуль');
+				$m->to(env('GOD_EMAIL'))->subject('Произведена оплата');
 			});
 		}
 

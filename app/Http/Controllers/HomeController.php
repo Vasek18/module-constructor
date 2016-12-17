@@ -6,9 +6,6 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Models\Modules\Bitrix\Bitrix;
-use App\Helpers\vFuncParse;
-use App\Helpers\vArrParse;
-use Illuminate\Support\Facades\Log;
 
 class HomeController extends Controller{
 	/**
@@ -17,8 +14,6 @@ class HomeController extends Controller{
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index(){
-		Log::info('Index');
-
 		$countModules = Bitrix::count();
 		$modulesEnding = 'ей';
 		if (substr($countModules, -1, 1) == '1'){

@@ -54,7 +54,7 @@ class User extends Model implements AuthenticatableContract,
 	}
 
 	public function addRubles($rubles){
-		$this->rubles = $rubles;
+		$this->rubles = intval($this->rubles) + intval($rubles);
 		$this->save();
 	}
 
