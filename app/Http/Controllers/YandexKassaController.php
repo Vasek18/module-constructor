@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pays;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -35,6 +36,12 @@ class YandexKassaController extends Controller{
 			$user = User::find($request->customerNumber);
 			$user->addRubles($request->orderSumAmount);
 			$days = $user->convertRublesToDays();
+
+			// записываем файкт оплаты
+			Pays::create([
+				'user_id' => $request->customerNumber,
+				'amount'  => $request->orderSumAmount,
+			]);
 
 			// письмо мне
 			Mail::send('emails.admin.user_paid', ['user' => $user, 'sum' => $request->orderSumAmount, 'days' => $days], function ($m){

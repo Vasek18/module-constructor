@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Pays;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -112,6 +113,7 @@ class YandexKassaTest extends TestCase{
 		$this->assertResponseStatus(200);
 		$this->assertNotFalse(strpos($response->content(), 'code="0"'));
 		$this->assertEquals(1, $user->paid_days);
+		$this->assertEquals(setting('day_price'), Pays::sum('amount'));
 	}
 }
 
