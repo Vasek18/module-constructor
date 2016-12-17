@@ -12,8 +12,13 @@
     @section('description', $article->seo_description)
 @endif
 
+@push('styles')
+<link href='/css/articles.css'
+      rel='stylesheet'/>
+@endpush
+
 @section('content')
-    <section class="container">
+    <section class="article-detail container">
         <h1>{{ $article->name }}</h1>
         <div class="detail-text">
             {!! $article->detail_text !!}

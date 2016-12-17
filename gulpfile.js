@@ -16,6 +16,7 @@ elixir(function(mix){
 
 		.sass('app.scss')
 		.sass('iblock_form.scss')
+		.sass('articles.scss')
 
 		.coffee('app.coffee')
 		.coffee('a.you-can-change.coffee')
