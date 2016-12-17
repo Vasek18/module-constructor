@@ -3,34 +3,20 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Article;
 use App\Models\ArticleSection;
 use App\Models\Modules\Bitrix\Bitrix;
-use App\Models\Setting;
+use App\Models\Pays;
 use App\Models\User;
-use Illuminate\Support\Facades\Config;
 
 class AdminController extends Controller{
 	public function index(){
-		return view("admin.index");
-	}
-
-	public function users(){
 		$data = [
-			'usersCount' => User::count(),
-			'users'      => User::all(),
+			'usersCount'   => User::count(),
+			'modulesCount' => Bitrix::count(),
+			'earnedRubles' => Pays::sum('amount'),
 		];
 
-		return view("admin.users", $data);
-	}
-
-	public function usersDetail(User $user){
-		$data = [
-			'user'     => $user,
-			'bitrixes' => $user->bitrixes,
-		];
-
-		return view("admin.user_detail", $data);
+		return view("admin.index", $data);
 	}
 
 	public function modules(){
