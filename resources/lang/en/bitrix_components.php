@@ -24,6 +24,8 @@ return [
 	'field_component_namespace_help' => 'The folder in which the components are stored',
 	'button_create_component'        => 'Create component',
 
+	'component_created' => 'Component created',
+
 	'menu_title_main_info'     => 'Main info',
 	'menu_title_visual_path'   => 'Visual path',
 	'menu_title_params'        => 'Params',

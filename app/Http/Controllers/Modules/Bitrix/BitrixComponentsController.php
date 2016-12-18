@@ -61,6 +61,8 @@ class BitrixComponentsController extends Controller{
 
 		$component->saveStep(1);
 
+		flash()->success(trans('bitrix_components.component_created'));
+
 		return redirect(action('Modules\Bitrix\BitrixComponentsController@show', [$module->id, $component->id]));
 	}
 

@@ -24,6 +24,8 @@ return [
 	'field_component_namespace_help' => 'Папка, в которой хранятся компоненты',
 	'button_create_component'        => 'Создать компонент',
 
+	'component_created' => 'Компонент создан',
+
 	'menu_title_main_info'     => 'Основное',
 	'menu_title_visual_path'   => 'Путь в визуальном редакторе',
 	'menu_title_params'        => 'Параметры подключения',
