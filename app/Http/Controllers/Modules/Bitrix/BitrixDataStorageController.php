@@ -182,75 +182,83 @@ class BitrixDataStorageController extends Controller{
 			}
 		}
 
-		$sections = [];
-		if (is_array($arr['Классификатор']['Группы'])){
-			foreach ($arr['Классификатор']['Группы'] as $itemArr){
-				if (isset($itemArr['Ид'])){
-					$sectionArr = [
-						'iblock_id' => $iblock->id,
-						'name'      => isset($itemArr['Наименование']) ? $itemArr['Наименование'] : '',
-						'active'    => true,
-						'code'      => isset($itemArr['БитриксКод']) ? $itemArr['БитриксКод'] : '',
-					];
+		if (!$request->only_structure){
+			// импорт разделов
+			$sections = [];
+			if (is_array($arr['Классификатор']['Группы'])){
+				foreach ($arr['Классификатор']['Группы'] as $itemArr){
+					if (isset($itemArr['Ид'])){
+						$sectionArr = [
+							'iblock_id' => $iblock->id,
+							'name'      => isset($itemArr['Наименование']) ? $itemArr['Наименование'] : '',
+							'active'    => true,
+							'code'      => isset($itemArr['БитриксКод']) ? $itemArr['БитриксКод'] : '',
+						];
 
-					$sections[$itemArr['Ид']] = BitrixIblocksSections::create($sectionArr);
+						$sections[$itemArr['Ид']] = BitrixIblocksSections::create($sectionArr);
+					}
 				}
 			}
 		}
 
-		if (is_array($arr['Каталог']['Товары'])){ // todo тест на отсутвие товаров в xml
-			if (isset($arr['Каталог']['Товары']['Товар']['Ид'])){ // случай одного товар
-				$arr['Каталог']['Товары']['Товар'] = Array($arr['Каталог']['Товары']['Товар']);
-			}
-			foreach ($arr['Каталог']['Товары']['Товар'] as $itemArr){
-				$elementArr = [
-					'iblock_id' => $iblock->id,
-					'name'      => $itemArr['Наименование'],
-					'active'    => true,
-				];
-
-				$tempPropValArr = [];
-				foreach ($itemArr['ЗначенияСвойств']['ЗначенияСвойства'] as $propValArr){
-					if ($propValArr['Ид'] == 'CML2_CODE'){
-						$elementArr['code'] = $propValArr['Значение'];
-					}
-					if ($propValArr['Ид'] == 'CML2_SORT'){
-						$elementArr['sort'] = $propValArr['Значение'];
-					}
-					if (isset($tempPropArr[$propValArr['Ид']])){
-						$val = $propValArr['Значение'];
-						if (is_array($val)){
-							$val = implode(static::$arrayGlue, $val);
-						}
-						if ($val){
-							$prop = BitrixIblocksProps::where('iblock_id', $iblock->id)->where('code', $tempPropArr[$propValArr['Ид']])->first();
-							if (!$prop){
-								continue;
-							}
-
-							if (isset($vals[$val])){ // типа xml_id варианта значения
-								$val = $vals[$val]->id;
-							}
-
-							$tempPropValArr[$prop->id] = ['value' => $val];
-						}
-					}
+		// импорт элементов
+		if (!$request->only_structure){
+			if (is_array($arr['Каталог']['Товары'])){ // todo тест на отсутвие товаров в xml
+				if (isset($arr['Каталог']['Товары']['Товар']['Ид'])){ // случай одного товар
+					$arr['Каталог']['Товары']['Товар'] = Array($arr['Каталог']['Товары']['Товар']);
 				}
+				foreach ($arr['Каталог']['Товары']['Товар'] as $itemArr){
+					$elementArr = [
+						'iblock_id' => $iblock->id,
+						'name'      => $itemArr['Наименование'],
+						'active'    => true,
+					];
 
-				// привязка к группе
-				if (isset($itemArr['Группы'])){
-					if (isset($itemArr['Группы']['Ид']) && isset($sections[$itemArr['Группы']['Ид']])){
-						$elementArr['parent_section_id'] = $sections[$itemArr['Группы']['Ид']]->id;
+					$tempPropValArr = [];
+					foreach ($itemArr['ЗначенияСвойств']['ЗначенияСвойства'] as $propValArr){
+						if ($propValArr['Ид'] == 'CML2_CODE'){
+							$elementArr['code'] = $propValArr['Значение'];
+						}
+						if ($propValArr['Ид'] == 'CML2_SORT'){
+							$elementArr['sort'] = $propValArr['Значение'];
+						}
+						if (isset($tempPropArr[$propValArr['Ид']])){
+							$val = $propValArr['Значение'];
+							if (is_array($val)){
+								$val = implode(static::$arrayGlue, $val);
+							}
+							if ($val){
+								$prop = BitrixIblocksProps::where('iblock_id', $iblock->id)->where('code', $tempPropArr[$propValArr['Ид']])->first();
+								if (!$prop){
+									continue;
+								}
+
+								if (isset($vals[$val])){ // типа xml_id варианта значения
+									$val = $vals[$val]->id;
+								}
+
+								$tempPropValArr[$prop->id] = ['value' => $val];
+							}
+						}
 					}
+
+					// привязка к группе
+					if (isset($itemArr['Группы'])){
+						if (isset($itemArr['Группы']['Ид']) && isset($sections[$itemArr['Группы']['Ид']])){
+							$elementArr['parent_section_id'] = $sections[$itemArr['Группы']['Ид']]->id;
+						}
+					}
+
+					$element = BitrixIblocksElements::create($elementArr);
+
+					$element->props()->sync($tempPropValArr);
 				}
-
-				$element = BitrixIblocksElements::create($elementArr);
-
-				$element->props()->sync($tempPropValArr);
 			}
 		}
 
 		BitrixInfoblocks::writeInFile($module);
+
+		flash()->success('Инфоблок импортирован');
 
 		return redirect(action('Modules\Bitrix\BitrixDataStorageController@detail_ib', [$module->id, $iblock->id]));
 	}

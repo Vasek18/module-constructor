@@ -531,6 +531,17 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 	}
 
 	/** @test */
+	function it_dont_imports_iblock_elements_from_xml_if_it_shouldnt(){
+		$file = public_path().'/for_tests/test_iblock.xml';
+		$this->visit('/my-bitrix/'.$this->module->id.$this->path);
+		$this->attach($file, 'file');
+		$this->check('only_structure'); // не импортировать наполнение
+		$this->press('import');
+
+		$this->dontSee('edit_element');
+	}
+
+	/** @test */
 	function it_returns_test_section_data(){
 		$ib = $this->createIblockOnForm($this->module);
 		$section = $this->createIblockSectionOnForm($this->module, $ib, [

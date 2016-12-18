@@ -28,6 +28,14 @@
                                id="file"
                                required>
                     </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox"
+                                   name="only_structure"
+                                   value="1">
+                            {{ trans('bitrix_data_storage.xml_ib_import_only_structure') }}
+                        </label>
+                    </div>
                     <button type="submit"
                             class="btn btn-primary"
                             name="import">{{ trans('app.import') }}
