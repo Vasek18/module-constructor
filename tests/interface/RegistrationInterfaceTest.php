@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Mail;
 
 class RegistrationInterfaceTest extends TestCase{
 
@@ -17,6 +17,8 @@ class RegistrationInterfaceTest extends TestCase{
 
 	/** @test */
 	function user_can_sign_up_n_immediately_log_in(){
+		Mail::shouldReceive('send')->once();
+
 		$this->submitForm('signup', [
 			'first_name'            => 'Вася',
 			'last_name'             => 'Аристов',
@@ -267,6 +269,8 @@ class RegistrationInterfaceTest extends TestCase{
 
 	/** @test */
 	function it_gives_free_days(){
+		Mail::shouldReceive('send')->once();
+
 		$this->submitForm('signup', [
 			'first_name'            => 'Вася',
 			'last_name'             => 'Аристов',
@@ -278,7 +282,7 @@ class RegistrationInterfaceTest extends TestCase{
 		]);
 
 		$this->seeInDatabase('users', [
-			'email'      => 'ololo@test.ru',
+			'email'     => 'ololo@test.ru',
 			'paid_days' => setting('demo_days')
 		]);
 	}
@@ -295,6 +299,8 @@ class RegistrationInterfaceTest extends TestCase{
 
 		$this->logOut();
 
+		Mail::shouldReceive('send')->once();
+
 		$this->visit('/personal/reg');
 		$this->submitForm('signup', [
 			'first_name'            => 'Вася',
@@ -307,7 +313,7 @@ class RegistrationInterfaceTest extends TestCase{
 		]);
 
 		$this->seeInDatabase('users', [
-			'email'      => 'ololo@test.ru',
+			'email'     => 'ololo@test.ru',
 			'paid_days' => 5
 		]);
 	}

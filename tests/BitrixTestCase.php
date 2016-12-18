@@ -14,6 +14,7 @@ use App\Models\Modules\Bitrix\BitrixIblocksElements;
 use App\Models\Modules\Bitrix\BitrixMailEvents;
 use App\Models\Modules\Bitrix\BitrixMailEventsTemplate;
 use App\Models\Modules\Bitrix\BitrixEventsHandlers;
+use Illuminate\Support\Facades\Mail;
 
 class BitrixTestCase extends TestCase{
 	public $module;
@@ -29,6 +30,8 @@ class BitrixTestCase extends TestCase{
 
 	// главная форма Битрикса
 	function fillNewBitrixForm($params = Array()){
+		Mail::shouldReceive('send')->zeroOrMoreTimes(); // против почты
+
 		if (!isset($params['PARTNER_NAME'])){
 			$params['PARTNER_NAME'] = $this->user->bitrix_company_name;
 		}

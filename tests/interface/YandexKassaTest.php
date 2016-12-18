@@ -74,6 +74,8 @@ class YandexKassaTest extends TestCase{
 
 	/** @test */
 	function payment_aviso_url_test(){
+		Mail::shouldReceive('send')->once();
+
 		// чтобы был пользователь
 		factory(App\Models\User::class)->create([
 			'email'    => 'ololo@test.ru',
