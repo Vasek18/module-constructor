@@ -9,7 +9,11 @@
                 <p>
                     <a class="btn btn-success btn-lg"
                        href="{{ action('Auth\AuthController@index_reg') }}"
-                       role="button">{!! trans('home.welcome_action') !!}
+                       role="button">{{ trans('home.welcome_action') }}
+                    </a>
+                    <a class="btn btn-info btn-lg"
+                       href="/about/chto_za_servis"
+                       role="button">{{ trans('home.about_service_article') }}
                     </a>
                 </p>
             </div>

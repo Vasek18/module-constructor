@@ -45,4 +45,6 @@ return [
 
 	'field_name' => 'Name',
 	'field_code' => 'Code',
+
+	'email_was_sent' => 'Email was sent',
 ];

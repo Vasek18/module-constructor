@@ -46,4 +46,6 @@ return [
 
 	'field_name' => 'Название',
 	'field_code' => 'Код',
+
+	'email_was_sent' => 'Сообщение отправлено',
 ];
