@@ -5,14 +5,19 @@
     val = a.text();
     name = a.attr('data-name');
     pattern = a.attr('data-pattern');
+    if (pattern && typeof result === 'string' && pattern !== 'undefined' && pattern.length) {
+      pattern = 'pattern="' + pattern + '"';
+    } else {
+      pattern = '';
+    }
     formtype = a.attr('data-formtype');
     form = a.parents('form');
     ajax = a.hasClass('ajax') ? 'ajax' : '';
     if (!formtype || formtype !== 'textarea') {
-      a.replaceWith("<input type='text' class='form-control you-can-change " + ajax + "' name='" + name + "'' pattern='" + pattern + "' value='" + val + "'>");
+      a.replaceWith("<input type='text' class='form-control you-can-change " + ajax + "' name='" + name + "' " + pattern + " value='" + val + "'>");
     }
     if (formtype === 'textarea') {
-      a.replaceWith("<textarea class='form-control you-can-change " + ajax + "' name='" + name + "'' pattern='" + pattern + "'>'" + val + "'</textarea>");
+      a.replaceWith("<textarea class='form-control you-can-change " + ajax + "' name='" + name + "' " + pattern + ">'" + val + "'</textarea>");
     }
     input = form.find("[name='" + name + "']");
     input.focus();
@@ -26,6 +31,11 @@
     val = input.val();
     name = input.attr('name');
     pattern = input.attr('pattern');
+    if (pattern && typeof result === 'string' && pattern !== 'undefined' && pattern.length) {
+      pattern = 'data-pattern="' + pattern + '"';
+    } else {
+      pattern = '';
+    }
     form = input.parents('form');
     ajax = input.hasClass('ajax') ? true : false;
     action = form.attr('action');
@@ -39,7 +49,7 @@
         data: form.serializeArray(),
         type: method,
         success: function(answer) {
-          input.replaceWith("<a class='you-can-change " + (ajax ? "ajax" : void 0) + "' data-name='" + name + "'' data-pattern='" + pattern + "'>" + val + "</a>");
+          input.replaceWith("<a class='you-can-change " + (ajax ? "ajax" : void 0) + "' data-name='" + name + "' " + pattern + ">" + val + "</a>");
           return false;
         }
       });

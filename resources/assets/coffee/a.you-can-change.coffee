@@ -4,14 +4,19 @@ $(document).on "click", "a.you-can-change", ->
 	val = a.text()
 	name = a.attr('data-name')
 	pattern = a.attr('data-pattern')
+	if pattern and typeof result is 'string' and pattern != 'undefined' and pattern.length
+		pattern = 'pattern="'+pattern+'"'
+	else
+		pattern = ''
+
 	formtype = a.attr('data-formtype')
 	form = a.parents('form')
 	ajax = if a.hasClass('ajax') then 'ajax' else ''
 
 	if (!formtype or formtype != 'textarea')
-		a.replaceWith("<input type='text' class='form-control you-can-change #{ajax}' name='#{name}'' pattern='#{pattern}' value='#{val}'>")
+		a.replaceWith("<input type='text' class='form-control you-can-change #{ajax}' name='#{name}' #{pattern} value='#{val}'>")
 	if formtype == 'textarea'
-		a.replaceWith("<textarea class='form-control you-can-change #{ajax}' name='#{name}'' pattern='#{pattern}'>'#{val}'</textarea>")
+		a.replaceWith("<textarea class='form-control you-can-change #{ajax}' name='#{name}' #{pattern}>'#{val}'</textarea>")
 
 	input = form.find("[name='#{name}']")
 	input.focus()
@@ -25,6 +30,11 @@ $(document).on "blur", "input.you-can-change, textarea.you-can-change", ->
 	val = input.val()
 	name = input.attr('name')
 	pattern = input.attr('pattern')
+	if pattern and typeof result is 'string' and pattern != 'undefined' and pattern.length
+		pattern = 'data-pattern="'+pattern+'"'
+	else
+		pattern = ''
+
 	form = input.parents('form')
 	ajax = if input.hasClass('ajax') then true else false
 
@@ -40,7 +50,7 @@ $(document).on "blur", "input.you-can-change, textarea.you-can-change", ->
 			data: form.serializeArray(),
 			type: method,
 			success: (answer) ->
-				input.replaceWith("<a class='you-can-change #{if ajax then "ajax"}' data-name='#{name}'' data-pattern='#{pattern}'>#{val}</a>")
+				input.replaceWith("<a class='you-can-change #{if ajax then "ajax"}' data-name='#{name}' #{pattern}>#{val}</a>")
 #				console.log(answer);
 				return false
 		)

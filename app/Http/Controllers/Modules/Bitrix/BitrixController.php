@@ -67,7 +67,6 @@ class BitrixController extends Controller{
 				return back()->withErrors([trans('bitrix_create.folder_creation_failure')]);;
 			}
 
-
 			// письмо мне
 			Mail::send('emails.admin.new_bitrix_module', ['user' => $this->user, 'module' => $bitrix], function ($m){
 				$m->to(env('GOD_EMAIL'))->subject('Создан новый Битрикс модуль');
@@ -93,18 +92,25 @@ class BitrixController extends Controller{
 	// редактирование параметра
 	// todo не обновлять весь файл, а только нужные значения
 	public function update(Bitrix $module){
-
 		if ($this->request->name){
-			$module->name = $this->request->name;
+			$name = $this->request->name;
+
+			// меняем в бд
+			$module->name = $name;
 			$module->save();
 
-			$module->changeVarsInModuleFileAndSave('bitrix'.DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.$module->default_lang.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'index.php', $module->id);
+			// меняем в ланг файле
+			$module->changeVarInLangFile($module->lang_key.'_MODULE_NAME', $name, DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.$module->default_lang.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'index.php');
 		}
 		if ($this->request->description){
-			$module->description = $this->request->description;
+			$description = $this->request->description;
+
+			// меняем в бд
+			$module->description = $description;
 			$module->save();
 
-			$module->changeVarsInModuleFileAndSave('bitrix'.DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.$module->default_lang.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'index.php', $module->id);
+			// меняем в ланг файле
+			$module->changeVarInLangFile($module->lang_key.'_MODULE_DESC', $description, DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.$module->default_lang.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'index.php');
 		}
 		if ($this->request->version){
 			$module->version = $this->request->version;
