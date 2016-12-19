@@ -12,7 +12,7 @@ class YandexKassaController extends Controller{
 
 	// проверка возможности платежа
 	public function checkOrder(Request $request){
-		Log::info('YK checkOrder '.$request->fullUrl());
+		Log::info('YK checkOrder '.$request->fullUrl()." ".serialize($request->all()));
 
 		$code = $this->isValidHash($request);
 
@@ -25,7 +25,7 @@ class YandexKassaController extends Controller{
 
 	// перевод денег
 	public function paymentAviso(Request $request){
-		Log::info('YK paymentAviso '.$request->fullUrl());
+		Log::info('YK paymentAviso '.$request->fullUrl()." ".serialize($request->all()));
 
 		$code = $this->isValidHash($request);
 
