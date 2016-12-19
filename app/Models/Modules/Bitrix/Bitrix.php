@@ -326,6 +326,27 @@ if(IsModuleInstalled(\''.$this->full_id.'\')){
 		return $langCode;
 	}
 
+	public function getVarFromLangFile($code, $file = '/lang/ru/install/index.php'){
+		$langKey = $this->lang_key.'_';
+
+		$path = $this->module_folder.$file;
+		$path = str_replace('/', DIRECTORY_SEPARATOR, $path);
+		$path = str_replace('\\', DIRECTORY_SEPARATOR, $path);
+
+		if ($this->disk()->exists($path)){
+			$langFileContent = $this->disk()->get($path);
+
+			$vArrParse = new vArrParse;
+			$langArr = $vArrParse->parseFromText($langFileContent, 'MESS');
+
+			if (isset($langArr[$langKey.$code])){
+				return $langArr[$langKey.$code];
+			}
+		}
+
+		return false;
+	}
+
 	// todo это наверное какой-то глобальный хелпер должен быть, хоть и актуальный только для Битрикса
 	public static function findTemplateToReplaceInLangFile($file, $key){
 		$pattern = '/\$MESS\[\"'.$key.'\"\]\s*\=\s*\"[^\"]*\"\;\s*/';

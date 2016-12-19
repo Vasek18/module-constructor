@@ -91,6 +91,7 @@ class BitrixController extends Controller{
 	}
 
 	// редактирование параметра
+	// todo не обновлять весь файл, а только нужные значения
 	public function update(Bitrix $module){
 
 		if ($this->request->name){

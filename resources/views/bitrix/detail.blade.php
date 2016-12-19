@@ -25,7 +25,7 @@
                         <a href="#"
                            class="you-can-change ajax"
                            data-name="name"
-                           data-pattern="[a-zA-Zа-яА-Я0-9]*">{{$module->name}}</a>
+                           data-pattern="[a-zA-Zа-яА-Я0-9]*">{{$module->getVarFromLangFile('MODULE_NAME')}}</a>
                     </p>
                 </div>
                 <div class="form-group">
@@ -34,7 +34,7 @@
                         <a href="#"
                            class="you-can-change ajax"
                            data-name="description"
-                           data-formtype="textarea">{{$module->description}}</a>
+                           data-formtype="textarea">{{$module->getVarFromLangFile('MODULE_DESC')}}</a>
                     </p>
                 </div>
                 <div class="form-group">
