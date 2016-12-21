@@ -40,7 +40,8 @@
                         <span class="icon-bar"></span>
                     </button>
                     <a class="navbar-brand"
-                       href="/">{{trans('app.site_name')}} (beta)</a>
+                       href="/">{{trans('app.site_name')}} (beta)
+                    </a>
                 </div>
                 <div class="collapse navbar-collapse"
                      id="top-navbar-collapse-1">
@@ -85,25 +86,25 @@
                                 </li>
                             </ul>
                         </li>
-                            @if (isset($about_service_articles) && $about_service_articles->count())
-                                <li class="dropdown">
-                                    <a href="use_cases"
-                                       class="dropdown-toggle"
-                                       data-toggle="dropdown"
-                                       role="button"
-                                       aria-haspopup="true"
-                                       aria-expanded="false">{{ trans('app.link_to_about_service_articles_title') }}
-                                        <span class="caret"></span>
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        @foreach($about_service_articles->get() as $article)
-                                            <li>
-                                                <a href="{{ $article->link }}">{{ $article->name }}</a>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                </li>
-                            @endif
+                        @if (isset($about_service_articles) && $about_service_articles->count())
+                            <li class="dropdown">
+                                <a href="use_cases"
+                                   class="dropdown-toggle"
+                                   data-toggle="dropdown"
+                                   role="button"
+                                   aria-haspopup="true"
+                                   aria-expanded="false">{{ trans('app.link_to_about_service_articles_title') }}
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    @foreach($about_service_articles->get() as $article)
+                                        <li>
+                                            <a href="{{ $article->link }}">{{ $article->name }}</a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </li>
+                        @endif
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         @if (!Auth::check())
@@ -156,5 +157,44 @@
 <script src="/js/app.js"></script>
 @stack('scripts')
 @include('flash')
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function(d, w, c){
+        (w[c] = w[c] || []).push(function(){
+            try{
+                w.yaCounter41741859 = new Ya.Metrika({
+                    id                 : 41741859,
+                    clickmap           : true,
+                    trackLinks         : true,
+                    accurateTrackBounce: true
+                });
+            } catch (e){
+            }
+        });
+
+        var n   = d.getElementsByTagName("script")[0],
+            s   = d.createElement("script"),
+            f   = function(){
+                n.parentNode.insertBefore(s, n);
+            };
+        s.type  = "text/javascript";
+        s.async = true;
+        s.src   = "https://mc.yandex.ru/metrika/watch.js";
+
+        if (w.opera == "[object Opera]"){
+            d.addEventListener("DOMContentLoaded", f, false);
+        }else{
+            f();
+        }
+    })(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript>
+    <div>
+        <img src="https://mc.yandex.ru/watch/41741859"
+             style="position:absolute; left:-9999px;"
+             alt=""/>
+    </div>
+</noscript>
+<!-- /Yandex.Metrika counter -->
 </body>
 </html>
