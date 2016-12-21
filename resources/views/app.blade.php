@@ -40,7 +40,7 @@
                         <span class="icon-bar"></span>
                     </button>
                     <a class="navbar-brand"
-                       href="/">{{trans('app.site_name')}}</a>
+                       href="/">{{trans('app.site_name')}} (beta)</a>
                 </div>
                 <div class="collapse navbar-collapse"
                      id="top-navbar-collapse-1">
