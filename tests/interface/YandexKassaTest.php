@@ -114,6 +114,7 @@ class YandexKassaTest extends TestCase{
 
 		$this->assertResponseStatus(200);
 		$this->assertNotFalse(strpos($response->content(), 'code="0"'));
+		$this->assertEquals(0, $user->rubles);
 		$this->assertEquals(1, $user->paid_days);
 		$this->assertEquals(setting('day_price'), Pays::sum('amount'));
 	}

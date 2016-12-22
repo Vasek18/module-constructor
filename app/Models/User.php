@@ -59,8 +59,12 @@ class User extends Model implements AuthenticatableContract,
 	}
 
 	public function convertRublesToDays(){
-		$days = intval(intval($this->rubles) / intval(setting('day_price')));
+		$day_price = intval(setting('day_price'));
+		$rubles = intval($this->rubles);
+		$days = intval($rubles / $day_price);
+
 		$this->paid_days = $days;
+		$this->rubles = intval($this->rubles - $days * $day_price); // не забываем снять деньги
 		$this->save();
 
 		return $days;
