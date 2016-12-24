@@ -327,9 +327,18 @@ class BitrixComponent extends Model{
 
 	public function parseDescriptionFile(){
 		$vArrParse = new vArrParse;
-		$info = $vArrParse->parseFromFile($this->getFolder(true).DIRECTORY_SEPARATOR.'.description.php', 'arComponentDescription');
-		$this->name = extractLangVal($info['NAME'], $this->getFolder(true).DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.'ru'.DIRECTORY_SEPARATOR.'.description.php');
-		$this->desc = extractLangVal($info['DESCRIPTION'], $this->getFolder(true).DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.'ru'.DIRECTORY_SEPARATOR.'.description.php');
+		$descriptionFile = $this->getFolder(true).DIRECTORY_SEPARATOR.'.description.php';
+		if (!file_exists($descriptionFile)){ // что нам тут делать, если файла нет
+			return false;
+		}
+		$info = $vArrParse->parseFromFile($descriptionFile, 'arComponentDescription');
+
+		$descriptionLangFile = $this->getFolder(true).DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.'ru'.DIRECTORY_SEPARATOR.'.description.php';
+		if (file_exists($descriptionLangFile)){
+			$this->name = extractLangVal($info['NAME'], $descriptionLangFile);
+			$this->desc = extractLangVal($info['DESCRIPTION'], $descriptionLangFile);
+		}
+
 		if (isset($info['ICON'])){
 			$this->icon_path = $info['ICON'];
 		}
@@ -418,7 +427,11 @@ class BitrixComponent extends Model{
 		// todo подтягивать имена стандартных значений, если они не указаны (например CACHE_TIME)
 
 		$vArrParse = new vArrParse;
-		$info = $vArrParse->parseFromFile($this->getFolder(true).DIRECTORY_SEPARATOR.'.parameters.php', 'arComponentParameters');
+		$parametersFile = $this->getFolder(true).DIRECTORY_SEPARATOR.'.parameters.php';
+		if (!file_exists($parametersFile)){ // что нам тут делать, если файла нет
+			return false;
+		}
+		$info = $vArrParse->parseFromFile($parametersFile, 'arComponentParameters');
 		foreach ($info['PARAMETERS'] as $code => $param){
 			$newParamParams = [
 				'code'         => $code,

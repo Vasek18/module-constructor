@@ -10,6 +10,9 @@ return [
 	'upload_zip_window_title' => 'Zip upload',
 	'archive_field'           => 'Archive',
 	'button_upload'           => 'Upload',
+	'upload_desc'             => 'You can upload <b>a zip-archive</b> with the component, and it will be integrated into our system.<br>
+                        <span class="text-danger">Attention!</span><br>
+                       The archive should contain only one single root folder - <b>a folder  of the component itself</b>, without namespace folder.',
 
 	'new_h1'                         => 'Component creation',
 	'field_component_name'           => 'Name',

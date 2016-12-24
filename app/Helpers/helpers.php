@@ -12,15 +12,17 @@ function upgradeVersionNumber($version){
 function extractLangVal($val, $langfile){
 	preg_match('/GetMessage\([\"\']+([^\"\']+)/is', $val, $matches);
 	if (isset($matches[1])){
-		$vArrParse = new App\Helpers\vArrParse;
-		$langVals = $vArrParse->parseFromFile($langfile, '$MESS');
-		//dd($langVals);
+		if (file_exists($langfile)){
+			$vArrParse = new App\Helpers\vArrParse;
+			$langVals = $vArrParse->parseFromFile($langfile, '$MESS');
+			//dd($langVals);
 
-		if (isset($langVals[$matches[1]])){
-			//dd($langVals[$matches[1]]);
-			return $langVals[$matches[1]];
-		}else{
-			return '';
+			if (isset($langVals[$matches[1]])){
+				//dd($langVals[$matches[1]]);
+				return $langVals[$matches[1]];
+			}else{
+				return '';
+			}
 		}
 	}
 
