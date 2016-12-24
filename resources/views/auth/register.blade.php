@@ -54,7 +54,7 @@
                                            required>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            {{--<div class="form-group">
                                 <label class="col-md-4 control-label">{{ trans('reg.company_name') }}</label>
                                 <div class="col-md-6">
                                     <input type="text"
@@ -62,8 +62,8 @@
                                            name="company_name"
                                            value="{{ old('company_name') }}">
                                 </div>
-                            </div>
-                            <div class="form-group">
+                            </div>--}}
+                           {{-- <div class="form-group">
                                 <label class="col-md-4 control-label">{{ trans('reg.company_site') }}</label>
                                 <div class="col-md-6">
                                     <input type="url"
@@ -71,7 +71,7 @@
                                            name="site"
                                            value="{{ old('site') }}">
                                 </div>
-                            </div>
+                            </div>--}}
                             <div class="form-group">
                                 <label class="col-md-4 control-label">{{ trans('reg.password') }}</label>
                                 <div class="col-md-6">
