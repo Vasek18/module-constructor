@@ -185,7 +185,7 @@ class BitrixDataStorageController extends Controller{
 		if (!$request->only_structure){
 			// импорт разделов
 			$sections = [];
-			if (is_array($arr['Классификатор']['Группы'])){
+			if (isset($arr['Классификатор']['Группы']) && is_array($arr['Классификатор']['Группы'])){ // todo тест на отсутвие категорий в xml
 				foreach ($arr['Классификатор']['Группы'] as $itemArr){
 					if (isset($itemArr['Ид'])){
 						$sectionArr = [
@@ -203,7 +203,7 @@ class BitrixDataStorageController extends Controller{
 
 		// импорт элементов
 		if (!$request->only_structure){
-			if (is_array($arr['Каталог']['Товары'])){ // todo тест на отсутвие товаров в xml
+			if (isset($arr['Каталог']['Товары']) && is_array($arr['Каталог']['Товары'])){ // todo тест на отсутвие товаров в xml
 				if (isset($arr['Каталог']['Товары']['Товар']['Ид'])){ // случай одного товар
 					$arr['Каталог']['Товары']['Товар'] = Array($arr['Каталог']['Товары']['Товар']);
 				}
