@@ -107,7 +107,7 @@ class BitrixComponentsController extends Controller{
 		}
 
 		if (!$request->ajax()){
-			return redirect(action('Modules\Bitrix\BitrixComponentsController@index', $module->id));
+			return redirect(action('Modules\Bitrix\BitrixComponentsController@show', [$module, $component]));
 		}
 	}
 

@@ -135,7 +135,7 @@ class BitrixComponent extends Model{
 			$this->code,
 			$this->name,
 			$this->desc,
-			$path_items[0]->name,
+			isset($path_items[0])?$path_items[0]->name:'',
 		);
 
 		$file = '.description.php';
