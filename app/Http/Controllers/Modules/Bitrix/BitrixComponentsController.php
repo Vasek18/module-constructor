@@ -296,6 +296,7 @@ class BitrixComponentsController extends Controller{
 		$component->parseTemplates();
 
 		if ($component){
+			flash()->success(trans('bitrix_components.component_imported'));
 			return redirect(action('Modules\Bitrix\BitrixComponentsController@show', [$module->id, $component->id]));
 		}
 
