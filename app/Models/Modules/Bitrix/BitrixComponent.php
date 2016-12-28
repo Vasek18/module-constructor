@@ -87,9 +87,9 @@ class BitrixComponent extends Model{
 			$this->code,
 			$this->name,
 			$this->sort,
-			$path_items[0]->code,
-			$path_items[0]->sort,
-			$path_items[0]->name,
+			isset($path_items[0]) ? $path_items[0]->code : '',
+			isset($path_items[0]) ? $path_items[0]->sort : '',
+			isset($path_items[0]) ? $path_items[0]->name : '',
 		);
 
 		$file = '.description.php';
@@ -135,7 +135,7 @@ class BitrixComponent extends Model{
 			$this->code,
 			$this->name,
 			$this->desc,
-			isset($path_items[0])?$path_items[0]->name:'',
+			isset($path_items[0]) ? $path_items[0]->name : '',
 		);
 
 		$file = '.description.php';

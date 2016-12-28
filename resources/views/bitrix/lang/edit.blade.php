@@ -92,7 +92,7 @@
                                             <input type="text"
                                                    name="code_{{ $c + count($allKeys) }}"
                                                    class="form-control"
-                                                   value="{{ translit($phrase["phrase"]) }}">
+                                                   value="{{ strtoupper(translit($phrase["phrase"])) }}">
                                         </td>
                                         <td>
                                             <input type="hidden"
