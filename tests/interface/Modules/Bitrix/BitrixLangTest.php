@@ -74,7 +74,7 @@ class BitrixLangInterfaceTest extends BitrixTestCase{
 
 		$this->visit('/my-bitrix/'.$this->module->id.$this->path.'/edit?file=%2Fololo.php');
 		$this->see('<span class="bg-danger">ололо</span>');
-		$this->seeInField('code_1', 'ololo');
+		$this->seeInField('code_1', 'OLOLO');
 	}
 
 	/** @test */
@@ -83,7 +83,7 @@ class BitrixLangInterfaceTest extends BitrixTestCase{
 
 		$this->visit('/my-bitrix/'.$this->module->id.$this->path.'/edit?file=%2Fololo.php');
 		$this->see('<span class="bg-danger">ололо</span>');
-		$this->seeInField('code_0', 'ololo');
+		$this->seeInField('code_0', 'OLOLO');
 	}
 
 	/** @test */
@@ -126,7 +126,7 @@ class BitrixLangInterfaceTest extends BitrixTestCase{
 
 		$this->visit('/my-bitrix/'.$this->module->id.$this->path.'/edit?file=%2Fololo.php');
 		$this->see('<span class="bg-danger">i am not here</span>');
-		$this->seeInField('code_0', 'i_am_not_here');
+		$this->seeInField('code_0', 'I_AM_NOT_HERE');
 	}
 
 	/** @test */
