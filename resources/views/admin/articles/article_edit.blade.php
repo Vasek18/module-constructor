@@ -1,4 +1,8 @@
 @extends("admin.template")
+@push('styles')
+<link href='/css/admin_articles.css'
+      rel='stylesheet'/>
+@endpush
 
 @section("page")
     @if (isset($article))
@@ -109,10 +113,32 @@
         <div class="files">
             <h2>Файлы</h2>
             @if ($article->files)
-                @foreach($article->files as $file)
-                    <img src="{{ $file->path }}"
-                         alt="">
-                @endforeach
+                <div class="clearfix">
+                    @foreach($article->files as $file)
+                        <div class="file">
+                            <div class="actions">
+                                <a href="#"
+                                   class="delete text-danger">
+                                 <span class="glyphicon glyphicon-remove"
+                                       aria-hidden="true"></span>
+                                </a>
+                                <a class="copy-tag text-info"
+                                   tabindex="0"
+                                   data-toggle="popover"
+                                   data-content="{{ $file->tag }}"
+                                   data-placement="top"
+                                   title="Получить тег"
+                                   role="button">
+                                 <span class="glyphicon glyphicon-paperclip"
+                                       aria-hidden="true"></span>
+                                </a>
+                            </div>
+                            <img src="{{ $file->path }}"
+                                 alt="">
+                            <div class="name">{{ $file->original_name }}</div>
+                        </div>
+                    @endforeach
+                </div>
             @endif
             <div class="form-group">
                 <label>Файлы</label>

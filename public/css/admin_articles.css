@@ -1,0 +1,33 @@
+.files .file {
+  width: 150px;
+  height: 150px;
+  position: relative;
+  border-radius: 5px;
+  margin: 10px;
+  float: left;
+}
+
+.files .file img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.files .file .actions {
+  position: absolute;
+  background: #ccc;
+  width: 100%;
+  text-align: right;
+  padding: 0px 5px;
+  border-radius: 5px 5px 0px 0px;
+}
+
+.files .file .name {
+  position: absolute;
+  background: #ccc;
+  color: #fff;
+  font-size: 12px;
+  width: 100%;
+  text-align: center;
+  bottom: 0;
+  border-radius: 0px 0px 5px 5px;
+}

@@ -75,7 +75,6 @@ function classActiveSegment($segment, $value){
 
 function translit($text){
 	$accordance = [
-
 		'а' => 'a',
 		'б' => 'b',
 		'в' => 'v',
@@ -155,6 +154,7 @@ function translit($text){
 		'>' => '_',
 		'"' => '_',
 		"'" => '_',
+		"—" => '_', // длинный дефис
 	];
 
 	foreach ($accordance as $search => $replace){

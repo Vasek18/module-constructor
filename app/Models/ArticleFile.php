@@ -9,6 +9,12 @@ class ArticleFile extends Model{
 	protected $fillable = ['article_id', 'path', 'title', 'alt', 'extension', 'original_name'];
 	public $timestamps = false;
 
+	public function getTagAttribute(){
+		$tag = '<img src='.$this->path.'/>';
+
+		return $tag;
+	}
+
 	public function article(){
 		return $this->belongsTo('App\Models\Article');
 	}

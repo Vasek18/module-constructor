@@ -38,8 +38,12 @@ class Article extends Model{
 		$folder = $parentFolder.DIRECTORY_SEPARATOR.$this->id;
 
 		// если нет папки, создаём её
-		if (!is_dir(public_path().$folder)){
-			mkdir($folder, 0777, true);
+		if (!is_dir(public_path().$parentFolder)){
+			mkdir(public_path().$parentFolder);
+
+			if (!is_dir(public_path().$folder)){
+				mkdir(public_path().$folder);
+			}
 		}
 
 		return $folder;

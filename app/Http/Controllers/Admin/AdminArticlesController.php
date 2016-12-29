@@ -65,6 +65,7 @@ class AdminArticlesController extends Controller{
 		$extension = $file->getClientOriginalExtension();
 		$newName = translit($name); // точка не исчезает
 		$path = $article->filesFolder.DIRECTORY_SEPARATOR;
+		// dd($newName);
 
 		// проверка на уникальность
 		if (ArticleFile::where('path', $path.$newName)->count()){
