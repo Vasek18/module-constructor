@@ -133,6 +133,25 @@ class AdminArticlesTest extends TestCase{
 	}
 
 	/** @test */
+	function it_can_substitute_category_id(){
+		$this->signIn(null, [
+			'group_id' => $this->adminUserGroup
+		]);
+
+		$section1 = ArticleSection::create([
+			'code' => 'test',
+			'name' => 'Тестовая категория',
+		]);
+
+		// со страницы категории
+		$this->visit('/oko/article_sections/'.$section1->id);
+// переходим на страницу создания
+		$this->visit('/oko/articles/create');
+
+		$this->seeIsSelected('section_id', $section1->id);
+	}
+
+	/** @test */
 	function it_can_delete_category(){
 		$this->signIn(null, [
 			'group_id' => $this->adminUserGroup

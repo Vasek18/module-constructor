@@ -41,7 +41,7 @@
                 <option value="">Выберите</option>
                 @foreach($sections as $section)
                     <option value="{{ $section->id }}"
-                            {{ isset($article) && $article->section_id == $section->id ? 'selected' : '' }}>{{ $section->name }}</option>
+                            {{ isset($article) && $article->section_id == $section->id ? 'selected' : '' }} {{ session()->has('article_section') && session('article_section.id') == $section->id ? 'selected' : '' }}>{{ $section->name }}</option>
                 @endforeach
             </select>
         </div>

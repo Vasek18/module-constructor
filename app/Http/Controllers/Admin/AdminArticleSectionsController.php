@@ -23,6 +23,12 @@ class AdminArticleSectionsController extends Controller{
 	}
 
 	public function show(ArticleSection $section){
+
+		// запоминаем в сессии, что мы были на категории (на странице создания понадобится)
+		session()->flash('article_section', [
+			'id' => $section->id
+		]);
+
 		return view("admin.articles.section", [
 			'section'  => $section,
 			'articles' => $section->articles()->orderBy('sort')->get(),
