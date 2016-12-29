@@ -8,6 +8,8 @@ class Article extends Model{
 	protected $table = 'articles';
 	protected $fillable = ['section_id', 'sort', 'code', 'name', 'preview_text', 'detail_text', 'picture', 'active', 'seo_title', 'seo_keywords', 'seo_description'];
 
+	public $parentFilesFolder = 'articles_files';
+
 	public function scopeParentSection($query, ArticleSection $section){
 		return $query->where('section_id', $section->id);
 	}
@@ -31,7 +33,23 @@ class Article extends Model{
 		}
 	}
 
+	public function getFilesFolderAttribute(){
+		$parentFolder = DIRECTORY_SEPARATOR.$this->parentFilesFolder;
+		$folder = $parentFolder.DIRECTORY_SEPARATOR.$this->id;
+
+		// если нет папки, создаём её
+		if (!is_dir(public_path().$folder)){
+			mkdir($folder, 0777, true);
+		}
+
+		return $folder;
+	}
+
 	public function section(){
 		return $this->belongsTo('App\Models\ArticleSection');
+	}
+
+	public function files(){
+		return $this->hasMany('App\Models\ArticleFile', 'article_id');
 	}
 }

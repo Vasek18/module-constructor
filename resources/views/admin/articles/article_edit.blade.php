@@ -7,7 +7,8 @@
         <h1>Добавить статью</h1>
     @endif
     <form action="{{  isset($article) ? action('Admin\AdminArticlesController@update', [$article]) : action('Admin\AdminArticlesController@store') }}"
-          method="post">
+          method="post"
+          enctype="multipart/form-data">
         {{ csrf_field() }}
         @if (isset($article))
             {{ method_field('PUT') }}
@@ -16,7 +17,9 @@
         @endif
         <div class="checkbox">
             <label>
-                <input type="hidden" name="active" value="0">
+                <input type="hidden"
+                       name="active"
+                       value="0">
                 <input type="checkbox"
                        value="1"
                        name="active"
@@ -102,6 +105,35 @@
                       class="form-control"
                       rows="3">{{ isset($article) ? $article->seo_description: '' }}</textarea>
         </div>
+        <hr>
+        <div class="files">
+            <h2>Файлы</h2>
+            @if ($article->files)
+                @foreach($article->files as $file)
+                    <img src="{{ $file->path }}"
+                         alt="">
+                @endforeach
+            @endif
+            <div class="form-group">
+                <label>Файлы</label>
+                <input type="file"
+                       name="file[]"
+                       class="form-control">
+                <input type="file"
+                       name="file[]"
+                       class="form-control">
+                <input type="file"
+                       name="file[]"
+                       class="form-control">
+                <input type="file"
+                       name="file[]"
+                       class="form-control">
+                <input type="file"
+                       name="file[]"
+                       class="form-control">
+            </div>
+        </div>
+        <hr>
         <div class="form-group">
             <button class="btn btn-primary"
                     name="save">Сохранить
