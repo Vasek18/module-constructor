@@ -9,6 +9,10 @@ class ArticleFile extends Model{
 	protected $fillable = ['article_id', 'path', 'title', 'alt', 'extension', 'original_name'];
 	public $timestamps = false;
 
+	public function deleteFile(){
+		unlink(public_path().$this->path);
+	}
+
 	public function getTagAttribute(){
 		$tag = '<img src='.$this->path.'/>';
 

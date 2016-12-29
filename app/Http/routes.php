@@ -209,7 +209,7 @@ Route::group(['prefix' => 'oko', 'middleware' => 'admin'], function (){
 		Route::get('', ['uses' => 'Admin\AdminSettingsController@index']);
 		Route::post('', ['uses' => 'Admin\AdminSettingsController@store']);
 	});
-	Route::get('articles', ['uses' => 'Admin\AdminController@articles']);
+
 	Route::group(['prefix' => 'logs'], function (){
 		Route::get('', ['uses' => 'Admin\AdminLogsController@index']);
 		Route::get('{file_name}', ['uses' => 'Admin\AdminLogsController@show']);
@@ -228,12 +228,17 @@ Route::group(['prefix' => 'oko', 'middleware' => 'admin'], function (){
 
 	// статьи
 	Route::group(['prefix' => 'articles'], function (){
+		Route::get('', ['uses' => 'Admin\AdminController@articles']);
 		Route::get('create', ['uses' => 'Admin\AdminArticlesController@create']);
 		Route::post('', ['uses' => 'Admin\AdminArticlesController@store']);
 		Route::get('{article}', ['uses' => 'Admin\AdminArticlesController@show']);
 		Route::get('{article}/edit', ['uses' => 'Admin\AdminArticlesController@edit']);
 		Route::put('{article}', ['uses' => 'Admin\AdminArticlesController@update']);
 		Route::get('{article}/delete', ['uses' => 'Admin\AdminArticlesController@destroy']);
+
+		Route::group(['prefix' => '{article}/files'], function (){
+			Route::get('{file}/delete', ['uses' => 'Admin\AdminArticlesFilesController@destroy']);
+		});
 	});
 
 	// статьи

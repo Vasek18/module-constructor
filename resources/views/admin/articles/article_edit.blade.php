@@ -117,7 +117,7 @@
                     @foreach($article->files as $file)
                         <div class="file">
                             <div class="actions">
-                                <a href="#"
+                                <a href="{{ action('Admin\AdminArticlesFilesController@destroy', [$article, $file]) }}"
                                    class="delete text-danger">
                                  <span class="glyphicon glyphicon-remove"
                                        aria-hidden="true"></span>
@@ -141,19 +141,22 @@
                 </div>
             @endif
             <div class="form-group">
-                <label>Файлы</label>
                 <input type="file"
                        name="file[]"
                        class="form-control">
+                <br>
                 <input type="file"
                        name="file[]"
                        class="form-control">
+                <br>
                 <input type="file"
                        name="file[]"
                        class="form-control">
+                <br>
                 <input type="file"
                        name="file[]"
                        class="form-control">
+                <br>
                 <input type="file"
                        name="file[]"
                        class="form-control">
