@@ -112,7 +112,7 @@
         <hr>
         <div class="files">
             <h2>Файлы</h2>
-            @if ($article->files)
+            @if (isset($article) && isset($article->files) && $article->files->count())
                 <div class="clearfix">
                     @foreach($article->files as $file)
                         <div class="file">
@@ -133,8 +133,12 @@
                                        aria-hidden="true"></span>
                                 </a>
                             </div>
-                            <img src="{{ $file->path }}"
-                                 alt="">
+                            @if ($file->isImg())
+                                <img src="{{ $file->path }}"
+                                     alt="">
+                            @else
+                                <div class="placeholder">.{{ $file->extension }}</div>
+                            @endif
                             <div class="name">{{ $file->original_name }}</div>
                         </div>
                     @endforeach

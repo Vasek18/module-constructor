@@ -53,6 +53,7 @@ class AdminArticlesController extends Controller{
 	public function saveFiles(Article $article, Request $request){
 		$files = $request->file('file');
 
+		if ($files && is_array($files))
 		foreach ($files as $file){
 			if ($file){
 				$this->saveFile($article, $file);
