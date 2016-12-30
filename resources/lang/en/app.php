@@ -47,4 +47,8 @@ return [
 	'field_code' => 'Code',
 
 	'email_was_sent' => 'Email was sent',
+
+	'delete_confirmation_title'       => 'Deletion',
+	'delete_confirmation_text'        => 'Sure?',
+	'delete_confirmation_button_text' => 'Still remove',
 ];

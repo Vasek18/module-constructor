@@ -154,6 +154,7 @@
 {{--<script src="/js/jquery.nestable.js"></script>--}}
 <script src="/js/translit.js"></script>
 <script src="/js/sweetalert.js"></script>
+<script src="/js/deletetion_with_confirm.js"></script>
 <script src="/js/app.js"></script>
 @stack('scripts')
 @include('flash')
@@ -198,5 +199,34 @@
     </div>
 </noscript>
 <!-- /Yandex.Metrika counter -->
+{{--модалка для подтвеждения удаления--}}
+<div class="modal fade"
+     id="delete-confirm-modal"
+     tabindex="-1"
+     role="dialog">
+    <div class="modal-dialog"
+         role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">{{ trans('app.delete_confirmation_title') }}</h4>
+            </div>
+            <div class="modal-body">
+                <h2 class="text-center">{{ trans('app.delete_confirmation_text') }}</h2>
+            </div>
+            <div class="modal-footer">
+                <a type="button"
+                   href=""
+                   class="btn btn-danger delete">{{ trans('app.delete_confirmation_button_text') }}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

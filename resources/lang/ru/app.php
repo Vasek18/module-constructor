@@ -48,4 +48,8 @@ return [
 	'field_code' => 'Код',
 
 	'email_was_sent' => 'Сообщение отправлено',
+
+	'delete_confirmation_title'       => 'Удаление',
+	'delete_confirmation_text'        => 'Уверены?',
+	'delete_confirmation_button_text' => 'Всё-таки удалить',
 ];
