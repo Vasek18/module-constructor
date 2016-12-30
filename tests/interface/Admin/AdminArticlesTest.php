@@ -145,7 +145,7 @@ class AdminArticlesTest extends TestCase{
 
 		// со страницы категории
 		$this->visit('/oko/article_sections/'.$section1->id);
-// переходим на страницу создания
+		// переходим на страницу создания
 		$this->visit('/oko/articles/create');
 
 		$this->seeIsSelected('section_id', $section1->id);
@@ -196,4 +196,13 @@ class AdminArticlesTest extends TestCase{
 
 		$this->dontSee('Трололошный');
 	}
+
+	// /** @test */ // todo
+	// function it_can_add_article_with_file(){ }
+	//
+	// /** @test */ // todo
+	// function it_can_add_file_to_existing_article(){ }
+	//
+	// /** @test */ // todo
+	// function it_can_delete_file(){ }
 }
