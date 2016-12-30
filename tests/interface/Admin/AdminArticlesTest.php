@@ -1,9 +1,11 @@
 <?php
 
 use App\Models\Article;
+use App\Models\ArticleFile;
 use App\Models\ArticleSection;
-use App\Models\User;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Http\UploadedFile;
 
 class AdminArticlesTest extends TestCase{
 
@@ -197,12 +199,101 @@ class AdminArticlesTest extends TestCase{
 		$this->dontSee('Трололошный');
 	}
 
-	// /** @test */ // todo
-	// function it_can_add_article_with_file(){ }
-	//
-	// /** @test */ // todo
-	// function it_can_add_file_to_existing_article(){ }
-	//
-	// /** @test */ // todo
-	// function it_can_delete_file(){ }
+	/** @test */
+	function it_can_add_file_to_existing_article(){
+		$this->signIn(null, [
+			'group_id' => $this->adminUserGroup
+		]);
+
+		$section1 = ArticleSection::create([
+			'code' => 'test',
+			'name' => 'Тестовая категория',
+		]);
+
+		$this->visit('/oko/articles/create');
+
+		$article = Article::create([
+			'section_id'   => $section1->id,
+			'name'         => 'Тестовый',
+			'code'         => 'tester',
+			'preview_text' => 'Текст анонса',
+			'detail_text'  => 'Детальный текст',
+		]);
+
+		// копируем файл, чтобы защитить от удаления
+		copy(public_path().'\for_tests\test.jpg', public_path().'\for_tests\test2.jpg');
+
+		// прикладываем файл
+		$file = new UploadedFile(public_path().'\for_tests\test2.jpg', 'test2.jpg', 'image/jpg', filesize(public_path().'\for_tests\test2.jpg'), null, true);
+
+		// делаем запрос
+		$response = $this->call(
+			'POST',
+			action('Admin\AdminArticlesFilesController@upload', [$article]),
+			['_token' => csrf_token()],
+			[],
+			['file' => $file]
+		);
+
+		$this->visit('/oko/articles/'.$article->id.'/edit');
+
+		$this->see('Тестовый');
+		$this->see('tester');
+		$this->see('test2.jpg');
+
+		// удаляем папку с картинкой
+		$Filesystem = new Filesystem;
+		$Filesystem->deleteDirectory(public_path().'\articles_files\\'.$article->id);
+	}
+
+	/** @test */ // todo
+	function it_can_delete_file(){
+		$this->signIn(null, [
+			'group_id' => $this->adminUserGroup
+		]);
+
+		$section1 = ArticleSection::create([
+			'code' => 'test',
+			'name' => 'Тестовая категория',
+		]);
+
+		$this->visit('/oko/articles/create');
+
+		$article = Article::create([
+			'section_id'   => $section1->id,
+			'name'         => 'Тестовый',
+			'code'         => 'tester',
+			'preview_text' => 'Текст анонса',
+			'detail_text'  => 'Детальный текст',
+		]);
+
+		// копируем файл, чтобы защитить от удаления
+		copy(public_path().'\for_tests\test.jpg', public_path().'\for_tests\test2.jpg');
+
+		// прикладываем файл
+		$file = new UploadedFile(public_path().'\for_tests\test2.jpg', 'test2.jpg', 'image/jpg', filesize(public_path().'\for_tests\test2.jpg'), null, true);
+
+		// делаем запрос
+		$response = $this->call(
+			'POST',
+			action('Admin\AdminArticlesFilesController@upload', [$article]),
+			['_token' => csrf_token()],
+			[],
+			['file' => $file]
+		);
+
+		$this->visit('/oko/articles/'.$article->id.'/edit');
+
+		$this->see('test2.jpg');
+
+		$file = ArticleFile::first();
+		$this->click('delete_file_'.$file->id); // удаляем файл
+
+		$this->dontSee('test2.jpg'); // нет на странице
+		$this->assertFalse(file_exists(public_path().'\articles_files\\'.$article->id.'\test.jpg')); // нет в папке
+
+		// удаляем папку
+		$Filesystem = new Filesystem;
+		$Filesystem->deleteDirectory(public_path().'\articles_files\\'.$article->id);
+	}
 }

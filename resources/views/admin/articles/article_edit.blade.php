@@ -2,6 +2,11 @@
 @push('styles')
 <link href='/css/admin_articles.css'
       rel='stylesheet'/>
+<link href='/plugins/dropzone.css'
+      rel='stylesheet'/>
+@endpush
+@push('scripts')
+<script src="/plugins/dropzone.js"></script>
 @endpush
 
 @section("page")
@@ -109,16 +114,17 @@
                       class="form-control"
                       rows="3">{{ isset($article) ? $article->seo_description: '' }}</textarea>
         </div>
-        <hr>
-        <div class="files">
-            <h2>Файлы</h2>
-            @if (isset($article) && isset($article->files) && $article->files->count())
+        @if (isset($article) && isset($article->files) && $article->files->count())
+            <hr>
+            <div class="files">
+                <h2>Файлы</h2>
                 <div class="clearfix">
                     @foreach($article->files as $file)
                         <div class="file">
                             <div class="actions">
                                 <a href="{{ action('Admin\AdminArticlesFilesController@destroy', [$article, $file]) }}"
-                                   class="delete text-danger">
+                                   class="delete text-danger"
+                                   id="delete_file_{{ $file->id }}">
                                  <span class="glyphicon glyphicon-remove"
                                        aria-hidden="true"></span>
                                 </a>
@@ -143,34 +149,20 @@
                         </div>
                     @endforeach
                 </div>
-            @endif
-            <div class="form-group">
-                <input type="file"
-                       name="file[]"
-                       class="form-control">
-                <br>
-                <input type="file"
-                       name="file[]"
-                       class="form-control">
-                <br>
-                <input type="file"
-                       name="file[]"
-                       class="form-control">
-                <br>
-                <input type="file"
-                       name="file[]"
-                       class="form-control">
-                <br>
-                <input type="file"
-                       name="file[]"
-                       class="form-control">
             </div>
-        </div>
-        <hr>
+            <hr>
+        @endif
         <div class="form-group">
             <button class="btn btn-primary"
                     name="save">Сохранить
             </button>
         </div>
     </form>
+    @if (isset($article))
+        <form action="{{ action('Admin\AdminArticlesFilesController@upload', [$article]) }}"
+              class="dropzone"
+              id="files-upload">
+            {{ csrf_field() }}
+        </form>
+    @endif
 @stop

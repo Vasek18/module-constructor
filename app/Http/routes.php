@@ -237,6 +237,7 @@ Route::group(['prefix' => 'oko', 'middleware' => 'admin'], function (){
 		Route::get('{article}/delete', ['uses' => 'Admin\AdminArticlesController@destroy']);
 
 		Route::group(['prefix' => '{article}/files'], function (){
+			Route::post('upload', ['uses' => 'Admin\AdminArticlesFilesController@upload']);
 			Route::get('{file}/delete', ['uses' => 'Admin\AdminArticlesFilesController@destroy']);
 		});
 	});
