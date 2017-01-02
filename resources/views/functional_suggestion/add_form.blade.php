@@ -1,4 +1,4 @@
-<h2>Добавить своё предложение</h2>
+<h2>{{ trans('functional_suggestion.add_form_header') }}</h2>
 @if (count($errors) > 0)
     <div class="alert alert-danger">
         <strong>{{trans('validation.error')}}</strong> {{trans('validation.there_occur_errors')}}
@@ -15,7 +15,7 @@
       class="">
     {{ csrf_field() }}
     <div class="form-group">
-        <label for="name">Заголовок</label>
+        <label for="name">{{ trans('functional_suggestion.add_form_name_field') }}</label>
         <input type="text"
                id="name"
                name="name"
@@ -23,7 +23,7 @@
                required>
     </div>
     <div class="form-group">
-        <label for="description">Описание</label>
+        <label for="description">{{ trans('functional_suggestion.add_form_description_field') }}</label>
         <textarea id="description"
                   name="description"
                   class="form-control"
@@ -33,7 +33,7 @@
     <div class="form-group">
         <button id="create"
                 name="create"
-                class="btn btn-success btn-block">Отправить
+                class="btn btn-success btn-block">{{ trans('functional_suggestion.add_form_send') }}
         </button>
     </div>
 </form>

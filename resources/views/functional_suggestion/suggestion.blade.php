@@ -3,16 +3,16 @@
     <div class="panel-body">
         <p>{{ $suggestion->description }}</p>
     </div>
-    <div class="panel-footer">
+    <div class="panel-footer clearfix">
         @if ($user)
             <a href="{{ action('FunctionalSuggestionController@upvote', [$suggestion]) }}"
                class="upvote btn btn-success {{ $suggestion->ifHeVoted($user) ? 'disabled' : '' }}">
-                Да, это нужно
+                {{ trans('functional_suggestion.vote_btn') }}
             </a>
         @endif
         <div class="pull-right">
             <p class="button-line-height">
-                Голосов: {{ $suggestion->votes }}
+                {{ trans('functional_suggestion.votes_count') }}: {{ $suggestion->votes }}
             </p>
         </div>
     </div>

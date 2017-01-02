@@ -24,7 +24,7 @@ class FunctionalSuggestionController extends Controller{
 
 	public function store(Request $request){
 		if (FunctionalSuggestion::where('name', $request->name)->count()){
-			return back()->withErrors(['Такое предложение уже существует']);;
+			return back()->withErrors([trans('functional_suggestion.such_suggestion_is_already_exists')]);;
 		}
 
 		$userID = null;

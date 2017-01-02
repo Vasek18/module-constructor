@@ -24,8 +24,10 @@ class FunctionalSuggestion extends Model{
 	public function ifHeVoted(User $user){
 		$votesUserIDs = json_decode($this->user_ids);
 
-		if (in_array($user->id, $votesUserIDs)){
-			return true;
+		if (is_array($votesUserIDs)){
+			if (in_array($user->id, $votesUserIDs)){
+				return true;
+			}
 		}
 
 		return false;
