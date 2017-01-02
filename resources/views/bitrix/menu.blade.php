@@ -8,6 +8,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
+            <span class="navbar-brand visible-xs">{{ trans('bitrix_top_menu.menu_brand') }}</span>
         </div>
         <div class="collapse navbar-collapse" id="bitrix_menu">
             <ul class="nav navbar-nav">

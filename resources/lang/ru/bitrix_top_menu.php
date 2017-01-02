@@ -2,6 +2,7 @@
 
 return [
 	'menu'            => 'Меню',
+	'menu_brand'      => 'Меню редактирования',
 	'detail'          => 'Основное',
 	'components'      => 'Компоненты',
 	'data_storage'    => 'Хранение данных',

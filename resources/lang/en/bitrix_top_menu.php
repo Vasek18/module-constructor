@@ -2,6 +2,7 @@
 
 return [
 	'menu'            => 'Menu',
+	'menu_brand'      => 'Editing menu',
 	'detail'          => 'Detail',
 	'components'      => 'Components',
 	'data_storage'    => 'Data storage',

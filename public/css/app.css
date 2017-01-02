@@ -1381,6 +1381,12 @@ a.you-can-change:hover {
   margin: 150px 0px;
 }
 
+@media (max-width: 767px) {
+  .welcome-block {
+    margin: 15px 0px;
+  }
+}
+
 .welcome-block h1 {
   font-size: 55px;
 }
@@ -1391,4 +1397,5 @@ a.you-can-change:hover {
 
 .welcome-block .btn {
   font-size: 30px;
+  margin-bottom: 10px;
 }
