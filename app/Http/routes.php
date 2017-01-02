@@ -269,6 +269,11 @@ Route::group(['prefix' => 'yandex_kassa'], function (){
 	Route::any('fail', ['uses' => 'YandexKassaController@fail']);
 });
 
+// предложения функционала
+Route::group(['prefix' => 'functional_suggestions'], function (){
+	Route::get('', ['uses' => 'FunctionalSuggestionController@index']);
+});
+
 Route::get('{section_code}/{article_code}', ['uses' => 'ArticleController@show']);
 Route::get('{section_code}', ['uses' => 'ArticleSectionController@show']);
 
