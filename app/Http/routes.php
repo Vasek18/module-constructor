@@ -273,6 +273,7 @@ Route::group(['prefix' => 'yandex_kassa'], function (){
 Route::group(['prefix' => 'functional_suggestions'], function (){
 	Route::get('', ['uses' => 'FunctionalSuggestionController@index']);
 	Route::post('add', ['uses' => 'FunctionalSuggestionController@store']);
+	Route::get('{suggestion}/upvote', ['uses' => 'FunctionalSuggestionController@upvote']);
 });
 
 Route::get('{section_code}/{article_code}', ['uses' => 'ArticleController@show']);

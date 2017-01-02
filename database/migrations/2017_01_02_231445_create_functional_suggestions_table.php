@@ -16,7 +16,7 @@ class CreateFunctionalSuggestionsTable extends Migration{
 			$table->foreign('creator_id')->references('id')->on('users');
 			$table->string('name');
 			$table->text('description')->nullable();
-			$table->integer('likes')->nullable()->unsigned()->default(0);
+			$table->integer('votes')->nullable()->unsigned()->default(0);
 			$table->text('user_ids')->nullable();
 			$table->timestamps();
 		});

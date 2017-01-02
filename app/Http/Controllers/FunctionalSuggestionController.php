@@ -9,7 +9,7 @@ use App\Models\FunctionalSuggestion;
 class FunctionalSuggestionController extends Controller{
 
 	public function index(Request $request){
-		$suggestions = FunctionalSuggestion::orderBy('created_at', 'desc')->get();
+		$suggestions = FunctionalSuggestion::orderBy('votes', 'desc')->orderBy('created_at', 'desc')->get();
 
 		$data = [
 			'suggestions' => $suggestions
@@ -36,6 +36,8 @@ class FunctionalSuggestionController extends Controller{
 			'creator_id'  => $userID,
 			'name'        => $request->name,
 			'description' => $request->description,
+			'votes'       => $userID ? 1 : 0,
+			'user_ids'    => $userID ? json_encode([$userID]) : '',
 		]);
 
 		return back();
@@ -53,7 +55,17 @@ class FunctionalSuggestionController extends Controller{
 		//
 	}
 
+	// голосовать
+	public function upvote(FunctionalSuggestion $suggestion, Request $request){
+		if ($this->user){
+			$suggestion->upvote($this->user->id);
+		}
+
+		return back();
+	}
+
 	public function destroy($id){
 		//
 	}
+
 }
