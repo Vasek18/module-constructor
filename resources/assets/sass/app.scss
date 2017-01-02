@@ -1,8 +1,6 @@
 // @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
-
 @import "vars.scss";
 @import "sweetalert";
-
 $footerHeight : 70px;
 $footerHeightReverse : -70px;
 $hoverBackgroundColor : #eee;
@@ -164,4 +162,8 @@ a.you-can-change{
 .welcome-block .btn{
   font-size     : 30px;
   margin-bottom : 10px;
+}
+.notable-vertical-margin{
+  margin-top    : 50px;
+  margin-bottom : 50px;
 }

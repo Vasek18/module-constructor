@@ -9,7 +9,7 @@ use App\Models\FunctionalSuggestion;
 class FunctionalSuggestionController extends Controller{
 
 	public function index(Request $request){
-		$suggestions = FunctionalSuggestion::all();
+		$suggestions = FunctionalSuggestion::orderBy('created_at', 'desc')->get();
 
 		$data = [
 			'suggestions' => $suggestions
@@ -23,7 +23,22 @@ class FunctionalSuggestionController extends Controller{
 	}
 
 	public function store(Request $request){
-		//
+		if (FunctionalSuggestion::where('name', $request->name)->count()){
+			return back()->withErrors(['Такое предложение уже существует']);;
+		}
+
+		$userID = null;
+		if ($this->user){
+			$userID = $this->user->id;
+		}
+
+		FunctionalSuggestion::create([
+			'creator_id'  => $userID,
+			'name'        => $request->name,
+			'description' => $request->description,
+		]);
+
+		return back();
 	}
 
 	public function show($section_code, $article_code){

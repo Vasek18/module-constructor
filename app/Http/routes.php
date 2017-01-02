@@ -272,6 +272,7 @@ Route::group(['prefix' => 'yandex_kassa'], function (){
 // предложения функционала
 Route::group(['prefix' => 'functional_suggestions'], function (){
 	Route::get('', ['uses' => 'FunctionalSuggestionController@index']);
+	Route::post('add', ['uses' => 'FunctionalSuggestionController@store']);
 });
 
 Route::get('{section_code}/{article_code}', ['uses' => 'ArticleController@show']);

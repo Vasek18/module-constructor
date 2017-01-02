@@ -64,7 +64,7 @@ class BitrixController extends Controller{
 		if ($module_id){
 			// создание папки модуля пользователя на серваке
 			if (!$bitrix->createFolder()){
-				return back()->withErrors([trans('bitrix_create.folder_creation_failure')]);;
+				return back()->withErrors([trans('bitrix_create.folder_creation_failure')]);
 			}
 
 			// письмо мне
