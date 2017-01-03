@@ -1,5 +1,16 @@
 <div class="panel panel-primary">
-    <div class="panel-heading">{{ $suggestion->name }}</div>
+    <div class="panel-heading clearfix">{{ $suggestion->name }}
+        @if ($user && $user->isAdmin())
+            <div class="pull-right">
+                <a href="{{ action('FunctionalSuggestionController@destroy', [$suggestion]) }}"
+                   id="delete{{ $suggestion->id }}"
+                   class="btn btn-danger">
+                <span class="glyphicon glyphicon-trash"
+                      aria-hidden="true"></span>
+                </a>
+            </div>
+        @endif
+    </div>
     <div class="panel-body">
         <p>{{ $suggestion->description }}</p>
     </div>

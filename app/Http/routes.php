@@ -274,6 +274,7 @@ Route::group(['prefix' => 'functional_suggestions'], function (){
 	Route::get('', ['uses' => 'FunctionalSuggestionController@index']);
 	Route::post('add', ['uses' => 'FunctionalSuggestionController@store']);
 	Route::get('{suggestion}/upvote', ['uses' => 'FunctionalSuggestionController@upvote']);
+	Route::get('{suggestion}/delete', ['uses' => 'FunctionalSuggestionController@destroy']);
 });
 
 Route::get('{section_code}/{article_code}', ['uses' => 'ArticleController@show']);

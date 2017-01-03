@@ -64,8 +64,12 @@ class FunctionalSuggestionController extends Controller{
 		return back();
 	}
 
-	public function destroy($id){
-		//
+	public function destroy(FunctionalSuggestion $suggestion, Request $request){
+		if ($this->user && $this->user->isAdmin()){
+			$suggestion->delete();
+		}
+
+		return back();
 	}
 
 }

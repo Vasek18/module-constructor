@@ -18,7 +18,16 @@ class User extends Model implements AuthenticatableContract,
 	protected $table = 'users';
 	protected $fillable = ['first_name', 'last_name', 'company_name', 'site', 'email', 'password'];
 	protected $hidden = ['password', 'remember_token'];
+	public static $adminGroup = 1;
 	public static $defaultGroup = 2;
+
+	public function isAdmin(){
+		if ($this->group_id == static::$adminGroup){
+			return true;
+		}
+
+		return false;
+	}
 
 	public function canDownloadModule(){
 		if ($this->paid_days){

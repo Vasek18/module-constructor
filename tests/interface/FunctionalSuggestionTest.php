@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class FunctionalSuggestionTest extends TestCase{
 
 	protected $path = 'functional_suggestions';
+	protected $adminUserGroup = 1;
 
 	use DatabaseTransactions;
 
@@ -117,6 +118,52 @@ class FunctionalSuggestionTest extends TestCase{
 		$this->visit('/functional_suggestions/'.$suggestion->id.'/upvote'); // хитрый нашёл прямую ссылку
 		$this->visit($this->path);
 		$this->see('Голосов: 1'); // но голоса по итогу не прибавились
+	}
+
+	/** @test */
+	function admin_can_delete_suggestion(){
+		$this->visit($this->path);
+
+		$this->submitForm('create', [
+			'name'        => 'Нечто суперкрутое',
+			'description' => 'Это очень нужный функционал',
+		]);
+		$this->see('Нечто суперкрутое');
+		$this->see('Это очень нужный функционал');
+
+		$suggestion = FunctionalSuggestion::first();
+
+		$this->signIn(null, [
+			'group_id' => $this->adminUserGroup
+		]);
+		$this->visit($this->path);
+		$this->click('delete'.$suggestion->id);
+
+		$this->dontSee('Нечто суперкрутое');
+		$this->dontSee('Это очень нужный функционал');
+	}
+
+	/** @test */
+	function not_admin_cannot_delete_suggestion(){
+		$this->signIn();
+		$this->visit($this->path);
+
+		$this->submitForm('create', [
+			'name'        => 'Нечто суперкрутое',
+			'description' => 'Это очень нужный функционал',
+		]);
+
+		$suggestion = FunctionalSuggestion::first();
+
+		$this->see('Нечто суперкрутое');
+		$this->see('Это очень нужный функционал');
+		$this->dontSee('delete'.$suggestion->id);
+
+		$this->visit('/functional_suggestions/'.$suggestion->id.'/delete'); // здесь только по прямой ссылке, кнопки ведь нет
+		$this->visit($this->path);
+
+		$this->see('Нечто суперкрутое');
+		$this->see('Это очень нужный функционал');
 	}
 }
 
