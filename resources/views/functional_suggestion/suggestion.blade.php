@@ -6,6 +6,7 @@
     <div class="panel-footer clearfix">
         @if ($user)
             <a href="{{ action('FunctionalSuggestionController@upvote', [$suggestion]) }}"
+               id="upvote{{ $suggestion->id }}"
                class="upvote btn btn-success {{ $suggestion->ifHeVoted($user) ? 'disabled' : '' }}">
                 {{ trans('functional_suggestion.vote_btn') }}
             </a>
