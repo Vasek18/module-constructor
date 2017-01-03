@@ -14,6 +14,7 @@ return [
 	'link_to_reg_title'                    => 'Регистрация',
 	'link_to_personal_title'               => 'Личный кабинет',
 	'link_to_logout_title'                 => 'Выйти',
+	'link_functional_suggestions_title'    => 'Предложения по функционалу',
 
 	'bitrix_module' => 'Модуль',
 	'file'          => 'Файл',

@@ -140,6 +140,17 @@
                 @include('on_this_page_i_lack_modal')
             </div>
         </div>
+        <div class="row">
+            <div class="footer-menu col-md-3 col-md-offset-1">
+                <nav>
+                    <ul>
+                        <li>
+                            <a href="{{ action('FunctionalSuggestionController@index') }}">{{ trans('app.link_functional_suggestions_title') }}</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
         <div class="creator">
             <a href="http://aristov-vasiliy.ru/">{{trans('app.site_developer')}}</a>
         </div>
@@ -214,16 +225,15 @@
                         aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title">{{ trans('app.delete_confirmation_title') }}</h4>
+                <h4 class="modal-title">Удаление</h4>
             </div>
             <div class="modal-body">
-                <h2 class="text-center">{{ trans('app.delete_confirmation_text') }}</h2>
+                <p class="te">Уверены?</p>
             </div>
             <div class="modal-footer">
-                <a type="button"
-                   href=""
-                   class="btn btn-danger delete">{{ trans('app.delete_confirmation_button_text') }}
-                </a>
+                <button type="button"
+                        class="btn btn-danger">Всё-таки удалить
+                </button>
             </div>
         </div>
     </div>

@@ -14,8 +14,10 @@ return [
 	'link_to_reg_title'                    => 'Registration',
 	'link_to_personal_title'               => 'Personal',
 	'link_to_logout_title'                 => 'Logout',
-	'bitrix_module'                        => 'Module',
-	'file'                                 => 'File',
+	'link_functional_suggestions_title'    => 'Functional suggestions',
+
+	'bitrix_module' => 'Module',
+	'file'          => 'File',
 
 	'yes'  => 'Yes',
 	'no'   => 'No',

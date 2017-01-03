@@ -1223,13 +1223,27 @@ p.big-text {
   font-size: 17px;
 }
 
+.notable-vertical-margin {
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.button-line-height {
+  line-height: 35px;
+}
+
+nav ul {
+  padding-left: 0;
+  list-style: none;
+}
+
 #wrap {
   min-height: 100%;
-  margin: 0 auto -70px auto;
+  margin: 0 auto -145px auto;
 }
 
 #push {
-  height: 70px;
+  height: 145px;
 }
 
 .navbar {
@@ -1247,7 +1261,7 @@ p.big-text {
 
 footer {
   width: 100%;
-  height: 70px;
+  height: 145px;
   border-top: 1px solid #e7e7e7;
   background-color: #f8f8f8;
 }
@@ -1263,6 +1277,7 @@ footer {
 
 .creator {
   padding-top: 10px;
+  padding-bottom: 10px;
   text-align: center;
   font-size: 17px;
 }
@@ -1400,11 +1415,12 @@ a.you-can-change:hover {
   margin-bottom: 10px;
 }
 
-.notable-vertical-margin {
-  margin-top: 50px;
-  margin-bottom: 50px;
+.footer-menu {
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
-.button-line-height {
-  line-height: 35px;
+.footer-menu a {
+  color: #777;
+  text-decoration: underline;
 }

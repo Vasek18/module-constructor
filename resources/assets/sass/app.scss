@@ -1,8 +1,8 @@
 // @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 @import "vars.scss";
 @import "sweetalert";
-$footerHeight : 70px;
-$footerHeightReverse : -70px;
+$footerHeight : 145px;
+$footerHeightReverse : -145px;
 $hoverBackgroundColor : #eee;
 $fontColor : #777;
 $borderDefaultColor : #e7e7e7;
@@ -14,6 +14,17 @@ html, body{
 }
 p.big-text{
   font-size : 17px;
+}
+.notable-vertical-margin{
+  margin-top    : 50px;
+  margin-bottom : 50px;
+}
+.button-line-height{
+  line-height : 35px;
+}
+nav ul{
+  padding-left : 0;
+  list-style   : none;
 }
 #wrap{
   min-height : 100%;
@@ -42,13 +53,14 @@ footer{
   padding-top : 10px;
 }
 .footer-actions a{
-  color           : #777;
+  color           : $fontColor;
   text-decoration : underline;
 }
 .creator{
-  padding-top : 10px;
-  text-align  : center;
-  font-size   : 17px;
+  padding-top    : 10px;
+  padding-bottom : 10px;
+  text-align     : center;
+  font-size      : 17px;
 }
 .creator a{
   color : #777;
@@ -163,10 +175,11 @@ a.you-can-change{
   font-size     : 30px;
   margin-bottom : 10px;
 }
-.notable-vertical-margin{
-  margin-top    : 50px;
-  margin-bottom : 50px;
+.footer-menu{
+  margin-top    : 20px;
+  margin-bottom : 20px;
 }
-.button-line-height{
-  line-height : 35px;
+.footer-menu a{
+  color           : $fontColor;
+  text-decoration : underline;
 }
