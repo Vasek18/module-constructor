@@ -59,20 +59,19 @@ class BitrixEventHandlersFilesTest extends BitrixTestCase{
 			'from_module' => 'main',
 			'event'       => 'OnProlog',
 			'class'       => 'MyClass',
-			'method'      => 'Handler',
 			'php_code'    => '<?="ololo";?>',
 		]);
 
 		$installationArr = $this->getEventHandlersCreationFuncCallParamsArray($this->module);
 		// $langArr = $this->getLangFileArray($this->module);
-		$file = file_get_contents($this->module->getFolder().'/lib/eventhandlers/myclass.php');
+		$file = file_get_contents($this->module->getFolder().'/lib/eventhandlers/OnPrologHandler.php');
 
 		$expectedArr = [
 			"main",
 			"OnProlog",
 			'$this->MODULE_ID',
-			'\\'.$this->module->namespace.'\EventHandlers\MyClass',
-			"Handler",
+			'\\'.$this->module->namespace.'\EventHandlers\OnPrologHandler',
+			"handler",
 		];
 
 		$this->assertEquals($expectedArr, $installationArr[0]);
@@ -81,8 +80,8 @@ class BitrixEventHandlersFilesTest extends BitrixTestCase{
 			preg_split('/\r\n|\r|\n/', '<?
 namespace '.$this->module->namespace.'\EventHandlers;
 
-class MyClass{
-	static public function Handler(){
+class OnPrologHandler{
+	static public function handler(){
 		<?="ololo";?>
 	}
 
@@ -94,22 +93,20 @@ class MyClass{
 		$this->createEventHandlerOnForm($this->module, 0, [
 			'from_module' => 'main',
 			'event'       => 'OnProlog',
-			'class'       => 'MyClass',
-			'method'      => 'Handler',
 			'params'      => '$arFields',
 			'php_code'    => '<?="ololo";?>',
 		]);
 
 		$installationArr = $this->getEventHandlersCreationFuncCallParamsArray($this->module);
 		// $langArr = $this->getLangFileArray($this->module);
-		$file = file_get_contents($this->module->getFolder().'/lib/eventhandlers/myclass.php');
+		$file = file_get_contents($this->module->getFolder().'/lib/eventhandlers/onprologhandler.php');
 
 		$expectedArr = [
 			"main",
 			"OnProlog",
 			'$this->MODULE_ID',
-			'\\'.$this->module->namespace.'\EventHandlers\MyClass',
-			"Handler",
+			'\\'.$this->module->namespace.'\EventHandlers\OnPrologHandler',
+			"handler",
 		];
 
 		$this->assertEquals($expectedArr, $installationArr[0]);
@@ -118,8 +115,8 @@ class MyClass{
 			preg_split('/\r\n|\r|\n/', '<?
 namespace '.$this->module->namespace.'\EventHandlers;
 
-class MyClass{
-	static public function Handler($arFields){
+class OnPrologHandler{
+	static public function handler($arFields){
 		<?="ololo";?>
 	}
 
@@ -133,28 +130,26 @@ class MyClass{
 			'event'        => 'OnProlog',
 			'from_module1' => 'iblock',
 			'event1'       => 'OnAfterIBlockElementAdd',
-			'class'        => 'MyClass',
-			'method'       => 'Handler',
 			'php_code'     => '<?="ololo";?>',
 		]);
 
 		$installationArr = $this->getEventHandlersCreationFuncCallParamsArray($this->module);
 		// dd($installationArr);
-		$file = file_get_contents($this->module->getFolder().'/lib/eventhandlers/myclass.php');
+		$file = file_get_contents($this->module->getFolder().'/lib/eventhandlers/onprologhandler.php');
 
 		$expectedArr = [
 			"main",
 			"OnProlog",
 			'$this->MODULE_ID',
-			'\\'.$this->module->namespace.'\EventHandlers\MyClass',
-			"Handler",
+			'\\'.$this->module->namespace.'\EventHandlers\OnPrologHandler',
+			"handler",
 		];
 		$expectedArr1 = [
 			"iblock",
 			"OnAfterIBlockElementAdd",
 			'$this->MODULE_ID',
-			'\\'.$this->module->namespace.'\EventHandlers\MyClass',
-			"Handler",
+			'\\'.$this->module->namespace.'\EventHandlers\OnPrologHandler',
+			"handler",
 		];
 
 		$this->assertEquals($expectedArr, $installationArr[0]);
@@ -164,8 +159,8 @@ class MyClass{
 			preg_split('/\r\n|\r|\n/', '<?
 namespace '.$this->module->namespace.'\EventHandlers;
 
-class MyClass{
-	static public function Handler(){
+class OnPrologHandler{
+	static public function handler(){
 		<?="ololo";?>
 	}
 
@@ -177,28 +172,24 @@ class MyClass{
 		$this->createEventHandlerOnForm($this->module, 0, [
 			'from_module' => 'main',
 			'event'       => 'OnProlog',
-			'class'       => 'MyClass',
-			'method'      => 'Handler',
 			'php_code'    => '<?="ololo";?>',
 		]);
 		$this->createEventHandlerOnForm($this->module, 0, [
 			'from_module' => 'test',
 			'event'       => 'OnTest',
-			'class'       => 'MySuperClass',
-			'method'      => 'UltimateHandler',
 			'php_code'    => '<?="trololo";?>',
 		]);
 
 		$installationArr = $this->getEventHandlersCreationFuncCallParamsArray($this->module);
 		// $langArr = $this->getLangFileArray($this->module);
-		$file = file_get_contents($this->module->getFolder().'/lib/eventhandlers/mysuperclass.php');
+		$file = file_get_contents($this->module->getFolder().'/lib/eventhandlers/ontesthandler.php');
 
 		$expectedArr = [
 			"test",
 			"OnTest",
 			'$this->MODULE_ID',
-			'\\'.$this->module->namespace.'\EventHandlers\MySuperClass',
-			"UltimateHandler",
+			'\\'.$this->module->namespace.'\EventHandlers\OnTestHandler',
+			"handler",
 		];
 
 		$this->assertEquals($expectedArr, $installationArr[0]);
@@ -207,13 +198,13 @@ class MyClass{
 			preg_split('/\r\n|\r|\n/', '<?
 namespace '.$this->module->namespace.'\EventHandlers;
 
-class MySuperClass{
-	static public function UltimateHandler(){
+class OnTestHandler{
+	static public function handler(){
 		<?="trololo";?>
 	}
 
 }'));
-		$this->assertFileNotExists($this->module->getFolder().'/lib/eventhandlers/myclass.php');
+		$this->assertFileNotExists($this->module->getFolder().'/lib/eventhandlers/onprologhandler.php');
 	}
 
 	// /** @test */ // нет смысла, так как мы не работаем по id
@@ -225,8 +216,6 @@ class MySuperClass{
 		$handler = $this->createEventHandlerOnForm($this->module, 0, [
 			'from_module' => 'main',
 			'event'       => 'OnProlog',
-			'class'       => 'MyClass',
-			'method'      => 'Handler',
 			'php_code'    => '<?="ololo";?>',
 		]);
 
@@ -244,29 +233,25 @@ class MySuperClass{
 		$handler = $this->createEventHandlerOnForm($this->module, 0, [
 			'from_module' => 'main',
 			'event'       => 'OnProlog',
-			'class'       => 'MyClass',
-			'method'      => 'Handler',
 			'php_code'    => '<?="ololo";?>',
 		]);
 		$handler2 = $this->createEventHandlerOnForm($this->module, 1, [
 			'from_module' => 'test',
 			'event'       => 'OnTest',
-			'class'       => 'MySuperClass',
-			'method'      => 'UltimateHandler',
 			'php_code'    => '<?="trololo";?>',
 		]);
 
 		$this->click('delete_handler_'.$handler2->id);
 
 		$installationArr = $this->getEventHandlersCreationFuncCallParamsArray($this->module);
-		$file = file_get_contents($this->module->getFolder().'/lib/eventhandlers/myclass.php');
+		$file = file_get_contents($this->module->getFolder().'/lib/eventhandlers/onprologhandler.php');
 		$expectedArr = [
 			[
 				"main",
 				"OnProlog",
 				'$this->MODULE_ID',
-				'\\'.$this->module->namespace.'\EventHandlers\MyClass',
-				"Handler",
+				'\\'.$this->module->namespace.'\EventHandlers\OnPrologHandler',
+				"handler",
 			]
 		];
 
@@ -276,8 +261,8 @@ class MySuperClass{
 			preg_split('/\r\n|\r|\n/', '<?
 namespace '.$this->module->namespace.'\EventHandlers;
 
-class MyClass{
-	static public function Handler(){
+class OnPrologHandler{
+	static public function handler(){
 		<?="ololo";?>
 	}
 
@@ -291,8 +276,6 @@ class MyClass{
 		$handler = $this->createEventHandlerOnForm($this->module, 0, [
 			'from_module' => 'main',
 			'event'       => 'OnProlog',
-			'class'       => 'MyClass',
-			'method'      => 'Handler',
 			'php_code'    => '<?="ololo";?>',
 		]);
 
@@ -306,64 +289,13 @@ class MyClass{
 				"main",
 				"OnProlog",
 				'$this->MODULE_ID',
-				'\\'.$this->module->namespace.'\EventHandlers\MyClass',
-				"Handler",
+				'\\'.$this->module->namespace.'\EventHandlers\OnPrologHandler',
+				"handler",
 			]
 		];
 		$this->assertEquals($expectedArr, $installationArr);
 
-		$this->assertFileExists($this->module->getFolder().'/lib/eventhandlers/myclass.php');
-	}
-
-	/** @test */
-	function it_doesnt_duplicates_event_handlers_function(){
-		$handler1 = $this->createEventHandlerOnForm($this->module, 0, [
-			'from_module' => 'main',
-			'event'       => 'OnProlog',
-			'class'       => 'MyClass',
-			'method'      => 'Handler',
-			'php_code'    => '<?="ololo";?>',
-		]);
-		$handler2 = $this->createEventHandlerOnForm($this->module, 1, [
-			'from_module' => 'main',
-			'event'       => 'OnEpilog',
-			'class'       => 'MyClass',
-			'method'      => 'Handler',
-			'php_code'    => '<?="trololo";?>',
-		]);
-
-		$installationArr = $this->getEventHandlersCreationFuncCallParamsArray($this->module);
-		// $langArr = $this->getLangFileArray($this->module);
-		$file = file_get_contents($this->module->getFolder().'/lib/eventhandlers/myclass.php');
-
-		$expectedArr = [
-			"main",
-			"OnProlog",
-			'$this->MODULE_ID',
-			'\\'.$this->module->namespace.'\EventHandlers\MyClass',
-			"Handler",
-		];
-		$expectedArr2 = [
-			"main",
-			"OnEpilog",
-			'$this->MODULE_ID',
-			'\\'.$this->module->namespace.'\EventHandlers\MyClass',
-			"Handler",
-		];
-
-		$this->assertEquals($expectedArr, $installationArr[0]);
-		$this->assertEquals($expectedArr2, $installationArr[1]);
-
-		$this->assertEquals(preg_split('/\r\n|\r|\n/', $file),
-			preg_split('/\r\n|\r|\n/', '<?
-namespace '.$this->module->namespace.'\EventHandlers;
-
-class MyClass{
-	static public function Handler(){
-		<?="ololo";?>
-	}
-
-}'));
+		$this->assertFileExists($this->module->getFolder().'/lib/eventhandlers/onprologhandler.php');
 	}
 }
 

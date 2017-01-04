@@ -505,12 +505,6 @@ class BitrixTestCase extends TestCase{
 		if (isset($params['event1'])){
 			$inputs['event_'.$rowNumber.'[1]'] = $params['event1'];
 		}
-		if (isset($params['class'])){
-			$inputs['class['.$rowNumber.']'] = $params['class'];
-		}
-		if (isset($params['method'])){
-			$inputs['method['.$rowNumber.']'] = $params['method'];
-		}
 		if (isset($params['params'])){
 			$inputs['params['.$rowNumber.']'] = $params['params'];
 		}
@@ -520,10 +514,6 @@ class BitrixTestCase extends TestCase{
 
 		$this->submitForm('save', $inputs);
 
-		if (isset($params['class']) && isset($params['method'])){
-			return BitrixEventsHandlers::where('class', $params['class'])->where('method', $params['method'])->first();
-		}
-
-		return true;
+		return BitrixEventsHandlers::orderBy('id', 'desc')->first();
 	}
 }

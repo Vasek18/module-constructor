@@ -42,32 +42,15 @@
         @endfor
     </div>
     <div class="col-md-2">
-        <label class="sr-only"
-               for="class_{{$i}}">{{ trans('bitrix_event_handlers.class') }}</label>
-        <input type="text"
-               class="form-control"
-               name="class[]"
-               id="class_{{$i}}"
-               placeholder="{{ trans('bitrix_event_handlers.class') }}"
-               value="{{$handler?$handler->class:''}}">
-    </div>
-    <div class="col-md-2">
-        <label class="sr-only"
-               for="method_{{$i}}">{{ trans('bitrix_event_handlers.method') }}</label>
-        <input type="text"
-               class="form-control"
-               name="method[]"
-               id="method_{{$i}}"
-               placeholder="{{ trans('bitrix_event_handlers.method') }}"
-               value="{{$handler?$handler->method:''}}">
-    </div>
-    <div class="col-md-2">
         <input type="text"
                class="form-control"
                name="params[]"
                id="params_{{$i}}"
                placeholder="{{ trans('bitrix_event_handlers.params') }}"
                value="{{$handler?$handler->params:''}}">
+    </div>
+    <div class="col-md-4">
+
     </div>
     <div class="col-md-1">
         @if ($handler)

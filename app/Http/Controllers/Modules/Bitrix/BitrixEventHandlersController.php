@@ -46,21 +46,17 @@ class BitrixEventHandlersController extends Controller{
 		$module->disk()->deleteDirectory($module->module_folder."/lib/eventhandlers");
 
 		// перебираем все строки полей
-		foreach ($request["method"] as $i => $method){
-			$handlerParams = [];
-			// обязательные поля
-			if (!$request['class'][$i]){
-				continue;
-			}
-			if (!$request['method'][$i]){
+		foreach ($request["params"] as $i => $method){
+			if (!$request['event_'.$i][0]){
 				continue;
 			}
 
-			$handlerParams["class"] = $request['class'][$i];
-			$handlerParams["method"] = $request['method'][$i];
+			$handlerParams = [];
+			$handlerParams["class"] = $request['event_'.$i][0].'Handler';
+			$handlerParams["method"] = 'handler';
 			$handlerParams["params"] = $request['params'][$i];
 			$handlerParams["php_code"] = trim($request['php_code'][$i]);
-			//dd($handler);
+			// dd($handlerParams);
 
 			// записываем в бд
 			$handler = $module->handlers()->create($handlerParams);
