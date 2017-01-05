@@ -50,6 +50,8 @@ return [
 
 	'email_was_sent' => 'Сообщение отправлено',
 
+	'awaiting_confirmation' => 'Ожидает подтверждения',
+
 	'delete_confirmation_title'       => 'Удаление',
 	'delete_confirmation_text'        => 'Уверены?',
 	'delete_confirmation_button_text' => 'Всё-таки удалить',

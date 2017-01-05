@@ -12,7 +12,7 @@ class ProjectHelpController extends Controller{
 	public function bitrixEvents(Request $request){
 		$data = [
 			'core_modules'    => BitrixCoreModules::all(),
-			'existing_events' => BitrixCoreEvents::all()
+			'existing_events' => BitrixCoreEvents::approved()->get()
 		];
 
 		return view("project_help.bitrix.events", $data);

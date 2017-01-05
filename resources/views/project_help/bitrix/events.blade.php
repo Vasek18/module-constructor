@@ -7,8 +7,8 @@
         @endforeach
     </datalist>
     <div class="container">
-        <h1>События Битрикса</h1>
-        <p>Здесь вы можете добавить события Битрикса, которые не присутствуют в системе.</p>
+        <h1>{{ trans('project_help.bitrix_events_h1') }}</h1>
+        <p>{{ trans('project_help.bitrix_events_p') }}</p>
         <form method="post"
               action="{{ action('ProjectHelpController@bitrixEventsAdd') }}">
             {{ csrf_field() }}
@@ -26,22 +26,19 @@
             <table class="table table-bordered">
                 <tr>
                     <th>
-                        Модуль
+                        {{ trans('project_help.bitrix_events_module_th') }}
                     </th>
                     <th>
-                        Событие
+                        {{ trans('project_help.bitrix_events_event_th') }}
                     </th>
                     <th>
-                        Параметры
+                        {{ trans('project_help.bitrix_events_params_th') }}
                     </th>
                     <th>
-                        Описание
+                        {{ trans('project_help.bitrix_events_description_th') }}
                     </th>
                     <th>
-                        Статус
-                    </th>
-                    <th>
-                        Действия
+                        {{ trans('project_help.bitrix_events_action_th') }}
                     </th>
                 </tr>
                 @foreach($existing_events as $existing_event)
@@ -59,13 +56,8 @@
                             {{ $existing_event->description }}
                         </td>
                         <td>
-                            @if (!$existing_event->approved)
-                                На рассмотрении
-                            @endif
-                        </td>
-                        <td>
                             <a href="{{ action('ProjectHelpController@bitrixEventsMarkAsBad', $existing_event) }}"
-                               class="btn btn-warning btn-block">Устарело / неправильно
+                               class="btn btn-warning btn-block">{{ trans('project_help.bitrix_events_mark_bad_action') }}
                             </a>
                         </td>
                     </tr>
@@ -74,7 +66,7 @@
                     <td>
                         <input type="text"
                                name="module"
-                               placeholder="Модуль"
+                               placeholder="{{ trans('project_help.bitrix_events_module_th') }}"
                                class="form-control"
                                list="core_modules_list"
                                required>
@@ -82,23 +74,22 @@
                     <td>
                         <input type="text"
                                name="event"
-                               placeholder="Событие"
+                               placeholder="{{ trans('project_help.bitrix_events_event_th') }}"
                                class="form-control"
                                required>
                     </td>
                     <td>
                         <input type="text"
                                name="params"
-                               placeholder="Параметры"
+                               placeholder="{{ trans('project_help.bitrix_events_params_th') }}"
                                class="form-control">
                     </td>
                     <td>
                          <textarea name="description"
                                    class="form-control"></textarea>
                     </td>
-                    <td></td>
                     <td>
-                        <button class="btn btn-primary btn-block">Предложить</button>
+                        <button class="btn btn-primary btn-block">{{ trans('project_help.bitrix_events_suggest_action') }}</button>
                     </td>
                 </tr>
             </table>

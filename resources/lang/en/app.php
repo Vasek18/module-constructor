@@ -50,6 +50,8 @@ return [
 
 	'email_was_sent' => 'Email was sent',
 
+	'awaiting_confirmation' => 'Awaiting confirmation',
+
 	'delete_confirmation_title'       => 'Deletion',
 	'delete_confirmation_text'        => 'Sure?',
 	'delete_confirmation_button_text' => 'Still remove',
