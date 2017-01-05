@@ -80,6 +80,9 @@ class BitrixEventHandlersFilesTest extends BitrixTestCase{
 			preg_split('/\r\n|\r|\n/', '<?
 namespace '.$this->module->namespace.'\EventHandlers;
 
+use Bitrix\Main\Localization;
+Localization\Loc::loadMessages(__FILE__);
+
 class OnPrologHandler{
 	static public function handler(){
 		<?="ololo";?>
@@ -114,6 +117,9 @@ class OnPrologHandler{
 		$this->assertEquals(preg_split('/\r\n|\r|\n/', $file),
 			preg_split('/\r\n|\r|\n/', '<?
 namespace '.$this->module->namespace.'\EventHandlers;
+
+use Bitrix\Main\Localization;
+Localization\Loc::loadMessages(__FILE__);
 
 class OnPrologHandler{
 	static public function handler($arFields){
@@ -159,6 +165,9 @@ class OnPrologHandler{
 			preg_split('/\r\n|\r|\n/', '<?
 namespace '.$this->module->namespace.'\EventHandlers;
 
+use Bitrix\Main\Localization;
+Localization\Loc::loadMessages(__FILE__);
+
 class OnPrologHandler{
 	static public function handler(){
 		<?="ololo";?>
@@ -197,6 +206,9 @@ class OnPrologHandler{
 		$this->assertEquals(preg_split('/\r\n|\r|\n/', $file),
 			preg_split('/\r\n|\r|\n/', '<?
 namespace '.$this->module->namespace.'\EventHandlers;
+
+use Bitrix\Main\Localization;
+Localization\Loc::loadMessages(__FILE__);
 
 class OnTestHandler{
 	static public function handler(){
@@ -260,6 +272,9 @@ class OnTestHandler{
 		$this->assertEquals(preg_split('/\r\n|\r|\n/', $file),
 			preg_split('/\r\n|\r|\n/', '<?
 namespace '.$this->module->namespace.'\EventHandlers;
+
+use Bitrix\Main\Localization;
+Localization\Loc::loadMessages(__FILE__);
 
 class OnPrologHandler{
 	static public function handler(){

@@ -1,5 +1,5 @@
 <div class="row option deletion_wrapper">
-    <div class="col-md-2">
+    <div class="col-md-3">
         @if ($handler && count($handler->events))
             @foreach($handler->events as $event)
                 <input type="text"
@@ -20,7 +20,7 @@
             <br>
         @endfor
     </div>
-    <div class="col-md-3">
+    <div class="col-md-4">
         @if ($handler && count($handler->events))
             @foreach($handler->events as $event)
                 <div class="row">
@@ -70,24 +70,22 @@
                placeholder="{{ trans('bitrix_event_handlers.params') }}"
                value="{{$handler?$handler->params:''}}">
     </div>
-    <div class="col-md-4">
-        @if ($handler)
-            {{ $handler->php_code }}
-        @endif
-    </div>
-    <div class="col-md-1">
+    <div class="col-md-2">
         @if ($handler)
             <a href="#"
-               class="btn btn-sm btn-default"
+               class="btn btn-default"
                data-toggle="modal"
                data-target="#php_code_window_{{$i}}">
             <span class="glyphicon glyphicon-console"
                   aria-hidden="true"></span>
+                {{ trans('bitrix_event_handlers.code') }}
             </a>
         @endif
+    </div>
+    <div class="col-md-1">
         @if ($handler)
             <a href="{{ action('Modules\Bitrix\BitrixEventHandlersController@destroy', [$module, $handler]) }}"
-               class="btn btn-sm btn-danger human_ajax_deletion"
+               class="btn btn-danger human_ajax_deletion"
                id="delete_handler_{{$handler->id}}">
                 <span class="glyphicon glyphicon-trash"
                       aria-hidden="true"></span>
@@ -108,14 +106,19 @@
                         aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title">{{ trans('bitrix_event_handlers.code') }} {{ $handler ? '('.$handler->from_module.' -> '.$handler->event.')' : '' }}
+                <h4 class="modal-title">{{ trans('bitrix_event_handlers.code') }}
+                    - {{ $handler ? '('.$handler->class.' -> '.$handler->method.')' : '' }}
                     <br>{{ trans('bitrix_event_handlers.params') }} - ({{ $handler ? $handler->params : '' }})</h4>
             </div>
             <div class="modal-body">
                 <label class="sr-only"
                        for="php_code_{{$i}}">{{ trans('bitrix_event_handlers.code') }}</label>
+                {{ $handler ? $handler->class."{" : '' }}<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;{{ $handler ? $handler->method."(".$handler->params."){" : '' }}
                 <div id="editor_{{$i}}"
                      style="height: 500px">{{ $handler ? $handler->php_code : '' }}</div>
+                &nbsp;&nbsp;&nbsp;&nbsp;{{ $handler ? "}" : '' }}<br>
+                {{ $handler ? "}" : '' }}
                 @push('scripts')
                 <script>
                     var editor_{{$i}}   = ace.edit("editor_{{$i}}");
@@ -131,6 +134,9 @@
                        name="php_code[]"
                        id="php_code_{{$i}}"
                        value="{{$handler?$handler->php_code:''}}">
+                <button type="submit"
+                        class="btn btn-primary btn-block"
+                        name="save">{{ trans('app.save') }}</button>
             </div>
         </div>
     </div>

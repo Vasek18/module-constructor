@@ -31,17 +31,14 @@
           action="{{ action('Modules\Bitrix\BitrixEventHandlersController@store', $module->id) }}">
         {{ csrf_field() }}
         <div class="row option-headers">
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <label>{{ trans('bitrix_event_handlers.module') }}</label>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <label>{{ trans('bitrix_event_handlers.event') }}</label>
             </div>
             <div class="col-md-2">
                 <label>{{ trans('bitrix_event_handlers.params') }}</label>
-            </div>
-            <div class="col-md-4">
-                <label>{{ trans('bitrix_event_handlers.code') }}</label>
             </div>
         </div>
         @foreach($handlers as $i => $handler)

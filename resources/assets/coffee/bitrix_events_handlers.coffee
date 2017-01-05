@@ -3,6 +3,9 @@ $(document).on "change", "[name^=event]", () ->
 	el = $(this)
 	event = el.val()
 
+	if not event
+		return
+
 	datalist = $("#" + el.attr("list"))
 	datalistOption = datalist.find("[value=#{event}]")
 	params = datalistOption.attr("data-params")
@@ -14,4 +17,3 @@ $(document).on "change", "[name^=event]", () ->
 		paramsField.val(params)
 
 	return
-	

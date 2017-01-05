@@ -3,6 +3,9 @@
     var datalist, datalistOption, el, event, params, paramsField, row;
     el = $(this);
     event = el.val();
+    if (!event) {
+      return;
+    }
     datalist = $("#" + el.attr("list"));
     datalistOption = datalist.find("[value=" + event + "]");
     params = datalistOption.attr("data-params");
