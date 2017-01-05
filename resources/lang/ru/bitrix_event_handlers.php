@@ -10,4 +10,6 @@ return [
 	'params'             => 'Входные параметры',
 	'description'        => 'Описание',
 	'description_search' => 'Поиск по описанию',
+	'too_little_events'  => 'Не хватает событий?',
+	'add_yours'          => 'Добавь свои',
 ];

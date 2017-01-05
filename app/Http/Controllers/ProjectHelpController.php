@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\DB;
 
 class ProjectHelpController extends Controller{
 
-	public function events(Request $request){
+	// события Битрикса
+	public function bitrixEvents(Request $request){
 
 		$data = [
 			'existing_events' => DB::table('bitrix_core_events')->get()

@@ -5,6 +5,11 @@
 @stop
 
 @section('page')
+    <div class="panel panel-default">
+        <div class="panel-body">{{ trans('bitrix_event_handlers.too_little_events') }}
+            <a href="{{ action('ProjectHelpController@bitrixEvents') }}">{{ trans('bitrix_event_handlers.add_yours') }}</a>
+        </div>
+    </div>
     <datalist id="core_modules_list">
         @foreach($core_modules as $core_module)
             <option>{{$core_module->code}}</option>

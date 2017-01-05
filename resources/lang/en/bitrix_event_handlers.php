@@ -10,4 +10,6 @@ return [
 	'params'             => 'Input params',
 	'description'        => 'Description',
 	'description_search' => 'Description search',
+	'too_little_events'  => 'Not enough events?',
+	'add_yours'          => 'Add yours',
 ];
