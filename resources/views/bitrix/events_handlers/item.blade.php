@@ -23,21 +23,40 @@
     <div class="col-md-3">
         @if ($handler && count($handler->events))
             @foreach($handler->events as $event)
-                <input type="text"
-                       class="form-control"
-                       name="event_{{$i}}[]"
-                       placeholder="{{ trans('bitrix_event_handlers.event') }}"
-                       value="{{$event->event}}"
-                       list="core_events_list">
+                <div class="row">
+                    <div class="col-md-10">
+                        <input type="text"
+                               class="form-control"
+                               name="event_{{$i}}[]"
+                               placeholder="{{ trans('bitrix_event_handlers.event') }}"
+                               value="{{$event->event}}"
+                               list="core_events_list">
+                    </div>
+                    <div class="col-md-2">
+                        <a data-toggle="popover"
+                           tabindex="0"
+                           role="button"
+                           data-trigger="focus"
+                           title="{{ trans('bitrix_event_handlers.description') }}"
+                           data-content="{{$event->description}}">
+                             <span class="glyphicon glyphicon-info-sign"
+                                   aria-hidden="true"></span>
+                        </a>
+                    </div>
+                </div>
                 <br>
             @endforeach
         @endif
         @for($j = 1; $j <= 3; $j++)
-            <input type="text"
-                   class="form-control"
-                   name="event_{{$i}}[]"
-                   placeholder="{{ trans('bitrix_event_handlers.event') }}"
-                   list="core_events_list">
+            <div class="row">
+                <div class="col-md-10">
+                    <input type="text"
+                           class="form-control"
+                           name="event_{{$i}}[]"
+                           placeholder="{{ trans('bitrix_event_handlers.event') }}"
+                           list="core_events_list">
+                </div>
+            </div>
             <br>
         @endfor
     </div>
@@ -50,7 +69,9 @@
                value="{{$handler?$handler->params:''}}">
     </div>
     <div class="col-md-4">
-
+        @if ($handler)
+            {{ $handler->php_code }}
+        @endif
     </div>
     <div class="col-md-1">
         @if ($handler)

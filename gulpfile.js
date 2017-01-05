@@ -29,5 +29,7 @@ elixir(function(mix){
 		.coffee('bitrix_component_logic_wizard.coffee')
 		.coffee('bitrix_iblock.coffee')
 		.coffee('deletetion_with_confirm.coffee')
+
+		// .copy('resources/assets/js/popover.js', 'public/js/popover.js')
 		.copy('node_modules/sweetalert/dist/sweetalert-dev.js', 'public/js/sweetalert.js')
 });

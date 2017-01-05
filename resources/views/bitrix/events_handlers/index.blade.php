@@ -12,7 +12,7 @@
     </datalist>
     <datalist id="core_events_list">
         @foreach($core_events as $core_event)
-            <option>{{$core_event->code}}</option>
+            <option value="{{$core_event->code}}">{{$core_event->description}}</option>
         @endforeach
     </datalist>
     @if (count($errors) > 0)
@@ -39,15 +39,17 @@
                 <label>{{ trans('bitrix_event_handlers.params') }}</label>
             </div>
             <div class="col-md-4">
-                <label>{{ trans('bitrix_event_handlers.description') }}</label>
+                <label>{{ trans('bitrix_event_handlers.code') }}</label>
             </div>
         </div>
         @foreach($handlers as $i => $handler)
             @include('bitrix.events_handlers.item', ['handler' => $handler, 'i' => $i, 'module' => $module])
+            <hr>
         @endforeach
         {{-- Дополнительно показываем ещё несколько пустых строк --}}
         @for ($j = count($handlers); $j < count($handlers)+5; $j++)
             @include('bitrix.events_handlers.item', ['handler' => null, 'i' => $j, 'module' => $module])
+            <hr>
         @endfor
         <div class="row">
             <div class="col-md-12">

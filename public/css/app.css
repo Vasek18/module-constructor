@@ -1424,3 +1424,7 @@ a.you-can-change:hover {
   color: #777;
   text-decoration: underline;
 }
+
+.popover {
+  min-width: 300px;
+}
