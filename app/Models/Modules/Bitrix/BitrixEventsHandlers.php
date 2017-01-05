@@ -4,13 +4,10 @@ namespace App\Models\Modules\Bitrix;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
-use Auth;
 
 class BitrixEventsHandlers extends Model{
 	protected $table = 'bitrix_events_handlers';
-
 	protected $fillable = ['class', 'method', 'params', 'php_code'];
-
 	public $timestamps = false;
 
 	// сохраняем обработчики в папку модуля
@@ -26,8 +23,8 @@ class BitrixEventsHandlers extends Model{
 
 			foreach ($handlers as $handler){
 				foreach ($handler->events as $event){
-					$installHandlersCode .= "\t\t".'\Bitrix\Main\EventManager::getInstance()->registerEventHandler("'.$event->from_module.'", "'.$event->event.'", $this->MODULE_ID, \'\\'.$module->namespace.'\\EventHandlers\\'.$handler->class.'\', "'.$handler->method.'");'.PHP_EOL;
-					$uninstallHandlersCode .= "\t\t".'\Bitrix\Main\EventManager::getInstance()->unRegisterEventHandler("'.$event->from_module.'", "'.$event->event.'", $this->MODULE_ID, \'\\'.$module->namespace.'\\EventHandlers\\'.$handler->class.'\', "'.$handler->method.'");'.PHP_EOL;
+					$installHandlersCode .= $handler->getInstallationCode($event);
+					$uninstallHandlersCode .= $handler->getUnInstallationCode($event);
 				}
 				if (isset($classes[$handler->class]) && $classes[$handler->class]['method'] == $handler->method){ // исключаем случаи создания двух одинаковых функций в одном файле
 					continue;
@@ -73,6 +70,28 @@ class BitrixEventsHandlers extends Model{
 		$handlerCode = str_replace($template_search, $template_replace, $handlerFunctionTemplate);
 
 		return $handlerCode;
+	}
+
+	public function delete(){
+		// удаляем сам файл
+		$this->module->disk()->delete($this->file);
+
+		parent::delete();
+
+		// производим замены в коде модуля
+		BitrixEventsHandlers::saveEventsInFolder($this->module);
+	}
+
+	public function getInstallationCode($event){
+		$module = $this->module;
+
+		return "\t\t".'\Bitrix\Main\EventManager::getInstance()->registerEventHandler("'.$event->from_module.'", "'.$event->event.'", $this->MODULE_ID, \'\\'.$module->namespace.'\\EventHandlers\\'.$this->class.'\', "'.$this->method.'");'.PHP_EOL;
+	}
+
+	public function getUnInstallationCode($event){
+		$module = $this->module;
+
+		return "\t\t".'\Bitrix\Main\EventManager::getInstance()->unRegisterEventHandler("'.$event->from_module.'", "'.$event->event.'", $this->MODULE_ID, \'\\'.$module->namespace.'\\EventHandlers\\'.$this->class.'\', "'.$this->method.'");'.PHP_EOL;
 	}
 
 	public function getFileCodeAttribute(){

@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers\Modules\Bitrix;
 
+use App\Models\Modules\Bitrix\BitrixCoreEvents;
 use Illuminate\Http\Request;
-
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use Auth;
 use App\Models\Modules\Bitrix\Bitrix;
 use App\Models\Modules\Bitrix\BitrixEventsHandlers;
 use App\Http\Controllers\Traits\UserOwnModule;
@@ -22,7 +20,7 @@ class BitrixEventHandlersController extends Controller{
 		}
 		$handlers = $module->handlers()->get();
 		$core_modules = DB::table('bitrix_core_modules')->get();
-		$core_events = DB::table('bitrix_core_events')->get();
+		$core_events = BitrixCoreEvents::all();
 		$data = [
 			'module'       => $module,
 			'handlers'     => $handlers,
@@ -39,27 +37,21 @@ class BitrixEventHandlersController extends Controller{
 			return $this->unauthorized($request);
 		}
 		// dd($request->all());
-
-		// удаляем старые обработчики, чтобы при изменение уже заполненной строчки, старые данные с этой строчки не существовали
-		$module->handlers()->delete();
-		// удаляем их файлы
-		$module->disk()->deleteDirectory($module->module_folder."/lib/eventhandlers");
+		$this->cleanHandlers($module);
 
 		// перебираем все строки полей
 		foreach ($request["params"] as $i => $method){
-			if (!$request['event_'.$i][0]){
+			if (!$request['event_'.$i][0]){ // определяем пустоту по заполненности события
 				continue;
 			}
 
-			$handlerParams = [];
-			$handlerParams["class"] = $request['event_'.$i][0].'Handler';
-			$handlerParams["method"] = 'handler';
-			$handlerParams["params"] = $request['params'][$i];
-			$handlerParams["php_code"] = trim($request['php_code'][$i]);
-			// dd($handlerParams);
-
 			// записываем в бд
-			$handler = $module->handlers()->create($handlerParams);
+			$handler = $module->handlers()->create([
+				"class"    => $request['event_'.$i][0].'Handler',
+				"method"   => 'handler',
+				"params"   => $request['params'][$i],
+				"php_code" => trim($request['php_code'][$i]),
+			]);
 
 			// записываем события к которым привязан обработчик
 			foreach ($request["event_".$i] as $j => $event){
@@ -86,15 +78,19 @@ class BitrixEventHandlersController extends Controller{
 		if (!$handler->id || !$module->id){
 			return false;
 		}
-		// удаляем запись из БД
-		BitrixEventsHandlers::destroy($handler->id);
 
-		// производим замены в папке модуля
-		BitrixEventsHandlers::saveEventsInFolder($module);
-
-		// удаляем обработчик
-		$module->disk()->delete($handler->file);
+		$handler->delete();
 
 		return back();
+	}
+
+	/**
+	 * @param Bitrix $module
+	 */
+	public function cleanHandlers(Bitrix $module){
+		// удаляем старые обработчики, чтобы при изменение уже заполненной строчки, старые данные с этой строчки не существовали
+		$module->handlers()->delete();
+		// удаляем их файлы
+		$module->disk()->deleteDirectory($module->module_folder."/lib/eventhandlers");
 	}
 }

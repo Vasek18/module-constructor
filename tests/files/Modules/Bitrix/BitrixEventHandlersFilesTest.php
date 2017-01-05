@@ -237,7 +237,7 @@ class OnTestHandler{
 		$expectedArr = [];
 		$this->assertEquals($expectedArr, $installationArr);
 
-		$this->assertFileNotExists($this->module->getFolder().'/lib/eventhandlers/myclass.php');
+		$this->assertFileNotExists($this->module->getFolder().'/lib/eventhandlers/onprologhandler.php');
 	}
 
 	/** @test */
