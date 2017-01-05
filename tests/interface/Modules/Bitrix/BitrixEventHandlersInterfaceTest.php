@@ -33,7 +33,7 @@ class BitrixEventHandlersInterfaceTest extends BitrixTestCase{
 	}
 
 	/** @test */
-	function this_is_definitely_page_about_mail_events(){
+	function this_is_definitely_page_about_event_handlers(){
 		$this->visit('/my-bitrix/'.$this->module->id.$this->path);
 
 		$this->see('Привязка к событиям');
@@ -64,6 +64,28 @@ class BitrixEventHandlersInterfaceTest extends BitrixTestCase{
 		$this->visit('/my-bitrix/'.$this->module->id.$this->path);
 
 		$this->seePageIs('/personal');
+	}
+
+	/** @test */
+	function user_see_only_approved_events_at_module_editing(){
+		$this->create_approved_event();
+		$this->create_unapproved_event();
+
+		$this->visit('/my-bitrix/'.$this->module->id.$this->path);
+
+		$this->see('OnEpilog');
+		$this->dontSee('OnProlog');
+	}
+
+	/** @test */
+	function user_see_only_approved_modules_at_module_editing(){
+		$this->create_approved_module();
+		$this->create_unapproved_module();
+
+		$this->visit('/my-bitrix/'.$this->module->id.$this->path);
+
+		$this->see('goodModule');
+		$this->dontSee('testModule');
 	}
 }
 

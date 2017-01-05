@@ -57,7 +57,8 @@
                         </td>
                         <td>
                             <a href="{{ action('ProjectHelpController@bitrixEventsMarkAsBad', $existing_event) }}"
-                               class="btn btn-warning btn-block">{{ trans('project_help.bitrix_events_mark_bad_action') }}
+                               class="btn btn-warning btn-block"
+                               id="mark_as_bad{{ $existing_event->id }}">{{ trans('project_help.bitrix_events_mark_bad_action') }}
                             </a>
                         </td>
                     </tr>
@@ -89,7 +90,8 @@
                                    class="form-control"></textarea>
                     </td>
                     <td>
-                        <button class="btn btn-primary btn-block">{{ trans('project_help.bitrix_events_suggest_action') }}</button>
+                        <button class="btn btn-primary btn-block"
+                                name="offer">{{ trans('project_help.bitrix_events_suggest_action') }}</button>
                     </td>
                 </tr>
             </table>

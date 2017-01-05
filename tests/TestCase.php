@@ -15,7 +15,7 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase{
 
 	public function tearDown(){
 		// иначе ошибка количества подключений
-		$this->beforeApplicationDestroyed(function(){
+		$this->beforeApplicationDestroyed(function (){
 			DB::disconnect();
 		});
 
@@ -77,5 +77,43 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase{
 		$user->save();
 
 		$this->user->paid_days = intval($days);
+	}
+
+	function create_approved_event(){
+		$module_id = 1;
+
+		$id = DB::table('bitrix_core_events')->insertGetId([
+			'module_id' => $module_id,
+			'code'      => 'OnEpilog',
+			'approved'  => true,
+		]);
+
+		return DB::table('bitrix_core_events')->where('id', $id)->first();
+	}
+
+	function create_approved_module(){
+		return DB::table('bitrix_core_modules')->insert([
+			'code'     => 'goodModule',
+			'approved' => true,
+		]);
+	}
+
+	function create_unapproved_event(){
+		$module_id = 1;
+
+		$id = DB::table('bitrix_core_events')->insertGetId([
+			'module_id' => $module_id,
+			'code'      => 'OnProlog',
+			'approved'  => false,
+		]);
+
+		return DB::table('bitrix_core_events')->where('id', $id)->first();
+	}
+
+	function create_unapproved_module(){
+		return DB::table('bitrix_core_modules')->insert([
+			'code'     => 'testModule',
+			'approved' => false,
+		]);
 	}
 }
