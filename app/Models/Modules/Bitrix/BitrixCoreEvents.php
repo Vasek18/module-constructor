@@ -10,6 +10,12 @@ class BitrixCoreEvents extends Model{
 	protected $fillable = ['module_id', 'name', 'code', 'params', 'description', 'approved'];
 	public $timestamps = false;
 
+	public function approve(){
+		$this->approved = true;
+		$this->is_bad = false; // убивая двух зайцев в админке
+		$this->save();
+	}
+
 	public function markAsBad(){
 		$this->is_bad = true;
 		$this->save();
@@ -21,5 +27,13 @@ class BitrixCoreEvents extends Model{
 
 	public function scopeApproved($query){
 		return $query->where('approved', true);
+	}
+
+	public function scopeUnapproved($query){
+		return $query->where('approved', false);
+	}
+
+	public function scopeMarked($query){
+		return $query->where('is_bad', true);
 	}
 }

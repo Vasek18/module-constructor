@@ -27,6 +27,9 @@
                     <a href="{{ action('Admin\AdminLogsController@index') }}"
                        class="list-group-item">Логи
                     </a>
+                    <a href="{{ action('Admin\AdminConfirmsController@index') }}"
+                       class="list-group-item">На утверждение
+                    </a>
                 </div>
             </div>
             <div class="col-md-9">

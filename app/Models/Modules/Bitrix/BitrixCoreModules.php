@@ -9,7 +9,16 @@ class BitrixCoreModules extends Model{
 	protected $fillable = ['name', 'code', 'approved'];
 	public $timestamps = false;
 
+	public function approve(){
+		$this->approved = true;
+		$this->save();
+	}
+
 	public function scopeApproved($query){
 		return $query->where('approved', true);
+	}
+
+	public function scopeUnapproved($query){
+		return $query->where('approved', false);
 	}
 }

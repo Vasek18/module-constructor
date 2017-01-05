@@ -92,10 +92,12 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase{
 	}
 
 	function create_approved_module(){
-		return DB::table('bitrix_core_modules')->insert([
+		$id = DB::table('bitrix_core_modules')->insertGetId([
 			'code'     => 'goodModule',
 			'approved' => true,
 		]);
+
+		return DB::table('bitrix_core_modules')->where('id', $id)->first();
 	}
 
 	function create_unapproved_event(){
@@ -111,9 +113,24 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase{
 	}
 
 	function create_unapproved_module(){
-		return DB::table('bitrix_core_modules')->insert([
+		$id = DB::table('bitrix_core_modules')->insertGetId([
 			'code'     => 'testModule',
 			'approved' => false,
 		]);
+
+		return DB::table('bitrix_core_modules')->where('id', $id)->first();
+	}
+
+	function create_marked_event(){
+		$module_id = 1;
+
+		$id = DB::table('bitrix_core_events')->insertGetId([
+			'module_id' => $module_id,
+			'code'      => 'OnProlog',
+			'approved'  => true,
+			'is_bad'    => true,
+		]);
+
+		return DB::table('bitrix_core_events')->where('id', $id)->first();
 	}
 }

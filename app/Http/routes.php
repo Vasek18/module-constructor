@@ -242,9 +242,18 @@ Route::group(['prefix' => 'oko', 'middleware' => 'admin'], function (){
 		});
 	});
 
-	// статьи
+	// настройки
 	Route::group(['prefix' => 'settings'], function (){
 		Route::post('{setting}/set', ['uses' => 'Admin\AdminSettingsController@set']);
+	});
+
+	// настройки
+	Route::group(['prefix' => 'confirms'], function (){
+		Route::get('', ['uses' => 'Admin\AdminConfirmsController@index']);
+		Route::get('{module}/approve_module', ['uses' => 'Admin\AdminConfirmsController@approveModule']);
+		Route::get('{module}/delete_module', ['uses' => 'Admin\AdminConfirmsController@deleteModule']);
+		Route::get('{event}/approve_event', ['uses' => 'Admin\AdminConfirmsController@approveEvent']);
+		Route::get('{event}/delete_event', ['uses' => 'Admin\AdminConfirmsController@deleteEvent']);
 	});
 });
 
@@ -287,8 +296,6 @@ Route::group(['prefix' => 'project_help'], function (){
 		});
 	});
 });
-
-
 
 Route::get('{section_code}/{article_code}', ['uses' => 'ArticleController@show']);
 Route::get('{section_code}', ['uses' => 'ArticleSectionController@show']);
