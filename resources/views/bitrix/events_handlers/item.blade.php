@@ -32,17 +32,19 @@
                                value="{{$event->event}}"
                                list="core_events_list">
                     </div>
-                    <div class="col-md-2">
-                        <a data-toggle="popover"
-                           tabindex="0"
-                           role="button"
-                           data-trigger="focus"
-                           title="{{ trans('bitrix_event_handlers.description') }}"
-                           data-content="{{$event->description}}">
+                    @if ($event->description)
+                        <div class="col-md-2">
+                            <a data-toggle="popover"
+                               tabindex="0"
+                               role="button"
+                               data-trigger="focus"
+                               title="{{ trans('bitrix_event_handlers.description') }}"
+                               data-content="{{$event->description}}">
                              <span class="glyphicon glyphicon-info-sign"
                                    aria-hidden="true"></span>
-                        </a>
-                    </div>
+                            </a>
+                        </div>
+                    @endif
                 </div>
                 <br>
             @endforeach

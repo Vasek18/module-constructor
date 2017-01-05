@@ -12,7 +12,8 @@
     </datalist>
     <datalist id="core_events_list">
         @foreach($core_events as $core_event)
-            <option value="{{$core_event->code}}">{{$core_event->description}}</option>
+            <option value="{{$core_event->code}}"
+                    data-params="{{$core_event->params}}">{{$core_event->description}}</option>
         @endforeach
     </datalist>
     @if (count($errors) > 0)
@@ -25,7 +26,8 @@
             </ul>
         </div>
     @endif
-    <form role="form" method="POST"
+    <form role="form"
+          method="POST"
           action="{{ action('Modules\Bitrix\BitrixEventHandlersController@store', $module->id) }}">
         {{ csrf_field() }}
         <div class="row option-headers">
@@ -53,11 +55,14 @@
         @endfor
         <div class="row">
             <div class="col-md-12">
-                <button type="submit" class="btn btn-primary btn-block" name="save">{{ trans('app.save') }}</button>
+                <button type="submit"
+                        class="btn btn-primary btn-block"
+                        name="save">{{ trans('app.save') }}</button>
             </div>
         </div>
     </form>
     @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/ace.js"></script>
+    <script src="/js/bitrix_events_handlers.js"></script>
     @endpush
 @stop

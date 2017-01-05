@@ -11,6 +11,7 @@ class AddColumnsToBitrixCoreEventsTable extends Migration{
 	 */
 	public function up(){
 		Schema::table('bitrix_core_events', function (Blueprint $table){
+			$table->string('params')->nullable();
 			$table->text('description')->nullable();
 			$table->boolean('approved')->nullable()->default(false);
 		});
@@ -23,8 +24,9 @@ class AddColumnsToBitrixCoreEventsTable extends Migration{
 	 */
 	public function down(){
 		Schema::table('bitrix_core_events', function (Blueprint $table){
-			$table->dropColumn('description')->nullable();
-			$table->dropColumn('approved')->nullable()->default(false);
+			$table->dropColumn('params');
+			$table->dropColumn('description');
+			$table->dropColumn('approved');
 		});
 	}
 }
