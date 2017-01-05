@@ -14,6 +14,8 @@ class AddColumnsToBitrixCoreEventsTable extends Migration{
 			$table->string('params')->nullable();
 			$table->text('description')->nullable();
 			$table->boolean('approved')->nullable()->default(false);
+			$table->boolean('is_bad')->nullable()->default(false);
+			$table->integer('creator_id')->nullable();
 		});
 	}
 
@@ -27,6 +29,8 @@ class AddColumnsToBitrixCoreEventsTable extends Migration{
 			$table->dropColumn('params');
 			$table->dropColumn('description');
 			$table->dropColumn('approved');
+			$table->dropColumn('is_bad');
+			$table->dropColumn('creator_id');
 		});
 	}
 }

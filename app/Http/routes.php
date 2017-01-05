@@ -280,7 +280,11 @@ Route::group(['prefix' => 'functional_suggestions'], function (){
 // помощь проекту
 Route::group(['prefix' => 'project_help'], function (){
 	Route::group(['prefix' => 'bitrix'], function (){
-		Route::get('events', ['uses' => 'ProjectHelpController@bitrixEvents']);
+		Route::group(['prefix' => 'events'], function (){
+			Route::get('', ['uses' => 'ProjectHelpController@bitrixEvents']);
+			Route::post('add', ['uses' => 'ProjectHelpController@bitrixEventsAdd']);
+			Route::get('{event}/mark_as_bad', ['uses' => 'ProjectHelpController@bitrixEventsMarkAsBad']);
+		});
 	});
 });
 

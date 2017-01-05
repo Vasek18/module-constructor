@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Modules\Bitrix;
 
 use App\Models\Modules\Bitrix\BitrixCoreEvents;
+use App\Models\Modules\Bitrix\BitrixCoreModules;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Modules\Bitrix\Bitrix;
 use App\Models\Modules\Bitrix\BitrixEventsHandlers;
 use App\Http\Controllers\Traits\UserOwnModule;
-use Illuminate\Support\Facades\DB;
 
 class BitrixEventHandlersController extends Controller{
 	use UserOwnModule;
@@ -19,8 +19,8 @@ class BitrixEventHandlersController extends Controller{
 			return $this->unauthorized($request);
 		}
 		$handlers = $module->handlers()->get();
-		$core_modules = DB::table('bitrix_core_modules')->get();
-		$core_events = BitrixCoreEvents::all();
+		$core_modules = BitrixCoreModules::all();
+		$core_events = BitrixCoreEvents::approved()->get();
 		$data = [
 			'module'       => $module,
 			'handlers'     => $handlers,
