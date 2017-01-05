@@ -87,6 +87,28 @@ class BitrixEventHandlersInterfaceTest extends BitrixTestCase{
 		$this->see('goodModule');
 		$this->dontSee('testModule');
 	}
+
+	/** @test */
+	function if_user_use_new_module_or_event_we_save_it(){
+		$this->createEventHandlerOnForm($this->module, 0, [
+			'from_module' => 'ololo',
+			'event'       => 'trololo',
+		]);
+
+		$countModules = DB::table('bitrix_core_modules')->where([
+			'code'     => 'ololo',
+			'approved' => false,
+		])->count();
+
+		$this->assertEquals(1, $countModules);
+
+		$countEvents = DB::table('bitrix_core_events')->where([
+			'code'     => 'trololo',
+			'approved' => false,
+		])->count();
+
+		$this->assertEquals(1, $countEvents);
+	}
 }
 
 ?>

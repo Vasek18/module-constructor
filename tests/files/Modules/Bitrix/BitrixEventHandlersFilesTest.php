@@ -58,7 +58,6 @@ class BitrixEventHandlersFilesTest extends BitrixTestCase{
 		$this->createEventHandlerOnForm($this->module, 0, [
 			'from_module' => 'main',
 			'event'       => 'OnProlog',
-			'class'       => 'MyClass',
 			'php_code'    => '<?="ololo";?>',
 		]);
 

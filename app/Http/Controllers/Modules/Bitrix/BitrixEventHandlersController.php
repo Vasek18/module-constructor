@@ -60,6 +60,21 @@ class BitrixEventHandlersController extends Controller{
 						'from_module' => $request['from_module_'.$i][$j],
 						'event'       => $request['event_'.$i][$j],
 					]);
+
+					// если такого модуля нет, то мы добавляем его
+					if (BitrixCoreModules::where('code', $request['from_module_'.$i][$j])->count()){
+						$coreModule = BitrixCoreModules::where('code', $request['from_module_'.$i][$j])->first();
+					}else{
+						$coreModule = BitrixCoreModules::create([
+							'code' => $request['from_module_'.$i][$j],
+						]);
+					}
+
+					// если такого события нет, то мы добавляем его
+					BitrixCoreEvents::create([
+						'module_id' => $coreModule->id,
+						'code'      => $request['event_'.$i][$j],
+					]);
 				}
 			}
 		}
