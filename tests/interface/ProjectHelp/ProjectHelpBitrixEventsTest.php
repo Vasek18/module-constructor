@@ -60,6 +60,35 @@ class ProjectHelpBitrixEventsTest extends TestCase{
 	}
 
 	/** @test */
+	function user_cannot_offer_existing_event(){
+		$this->submitForm('offer', [
+			'module'      => 'main', // из миграции
+			'event'       => 'testEvent',
+			'params'      => '$content',
+			'description' => 'Полезное событие',
+		]);
+
+		$this->submitForm('offer', [
+			'module'      => 'main', // из миграции
+			'event'       => 'testEvent',
+			'params'      => '$content',
+			'description' => 'Полезное событие',
+		]);
+
+		$this->see('Такое событие уже существует');
+
+		$count = DB::table('bitrix_core_events')->where([
+			'module_id'   => 1, // из миграции
+			'code'        => 'testEvent',
+			'params'      => '$content',
+			'description' => 'Полезное событие',
+			'approved'    => false,
+		])->count();
+
+		$this->assertEquals(1, $count);
+	}
+
+	/** @test */
 	function offered_module_is_not_approved(){
 		$this->submitForm('offer', [
 			'module'      => 'testModule',

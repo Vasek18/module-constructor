@@ -22,7 +22,7 @@ class ProjectHelpController extends Controller{
 	public function bitrixEventsAdd(Request $request){
 		$this->validate($request, [
 			'module' => 'required',
-			'event'  => 'required',
+			'event'  => 'required|unique:bitrix_core_events,code',
 		]);
 
 		if (BitrixCoreModules::where('code', $request->module)->count()){
