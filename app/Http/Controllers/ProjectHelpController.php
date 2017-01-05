@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Modules\Bitrix\BitrixCoreEvents;
 use App\Models\Modules\Bitrix\BitrixCoreModules;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class ProjectHelpController extends Controller{
 
@@ -32,7 +33,7 @@ class ProjectHelpController extends Controller{
 			]);
 		}
 
-		BitrixCoreEvents::create([
+		$event = BitrixCoreEvents::create([
 				'module_id'   => $module->id,
 				'code'        => $request->event,
 				'params'      => $request->params,
@@ -40,11 +41,20 @@ class ProjectHelpController extends Controller{
 			]
 		);
 
+		// письмо мне
+		Mail::send('emails.admin.new_bitrix_core_action', ['event' => $event, 'module' => $module], function ($m){
+			$m->to(env('GOD_EMAIL'))->subject('Предложенно новое событие');
+		});
+
+		flash()->success(trans('project_help.bitrix_events_add_confirmation'));
+
 		return back();
 	}
 
 	public function bitrixEventsMarkAsBad(BitrixCoreEvents $event, Request $request){
 		$event->markAsBad();
+
+		flash()->success(trans('project_help.bitrix_events_mark_bad_confirmation'));
 
 		return back();
 	}
