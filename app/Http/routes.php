@@ -277,6 +277,15 @@ Route::group(['prefix' => 'functional_suggestions'], function (){
 	Route::get('{suggestion}/delete', ['uses' => 'FunctionalSuggestionController@destroy']);
 });
 
+// помощь проекту
+Route::group(['prefix' => 'project_help'], function (){
+	Route::group(['prefix' => 'bitrix'], function (){
+		Route::get('events', ['uses' => 'ProjectHelpController@events']);
+	});
+});
+
+
+
 Route::get('{section_code}/{article_code}', ['uses' => 'ArticleController@show']);
 Route::get('{section_code}', ['uses' => 'ArticleSectionController@show']);
 
