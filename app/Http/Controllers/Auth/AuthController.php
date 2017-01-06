@@ -87,8 +87,8 @@ class AuthController extends Controller{
 		$user = User::create([
 			'first_name'   => $data['first_name'],
 			'last_name'    => $data['last_name'],
-			'site'         => isset($data['site'])?$data['site']:'',
-			'company_name' => isset($data['company_name'])?$data['company_name']:'',
+			'site'         => isset($data['site']) ? $data['site'] : '',
+			'company_name' => isset($data['company_name']) ? $data['company_name'] : '',
 			'email'        => $data['email'],
 			'password'     => bcrypt($data['password']),
 			'group_id'     => User::$defaultGroup,
@@ -102,7 +102,7 @@ class AuthController extends Controller{
 			$m->to(env('GOD_EMAIL'))->subject('Зарегался новый пользователь');
 		});
 
-		flash()->success(trans('reg.you_ve_registered').'\n'.trans_choice('reg.trial_provided', $daysTrial, ['days' => $daysTrial]));
+		flash()->success(trans('reg.you_ve_registered').'\n'.(setting('day_price') ? trans_choice('reg.trial_provided', $daysTrial, ['days' => $daysTrial]) : ''));
 
 		return $user;
 	}
