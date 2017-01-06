@@ -30,6 +30,9 @@ class User extends Model implements AuthenticatableContract,
 	}
 
 	public function canDownloadModule(){
+		if (!setting('day_price')){ // если бесплатно
+			return true; // то все платные
+		}
 		if ($this->paid_days){
 			return true;
 		}
@@ -38,6 +41,9 @@ class User extends Model implements AuthenticatableContract,
 	}
 
 	public function canSeePaidFiles(){
+		if (!setting('day_price')){ // если бесплатно
+			return true; // то все платные
+		}
 		if ($this->paid_days){
 			return true;
 		}
@@ -69,6 +75,9 @@ class User extends Model implements AuthenticatableContract,
 
 	public function convertRublesToDays(){
 		$day_price = intval(setting('day_price'));
+		if (!$day_price){
+			return 0;
+		}
 		$rubles = intval($this->rubles);
 		$days = intval($rubles / $day_price);
 

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\User;
 use Auth;
 
@@ -21,13 +22,17 @@ class PersonalController extends Controller{
 
 		$data = [
 			'bitrix_modules' => $user->bitrixes()->orderBy('created_at', 'desc')->get(),
-			'user' => $user
+			'user'           => $user
 		];
 
 		return view("personal.index", $data);
 	}
 
 	public function oplata(){
+		if (!setting('day_price')){
+			abort(404);
+		}
+
 		return view("personal.oplata");
 	}
 }

@@ -26,9 +26,7 @@ class AdminSettingsController extends Controller{
 	}
 
 	public function set(Setting $setting, Request $request){
-		$setting->update([
-			'value' => $request->value
-		]);
+		setSetting($setting->code, $request->value);
 
 		return back();
 	}

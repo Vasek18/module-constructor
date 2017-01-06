@@ -13,6 +13,8 @@ class BitrixInScopeOfPayTest extends BitrixTestCase{
 		$this->signIn(null, [
 			'paid_days' => 0
 		]);
+
+		setSetting('day_price', 100); // цена сервиса
 	}
 
 	function tearDown(){
@@ -43,6 +45,26 @@ class BitrixInScopeOfPayTest extends BitrixTestCase{
 			'_token' => csrf_token(),
 		));
 		$this->assertEquals($response->getStatusCode(), 403);
+
+		$this->module->deleteFolder();
+	}
+
+	/** @test */
+	function free_user_can_download_module_if_service_is_free(){
+		$this->module = $this->fillNewBitrixForm();
+
+		setSetting('day_price', 0); // делаем сервис бесплатным
+
+		$this->visit('/my-bitrix/'.$this->module->id);
+		$this->see('Скачать');
+
+		$response = $this->call('POST', action('Modules\Bitrix\BitrixController@download_zip', $this->module->id), array(
+			'_token'      => csrf_token(),
+			'download_as' => 'fresh',
+			'files'       => ['/include.php'],
+		));
+
+		$this->assertEquals(302, $response->getStatusCode()); // 302 - перенаправление, так что тоже подходит
 
 		$this->module->deleteFolder();
 	}
@@ -123,6 +145,32 @@ class BitrixInScopeOfPayTest extends BitrixTestCase{
 	}
 
 	/** @test */
+	function free_user_can_download_component_if_service_is_free(){
+		$this->module = $this->fillNewBitrixForm();
+
+		setSetting('day_price', 0); // делаем сервис бесплатным
+
+		$component = $this->createComponentOnForm($this->module, [
+			'name'      => 'Heh',
+			'sort'      => '1487',
+			'code'      => 'trololo',
+			'desc'      => 'My cool component',
+			'namespace' => 'dummy',
+		]);
+		$this->see('Скачать');
+
+		$response = $this->call('GET', action('Modules\Bitrix\BitrixComponentsController@download', [$this->module->id, $component->id]), array(
+			'_token' => csrf_token(),
+		));
+		$this->assertNotEquals($response->getStatusCode(), 403); // 302 - перенаправление, так что тоже подходит
+
+		$this->module->deleteFolder();
+
+		$pathToComponent = public_path().'/user_downloads/trololo.zip';
+		unlink($pathToComponent); // иначе папка с архивом валяется
+	}
+
+	/** @test */
 	function paid_user_can_download_component(){
 		$this->module = $this->fillNewBitrixForm();
 		$this->payDays(1);
@@ -160,6 +208,24 @@ class BitrixInScopeOfPayTest extends BitrixTestCase{
 		$this->dontSee($component->getFolder().'\.parameters.php');
 		$this->dontSee($component->getFolder().'\lang\ru\.parameters.php');
 		$this->see('Эту услугу нужно оплатить');
+
+		$this->module->deleteFolder();
+	}
+
+	/** @test */
+	function free_user_see_component_params_files_if_service_is_free(){
+		setSetting('day_price', 0); // делаем сервис бесплатным
+
+		$this->module = $this->fillNewBitrixForm();
+		$component = $this->createComponentOnForm($this->module);
+		$this->createComponentParamOnForm($this->module, $component, 0, [
+			'name' => 'Ololo',
+			'code' => 'trololo',
+			'type' => 'STRING',
+		]);
+
+		$this->see($component->getFolder().'\.parameters.php');
+		$this->see($component->getFolder().'\lang\ru\.parameters.php');
 
 		$this->module->deleteFolder();
 	}
