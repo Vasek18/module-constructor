@@ -2,6 +2,7 @@
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class ProjectHelpBitrixEventsTest extends TestCase{
 
@@ -39,6 +40,8 @@ class ProjectHelpBitrixEventsTest extends TestCase{
 
 	/** @test */
 	function user_can_offer_event(){
+		Mail::shouldReceive('send')->once();
+
 		$this->submitForm('offer', [
 			'module'      => 'main', // из миграции
 			'event'       => 'testEvent',
@@ -61,6 +64,8 @@ class ProjectHelpBitrixEventsTest extends TestCase{
 
 	/** @test */
 	function user_cannot_offer_existing_event(){
+		Mail::shouldReceive('send')->once();
+
 		$this->submitForm('offer', [
 			'module'      => 'main', // из миграции
 			'event'       => 'testEvent',
@@ -90,6 +95,8 @@ class ProjectHelpBitrixEventsTest extends TestCase{
 
 	/** @test */
 	function offered_module_is_not_approved(){
+		Mail::shouldReceive('send')->once();
+
 		$this->submitForm('offer', [
 			'module'      => 'testModule',
 			'event'       => 'testEvent',
