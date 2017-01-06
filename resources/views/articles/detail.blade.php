@@ -11,10 +11,12 @@
 @if ($article->seo_description)
     @section('description', $article->seo_description)
 @endif
-
 @push('styles')
 <link href='/css/articles.css'
       rel='stylesheet'/>
+@endpush
+@push('scripts')
+<script src="/js/articles.js"></script>
 @endpush
 
 @section('content')

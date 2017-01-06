@@ -1,5 +1,4 @@
 @import "vars";
-
 .article-detail{
   margin-bottom : 100px;
 }
@@ -12,4 +11,20 @@
 }
 .article-detail .detail-text{
   font-size : 20px;
+}
+.article-detail img{
+  border-radius : 5px;
+}
+.article-detail .img-wrap{
+  border        : 1px solid #ccc;
+  border-radius : 5px;
+  margin-top    : 20px;
+  margin-bottom : 20px;
+  display       : inline-block;
+}
+.article-detail .img-wrap .description{
+  width            : 100%;
+  text-align       : center;
+  position         : relative;
+  background-color : #e3e3e3;
 }

@@ -30,6 +30,7 @@ elixir(function(mix){
 		.coffee('bitrix_iblock.coffee')
 		.coffee('deletetion_with_confirm.coffee')
 		.coffee('bitrix_events_handlers.coffee')
+		.coffee('articles.coffee')
 
 		// .copy('resources/assets/js/popover.js', 'public/js/popover.js')
 		.copy('node_modules/sweetalert/dist/sweetalert-dev.js', 'public/js/sweetalert.js')
