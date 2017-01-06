@@ -75,9 +75,11 @@
                                 <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li>
-                                    <a href="/oplata/">{{ trans('app.link_to_oplata') }}</a>
-                                </li>
+                                @if (setting('day_price'))
+                                    <li>
+                                        <a href="/oplata/">{{ trans('app.link_to_oplata') }}</a>
+                                    </li>
+                                @endif
                                 <li>
                                     <a href="/contacts/">{{ trans('app.link_to_contacts') }}</a>
                                 </li>

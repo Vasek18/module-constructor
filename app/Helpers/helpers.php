@@ -181,6 +181,17 @@ function setting($code, $default = null){
 	}
 }
 
+// задать значение настройки
+function setSetting($code, $value){
+	$setting = \App\Models\Setting::where('code', $code)->first();
+
+	if ($setting){
+		$setting->update([
+			'value' => $value
+		]);
+	}
+}
+
 function convertCurrency($price){
 	$CP = new \App\Helpers\ConvertPrice;
 

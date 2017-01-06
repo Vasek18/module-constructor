@@ -8,6 +8,12 @@ class YandexKassaTest extends TestCase{
 
 	use DatabaseTransactions;
 
+	function setUp(){
+		parent::setUp();
+
+		setSetting('day_price', 100); // цена сервиса
+	}
+
 	/** @test */
 	function check_url_test(){
 		$action = 'checkOrder';
