@@ -81,7 +81,7 @@ class User extends Model implements AuthenticatableContract,
 		$rubles = intval($this->rubles);
 		$days = intval($rubles / $day_price);
 
-		$this->paid_days = $days;
+		$this->paid_days = intval($this->paid_days) + $days;
 		$this->rubles = intval($this->rubles - $days * $day_price); // не забываем снять деньги
 		$this->save();
 
