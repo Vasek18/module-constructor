@@ -58,7 +58,8 @@
                         <td>
                             <a href="{{ action('ProjectHelpController@bitrixEventsMarkAsBad', $existing_event) }}"
                                class="btn btn-warning btn-block"
-                               id="mark_as_bad{{ $existing_event->id }}">{{ trans('project_help.bitrix_events_mark_bad_action') }}
+                               id="mark_as_bad{{ $existing_event->id }}"
+                               rel="nofollow">{{ trans('project_help.bitrix_events_mark_bad_action') }}
                             </a>
                         </td>
                     </tr>
