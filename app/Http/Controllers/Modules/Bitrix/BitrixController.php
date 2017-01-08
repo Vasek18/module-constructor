@@ -128,14 +128,13 @@ class BitrixController extends Controller{
 	// todo нельзя указать версию ниже нынешней
 	// todo нельзя указать последнюю версию, если были произведены изменения
 	public function download_zip(Bitrix $module, Request $request){
-		$user = User::find(Auth::id());
-		if (!$user->canDownloadModule()){
+		if (!$this->user->canDownloadModule()){
 			return response(['message' => 'Nea'], 403);
 		}
 
 		$inputs = $request->all();
 
-		$module->upgradeVersion($this->request->version);
+		$module->changeVersion($this->request->version);
 		$module->updateDownloadCount();
 		$module->updateDownloadTime();
 
@@ -152,7 +151,6 @@ class BitrixController extends Controller{
 	}
 
 	// удаление модуля
-	// todo подтверждение удаления
 	public function destroy(Bitrix $module){
 
 		// удаляем папку

@@ -227,7 +227,7 @@ class Bitrix extends Model{
 	}
 
 	// изменение номера версии у модуля
-	public function upgradeVersion($version){
+	public function changeVersion($version){
 		$this->update(['version' => $version]);
 
 		Bitrix::changeVarsInModuleFileAndSave('bitrix'.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'version.php', $this->id);
