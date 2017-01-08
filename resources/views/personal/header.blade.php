@@ -8,11 +8,10 @@
                 <a href="{{ action('PersonalController@oplata') }}">{{ trans('personal_cabinet.menu_oplata') }}</a>
             </li>
         @endif
+        @if (setting('donat'))
+            <li class="<?php echo classActiveSegment(2, 'help_project'); ?>">
+                <a href="{{ action('PersonalController@help_project') }}">{{ trans('personal_cabinet.menu_help_project') }}</a>
+            </li>
+        @endif
     </ul>
 </div>
-<h1>{{ Auth::user()->last_name }} {{  Auth::user()->first_name }}
-    @if (setting('day_price'))
-        <small>({{ trans('personal_index.paid_days') }}: {{  Auth::user()->paid_days }})</small>
-    @endif
-</h1>
-<hr>

@@ -18,6 +18,10 @@ Route::group(['prefix' => 'personal'], function (){
 	Route::group(['prefix' => 'oplata'], function (){
 		Route::get('', 'PersonalController@oplata');
 	});
+
+	Route::group(['prefix' => 'help_project'], function (){
+		Route::get('', 'PersonalController@help_project');
+	});
 });
 Route::group(['prefix' => 'auth'], function (){
 	Route::group(['prefix' => 'register'], function (){

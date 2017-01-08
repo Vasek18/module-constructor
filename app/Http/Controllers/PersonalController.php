@@ -35,4 +35,8 @@ class PersonalController extends Controller{
 
 		return view("personal.oplata");
 	}
+
+	public function help_project(){
+		return view("personal.help_project");
+	}
 }
