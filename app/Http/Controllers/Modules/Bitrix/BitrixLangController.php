@@ -30,7 +30,7 @@ class BitrixLangController extends Controller{
 	public function reformatFilesArrayDependingOnThePresenceOfProblems(Bitrix $module, $listOfAllFiles){
 		$files = [];
 		foreach ($listOfAllFiles as $file){
-			$isTherePotentialPhraseInFile = $module->isTherePotentialPhraseInFile($file);
+			$isTherePotentialPhraseInFile = $this->isTherePotentialPhraseInFile($module, $file);
 			$fileArr = [
 				'file'                      => $file,
 				'is_there_potential_phrase' => $isTherePotentialPhraseInFile,
@@ -45,6 +45,21 @@ class BitrixLangController extends Controller{
 		return $files;
 	}
 
+	// todo ускорить
+	public function isTherePotentialPhraseInFile(Bitrix $module, $filePath){
+		$filePath = $module->module_folder.$filePath;
+		$content = $module->disk()->get($filePath);
+
+		$phrases = vLang::getAllPotentialPhrases($content);
+		foreach ($phrases as $c => $phrase){
+			if (translit($phrase["phrase"], true) == $phrase["phrase"]){ // не будем тут показывать то, что может не быть лангом из-за содержания, позднее просто дадим функционал вытаскивания произволной фиггни в ланг, а не только явного
+				unset($phrases[$c]);
+			}
+		}
+
+		return count($phrases);
+	}
+
 	public
 	function edit(Bitrix $module, Request $request){
 		$file = Input::get('file');
@@ -56,7 +71,7 @@ class BitrixLangController extends Controller{
 
 		$phrases = vLang::getAllPotentialPhrases($contentOriginal);
 		foreach ($phrases as $c => $phrase){
-			if (translit($phrase["phrase"]) == $phrase["phrase"]){ // не будем тут показывать то, что может не быть лангом из-за содержания, позднее просто дадим функционал вытаскивания произволной фиггни в ланг, а не только явного
+			if (translit($phrase["phrase"], true) == $phrase["phrase"]){ // не будем тут показывать то, что может не быть лангом из-за содержания, позднее просто дадим функционал вытаскивания произволной фиггни в ланг, а не только явного
 				unset($phrases[$c]);
 			}
 		}

@@ -73,7 +73,7 @@ function classActiveSegment($segment, $value){
 	return '';
 }
 
-function translit($text){
+function translit($text, $translitOnlyLetters = false){
 	$accordance = [
 		'а' => 'a',
 		'б' => 'b',
@@ -142,6 +142,9 @@ function translit($text){
 		'Я' => 'YA',
 		'Э' => 'E',
 		'#' => '',
+	];
+
+	$marksAccordance = [
 		' ' => '_',
 		'(' => '_',
 		')' => '_',
@@ -156,6 +159,10 @@ function translit($text){
 		"'" => '_',
 		"—" => '_', // длинный дефис
 	];
+
+	if (!$translitOnlyLetters){
+		$accordance = array_merge($accordance, $marksAccordance);
+	}
 
 	foreach ($accordance as $search => $replace){
 		$text = str_replace($search, $replace, $text);
