@@ -24,6 +24,10 @@ $(document).ready ->
 
 	return
 
+$(document).on "click", ".check-all", () ->
+	filesInput.prop('checked', true) # отмечаем все файлы
+
+	return false
 
 changeForm = (downloadAs) ->
 	if downloadAs == downloadAsInputFreshVal

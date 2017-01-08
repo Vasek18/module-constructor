@@ -88,6 +88,8 @@
                                 </li>
                             @endforeach
                         </ul>
+                        <a href="#"
+                           class="check-all">{{ trans('app.check_all') }}</a>
                     </div>
                 </form>
             </div>

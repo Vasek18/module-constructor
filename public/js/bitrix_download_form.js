@@ -34,6 +34,11 @@
     changeForm(downloadAsInput.val());
   });
 
+  $(document).on("click", ".check-all", function() {
+    filesInput.prop('checked', true);
+    return false;
+  });
+
   changeForm = function(downloadAs) {
     if (downloadAs === downloadAsInputFreshVal) {
       updateDescriptionInput.parents('.form-group').hide();
