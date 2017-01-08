@@ -1,5 +1,7 @@
 <?php
 
+// todo здесь более всего нужен рефакторинг
+
 namespace App\Http\Controllers\Modules\Bitrix;
 
 use Illuminate\Http\Request;
