@@ -125,8 +125,6 @@ class BitrixController extends Controller{
 	}
 
 	// кнопка скачивания зип архива
-	// todo нельзя указать версию ниже нынешней
-	// todo нельзя указать последнюю версию, если были произведены изменения
 	public function download_zip(Bitrix $module, Request $request){
 		if (!$this->user->canDownloadModule()){
 			return response(['message' => 'Nea'], 403);

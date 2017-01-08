@@ -166,10 +166,10 @@ class Bitrix extends Model{
 
 		$path = $this->copyToPublicAndEncode($encoding, $files, $rootFolder);
 
-		if (!$fresh && $updater){
+		if ($download_as == 'update' && $updater){
 			file_put_contents($path.DIRECTORY_SEPARATOR.$rootFolder.DIRECTORY_SEPARATOR.'updater.php', $updater);
 		}
-		if (!$fresh){ // todo нужные языки
+		if ($download_as == 'update' && $description){ // todo нужные языки
 			file_put_contents($path.DIRECTORY_SEPARATOR.$rootFolder.DIRECTORY_SEPARATOR.'description.en', mb_convert_encoding($description, $encoding, 'UTF-8'));
 			file_put_contents($path.DIRECTORY_SEPARATOR.$rootFolder.DIRECTORY_SEPARATOR.'description.ru', mb_convert_encoding($description, $encoding, 'UTF-8'));
 		}
