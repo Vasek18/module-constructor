@@ -132,6 +132,10 @@ class BitrixController extends Controller{
 
 		$inputs = $request->all();
 
+		if (!isset($inputs['files'])){ // когда убрали все файлы
+			return back();
+		}
+
 		$module->changeVersion($this->request->version);
 		$module->updateDownloadCount();
 		$module->updateDownloadTime();

@@ -505,7 +505,7 @@ if(IsModuleInstalled(\''.$this->full_id.'\')){
 		}
 		foreach ($this->getListOfAllFiles() as $file){
 			$mtimeModified = filemtime($this->getFolder().$file);
-			if ($mtimeModified >= $modifiedTimestamp){
+			if ($mtimeModified > $modifiedTimestamp){
 				$files[] = $file;
 			}
 		}
