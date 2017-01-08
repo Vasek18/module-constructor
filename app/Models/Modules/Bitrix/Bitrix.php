@@ -3,6 +3,7 @@
 namespace App\Models\Modules\Bitrix;
 
 use App\Helpers\vFuncParse;
+use App\Helpers\vLang;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Auth;
@@ -446,6 +447,21 @@ if(IsModuleInstalled(\''.$this->full_id.'\')){
 		}
 
 		return $files;
+	}
+
+	// todo ускорить
+	public function isTherePotentialPhraseInFile($filePath){
+		$filePath = $this->module_folder.$filePath;
+		$content = $this->disk()->get($filePath);
+
+		$phrases = vLang::getAllPotentialPhrases($content);
+		foreach ($phrases as $c => $phrase){
+			if (translit($phrase["phrase"]) == $phrase["phrase"]){ // не будем тут показывать то, что может не быть лангом из-за содержания, позднее просто дадим функционал вытаскивания произволной фиггни в ланг, а не только явного
+				unset($phrases[$c]);
+			}
+		}
+
+		return count($phrases);
 	}
 
 	public function getLangsArraysForFile($file, $onlyLanguages = []){

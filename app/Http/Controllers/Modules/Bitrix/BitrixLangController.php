@@ -15,15 +15,38 @@ class BitrixLangController extends Controller{
 	use UserOwnModule;
 
 	public function index(Bitrix $module, Request $request){
+		$listOfAllFiles = $module->getListOfAllFiles(['php', 'html'], true);
+
+		$files = $this->reformatFilesArrayDependingOnThePresenceOfProblems($module, $listOfAllFiles);
+
 		$data = [
 			'module' => $module,
-			'files'  => $module->getListOfAllFiles(['php', 'html'], true)
+			'files'  => $files
 		];
 
 		return view("bitrix.lang.index", $data);
 	}
 
-	public function edit(Bitrix $module, Request $request){
+	public function reformatFilesArrayDependingOnThePresenceOfProblems(Bitrix $module, $listOfAllFiles){
+		$files = [];
+		foreach ($listOfAllFiles as $file){
+			$isTherePotentialPhraseInFile = $module->isTherePotentialPhraseInFile($file);
+			$fileArr = [
+				'file'                      => $file,
+				'is_there_potential_phrase' => $isTherePotentialPhraseInFile,
+			];
+			if ($isTherePotentialPhraseInFile){
+				array_unshift($files, $fileArr);
+			}else{
+				array_push($files, $fileArr);
+			}
+		}
+
+		return $files;
+	}
+
+	public
+	function edit(Bitrix $module, Request $request){
 		$file = Input::get('file');
 		$filePath = $module->module_folder.$file;
 		if (!$module->disk()->exists($filePath)){
@@ -74,7 +97,8 @@ class BitrixLangController extends Controller{
 		return view("bitrix.lang.edit", $data);
 	}
 
-	public function update(Bitrix $module, Request $request){
+	public
+	function update(Bitrix $module, Request $request){
 		// echo "<pre>";
 		// print_r($request->all());
 		// echo "</pre>";

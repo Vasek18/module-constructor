@@ -62,6 +62,17 @@ class BitrixLangInterfaceTest extends BitrixTestCase{
 	}
 
 	/** @test */
+	function it_matches_files_with_problems(){
+		$this->module->disk()->put($this->module->module_folder.'/ololo.php', '<? ololo(); ?><p>ололо</p>');
+		$this->module->disk()->put($this->module->module_folder.'/lang/ru/ololo.php', '<? $MESS["TEST"] = "Test";?>');
+
+		$this->visit('/my-bitrix/'.$this->module->id.$this->path);
+
+		$html = $this->response->getContent();
+		$this->assertRegexp('/list-group-item-danger[^<]+?<[^>]+?>\/ololo.php/', $html);
+	}
+
+	/** @test */
 	function smn_cannot_go_to_page_of_nonexistent_file(){
 		$this->visit('/my-bitrix/'.$this->module->id.$this->path.'/edit?file=%2Fololo.php');
 		$this->visit('/my-bitrix/'.$this->module->id.$this->path);
