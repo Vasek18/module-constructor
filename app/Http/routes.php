@@ -197,14 +197,17 @@ Route::post('feedback/bug_report', 'FeedbackController@sendBugReportForm');
 
 Route::group(['prefix' => 'oko', 'middleware' => 'admin'], function (){
 	Route::get('', ['uses' => 'Admin\AdminController@index']);
+
 	Route::group(['prefix' => 'users'], function (){
 		Route::get('', ['uses' => 'Admin\AdminUsersController@index']);
 		Route::get('{user}', ['uses' => 'Admin\AdminUsersController@show']);
 		Route::post('{user}', ['uses' => 'Admin\AdminUsersController@update']);
 		Route::get('{user}/delete', ['uses' => 'Admin\AdminUsersController@destroy']);
 	});
+
 	Route::get('modules', ['uses' => 'Admin\AdminController@modules']);
 	Route::get('modules/{module}', ['uses' => 'Admin\AdminController@modulesDetail']);
+
 	Route::group(['prefix' => 'settings'], function (){
 		Route::get('', ['uses' => 'Admin\AdminSettingsController@index']);
 		Route::post('', ['uses' => 'Admin\AdminSettingsController@store']);
@@ -247,13 +250,18 @@ Route::group(['prefix' => 'oko', 'middleware' => 'admin'], function (){
 		Route::post('{setting}/set', ['uses' => 'Admin\AdminSettingsController@set']);
 	});
 
-	// настройки
+	// подтверждение предложений пользователей
 	Route::group(['prefix' => 'confirms'], function (){
 		Route::get('', ['uses' => 'Admin\AdminConfirmsController@index']);
 		Route::get('{module}/approve_module', ['uses' => 'Admin\AdminConfirmsController@approveModule']);
 		Route::get('{module}/delete_module', ['uses' => 'Admin\AdminConfirmsController@deleteModule']);
 		Route::get('{event}/approve_event', ['uses' => 'Admin\AdminConfirmsController@approveEvent']);
 		Route::get('{event}/delete_event', ['uses' => 'Admin\AdminConfirmsController@deleteEvent']);
+	});
+
+	// оплаты
+	Route::group(['prefix' => 'payments'], function (){
+		Route::get('', ['uses' => 'Admin\AdminPaymentsController@index']);
 	});
 });
 
