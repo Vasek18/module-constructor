@@ -31,23 +31,33 @@ class YandexKassaController extends Controller{
 
 		$response = $this->generateResponseContent($request, $code, 'paymentAvisoResponse');
 
-		if ($request->customerNumber){
-			// зачисление средств на счёт
-			$user = User::find($request->customerNumber);
-			$user->addRubles($request->orderSumAmount);
-			$days = $user->convertRublesToDays();
+		$customerNumber = $request->customerNumber ?: '';
+		$orderSumAmount = $request->orderSumAmount;
 
-			// записываем файкт оплаты
-			Pays::create([
-				'user_id' => $request->customerNumber,
-				'amount'  => $request->orderSumAmount,
-			]);
+		$user = '';
+		$days = 0;
+		if ($customerNumber){
+			$user = User::find($customerNumber);
 
-			// письмо мне
-			Mail::send('emails.admin.user_paid', ['user' => $user, 'sum' => $request->orderSumAmount, 'days' => $days], function ($m){
-				$m->to(env('GOD_EMAIL'))->subject('Произведена оплата');
-			});
+			if (setting('day_price')){
+				// зачисление средств на счёт
+				$user->addRubles($orderSumAmount);
+				$days = $user->convertRublesToDays();
+			}
 		}
+
+		// записываем факт оплаты
+		$pay = new Pays();
+		if ($customerNumber){
+			$pay->user_id = $customerNumber;
+		}
+		$pay->amount = $orderSumAmount;
+		$pay->save();
+
+		// письмо мне
+		Mail::send('emails.admin.user_paid', ['user' => $user, 'sum' => $orderSumAmount, 'days' => $days], function ($m){
+			$m->to(env('GOD_EMAIL'))->subject('Произведена оплата');
+		});
 
 		return response($response, 200, [
 			'Content-type' => 'application/xml'
@@ -74,7 +84,7 @@ class YandexKassaController extends Controller{
 
 	// проверка md5 суммы
 	public function isValidHash(Request $request){
-		$hash = md5(htmlspecialchars($request->action).';'.htmlspecialchars($request->orderSumAmount).';'.htmlspecialchars($request->orderSumCurrencyPaycash).';'.htmlspecialchars($request->orderSumBankPaycash).';'.env('YANDEX_KASSA_SHOP_ID').';'.htmlspecialchars($request->invoiceId).';'.htmlspecialchars($request->customerNumber).';'.env('YANDEX_KASSA_SHOP_PASSWORD'));
+		$hash = md5(htmlspecialchars($request->action).';'.htmlspecialchars($request->orderSumAmount).';'.htmlspecialchars($request->orderSumCurrencyPaycash).';'.htmlspecialchars($request->orderSumBankPaycash).';'.env('YANDEX_KASSA_SHOP_ID').';'.htmlspecialchars($request->invoiceId).';'.($request->customerNumber ? htmlspecialchars($request->customerNumber).';' : '').env('YANDEX_KASSA_SHOP_PASSWORD'));
 		if (strtolower($hash) != strtolower($request->md5)){
 			return 1;
 		}else{

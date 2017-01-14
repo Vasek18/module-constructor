@@ -124,6 +124,45 @@ class YandexKassaTest extends TestCase{
 		$this->assertEquals(1, $user->paid_days);
 		$this->assertEquals(setting('day_price'), Pays::sum('amount'));
 	}
+
+	/** @test */
+	function payment_aviso_url_test_no_customer_number(){
+		Mail::shouldReceive('send')->once();
+
+		// чтобы был пользователь
+		factory(App\Models\User::class)->create([
+			'email'    => 'ololo@test.ru',
+			'password' => bcrypt("12345678"),
+		]);
+
+		$action = 'paymentAviso';
+		$orderSumAmount = setting('day_price');
+		$orderSumCurrencyPaycash = 1;
+		$orderSumBankPaycash = 1;
+		$invoiceId = 1;
+		$shopId = env('YANDEX_KASSA_SHOP_ID');
+		$scid = env('YANDEX_KASSA_SHOP_PASSWORD');
+		$hash = md5($action.';'.$orderSumAmount.';'.$orderSumCurrencyPaycash.';'.$orderSumBankPaycash.';'.$shopId.';'.$invoiceId.';'.$scid);
+
+		$response = $this->call(
+			'GET',
+			'/yandex_kassa/payment_aviso/',
+			[
+				'action'                  => $action,
+				'shopId'                  => $shopId,
+				'orderSumAmount'          => $orderSumAmount,
+				'orderSumCurrencyPaycash' => $orderSumCurrencyPaycash,
+				'orderSumBankPaycash'     => $orderSumBankPaycash,
+				'invoiceId'               => $invoiceId,
+				'scid'                    => $scid,
+				'md5'                     => $hash,
+			]
+		);
+
+		$this->assertResponseStatus(200);
+		$this->assertNotFalse(strpos($response->content(), 'code="0"'));
+		$this->assertEquals(setting('day_price'), Pays::sum('amount'));
+	}
 }
 
 ?>
