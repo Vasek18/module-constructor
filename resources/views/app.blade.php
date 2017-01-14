@@ -167,7 +167,7 @@
 {{--<script src="/js/jquery.nestable.js"></script>--}}
 <script src="/js/translit.js"></script>
 <script src="/js/sweetalert.js"></script>
-<script src="/js/deletetion_with_confirm.js"></script>
+<script src="/js/deletion_with_confirm.js"></script>
 <script src="/js/app.js"></script>
 @stack('scripts')
 @include('flash')
@@ -230,12 +230,12 @@
                 <h4 class="modal-title">Удаление</h4>
             </div>
             <div class="modal-body">
-                <p class="te">Уверены?</p>
+                <p class="text">Уверены?</p>
             </div>
             <div class="modal-footer">
-                <button type="button"
-                        class="btn btn-danger">Всё-таки удалить
-                </button>
+                <a type="button"
+                   class="btn btn-danger delete">Всё-таки удалить
+                </a>
             </div>
         </div>
     </div>

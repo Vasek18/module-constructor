@@ -101,10 +101,19 @@ return [
         COption::GetOptionString($module_id, "{setting code}")
     </pre>',
 
-	'logic_wizard_title'                 => 'Wizard',
-	'logic_wizard_text'                  => 'Include:',
-	'logic_wizard_items_list'            => 'Items list',
-	'logic_wizard_items_list_with_props' => 'Items list with props',
+	'component_logic' => 'Logic',
+
+	'logic_wizard_title'                  => 'Wizard',
+	'logic_wizard_text'                   => '',
+	'logic_wizard_my_templates_title'     => 'My templates',
+	'logic_wizard_common_templates_title' => 'Other templates',
+	'logic_wizard_items_list'             => 'Items list',
+	'logic_wizard_items_list_with_props'  => 'Items list with props',
+
+	'add_logic_template_btn'            => 'Add your template',
+	'add_logic_template_title'          => 'Add your template',
+	'add_logic_template_name_field'     => 'Name',
+	'add_logic_template_template_field' => 'Template',
 
 	'arbitrary_files_h1'              => 'Other component files',
 	'arbitrary_files_form_title'      => 'Add file',

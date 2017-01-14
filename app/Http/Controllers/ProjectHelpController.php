@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Modules\Bitrix\BitrixComponentClassPhpTemplates;
 use App\Models\Modules\Bitrix\BitrixCoreEvents;
 use App\Models\Modules\Bitrix\BitrixCoreModules;
 use Illuminate\Http\Request;
@@ -55,6 +56,24 @@ class ProjectHelpController extends Controller{
 		$event->markAsBad();
 
 		flash()->success(trans('project_help.bitrix_events_mark_bad_confirmation'));
+
+		return back();
+	}
+
+	public function bitrixClassPhpTemplatesAdd(Request $request){
+		BitrixComponentClassPhpTemplates::create([
+			'creator_id' => $this->user->id,
+			'name'       => $request->name,
+			'template'   => $request->template,
+		]);
+
+		return back();
+	}
+
+	public function bitrixClassPhpTemplatesDelete(BitrixComponentClassPhpTemplates $template, Request $request){
+		if ($template->userCanUse($this->user)){
+			$template->delete();
+		}
 
 		return back();
 	}

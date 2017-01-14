@@ -3,6 +3,7 @@
 return [
 	'welcome_header'        => 'Help in creation modules for the <b>Bitrix</b>',
 	'welcome_p'             => 'It helps to create a module from scratch, expand and maintain its functionality, <br> less worrying about code.',
+	'welcome_p_free'             => 'It helps to create a module from scratch, expand and maintain its functionality, <br> less worrying about code. <strong>For free!</strong>',
 	'welcome_action'        => 'Registration',
 	'about_service_article' => 'About service',
 	'little_earnings'       => 'Do you making websites but earn less than 5k per month?',

@@ -1,3 +1,6 @@
+@push('scripts')
+<script src="/js/bitrix_download_form.js"></script>
+@endpush
 <div class="modal fade"
      tabindex="-1"
      role="dialog"
@@ -33,7 +36,8 @@
                         <select class="form-control"
                                 name="download_as"
                                 id="download_as">
-                            <option value="for_test">{{ trans('bitrix.download_as_for_test') }}</option>
+                            <option value="for_test"
+                                    selected>{{ trans('bitrix.download_as_for_test') }}</option>
                             <option value="update">{{ trans('bitrix.download_as_update') }}</option>
                             <option value="fresh">{{ trans('bitrix.download_as_new') }}</option>
                         </select>
@@ -62,7 +66,7 @@
                                   rows=10>{{ $module->generateUpdaterPhp() }}</textarea>
                     </div>
                     <button type="submit"
-                            class="btn btn-primary"
+                            class="btn btn-primary btn-lg btn-block"
                             name="module_download">{{ trans('app.download') }}
                     </button>
                     <div class="files">
@@ -76,6 +80,7 @@
                                                name="files[]"
                                                value="{{ $file }}"
                                         <?php if (in_array($file, $changedFiles) or in_array($file, $module::$requiredFiles)){
+                                            echo "data-changed='true'";
                                             echo "checked";
                                         } ?>>
                                         {{$file}}
@@ -83,6 +88,8 @@
                                 </li>
                             @endforeach
                         </ul>
+                        <a href="#"
+                           class="check-all">{{ trans('app.check_all') }}</a>
                     </div>
                 </form>
             </div>

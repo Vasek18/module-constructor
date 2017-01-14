@@ -8,10 +8,10 @@
 
     @if(count($files))
         <h2>{{ trans('bitrix_lang.all_files') }}</h2>
-        <ul>
+        <ul class="list-group">
             @foreach($files as $file)
-                <li>
-                    <a href="{{ action('Modules\Bitrix\BitrixLangController@edit', [$module->id]) }}?file={{urlencode($file)}}">{{ $file }}</a>
+                <li class="list-group-item {{ $file["is_there_potential_phrase"]?'list-group-item-danger':'' }}">
+                    <a href="{{ action('Modules\Bitrix\BitrixLangController@edit', [$module->id]) }}?file={{urlencode($file["file"])}}">{{ $file["file"] }}</a>
                 </li>
             @endforeach
         </ul>

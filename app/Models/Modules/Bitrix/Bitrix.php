@@ -3,6 +3,7 @@
 namespace App\Models\Modules\Bitrix;
 
 use App\Helpers\vFuncParse;
+use App\Helpers\vLang;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Auth;
@@ -166,10 +167,10 @@ class Bitrix extends Model{
 
 		$path = $this->copyToPublicAndEncode($encoding, $files, $rootFolder);
 
-		if (!$fresh && $updater){
+		if ($download_as == 'update' && $updater){
 			file_put_contents($path.DIRECTORY_SEPARATOR.$rootFolder.DIRECTORY_SEPARATOR.'updater.php', $updater);
 		}
-		if (!$fresh){ // todo нужные языки
+		if ($download_as == 'update' && $description){ // todo нужные языки
 			file_put_contents($path.DIRECTORY_SEPARATOR.$rootFolder.DIRECTORY_SEPARATOR.'description.en', mb_convert_encoding($description, $encoding, 'UTF-8'));
 			file_put_contents($path.DIRECTORY_SEPARATOR.$rootFolder.DIRECTORY_SEPARATOR.'description.ru', mb_convert_encoding($description, $encoding, 'UTF-8'));
 		}
@@ -227,7 +228,7 @@ class Bitrix extends Model{
 	}
 
 	// изменение номера версии у модуля
-	public function upgradeVersion($version){
+	public function changeVersion($version){
 		$this->update(['version' => $version]);
 
 		Bitrix::changeVarsInModuleFileAndSave('bitrix'.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'version.php', $this->id);
@@ -505,7 +506,7 @@ if(IsModuleInstalled(\''.$this->full_id.'\')){
 		}
 		foreach ($this->getListOfAllFiles() as $file){
 			$mtimeModified = filemtime($this->getFolder().$file);
-			if ($mtimeModified >= $modifiedTimestamp){
+			if ($mtimeModified > $modifiedTimestamp){
 				$files[] = $file;
 			}
 		}

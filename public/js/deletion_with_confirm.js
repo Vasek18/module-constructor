@@ -1,5 +1,5 @@
 (function() {
-  $(document).on("click", ".deletetion-with-confirm", function() {
+  $(document).on("click", ".deletion-with-confirm", function() {
     var a, href, modal, newLink;
     a = $(this);
     href = a.attr('href');
@@ -12,4 +12,4 @@
 
 }).call(this);
 
-//# sourceMappingURL=deletetion_with_confirm.js.map
+//# sourceMappingURL=deletion_with_confirm.js.map

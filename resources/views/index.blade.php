@@ -5,7 +5,11 @@
         <div class="row">
             <div class="welcome-block">
                 <h1>{!! trans('home.welcome_header') !!}</h1>
-                <p>{!! trans('home.welcome_p') !!}</p>
+                @if (setting('day_price'))
+                    <p>{!! trans('home.welcome_p') !!}</p>
+                @else
+                    <p>{!! trans('home.welcome_p_free') !!}</p>
+                @endif
                 <p>
                     <a class="btn btn-success btn-lg"
                        href="{{ action('Auth\AuthController@index_reg') }}"

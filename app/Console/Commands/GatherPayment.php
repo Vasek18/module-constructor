@@ -26,8 +26,10 @@ class GatherPayment extends Command{
 	 * @return mixed
 	 */
 	public function handle(){
-		foreach (User::all() as $user){
-			$user->payForDay();
+		if (setting('day_price')){
+			foreach (User::all() as $user){
+				$user->payForDay();
+			}
 		}
 	}
 }

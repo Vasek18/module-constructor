@@ -102,10 +102,19 @@ return [
         COption::GetOptionString($module_id, "{Код свойства}")
     </pre>',
 
-	'logic_wizard_title'                 => 'Мастер заготовок',
-	'logic_wizard_text'                  => 'Включить:',
-	'logic_wizard_items_list'            => 'Список элементов',
-	'logic_wizard_items_list_with_props' => 'Список элементов со свойствами',
+	'component_logic' => 'Логика',
+
+	'logic_wizard_title'                  => 'Мастер заготовок',
+	'logic_wizard_text'                   => '',
+	'logic_wizard_my_templates_title'     => 'Мои шаблоны',
+	'logic_wizard_common_templates_title' => 'Другие шаблоны',
+	'logic_wizard_items_list'             => 'Список элементов',
+	'logic_wizard_items_list_with_props'  => 'Список элементов со свойствами',
+
+	'add_logic_template_btn'            => 'Добавить свой шаблон',
+	'add_logic_template_title'          => 'Добавить свой шаблон',
+	'add_logic_template_name_field'     => 'Название',
+	'add_logic_template_template_field' => 'Шаблон',
 
 	'arbitrary_files_h1'              => 'Прочие файлы компонента',
 	'arbitrary_files_form_title'      => 'Добавить файл',

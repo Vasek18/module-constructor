@@ -12,23 +12,23 @@
                     <a href="{{ action('Admin\AdminController@modules') }}"
                        class="list-group-item">Модули
                     </a>
-                    <a href="#"
+                    <a href="{{ action('Admin\AdminController@articles') }}"
+                       class="list-group-item">Статьи
+                    </a>
+                    <a href="{{ action('Admin\AdminConfirmsController@index') }}"
+                       class="list-group-item">На утверждение
+                    </a>
+                    <a href="{{ action('Admin\AdminPaymentsController@index') }}"
                        class="list-group-item">Оплаты
                     </a>
                     <a href="#"
                        class="list-group-item">Рейтинг функционала
                     </a>
-                    <a href="{{ action('Admin\AdminSettingsController@index') }}"
-                       class="list-group-item">Основные настройки
-                    </a>
-                    <a href="{{ action('Admin\AdminController@articles') }}"
-                       class="list-group-item">Статьи
-                    </a>
                     <a href="{{ action('Admin\AdminLogsController@index') }}"
                        class="list-group-item">Логи
                     </a>
-                    <a href="{{ action('Admin\AdminConfirmsController@index') }}"
-                       class="list-group-item">На утверждение
+                    <a href="{{ action('Admin\AdminSettingsController@index') }}"
+                       class="list-group-item">Основные настройки
                     </a>
                 </div>
             </div>

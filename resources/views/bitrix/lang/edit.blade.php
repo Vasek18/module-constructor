@@ -3,6 +3,9 @@
 @section('h1')
     {{ trans('bitrix_lang.h1') }}
 @stop
+@push('scripts')
+<script src="/js/bitrix_lang_pages.js"></script>
+@endpush
 
 @section('page')
 
@@ -31,7 +34,7 @@
                     </li>
                 @endforeach
             </ul>
-            <form class="tab-content"
+            <form class="tab-content langs-form"
                   method="post"
                   action="{{ action('Modules\Bitrix\BitrixLangController@update', [$module->id]) }}">
                 {{ csrf_field() }}

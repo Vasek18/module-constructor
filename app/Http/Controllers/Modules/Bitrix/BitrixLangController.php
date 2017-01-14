@@ -1,5 +1,7 @@
 <?php
 
+// todo здесь более всего нужен рефакторинг
+
 namespace App\Http\Controllers\Modules\Bitrix;
 
 use Illuminate\Http\Request;
@@ -15,15 +17,53 @@ class BitrixLangController extends Controller{
 	use UserOwnModule;
 
 	public function index(Bitrix $module, Request $request){
+		$listOfAllFiles = $module->getListOfAllFiles(['php', 'html'], true);
+
+		$files = $this->reformatFilesArrayDependingOnThePresenceOfProblems($module, $listOfAllFiles);
+
 		$data = [
 			'module' => $module,
-			'files'  => $module->getListOfAllFiles(['php', 'html'], true)
+			'files'  => $files
 		];
 
 		return view("bitrix.lang.index", $data);
 	}
 
-	public function edit(Bitrix $module, Request $request){
+	public function reformatFilesArrayDependingOnThePresenceOfProblems(Bitrix $module, $listOfAllFiles){
+		$files = [];
+		foreach ($listOfAllFiles as $file){
+			$isTherePotentialPhraseInFile = $this->isTherePotentialPhraseInFile($module, $file);
+			$fileArr = [
+				'file'                      => $file,
+				'is_there_potential_phrase' => $isTherePotentialPhraseInFile,
+			];
+			if ($isTherePotentialPhraseInFile){
+				array_unshift($files, $fileArr);
+			}else{
+				array_push($files, $fileArr);
+			}
+		}
+
+		return $files;
+	}
+
+	// todo ускорить
+	public function isTherePotentialPhraseInFile(Bitrix $module, $filePath){
+		$filePath = $module->module_folder.$filePath;
+		$content = $module->disk()->get($filePath);
+
+		$phrases = vLang::getAllPotentialPhrases($content);
+		foreach ($phrases as $c => $phrase){
+			if (translit($phrase["phrase"], true) == $phrase["phrase"]){ // не будем тут показывать то, что может не быть лангом из-за содержания, позднее просто дадим функционал вытаскивания произволной фиггни в ланг, а не только явного
+				unset($phrases[$c]);
+			}
+		}
+
+		return count($phrases);
+	}
+
+	public
+	function edit(Bitrix $module, Request $request){
 		$file = Input::get('file');
 		$filePath = $module->module_folder.$file;
 		if (!$module->disk()->exists($filePath)){
@@ -33,7 +73,7 @@ class BitrixLangController extends Controller{
 
 		$phrases = vLang::getAllPotentialPhrases($contentOriginal);
 		foreach ($phrases as $c => $phrase){
-			if (translit($phrase["phrase"]) == $phrase["phrase"]){ // не будем тут показывать то, что может не быть лангом из-за содержания, позднее просто дадим функционал вытаскивания произволной фиггни в ланг, а не только явного
+			if (translit($phrase["phrase"], true) == $phrase["phrase"]){ // не будем тут показывать то, что может не быть лангом из-за содержания, позднее просто дадим функционал вытаскивания произволной фиггни в ланг, а не только явного
 				unset($phrases[$c]);
 			}
 		}
@@ -74,7 +114,8 @@ class BitrixLangController extends Controller{
 		return view("bitrix.lang.edit", $data);
 	}
 
-	public function update(Bitrix $module, Request $request){
+	public
+	function update(Bitrix $module, Request $request){
 		// echo "<pre>";
 		// print_r($request->all());
 		// echo "</pre>";

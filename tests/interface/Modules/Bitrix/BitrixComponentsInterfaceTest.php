@@ -245,10 +245,7 @@ class BitrixComponentsInterfaceTest extends BitrixTestCase{
 			'component_php' => '<? echo "Hi"; ?>',
 		]);
 
-		$this->deleteFolder($this->standartModuleCode);
-
 		$this->seeInField('component_php', '<? echo "Hi"; ?>');
-
 	}
 
 	/** @test */
@@ -272,6 +269,101 @@ class BitrixComponentsInterfaceTest extends BitrixTestCase{
 		// не должно быть такого, чтобы подменив айдишник компонента на айди компонента из другого модуля, мы хоть что-то увидели
 		$this->visit('/my-bitrix/'.$module2->id.$this->path.'/'.$component->id.'/component_php');
 		$this->seePageIs('/personal');
+	}
+
+	/** @test */
+	function user_can_add_his_class_php_template(){
+		$component = $this->createComponentOnForm($this->module);
+
+		$this->visit('/my-bitrix/'.$this->module->id.'/components/'.$component->id.'/component_php');
+
+		$this->submitForm('add_template', [
+			'name'     => 'Test template',
+			'template' => '<? echo "Hi"; ?>',
+		]);
+
+		$this->see('Test template');
+	}
+
+	/** @test */
+	function not_author_can_cannot_see_class_php_templates_of_other_users(){
+		$component = $this->createComponentOnForm($this->module);
+
+		$this->visit('/my-bitrix/'.$this->module->id.'/components/'.$component->id.'/component_php');
+
+		$this->submitForm('add_template', [
+			'name'     => 'Test template',
+			'template' => '<? echo "Hi"; ?>',
+		]);
+
+		// а теперь другой
+		$this->signIn(factory(App\Models\User::class)->create());
+		$module2 = $this->fillNewBitrixForm();
+		$component = $this->createComponentOnForm($module2);
+
+		$this->visit('/my-bitrix/'.$module2->id.'/components/'.$component->id.'/component_php');
+
+		$this->dontSee('Test template');
+	}
+
+	/** @test */
+	function user_can_use_his_class_php_template(){
+		$component = $this->createComponentOnForm($this->module);
+
+		$this->visit('/my-bitrix/'.$this->module->id.'/components/'.$component->id.'/component_php');
+
+		$this->submitForm('add_template', [
+			'name'     => 'Test template',
+			'template' => '<? echo "Hi"; ?>',
+		]);
+		$template = \App\Models\Modules\Bitrix\BitrixComponentClassPhpTemplates::first();
+
+		$this->submitForm('use_template', [
+			'template_id' => $template->id,
+		]);
+
+		$this->see('<body><p>{"component_php":"","class_php":" echo \"Hi\"; ?&gt;"}</p></body>');
+	}
+
+	/** @test */
+	function not_author_cannot_use_anothers_class_php_template(){
+		$component = $this->createComponentOnForm($this->module);
+
+		$this->visit('/my-bitrix/'.$this->module->id.'/components/'.$component->id.'/component_php');
+
+		$this->submitForm('add_template', [
+			'name'     => 'Test template',
+			'template' => '<? echo "Hi"; ?>',
+		]);
+		$template = \App\Models\Modules\Bitrix\BitrixComponentClassPhpTemplates::first();
+
+		// а теперь другой
+		$this->signIn(factory(App\Models\User::class)->create());
+		$module2 = $this->fillNewBitrixForm();
+		$component = $this->createComponentOnForm($module2);
+
+		$response = $this->call('GET', action('Modules\Bitrix\BitrixComponentsController@get_logic_files_templates', ['module' => $module2, 'component' => $component->id]), ['template_id' => $template->id]);
+
+		$this->assertEquals('{"component_php":"","class_php":""}', $response->content());
+	}
+
+	/** @test */
+	function user_can_delete_his_class_php_template(){
+		$component = $this->createComponentOnForm($this->module);
+
+		$this->visit('/my-bitrix/'.$this->module->id.'/components/'.$component->id.'/component_php');
+
+		$this->submitForm('add_template', [
+			'name'     => 'Test template',
+			'template' => '<? echo "Hi"; ?>',
+		]);
+
+		$this->see('Test template');
+
+		$template = \App\Models\Modules\Bitrix\BitrixComponentClassPhpTemplates::first();
+		$this->click('delete_template'.$template->id);
+
+		$this->dontSee('Test template');
 	}
 
 	/** @test */

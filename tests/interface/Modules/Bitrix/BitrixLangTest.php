@@ -62,6 +62,17 @@ class BitrixLangInterfaceTest extends BitrixTestCase{
 	}
 
 	/** @test */
+	function it_matches_files_with_problems(){
+		$this->module->disk()->put($this->module->module_folder.'/ololo.php', '<? ololo(); ?><p>ололо</p>');
+		$this->module->disk()->put($this->module->module_folder.'/lang/ru/ololo.php', '<? $MESS["TEST"] = "Test";?>');
+
+		$this->visit('/my-bitrix/'.$this->module->id.$this->path);
+
+		$html = $this->response->getContent();
+		$this->assertRegexp('/list-group-item-danger[^<]+?<[^>]+?>\/ololo.php/', $html);
+	}
+
+	/** @test */
 	function smn_cannot_go_to_page_of_nonexistent_file(){
 		$this->visit('/my-bitrix/'.$this->module->id.$this->path.'/edit?file=%2Fololo.php');
 		$this->visit('/my-bitrix/'.$this->module->id.$this->path);
@@ -121,22 +132,30 @@ class BitrixLangInterfaceTest extends BitrixTestCase{
 	}
 
 	/** @test */
-	function it_can_find_php_comment(){
+	function it_can_find_php_comment_in_cyrillic(){
+		$this->module->disk()->put($this->module->module_folder.'/ololo.php', '<? // тест ');
+
+		$this->visit('/my-bitrix/'.$this->module->id.$this->path.'/edit?file=%2Fololo.php');
+		$this->see('<span class="bg-danger">тест</span>');
+		$this->seeInField('code_0', 'TEST');
+	}
+
+	/** @test */
+	function it_doesnt_think_that_php_comment_in_latin_is_a_problem(){
 		$this->module->disk()->put($this->module->module_folder.'/ololo.php', '<? // i am not here ');
 
 		$this->visit('/my-bitrix/'.$this->module->id.$this->path.'/edit?file=%2Fololo.php');
-		$this->see('<span class="bg-danger">i am not here</span>');
-		$this->seeInField('code_0', 'I_AM_NOT_HERE');
+		$this->dontSee('<span class="bg-danger">i am not here</span>');
 	}
 
 	/** @test */
 	function it_can_transliterate_php_comment(){
-		$this->module->disk()->put($this->module->module_folder.'/ololo.php', '<? // i am not here ');
+		$this->module->disk()->put($this->module->module_folder.'/ololo.php', '<? // ололо ');
 
 		$this->visit('/my-bitrix/'.$this->module->id.$this->path.'/edit?file=%2Fololo.php');
 		$this->press('translit_0');
 
-		$this->see('<? // i_am_not_here ');
+		$this->see('<? // ololo ');
 	}
 
 	/** @test */

@@ -58,6 +58,19 @@ class BitrixDetailPageFilesTest extends BitrixTestCase{
 	}
 
 	/** @test */
+	function smn_can_download_zip_as_folder_for_test(){
+		$this->payDays(1);
+		$this->visit('/my-bitrix/'.$this->module->id);
+		$this->submitForm('module_download', [
+			'version'        => '0.0.1',
+			'download_as'    => 'for_test',
+			'files_encoding' => 'utf-8',
+		]);
+		$this->assertFileExists(public_path().'/user_downloads/'.$this->module->module_folder.'.zip');
+		unlink(public_path().'/user_downloads/'.$this->module->module_folder.'.zip');
+	}
+
+	/** @test */
 	function archive_contains_all_files_at_update(){
 		$this->payDays(1);
 		$this->visit('/my-bitrix/'.$this->module->id);
@@ -65,20 +78,23 @@ class BitrixDetailPageFilesTest extends BitrixTestCase{
 			'version'        => '0.0.5',
 			'download_as'    => 'update',
 			'files_encoding' => 'utf-8',
+			'description'    => 'test',
 		]);
 		$this->assertFileExists(public_path().'/user_downloads/0.0.5.zip');
 
 		// тут конечно не всё, но главное, чтобы версия совпадала и хоть какие-то файлы были
 		$zipper = new Zipper;
 		$zipper->make(public_path().'/user_downloads/0.0.5.zip');
-		$include_php = $zipper->getFileContent('0.0.5\include.php');
-		$install_index_php = $zipper->getFileContent('0.0.5\install\index.php');
-		$updater_php = $zipper->getFileContent('0.0.5\updater.php');
-		$description_en = $zipper->getFileContent('0.0.5\description.en');
+		$filesList = $zipper->listFiles();
 		$version_php = $zipper->getFileContent('0.0.5\install\version.php');
 		$zipper->close();
 
 		unlink(public_path().'/user_downloads/0.0.5.zip');
+
+		$this->assertTrue(in_array('0.0.5\include.php', $filesList));
+		$this->assertTrue(in_array('0.0.5\install\index.php', $filesList));
+		$this->assertTrue(in_array('0.0.5\updater.php', $filesList));
+		$this->assertTrue(in_array('0.0.5\description.ru', $filesList));
 
 		$this->assertRegExp('/0\.0\.5/is', $version_php);
 	}
@@ -97,12 +113,44 @@ class BitrixDetailPageFilesTest extends BitrixTestCase{
 		// тут конечно не всё, но главное, чтобы версия совпадала и хоть какие-то файлы были
 		$zipper = new Zipper;
 		$zipper->make(public_path().'/user_downloads/.last_version.zip');
-		$include_php = $zipper->getFileContent('.last_version\include.php');
-		$install_index_php = $zipper->getFileContent('.last_version\install\index.php');
+		$filesList = $zipper->listFiles();
 		$version_php = $zipper->getFileContent('.last_version\install\version.php');
 		$zipper->close();
 
 		unlink(public_path().'/user_downloads/.last_version.zip');
+
+		$this->assertTrue(in_array('.last_version\include.php', $filesList));
+		$this->assertTrue(in_array('.last_version\install\index.php', $filesList));
+		$this->assertFalse(in_array('.last_version\updater.php', $filesList));
+		$this->assertFalse(in_array('.last_version\description.ru', $filesList));
+
+		$this->assertRegExp('/0\.0\.1/is', $version_php); // todo здесь всегд 0.0.1 будет?
+	}
+
+	/** @test */
+	function archive_contains_all_files_at_for_test_download(){
+		$this->payDays(1);
+		$this->visit('/my-bitrix/'.$this->module->id);
+		$this->submitForm('module_download', [
+			'version'        => '0.0.1',
+			'download_as'    => 'for_test',
+			'files_encoding' => 'utf-8',
+		]);
+		$this->assertFileExists(public_path().'/user_downloads/'.$this->module->module_folder.'.zip');
+
+		// тут конечно не всё, но главное, чтобы версия совпадала и хоть какие-то файлы были
+		$zipper = new Zipper;
+		$zipper->make(public_path().'/user_downloads/'.$this->module->module_folder.'.zip');
+		$filesList = $zipper->listFiles();
+		$version_php = $zipper->getFileContent(''.$this->module->module_folder.'\install\version.php');
+		$zipper->close();
+
+		unlink(public_path().'/user_downloads/'.$this->module->module_folder.'.zip');
+
+		$this->assertTrue(in_array(''.$this->module->module_folder.'\include.php', $filesList));
+		$this->assertTrue(in_array(''.$this->module->module_folder.'\install\index.php', $filesList));
+		$this->assertFalse(in_array(''.$this->module->module_folder.'\updater.php', $filesList));
+		$this->assertFalse(in_array(''.$this->module->module_folder.'\description.ru', $filesList));
 
 		$this->assertRegExp('/0\.0\.1/is', $version_php); // todo здесь всегд 0.0.1 будет?
 	}
@@ -131,19 +179,6 @@ class BitrixDetailPageFilesTest extends BitrixTestCase{
 		$zipper->close();
 
 		unlink(public_path().'/user_downloads/.last_version.zip');
-	}
-
-	/** @test */
-	function smn_can_download_zip_as_folder_for_test(){
-		$this->payDays(1);
-		$this->visit('/my-bitrix/'.$this->module->id);
-		$this->submitForm('module_download', [
-			'version'        => '0.0.1',
-			'download_as'    => 'for_test',
-			'files_encoding' => 'utf-8',
-		]);
-		$this->assertFileExists(public_path().'/user_downloads/'.$this->module->module_folder.'.zip');
-		unlink(public_path().'/user_downloads/'.$this->module->module_folder.'.zip');
 	}
 }
 
