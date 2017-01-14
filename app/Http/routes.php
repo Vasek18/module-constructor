@@ -294,6 +294,10 @@ Route::group(['prefix' => 'project_help'], function (){
 			Route::post('add', ['uses' => 'ProjectHelpController@bitrixEventsAdd']);
 			Route::get('{event}/mark_as_bad', ['uses' => 'ProjectHelpController@bitrixEventsMarkAsBad']);
 		});
+		Route::group(['prefix' => 'class_php_templates'], function (){
+			Route::get('', ['uses' => 'ProjectHelpController@bitrixClassPhpTemplates']);
+			Route::post('add', ['uses' => 'ProjectHelpController@bitrixClassPhpTemplatesAdd']);
+		});
 	});
 });
 

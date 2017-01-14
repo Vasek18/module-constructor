@@ -58,4 +58,12 @@ class ProjectHelpController extends Controller{
 
 		return back();
 	}
+
+	public function bitrixClassPhpTemplates(){
+
+	}
+
+	public function bitrixClassPhpTemplatesAdd(){
+
+	}
 }
