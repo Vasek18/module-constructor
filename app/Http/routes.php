@@ -262,6 +262,7 @@ Route::group(['prefix' => 'oko', 'middleware' => 'admin'], function (){
 	// оплаты
 	Route::group(['prefix' => 'payments'], function (){
 		Route::get('', ['uses' => 'Admin\AdminPaymentsController@index']);
+		Route::get('{payment}/delete', ['uses' => 'Admin\AdminPaymentsController@delete']);
 	});
 });
 

@@ -13,4 +13,10 @@ class AdminPaymentsController extends Controller{
 
 		return view("admin.payments.index", $data);
 	}
+
+	public function delete(Pays $payment){
+		$payment->delete();
+
+		return back();
+	}
 }

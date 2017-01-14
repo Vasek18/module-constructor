@@ -28,7 +28,7 @@ elixir(function(mix){
 		.coffee('bitrix_mail_template_form.coffee')
 		.coffee('bitrix_component_logic_wizard.coffee')
 		.coffee('bitrix_iblock.coffee')
-		.coffee('deletetion_with_confirm.coffee')
+		.coffee('deletion_with_confirm.coffee')
 		.coffee('bitrix_events_handlers.coffee')
 		.coffee('articles.coffee')
 		.coffee('bitrix_download_form.coffee')
