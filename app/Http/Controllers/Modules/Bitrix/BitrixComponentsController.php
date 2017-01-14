@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Modules\Bitrix;
 
+use App\Models\Modules\Bitrix\BitrixComponentClassPhpTemplates;
 use Illuminate\Http\Request;
 
 use App\Http\Controllers\Controller;
@@ -225,8 +226,9 @@ class BitrixComponentsController extends Controller{
 		}
 
 		$data = [
-			'module'    => $module,
-			'component' => $component
+			'module'              => $module,
+			'component'           => $component,
+			'class_php_templates' => BitrixComponentClassPhpTemplates::thatUserCanSee($this->user)->get(),
 		];
 
 		return view("bitrix.components.component_php.index", $data);
@@ -297,6 +299,7 @@ class BitrixComponentsController extends Controller{
 
 		if ($component){
 			flash()->success(trans('bitrix_components.component_imported'));
+
 			return redirect(action('Modules\Bitrix\BitrixComponentsController@show', [$module->id, $component->id]));
 		}
 

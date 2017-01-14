@@ -103,10 +103,12 @@ return [
 
 	'component_logic' => 'Logic',
 
-	'logic_wizard_title'                 => 'Wizard',
-	'logic_wizard_text'                  => '',
-	'logic_wizard_items_list'            => 'Items list',
-	'logic_wizard_items_list_with_props' => 'Items list with props',
+	'logic_wizard_title'                  => 'Wizard',
+	'logic_wizard_text'                   => '',
+	'logic_wizard_my_templates_title'     => 'My templates',
+	'logic_wizard_common_templates_title' => 'Other templates',
+	'logic_wizard_items_list'             => 'Items list',
+	'logic_wizard_items_list_with_props'  => 'Items list with props',
 
 	'add_logic_template_btn'            => 'Add your template',
 	'add_logic_template_title'          => 'Add your template',

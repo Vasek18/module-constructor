@@ -15,6 +15,7 @@ class CreateBitrixComponentsClassPhpTemplatesTable extends Migration{
 			$table->integer('creator_id')->nullable()->unsigned();
 			$table->foreign('creator_id')->references('id')->on('users');
 			$table->string('name');
+			$table->string('code')->nullable();
 			$table->text('template')->nullable();
 			$table->boolean('show_everyone')->nullable()->default(false);
 			$table->boolean('need_edit')->nullable()->default(false);

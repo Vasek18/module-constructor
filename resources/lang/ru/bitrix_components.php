@@ -104,10 +104,12 @@ return [
 
 	'component_logic' => 'Логика',
 
-	'logic_wizard_title'                 => 'Мастер заготовок',
-	'logic_wizard_text'                  => '',
-	'logic_wizard_items_list'            => 'Список элементов',
-	'logic_wizard_items_list_with_props' => 'Список элементов со свойствами',
+	'logic_wizard_title'                  => 'Мастер заготовок',
+	'logic_wizard_text'                   => '',
+	'logic_wizard_my_templates_title'     => 'Мои шаблоны',
+	'logic_wizard_common_templates_title' => 'Другие шаблоны',
+	'logic_wizard_items_list'             => 'Список элементов',
+	'logic_wizard_items_list_with_props'  => 'Список элементов со свойствами',
 
 	'add_logic_template_btn'            => 'Добавить свой шаблон',
 	'add_logic_template_title'          => 'Добавить свой шаблон',
