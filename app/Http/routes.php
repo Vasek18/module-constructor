@@ -296,6 +296,7 @@ Route::group(['prefix' => 'project_help'], function (){
 		});
 		Route::group(['prefix' => 'class_php_templates'], function (){
 			Route::post('add', ['uses' => 'ProjectHelpController@bitrixClassPhpTemplatesAdd', 'middleware' => ['auth']]);
+			Route::get('{template}/delete', ['uses' => 'ProjectHelpController@bitrixClassPhpTemplatesDelete', 'middleware' => ['auth']]);
 		});
 	});
 });

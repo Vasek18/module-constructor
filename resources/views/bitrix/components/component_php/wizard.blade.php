@@ -17,7 +17,8 @@
                     </div>
                 </div>
                 <div class="col-md-1">
-                    <a href="#"
+                    <a href="{{ action('ProjectHelpController@bitrixClassPhpTemplatesDelete', [$class_php_template]) }}"
+                       id="delete_template{{ $class_php_template->id }}"
                        class="btn btn-danger btn-sm delete">
                     <span class="glyphicon glyphicon-trash"
                           aria-hidden="true"></span>

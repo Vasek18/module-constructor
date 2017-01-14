@@ -60,16 +60,20 @@ class ProjectHelpController extends Controller{
 		return back();
 	}
 
-	public function bitrixClassPhpTemplates(){
-
-	}
-
 	public function bitrixClassPhpTemplatesAdd(Request $request){
 		BitrixComponentClassPhpTemplates::create([
 			'creator_id' => $this->user->id,
 			'name'       => $request->name,
 			'template'   => $request->template,
 		]);
+
+		return back();
+	}
+
+	public function bitrixClassPhpTemplatesDelete(BitrixComponentClassPhpTemplates $template, Request $request){
+		if ($template->userCanUse($this->user)){
+			$template->delete();
+		}
 
 		return back();
 	}

@@ -14,8 +14,11 @@ class BitrixComponentClassPhpTemplates extends Model{
 	}
 
 	public function userCanUse(User $user){
-		if ($this->creator_id == $user->id){
-			return true;
+		// todo нельзя удалять утверждённые шаблоны
+		if ($user->id){
+			if ($this->creator_id == $user->id){
+				return true;
+			}
 		}
 
 		return false;
