@@ -20,8 +20,9 @@
                 <h4 class="modal-title">{{ trans('bitrix_components.add_logic_template_title') }}</h4>
             </div>
             <div class="modal-body">
-                <form action=""
+                <form action="{{ action('ProjectHelpController@bitrixClassPhpTemplatesAdd') }}"
                       method="post">
+                    {{ csrf_field() }}
                     <div class="form-group">
                         <label for="name">{{ trans('bitrix_components.add_logic_template_name_field') }}</label>
                         <input type="text"

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Modules\Bitrix\BitrixComponentClassPhpTemplates;
 use App\Models\Modules\Bitrix\BitrixCoreEvents;
 use App\Models\Modules\Bitrix\BitrixCoreModules;
 use Illuminate\Http\Request;
@@ -63,7 +64,13 @@ class ProjectHelpController extends Controller{
 
 	}
 
-	public function bitrixClassPhpTemplatesAdd(){
+	public function bitrixClassPhpTemplatesAdd(Request $request){
+		BitrixComponentClassPhpTemplates::create([
+			'creator_id' => $this->user->id,
+			'name'       => $request->name,
+			'template'   => $request->template,
+		]);
 
+		return back();
 	}
 }

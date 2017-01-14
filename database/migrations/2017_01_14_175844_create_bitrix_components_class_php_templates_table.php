@@ -3,14 +3,14 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateBitrixClassPhpTemplatesTable extends Migration{
+class CreateBitrixComponentsClassPhpTemplatesTable extends Migration{
 	/**
 	 * Run the migrations.
 	 *
 	 * @return void
 	 */
 	public function up(){
-		Schema::create('bitrix_class_php_templates', function (Blueprint $table){
+		Schema::create('bitrix_components_class_php_templates', function (Blueprint $table){
 			$table->increments('id');
 			$table->integer('creator_id')->nullable()->unsigned();
 			$table->foreign('creator_id')->references('id')->on('users');
@@ -28,6 +28,6 @@ class CreateBitrixClassPhpTemplatesTable extends Migration{
 	 * @return void
 	 */
 	public function down(){
-		Schema::drop('bitrix_class_php_templates');
+		Schema::drop('bitrix_components_class_php_templates');
 	}
 }
