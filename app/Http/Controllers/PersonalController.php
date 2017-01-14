@@ -39,4 +39,8 @@ class PersonalController extends Controller{
 	public function help_project(){
 		return view("personal.help_project");
 	}
+
+	public function donate(){
+		return view("personal.donate");
+	}
 }

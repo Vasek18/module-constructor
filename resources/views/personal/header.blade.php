@@ -9,8 +9,8 @@
             </li>
         @endif
         @if (setting('donat'))
-            <li class="<?php echo classActiveSegment(2, 'help_project'); ?>">
-                <a href="{{ action('PersonalController@help_project') }}">{{ trans('personal_cabinet.menu_help_project') }}</a>
+            <li class="<?php echo classActiveSegment(2, 'donate'); ?>">
+                <a href="{{ action('PersonalController@donate') }}">{{ trans('personal_cabinet.menu_donate') }}</a>
             </li>
         @endif
     </ul>

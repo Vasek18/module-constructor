@@ -22,6 +22,10 @@ Route::group(['prefix' => 'personal'], function (){
 	Route::group(['prefix' => 'help_project'], function (){
 		Route::get('', 'PersonalController@help_project');
 	});
+
+	Route::group(['prefix' => 'donate'], function (){
+		Route::get('', 'PersonalController@donate');
+	});
 });
 Route::group(['prefix' => 'auth'], function (){
 	Route::group(['prefix' => 'register'], function (){
