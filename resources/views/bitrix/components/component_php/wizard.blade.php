@@ -21,3 +21,4 @@
         </div>
     </div>
 </form>
+@include('bitrix.components.component_php.add_template')

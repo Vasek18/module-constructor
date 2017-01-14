@@ -1,7 +1,7 @@
 @extends('bitrix.internal_template')
 
 @section('h1')
-    Component.php | {{ trans('bitrix_components.component') }} {{ $component->name }} ({{ $component->code }})
+    {{ trans('bitrix_components.component_logic') }} | {{ trans('bitrix_components.component') }} {{ $component->name }} ({{ $component->code }})
 @stop
 
 @push('scripts')
@@ -11,8 +11,6 @@
 @section('page')
 
     @include('bitrix.components.progress_way_menu')
-
-    @include('bitrix.components.component_php.wizard', [])
 
     <form action="{{action('Modules\Bitrix\BitrixComponentsController@store_component_php', [$module->id, $component->id])}}"
           method="post">
@@ -89,8 +87,12 @@
             </div>
         </div>
         <br>
-        <button class="btn btn-primary"
+        <button class="btn btn-success btn-lg"
                 name="save">{{ trans('app.save') }}</button>
     </form>
+
+    <hr>
+
+    @include('bitrix.components.component_php.wizard', [])
 
 @stop
