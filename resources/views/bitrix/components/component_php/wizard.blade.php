@@ -10,7 +10,7 @@
                     <div class="radio">
                         <label>
                             <input type="radio"
-                                   name="template"
+                                   name="template_id"
                                    value="{{ $class_php_template->id }}">
                             {{ $class_php_template->name }}
                         </label>
@@ -44,6 +44,11 @@
                 {{ trans('bitrix_components.logic_wizard_items_list_with_props') }}
             </label>
         </div>
+    </div>
+    <div class="hidden">
+        <button id="use_template"
+                name="use_template"
+                class="btn btn-success"></button>
     </div>
 </form>
 @include('bitrix.components.component_php.add_template')

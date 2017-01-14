@@ -12,4 +12,12 @@ class BitrixComponentClassPhpTemplates extends Model{
 	public function scopeThatUserCanSee($query, User $user){
 		return $query->where('creator_id', $user->id);
 	}
+
+	public function userCanUse(User $user){
+		if ($this->creator_id == $user->id){
+			return true;
+		}
+
+		return false;
+	}
 }

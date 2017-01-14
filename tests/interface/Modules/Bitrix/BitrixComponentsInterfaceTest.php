@@ -307,6 +307,26 @@ class BitrixComponentsInterfaceTest extends BitrixTestCase{
 	}
 
 	/** @test */
+	function user_can_use_his_class_php_template(){
+		$component = $this->createComponentOnForm($this->module);
+
+		$this->visit('/my-bitrix/'.$this->module->id.'/components/'.$component->id.'/component_php');
+
+		$this->submitForm('add_template', [
+			'name'     => 'Test template',
+			'template' => '<? echo "Hi"; ?>',
+		]);
+
+		$template = \App\Models\Modules\Bitrix\BitrixComponentClassPhpTemplates::first();
+
+		$this->submitForm('use_template', [
+			'template_id' => $template->id,
+		]);
+
+		$this->see('<body><p>{"component_php":"","class_php":" echo \"Hi\"; ?&gt;"}</p></body>');
+	}
+
+	/** @test */
 	function not_author_cannot_get_to_component_arbitrary_files_page_of_anothers_module(){
 		// есть один модуль с компонентом
 		$component = $this->createComponentOnForm($this->module, [
