@@ -284,6 +284,7 @@ Route::get('_ololotrololo_', function (){ // todo удалить
 
 // просто страницы
 Route::get('oplata', ['uses' => 'HtmlPagesController@oplata']);
+Route::get('does_it_charge', ['uses' => 'HtmlPagesController@does_it_charge']);
 Route::get('contacts', ['uses' => 'HtmlPagesController@contacts']);
 Route::get('requisites', ['uses' => 'HtmlPagesController@requisites']);
 

@@ -8,9 +8,11 @@
             <input type="hidden"
                    name="scid"
                    value="{{ env('YANDEX_KASSA_SCID') }}">
-            <input name="customerNumber"
-                   value="{{ $user->id }}"
-                   type="hidden">
+            @if (isset($user))
+                <input name="customerNumber"
+                       value="{{ $user->id }}"
+                       type="hidden">
+            @endif
             <div class="form-group">
                 <label for="sum">{{ trans('donate_form.sum') }}, {{ trans('donate_form.rubles') }}</label>
                 <select id="sum"

@@ -8,6 +8,7 @@ return [
 	'link_to_about_service_articles_title' => 'О сервисе',
 	'link_to_info'                         => 'Информация',
 	'link_to_oplata'                       => 'Оплата',
+	'link_to_should_i_pay'                 => 'Нужно ли платить?',
 	'link_to_contacts'                     => 'Контакты',
 	'link_to_requisites'                   => 'Реквизиты',
 	'link_to_auth_title'                   => 'Авторизация',

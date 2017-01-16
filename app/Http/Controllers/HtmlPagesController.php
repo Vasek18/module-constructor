@@ -12,6 +12,10 @@ class HtmlPagesController extends Controller{
 		return view("html_pages.oplata");
 	}
 
+	public function does_it_charge(Request $request){
+		return view("html_pages.does_it_charge");
+	}
+
 	public function contacts(Request $request){
 		return view("html_pages.contacts");
 	}

@@ -8,6 +8,7 @@ return [
 	'link_to_about_service_articles_title' => 'About service',
 	'link_to_info'                         => 'Info',
 	'link_to_oplata'                       => 'Payment',
+	'link_to_should_i_pay'                 => 'Does it charge?',
 	'link_to_contacts'                     => 'Contacts',
 	'link_to_requisites'                   => 'Requisites',
 	'link_to_auth_title'                   => 'Authentication',

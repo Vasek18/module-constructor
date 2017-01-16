@@ -80,6 +80,11 @@
                                         <a href="/oplata/">{{ trans('app.link_to_oplata') }}</a>
                                     </li>
                                 @endif
+                                @if (setting('donat'))
+                                    <li>
+                                        <a href="/does_it_charge/">{{ trans('app.link_to_should_i_pay') }}</a>
+                                    </li>
+                                @endif
                                 <li>
                                     <a href="/contacts/">{{ trans('app.link_to_contacts') }}</a>
                                 </li>
