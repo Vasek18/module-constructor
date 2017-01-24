@@ -16,6 +16,7 @@ return [
 	'link_to_personal_title'               => 'Personal',
 	'link_to_logout_title'                 => 'Logout',
 	'link_functional_suggestions_title'    => 'Functional suggestions',
+	'link_project_help_title'              => 'Project help',
 
 	'bitrix_module' => 'Module',
 	'file'          => 'File',

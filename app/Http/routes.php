@@ -306,6 +306,7 @@ Route::group(['prefix' => 'functional_suggestions'], function (){
 
 // помощь проекту
 Route::group(['prefix' => 'project_help'], function (){
+	Route::get('', ['uses' => 'ProjectHelpController@index']);
 	Route::group(['prefix' => 'bitrix'], function (){
 		Route::group(['prefix' => 'events'], function (){
 			Route::get('', ['uses' => 'ProjectHelpController@bitrixEvents']);

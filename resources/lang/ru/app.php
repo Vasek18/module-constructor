@@ -16,6 +16,7 @@ return [
 	'link_to_personal_title'               => 'Личный кабинет',
 	'link_to_logout_title'                 => 'Выйти',
 	'link_functional_suggestions_title'    => 'Предложения по функционалу',
+	'link_project_help_title'              => 'Помощь проекту',
 
 	'bitrix_module' => 'Модуль',
 	'file'          => 'Файл',

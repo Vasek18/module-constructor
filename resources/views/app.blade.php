@@ -148,9 +148,13 @@
             </div>
         </div>
         <div class="row">
+
             <div class="footer-menu col-md-3 col-md-offset-1">
                 <nav>
                     <ul>
+                        <li>
+                            <a href="{{ action('ProjectHelpController@index') }}">{{ trans('app.link_project_help_title') }}</a>
+                        </li>
                         <li>
                             <a href="{{ action('FunctionalSuggestionController@index') }}">{{ trans('app.link_functional_suggestions_title') }}</a>
                         </li>

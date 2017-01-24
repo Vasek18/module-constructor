@@ -9,6 +9,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
 class ProjectHelpController extends Controller{
+	public function index(){
+		$data = [];
+
+		return view("project_help.index", $data);
+	}
 
 	// события Битрикса
 	public function bitrixEvents(Request $request){

@@ -28,10 +28,10 @@ nav ul{
 }
 #wrap{
   min-height : 100%;
-  margin     : 0 auto $footerHeightReverse auto;
+  //margin     : 0 auto $footerHeightReverse auto;
 }
 #push{
-  height : $footerHeight;
+  //height : $footerHeight;
 }
 .navbar{
   border-radius : 0;
@@ -45,7 +45,7 @@ nav ul{
 }
 footer{
   width            : 100%;
-  height           : $footerHeight;
+  //height           : $footerHeight;
   border-top       : 1px solid $borderDefaultColor;
   background-color : #f8f8f8;
 }
