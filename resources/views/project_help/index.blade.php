@@ -3,27 +3,26 @@
 @section("content")
     <div class="container">
         <div class="row">
-            <h1>Помощь проекту</h1>
-            <p>Наш проект помогает вам бесплатно. Если вы хотите сами помочь проекту есть два пути. Эта позволяет
-                развивать сайт быстрее и делать его удобнее для вас.
-            </p>
-            <h2>Нематериальная помощь</h2>
-            <p>Ну, во-первых, одно то что вы пользуйтесь проектом уже помощь. Если вы рассказываете о нём друзьям и
-                коллегам это вдвойне лучше. А когда вы даёте обратную связь это уже сильный толчок.
-            </p>
-            <p>Мы собираем много информации в одном месте, чтобы давать подсказки при создании модулей. Вы можете
-                поучавствовать в этом на страницах:
-            </p>
+            <h1>{{ trans('project_help.h1') }}</h1>
+            <p class="lead">{!! trans('project_help.first_p') !!}</p>
+            <h2>{{ trans('project_help.non_material_help_title') }}</h2>
+            <p class="lead">{!! trans('project_help.non_material_help_p') !!}</p>
+            <p class="lead">{!! trans('project_help.we_collect_information') !!}</p>
             <ul>
                 <li>
-                    <a href="{{ action('ProjectHelpController@bitrixEvents') }}">Список событий ядра Битрикса</a>
+                    <a href="{{ action('ProjectHelpController@bitrixEvents') }}"
+                       class="lead">{{ trans('project_help.bitrix_events_list') }}
+                    </a>
                 </li>
             </ul>
-            <h2>Материальная помощь</h2>
-            <p>Чтобы разработчики могли поесть, вы можете оплатить им обед. Или даже одежду. Шучу, на самом деле эти
-                деньги покупают рабочие часы разработчиков, оплачивают хостинг и дарят надежду на светлое будущее.
-            </p>
+            <h2>{{ trans('project_help.material_help_title') }}</h2>
+            <p class="lead">{!! trans('project_help.material_help_p') !!}</p>
             @include('donate_form')
+            <h2>{{ trans('project_help.any_other_ideas') }}</h2>
+            <p class="lead">{!! trans('project_help.write_your_ideas') !!}
+                <a href="mailto:{{ env('PUBLIC_EMAIL') }}"><b>{{ env('PUBLIC_EMAIL') }}</b></a>
+                .
+            </p>
         </div>
     </div>
 @stop
