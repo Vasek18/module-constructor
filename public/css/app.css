@@ -1223,6 +1223,10 @@ p.big-text {
   font-size: 17px;
 }
 
+a.big-text {
+  font-size: 17px;
+}
+
 .notable-vertical-margin {
   margin-top: 50px;
   margin-bottom: 50px;
