@@ -70,7 +70,7 @@ class YandexKassaController extends Controller{
 
 		flash()->overlay(trans('oplata.oplata_success_title'), trans('oplata.oplata_success_p'));
 
-		return redirect(action('PersonalController@index'));
+		return redirect(action('HomeController@index'));
 	}
 
 	// возвращение пользователя после неуспешной оплаты
@@ -79,7 +79,7 @@ class YandexKassaController extends Controller{
 
 		flash()->overlay(trans('oplata.oplata_fail_title'), trans('oplata.oplata_fail_p'), 'error');
 
-		return redirect(action('PersonalController@oplata'));
+		return redirect(action('HomeController@indexa'));
 	}
 
 	// проверка md5 суммы
