@@ -24,12 +24,17 @@ class ConvertPrice{
 		return number_format($price, 2, ',', ' ');
 	}
 
-	public function convert($price){
+	public function convert($price, $format = true){
 		$toCurrency = $this->getCurrentCurrency();
 
 		$price = $this->round($price * $this->toRubRatio[$toCurrency]);
 
-		return $this->format($price);
+		if ($format){
+			return $this->format($price);
+		}
+		else{
+			return $price;
+		}
 	}
 }
 

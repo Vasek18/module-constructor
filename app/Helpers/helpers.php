@@ -199,8 +199,8 @@ function setSetting($code, $value){
 	}
 }
 
-function convertCurrency($price){
+function convertCurrency($price, $format = true){
 	$CP = new \App\Helpers\ConvertPrice;
 
-	return $CP->convert($price);
+	return $CP->convert($price, $format);
 }

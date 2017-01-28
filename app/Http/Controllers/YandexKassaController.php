@@ -12,9 +12,9 @@ class YandexKassaController extends Controller{
 
 	// проверка возможности платежа
 	public function checkOrder(Request $request){
-		Log::info('YK checkOrder '.$request->fullUrl()." ".serialize($request->all()));
-
 		$code = $this->isValidHash($request);
+
+		Log::info('YK checkOrder '.$request->fullUrl()." ".serialize($request->all())."\n\rcode=".$code);
 
 		$response = $this->generateResponseContent($request, $code, 'checkOrderResponse');
 
@@ -25,9 +25,9 @@ class YandexKassaController extends Controller{
 
 	// перевод денег
 	public function paymentAviso(Request $request){
-		Log::info('YK paymentAviso '.$request->fullUrl()." ".serialize($request->all()));
-
 		$code = $this->isValidHash($request);
+
+		Log::info('YK paymentAviso '.$request->fullUrl()." ".serialize($request->all())."\n\rcode=".$code);
 
 		$response = $this->generateResponseContent($request, $code, 'paymentAvisoResponse');
 
@@ -84,7 +84,7 @@ class YandexKassaController extends Controller{
 
 	// проверка md5 суммы
 	public function isValidHash(Request $request){
-		$hash = md5(htmlspecialchars($request->action).';'.htmlspecialchars($request->orderSumAmount).';'.htmlspecialchars($request->orderSumCurrencyPaycash).';'.htmlspecialchars($request->orderSumBankPaycash).';'.env('YANDEX_KASSA_SHOP_ID').';'.htmlspecialchars($request->invoiceId).';'.($request->customerNumber ? htmlspecialchars($request->customerNumber).';' : '').env('YANDEX_KASSA_SHOP_PASSWORD'));
+		$hash = md5(htmlspecialchars($request->action).';'.htmlspecialchars($request->orderSumAmount).';'.htmlspecialchars($request->orderSumCurrencyPaycash).';'.htmlspecialchars($request->orderSumBankPaycash).';'.env('YANDEX_KASSA_SHOP_ID').';'.htmlspecialchars($request->invoiceId).';'.($request->customerNumber ? htmlspecialchars($request->customerNumber).';' : ';').env('YANDEX_KASSA_SHOP_PASSWORD'));
 		if (strtolower($hash) != strtolower($request->md5)){
 			return 1;
 		}else{
