@@ -14,8 +14,10 @@
                 <td>{{ $pay->amount }}</td>
                 <td>{{ $pay->created_at }}</td>
                 <td>
-                    <a href="{{ action('Admin\AdminUsersController@show', ['user' => $pay->user]) }}">
-                        ({{ $pay->user->id }}) {{ $pay->user->last_name }} {{ $pay->user->first_name }}</a>
+                    @if ($pay->user)
+                        <a href="{{ action('Admin\AdminUsersController@show', ['user' => $pay->user]) }}">
+                            ({{ $pay->user->id }}) {{ $pay->user->last_name }} {{ $pay->user->first_name }}</a>
+                    @endif
                 </td>
                 <td>
                     <a href="{{ action('Admin\AdminPaymentsController@delete', [$pay]) }}"
