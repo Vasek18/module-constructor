@@ -18,10 +18,11 @@
                 <select id="sum"
                         name="sum"
                         class="form-control input-lg">
-                    <option value="{{ convertCurrency(100, false) }}">{{ convertCurrency(100, true) }}</option>
-                    <option value="{{ convertCurrency(500, false) }}" selected>{{ convertCurrency(500, true) }}</option>
-                    <option value="{{ convertCurrency(1000, false) }}">{{ convertCurrency(1000, true) }}</option>
-                    <option value="{{ convertCurrency(3000, false) }}">{{ convertCurrency(3000, true) }}</option>
+                    {{--Сумма должна быть указана в рублях--}}
+                    <option value="100">{{ convertCurrency(100, true) }}</option>
+                    <option value="500" selected>{{ convertCurrency(500, true) }}</option>
+                    <option value="1000">{{ convertCurrency(1000, true) }}</option>
+                    <option value="3000">{{ convertCurrency(3000, true) }}</option>
                 </select>
             </div>
             <div class="form-group">
