@@ -2,7 +2,8 @@
 
 return [
 	'site_name'        => 'Modules constructor',
-	'site_description' => 'Help in creation modules for the Bitrix',
+	'meta_title'       => 'Modules constructor - Help in creation modules for the Bitrix',
+	'meta_description' => 'It helps to create a module from scratch, expand and maintain its functionality, less worrying about code',
 	'site_developer'   => 'Service developer Vasiliy Aristov',
 
 	'link_to_use_cases_articles_title'     => 'Usecases',
