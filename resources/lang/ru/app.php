@@ -1,8 +1,9 @@
 <?php
 
 return [
-	'site_name'      => 'Конструктор модулей',
-	'site_developer' => 'Разработчик сервиса Аристов Василий',
+	'site_name'        => 'Конструктор модулей',
+	'site_description' => 'Помощник в создании модулей для Битрикс',
+	'site_developer'   => 'Разработчик сервиса Аристов Василий',
 
 	'link_to_use_cases_articles_title'     => 'Примеры использования',
 	'link_to_about_service_articles_title' => 'О сервисе',

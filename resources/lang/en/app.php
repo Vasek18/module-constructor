@@ -1,8 +1,9 @@
 <?php
 
 return [
-	'site_name'      => 'Modules constructor',
-	'site_developer' => 'Service developer Vasiliy Aristov',
+	'site_name'        => 'Modules constructor',
+	'site_description' => 'Help in creation modules for the Bitrix',
+	'site_developer'   => 'Service developer Vasiliy Aristov',
 
 	'link_to_use_cases_articles_title'     => 'Usecases',
 	'link_to_about_service_articles_title' => 'About service',

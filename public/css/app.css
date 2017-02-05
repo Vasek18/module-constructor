@@ -1426,3 +1426,8 @@ a.you-can-change:hover {
 .popover {
   min-width: 300px;
 }
+
+.socset-share {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
