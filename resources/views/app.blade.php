@@ -27,6 +27,8 @@
           content="{{ trans('app.meta_title') }}"/>
     <meta property="og:description"
           content="{{ trans('app.meta_description') }}"/>
+    <meta property="og:url"
+          content="{{ url()->current() }}"/>
 </head>
 <body>
 <div id="wrap">
