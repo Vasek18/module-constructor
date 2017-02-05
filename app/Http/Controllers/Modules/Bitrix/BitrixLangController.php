@@ -155,7 +155,11 @@ class BitrixLangController extends Controller{
 		$phrase_len = strlen($phrase);
 
 		if ($action == 'translit'){
-			$newContent = substr_replace($contentOriginal, translit($phrase), $start_pos, $phrase_len);
+			if ($is_comment){
+				$newContent = substr_replace($contentOriginal, translit($phrase, true), $start_pos, $phrase_len);
+			}else{
+				$newContent = substr_replace($contentOriginal, translit($phrase), $start_pos, $phrase_len);
+			}
 		}
 
 		if ($action == 'save'){

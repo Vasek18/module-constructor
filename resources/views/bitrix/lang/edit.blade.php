@@ -92,10 +92,12 @@
                                 @foreach($phrases as $c => $phrase)
                                     <tr>
                                         <td>
-                                            <input type="text"
-                                                   name="code_{{ $c + count($allKeys) }}"
-                                                   class="form-control"
-                                                   value="{{ strtoupper(translit($phrase["phrase"])) }}">
+                                            @if (!$phrase["is_comment"])
+                                                <input type="text"
+                                                       name="code_{{ $c + count($allKeys) }}"
+                                                       class="form-control"
+                                                       value="{{ strtoupper(translit($phrase["phrase"])) }}">
+                                            @endif
                                         </td>
                                         <td>
                                             <input type="hidden"
