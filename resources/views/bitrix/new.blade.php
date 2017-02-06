@@ -73,7 +73,7 @@
                             <div class="form-group">
                                 <label class="col-md-4 control-label">{{trans('bitrix_create.partner_uri_label')}}</label>
                                 <div class="col-md-6">
-                                    <input type="url" class="form-control" name="PARTNER_URI"
+                                    <input type="text" class="form-control" name="PARTNER_URI"
                                            required value="{{ $user["site"] }}" aria-describedby="PARTNER_URI_help">
                                     <span class="help-block"
                                           id="PARTNER_URI_help">{!!trans('bitrix_create.partner_uri_help')!!}</span>
