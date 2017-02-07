@@ -193,3 +193,8 @@ a.you-can-change{
   margin-top    : 20px;
   margin-bottom : 20px;
 }
+.xs-margin-bottom{
+  @include breakpoint(mobile){
+    margin-bottom : 5px;
+  }
+}

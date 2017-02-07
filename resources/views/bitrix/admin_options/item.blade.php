@@ -6,7 +6,7 @@
            class="sort-val"
            name="option_sort[]"
            value="{{$i}}">
-    <div class="col-md-4">
+    <div class="col-md-4 col-xs-12 xs-margin-bottom">
         <label class="sr-only"
                for="option_{{$i}}_name">{{ trans('bitrix_admin_options.name') }}</label>
         <input type="text"
@@ -16,7 +16,7 @@
                placeholder="{{ trans('bitrix_admin_options.name') }}"
                value="{{$option ? $option->name : ''}}">
     </div>
-    <div class="col-md-3">
+    <div class="col-md-3 col-xs-12 xs-margin-bottom">
         <label class="sr-only"
                for="option_{{$i}}_id">{{ trans('bitrix_admin_options.code') }}</label>
         <input type="text"
@@ -27,7 +27,7 @@
                value="{{$option ? $option->code : ''}}"
                @unless ($option) data-translit_from="option_{{$i}}_name" @endif>
     </div>
-    <div class="col-md-2">
+    <div class="col-md-2 col-xs-12 xs-margin-bottom">
         <label class="sr-only"
                for="option_{{$i}}_type">{{ trans('bitrix_admin_options.type') }}</label>
         <select class="form-control"
@@ -41,14 +41,17 @@
             @endforeach
         </select>
     </div>
-    <div class="col-md-2">
+    <div class="col-md-2 col-xs-8 xs-margin-bottom">
         <a href="#"
            class="btn btn-default btn-block"
            data-toggle="modal"
-           data-target="#admin_options_dop_settings_window_{{$i}}">{{ trans('bitrix_admin_options.additional_settings_button') }}
+           data-target="#admin_options_dop_settings_window_{{$i}}">
+            <span class="">
+                {{ trans('bitrix_admin_options.additional_settings_button') }}
+            </span>
         </a>
     </div>
-    <div class="col-md-1">
+    <div class="col-md-1 col-xs-4 text-right">
         @if ($option)
             <a href="{{ action('Modules\Bitrix\BitrixOptionsController@destroy', [$module->id, $option->id]) }}"
                class="btn btn-danger btn-sm"

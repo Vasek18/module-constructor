@@ -1431,3 +1431,9 @@ a.you-can-change:hover {
   margin-top: 20px;
   margin-bottom: 20px;
 }
+
+@media (max-width: 767px) {
+  .xs-margin-bottom {
+    margin-bottom: 5px;
+  }
+}

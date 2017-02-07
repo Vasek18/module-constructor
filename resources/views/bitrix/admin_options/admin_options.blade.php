@@ -8,8 +8,11 @@
     @push('scripts')
     <script src="/js/bitrix_module_admin_options.js"></script>
     @endpush
-    
+
     @include('bitrix.button_n_modal_for_file_copy', ['path' => DIRECTORY_SEPARATOR.'options.php', 'show' => $user->canSeePaidFiles(), 'is_lang' => false])
+    <div class="visible-xs">
+        <br>
+    </div>
     @include('bitrix.button_n_modal_for_file_copy', ['path' => DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.'ru'.DIRECTORY_SEPARATOR.'options.php', 'show' => $user->canSeePaidFiles(), 'is_lang' => true, 'add_id' => '_lang'])
 
     <br><br>
@@ -19,7 +22,7 @@
         <input type="hidden"
                name="_token"
                value="{{ csrf_token() }}">
-        <div class="row option-headers">
+        <div class="row hidden-xs option-headers">
             <div class="col-md-4">
                 <label>{{ trans('bitrix_admin_options.option_name') }}</label>
             </div>
