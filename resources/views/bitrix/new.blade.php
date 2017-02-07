@@ -1,5 +1,9 @@
 @extends('app')
 
+@push('scripts')
+<script src="/js/bitrix_create_form.js"></script>
+@endpush
+
 @section('content')
     <div class="container-fluid">
         <div class="row">

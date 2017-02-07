@@ -33,6 +33,7 @@ elixir(function(mix){
 		.coffee('articles.coffee')
 		.coffee('bitrix_download_form.coffee')
 		.coffee('bitrix_lang_pages.coffee')
+		.coffee('bitrix_create_form.coffee')
 
 		// .copy('resources/assets/js/popover.js', 'public/js/popover.js')
 		.copy('node_modules/sweetalert/dist/sweetalert-dev.js', 'public/js/sweetalert.js')
