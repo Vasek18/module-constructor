@@ -21,7 +21,7 @@ class LoginController extends Controller{
 	 *
 	 * @var string
 	 */
-	protected $redirectTo = '/home';
+	protected $redirectTo = '/personal/'; // перенаправление в случае удачной регистрации
 
 	/**
 	 * Create a new controller instance.

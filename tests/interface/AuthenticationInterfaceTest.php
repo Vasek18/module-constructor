@@ -14,7 +14,7 @@ class AuthenticationInterfaceTest extends TestCase{
 			'password' => bcrypt("12345678"),
 		]);
 
-		$this->visit('/personal/auth');
+		$this->visit('/login');
 	}
 
 	/** @test */

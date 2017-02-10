@@ -1,8 +1,9 @@
 <?php
 namespace App\Http\Controllers\Auth;
 
-use App\User;
+use App\Models\User;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
@@ -23,7 +24,7 @@ class RegisterController extends Controller{
 	 *
 	 * @var string
 	 */
-	protected $redirectTo = '/home';
+	protected $redirectTo = '/personal/'; // перенаправление в случае удачной регистрации
 
 	/**
 	 * Create a new controller instance.
@@ -35,6 +36,19 @@ class RegisterController extends Controller{
 	}
 
 	/**
+	 * Show the application registration form.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function showRegistrationForm(){
+		if (setting('disallow_auth')){
+			abort(404);
+		}
+
+		return view('auth.register');
+	}
+
+	/**
 	 * Get a validator for an incoming registration request.
 	 *
 	 * @param  array $data
@@ -42,9 +56,9 @@ class RegisterController extends Controller{
 	 */
 	protected function validator(array $data){
 		return Validator::make($data, [
-			'name'     => 'required|max:255',
-			'email'    => 'required|email|max:255|unique:users',
-			'password' => 'required|min:6|confirmed',
+			'first_name' => 'required|max:255',
+			'email'      => 'required|email|max:255|unique:users',
+			'password'   => 'required|min:6|confirmed',
 		]);
 	}
 
@@ -55,10 +69,32 @@ class RegisterController extends Controller{
 	 * @return User
 	 */
 	protected function create(array $data){
-		return User::create([
-			'name'     => $data['name'],
-			'email'    => $data['email'],
-			'password' => bcrypt($data['password']),
+		if (setting('disallow_auth')){
+			abort(404);
+		}
+
+		$daysTrial = setting('demo_days');
+
+		$user = User::create([
+			'first_name'   => $data['first_name'],
+			'last_name'    => $data['last_name'],
+			'site'         => isset($data['site']) ? $data['site'] : '',
+			'company_name' => isset($data['company_name']) ? $data['company_name'] : '',
+			'email'        => $data['email'],
+			'password'     => bcrypt($data['password']),
+			'group_id'     => User::$defaultGroup,
 		]);
+
+		$user->paid_days = $daysTrial;
+		$user->save();
+
+		// письмо мне
+		Mail::send('emails.admin.new_user', ['user' => $user], function ($m){
+			$m->to(env('GOD_EMAIL'))->subject('Зарегался новый пользователь');
+		});
+
+		flash()->success(trans('reg.you_ve_registered').'\n'.(setting('day_price') ? trans_choice('reg.trial_provided', $daysTrial, ['days' => $daysTrial]) : ''));
+
+		return $user;
 	}
 }

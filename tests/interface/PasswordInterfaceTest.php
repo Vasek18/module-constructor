@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Mail;
 
 class PasswordInterfaceTest extends TestCase{
 
@@ -14,7 +15,7 @@ class PasswordInterfaceTest extends TestCase{
 			'password' => bcrypt("12345678"),
 		]);
 
-		$this->visit('/password/email');
+		$this->visit(route('password.reset'));
 	}
 
 	/** @test */
@@ -37,18 +38,14 @@ class PasswordInterfaceTest extends TestCase{
 		$this->see('We can\'t find a user with that e-mail address');
 	}
 
-	// /** @test */ // todo
-	// function it_sends_email(){
-	// 	$mock = Mockery::mock('Swift_Mailer');
-	// 	$this->app['mailer']->setSwiftMailer($mock);
-	//
-	// 	$mock->shouldReceive('send')->once()->andReturnUsing(function ($message){
-	// 		$this->assertArrayhasKey('ololo@test.ru', $message->getTo());
-	// 	});
-	// 	$this->submitForm('send', [
-	// 		'email' => 'ololo@test.ru',
-	// 	]);
-	// }
+	/** @test */
+	function it_sends_email(){
+		Mail::shouldReceive('send')->once();
+
+		$this->submitForm('send', [
+			'email' => 'ololo@test.ru',
+		]);
+	}
 }
 
 ?>

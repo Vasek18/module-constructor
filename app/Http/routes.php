@@ -2,18 +2,25 @@
 
 Route::get('/', "HomeController@index");
 
+// Login Routes...
+Route::get('login', ['as' => 'login', 'uses' => 'Auth\LoginController@showLoginForm']);
+Route::post('login', ['as' => 'login.post', 'uses' => 'Auth\LoginController@login']);
+Route::post('logout', ['as' => 'logout', 'uses' => 'Auth\LoginController@logout']);
+
+// Registration Routes...
+Route::get('register', ['as' => 'register', 'uses' => 'Auth\RegisterController@showRegistrationForm']);
+Route::post('register', ['as' => 'register.post', 'uses' => 'Auth\RegisterController@register']);
+
+// Password Reset Routes...
+Route::get('password/reset', ['as' => 'password.reset', 'uses' => 'Auth\ForgotPasswordController@showLinkRequestForm']);
+Route::post('password/email', ['as' => 'password.email', 'uses' => 'Auth\ForgotPasswordController@sendResetLinkEmail']);
+Route::get('password/reset/{token}', ['as' => 'password.reset.token', 'uses' => 'Auth\ResetPasswordController@showResetForm']);
+Route::post('password/reset', ['as' => 'password.reset.post', 'uses' => 'Auth\ResetPasswordController@reset']);
+
 // Личный кабинет
 Route::group(['prefix' => 'personal'], function (){
 	Route::get('', ['as' => 'personal', 'uses' => 'PersonalController@index']);
 	// страница авторизации
-	Route::get('auth', ['as' => 'auth', 'uses' => 'Auth\AuthController@index']);
-	// страница регистрации
-	Route::get('reg', ['as' => 'reg', 'uses' => 'Auth\AuthController@index_reg']);
-
-	Route::group(['prefix' => 'login'], function (){
-		Route::get('', 'Auth\AuthController@getLogin');
-		Route::post('', 'Auth\AuthController@postLogin');
-	});
 
 	Route::group(['prefix' => 'oplata'], function (){
 		Route::get('', 'PersonalController@oplata');
@@ -25,23 +32,6 @@ Route::group(['prefix' => 'personal'], function (){
 
 	Route::group(['prefix' => 'donate'], function (){
 		Route::get('', 'PersonalController@donate');
-	});
-});
-Route::group(['prefix' => 'auth'], function (){
-	Route::group(['prefix' => 'register'], function (){
-		Route::get('', 'Auth\AuthController@getRegister');
-		Route::post('', 'Auth\AuthController@postRegister');
-	});
-	Route::get('logout', ['as' => 'logout', 'uses' => 'Auth\AuthController@getLogout']);
-});
-Route::group(['prefix' => 'password'], function (){
-	Route::group(['prefix' => 'email'], function (){
-		Route::get('', 'Auth\PasswordController@getEmail');
-		Route::post('', 'Auth\PasswordController@postEmail');
-	});
-	Route::group(['prefix' => 'reset'], function (){
-		Route::get('{token}', 'Auth\PasswordController@getReset');
-		Route::post('', 'Auth\PasswordController@postReset');
 	});
 });
 

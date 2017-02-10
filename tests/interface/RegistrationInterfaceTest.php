@@ -12,7 +12,7 @@ class RegistrationInterfaceTest extends TestCase{
 	function setUp(){
 		parent::setUp();
 
-		$this->visit('/personal/reg');
+		$this->visit('/register');
 	}
 
 	/** @test */
@@ -301,7 +301,7 @@ class RegistrationInterfaceTest extends TestCase{
 
 		Mail::shouldReceive('send')->once();
 
-		$this->visit('/personal/reg');
+		$this->visit(route('register'));
 		$this->submitForm('signup', [
 			'first_name'            => 'Вася',
 			'last_name'             => 'Аристов',

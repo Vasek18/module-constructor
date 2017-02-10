@@ -6,6 +6,7 @@ return [
 	'meta_description' => 'Помогает создать модуль с нуля, расширять и поддерживать его функционал,
 меньше задумываясь о коде. Бесплатно!',
 	'site_developer'   => 'Разработчик сервиса Аристов Василий',
+	'thanks_for_using' => 'Спасибо что используете сервис',
 
 	'link_to_use_cases_articles_title'     => 'Примеры использования',
 	'link_to_about_service_articles_title' => 'О сервисе',

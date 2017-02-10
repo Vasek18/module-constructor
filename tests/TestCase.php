@@ -52,7 +52,7 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase{
 	}
 
 	public function logOut(){
-		$this->visit('/auth/logout');
+		$this->post(route('logout'));
 
 		return $this;
 	}

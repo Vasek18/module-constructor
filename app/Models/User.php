@@ -10,16 +10,23 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use App\Models\Modules\Bitrix\Bitrix;
+use Illuminate\Notifications\Notifiable;
+use App\Notifications\MyOwnResetPassword as ResetPasswordNotification;
 
 class User extends Model implements AuthenticatableContract,
 	AuthorizableContract,
 	CanResetPasswordContract{
-	use Authenticatable, Authorizable, CanResetPassword;
+
+	use Authenticatable, Authorizable, CanResetPassword, Notifiable;
 	protected $table = 'users';
 	protected $fillable = ['first_name', 'last_name', 'company_name', 'site', 'email', 'password'];
 	protected $hidden = ['password', 'remember_token'];
 	public static $adminGroup = 1;
 	public static $defaultGroup = 2;
+
+	public function sendPasswordResetNotification($token){
+		$this->notify(new ResetPasswordNotification($token));
+	}
 
 	public function isAdmin(){
 		if ($this->group_id == static::$adminGroup){

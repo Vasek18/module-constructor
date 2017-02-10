@@ -122,17 +122,21 @@
                     <ul class="nav navbar-nav navbar-right">
                         @if (!Auth::check())
                             <li>
-                                <a href="{{ route('auth') }}">{{trans('app.link_to_auth_title')}}</a>
+                                <a href="{{ route('login') }}">{{trans('app.link_to_auth_title')}}</a>
                             </li>
                             <li>
-                                <a href="{{ route('reg') }}">{{trans('app.link_to_reg_title')}}</a>
+                                <a href="{{ route('register') }}">{{trans('app.link_to_reg_title')}}</a>
                             </li>
                         @else
                             <li>
                                 <a href="{{ route('personal') }}">{{trans('app.link_to_personal_title')}}</a>
                             </li>
                             <li>
-                                <a href="{{ route('logout') }}">{{trans('app.link_to_logout_title')}}</a>
+                                <form method="POST"
+                                      action="{{ route('logout') }}">
+                                    {{ csrf_field() }}
+                                    <button class="btn btn-link">{{trans('app.link_to_logout_title')}}</button>
+                                </form>
                             </li>
                         @endif
                     </ul>

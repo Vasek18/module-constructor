@@ -5,6 +5,7 @@ return [
 	'meta_title'       => 'Modules constructor - Help in creation modules for the Bitrix',
 	'meta_description' => 'It helps to create a module from scratch, expand and maintain its functionality, less worrying about code',
 	'site_developer'   => 'Service developer Vasiliy Aristov',
+	'thanks_for_using' => 'Thank you for using our application',
 
 	'link_to_use_cases_articles_title'     => 'Usecases',
 	'link_to_about_service_articles_title' => 'About service',
