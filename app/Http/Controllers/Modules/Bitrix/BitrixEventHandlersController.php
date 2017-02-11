@@ -19,8 +19,8 @@ class BitrixEventHandlersController extends Controller{
 			return $this->unauthorized($request);
 		}
 		$handlers = $module->handlers()->get();
-		$core_modules = BitrixCoreModules::approved()->get();
-		$core_events = BitrixCoreEvents::approved()->get();
+		$core_modules = BitrixCoreModules::approved()->orderBy('code')->get();
+		$core_events = BitrixCoreEvents::approved()->orderBy('code')->get();
 		$data = [
 			'module'       => $module,
 			'handlers'     => $handlers,
