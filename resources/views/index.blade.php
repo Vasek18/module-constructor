@@ -12,7 +12,7 @@
                 @endif
                 <p>
                     <a class="btn btn-success btn-lg"
-                       href="{{ action('Auth\AuthController@index_reg') }}"
+                       href="{{ action('Auth\RegisterController@showRegistrationForm') }}"
                        role="button">{{ trans('home.welcome_action') }}
                     </a>
                     <a class="btn btn-info btn-lg"

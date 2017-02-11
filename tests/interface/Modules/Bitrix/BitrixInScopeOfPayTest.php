@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Models\User;
 
+/** @group bitrix_interface */
 class BitrixInScopeOfPayTest extends BitrixTestCase{
 
 	use DatabaseTransactions;

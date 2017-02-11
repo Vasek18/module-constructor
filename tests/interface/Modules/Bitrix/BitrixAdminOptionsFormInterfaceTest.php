@@ -2,6 +2,7 @@
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
+/** @group bitrix_interface */
 class BitrixAdminOptionsFormInterfaceTest extends BitrixTestCase{
 
 	use DatabaseTransactions;
@@ -52,7 +53,7 @@ class BitrixAdminOptionsFormInterfaceTest extends BitrixTestCase{
 
 		$this->visit('/my-bitrix/'.$module->id.'/admin_options');
 
-		$this->seePageIs('/personal/auth');
+		$this->seePageIs(route('login'));
 
 		$this->deleteFolder($this->standartModuleCode);
 	}

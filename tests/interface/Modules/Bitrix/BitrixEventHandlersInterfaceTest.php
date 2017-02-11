@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Models\Modules\Bitrix\BitrixMailEventsVar;
 
+/** @group bitrix_interface */
 class BitrixEventHandlersInterfaceTest extends BitrixTestCase{
 
 	use DatabaseTransactions;
@@ -54,7 +55,7 @@ class BitrixEventHandlersInterfaceTest extends BitrixTestCase{
 
 		$this->visit('/my-bitrix/'.$this->module->id.$this->path);
 
-		$this->seePageIs('/personal/auth');
+		$this->seePageIs(route('login'));
 	}
 
 	/** @test */

@@ -2,6 +2,7 @@
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
+/** @group bitrix_interface */
 class BitrixLangInterfaceTest extends BitrixTestCase{
 
 	use DatabaseTransactions;
@@ -37,7 +38,7 @@ class BitrixLangInterfaceTest extends BitrixTestCase{
 
 		$this->visit('/my-bitrix/'.$this->module->id.$this->path);
 
-		$this->seePageIs('/personal/auth');
+		$this->seePageIs(route('login'));
 	}
 
 	/** @test */

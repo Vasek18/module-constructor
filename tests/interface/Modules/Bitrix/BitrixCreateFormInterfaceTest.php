@@ -4,6 +4,7 @@ use App\Models\Modules\Bitrix\Bitrix;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\DB;
 
+/** @group bitrix_interface */
 class BitrixCreateFormInterfaceTest extends BitrixTestCase{
 
 	use DatabaseTransactions;
@@ -11,7 +12,7 @@ class BitrixCreateFormInterfaceTest extends BitrixTestCase{
 	/** @test */
 	function unauthorized_cannot_get_to_this_page(){
 		$this->visit('/my-bitrix/create');
-		$this->seePageIs('/personal/auth');
+		$this->seePageIs(route('login'));
 	}
 
 	/** @test */

@@ -7,12 +7,6 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">{{trans('password_reset.title')}}</div>
                     <div class="panel-body">
-                        @if (session('status'))
-                            <div class="alert alert-success">
-                                {{ session('status') }}
-                            </div>
-                        @endif
-
                         @if (count($errors) > 0)
                             <div class="alert alert-danger">
                                 <strong>{{trans('validation.error')}}</strong> {{trans('validation.there_occur_errors')}}
@@ -27,10 +21,13 @@
                         <form class="form-horizontal"
                               role="form"
                               method="POST"
-                              action="{{ action('Auth\PasswordController@postEmail') }}">
+                              action="{{ route('password.reset.post') }}">
                             <input type="hidden"
                                    name="_token"
                                    value="{{ csrf_token() }}">
+                            <input type="hidden"
+                                   name="token"
+                                   value="{{ $token }}">
                             <div class="form-group">
                                 <label class="col-md-4 control-label">{{trans('password_reset.email')}}</label>
                                 <div class="col-md-6">
@@ -41,11 +38,26 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label class="col-md-4 control-label">{{trans('password_reset.password')}}</label>
+                                <div class="col-md-6">
+                                    <input type="password"
+                                           class="form-control"
+                                           name="password">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">{{trans('password_reset.password_conf')}}</label>
+                                <div class="col-md-6">
+                                    <input type="password"
+                                           class="form-control"
+                                           name="password_confirmation">
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <div class="col-md-6 col-md-offset-4">
                                     <button type="submit"
-                                            class="btn btn-primary"
-                                    name="send">
-                                        {{ trans('password_reset.submit') }}
+                                            class="btn btn-primary">
+                                        {{trans('password_reset.reset')}}
                                     </button>
                                 </div>
                             </div>

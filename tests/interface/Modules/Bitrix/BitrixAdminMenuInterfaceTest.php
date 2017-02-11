@@ -4,6 +4,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Models\Modules\Bitrix\BitrixAdminMenuItems;
 
 // todo удаление
+/** @group bitrix_interface */
 class BitrixAdminMenuInterfaceTest extends BitrixTestCase{
 
 	use DatabaseTransactions;
@@ -54,7 +55,7 @@ class BitrixAdminMenuInterfaceTest extends BitrixTestCase{
 
 		$this->visit('/my-bitrix/'.$module->id.'/admin_menu');
 
-		$this->seePageIs('/personal/auth');
+		$this->seePageIs(route('login'));
 
 		$this->deleteFolder($this->standartModuleCode);
 	}

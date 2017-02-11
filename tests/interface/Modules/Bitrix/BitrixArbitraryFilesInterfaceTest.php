@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Models\Modules\Bitrix\BitrixArbitraryFiles;
 
+/** @group bitrix_interface */
 class BitrixArbitraryFilesInterfaceTest extends BitrixTestCase{
 
 	use DatabaseTransactions;
@@ -64,7 +65,7 @@ class BitrixArbitraryFilesInterfaceTest extends BitrixTestCase{
 
 		$this->visit('/my-bitrix/'.$this->module->id.$this->path);
 
-		$this->seePageIs('/personal/auth');
+		$this->seePageIs(route('login'));
 
 		$this->deleteFolder($this->standartModuleCode);
 	}

@@ -5,6 +5,7 @@ use App\Helpers\vArrParse;
 use App\Helpers\vFuncParse;
 use App\Models\Modules\Bitrix\BitrixMailEventsVar;
 
+/** @group bitrix_files */
 class BitrixEventHandlersFilesTest extends BitrixTestCase{
 
 	use DatabaseTransactions;

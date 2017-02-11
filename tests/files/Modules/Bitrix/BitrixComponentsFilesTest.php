@@ -7,6 +7,7 @@ use App\Models\Modules\Bitrix\BitrixComponentsParams;
 use App\Models\Modules\Bitrix\BitrixComponentsTemplates;
 use App\Models\Modules\Bitrix\BitrixComponentsArbitraryFiles;
 
+/** @group bitrix_files */
 class BitrixComponentsFilesTest extends BitrixTestCase{
 
 	use DatabaseTransactions;

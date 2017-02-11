@@ -6,6 +6,7 @@
 
 use App\Helpers\vLang;
 
+/** @group helpers */
 class vLangTest extends TestCase{
 	/** @test */
 	function it_finds_phrase_inside_html_tag(){

@@ -7,6 +7,7 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\UploadedFile;
 
+/** @group admin */
 class AdminArticlesTest extends TestCase{
 
 	use DatabaseTransactions;

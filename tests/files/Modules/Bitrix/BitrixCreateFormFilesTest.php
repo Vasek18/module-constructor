@@ -3,6 +3,7 @@
 use App\Models\Modules\Bitrix\Bitrix;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
+/** @group bitrix_files */
 class BitrixCreateFormFilesTest extends BitrixTestCase{
 
 	use DatabaseTransactions;

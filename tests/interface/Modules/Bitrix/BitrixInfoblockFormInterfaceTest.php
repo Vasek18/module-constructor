@@ -6,6 +6,7 @@ use App\Models\Modules\Bitrix\BitrixInfoblocks;
 use App\Models\Modules\Bitrix\BitrixIblocksElements;
 
 // todo чекбоксы
+/** @group bitrix_interface */
 class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 
 	use DatabaseTransactions;
@@ -57,7 +58,7 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 
 		$this->visit('/my-bitrix/'.$this->module->id.'/data_storage/ib');
 
-		$this->seePageIs('/personal/auth');
+		$this->seePageIs(route('login'));
 	}
 
 	/** @test */

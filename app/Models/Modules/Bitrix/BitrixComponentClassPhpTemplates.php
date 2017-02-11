@@ -10,13 +10,17 @@ class BitrixComponentClassPhpTemplates extends Model{
 	protected $fillable = ['creator_id', 'name', 'template', 'show_everyone', 'need_edit'];
 
 	public function scopeThatUserCanSee($query, User $user){
-		return $query->where('creator_id', $user->id);
+		if ($user->id){
+			return $query->where('creator_id', $user->id);
+		}else{
+			return $query;
+		}
 	}
 
 	public function userCanUse(User $user){
 		// todo нельзя удалять утверждённые шаблоны
 		if ($user->id){
-			if ($this->creator_id == $user->id){
+			if ($this->creator_id === $user->id){
 				return true;
 			}
 		}

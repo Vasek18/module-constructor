@@ -3,6 +3,7 @@
 use App\Models\Modules\Bitrix\Bitrix;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
+/** @group bitrix_interface */
 class BitrixDetailPageInterfaceTest extends BitrixTestCase{
 
 	use DatabaseTransactions;
@@ -27,7 +28,7 @@ class BitrixDetailPageInterfaceTest extends BitrixTestCase{
 		$this->logOut();
 
 		$this->visit('/my-bitrix/'.$this->module->id);
-		$this->seePageIs('/personal/auth');
+		$this->seePageIs(route('login'));
 	}
 
 	/** @test */

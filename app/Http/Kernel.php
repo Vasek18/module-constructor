@@ -21,6 +21,21 @@ class Kernel extends HttpKernel{
 	];
 
 	/**
+	 * The application's route middleware groups.
+	 *
+	 * @var array
+	 */
+	protected $middlewareGroups = [
+		'web' => [
+			\Illuminate\Routing\Middleware\SubstituteBindings::class,
+		],
+		'api' => [
+			'throttle:60,1',
+			'bindings',
+		],
+	];
+
+	/**
 	 * The application's route middleware.
 	 *
 	 * @var array
@@ -31,5 +46,6 @@ class Kernel extends HttpKernel{
 		'guest'        => \App\Http\Middleware\RedirectIfAuthenticated::class,
 		'bitrix.owner' => \App\Http\Middleware\BitrixOwner::class,
 		'admin'        => \App\Http\Middleware\CheckIfAdmin::class,
+		'bindings'     => \Illuminate\Routing\Middleware\SubstituteBindings::class,
 	];
 }

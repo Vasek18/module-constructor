@@ -2,6 +2,7 @@
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
+/** @group authreg */
 class AuthenticationInterfaceTest extends TestCase{
 
 	use DatabaseTransactions;
@@ -14,7 +15,7 @@ class AuthenticationInterfaceTest extends TestCase{
 			'password' => bcrypt("12345678"),
 		]);
 
-		$this->visit('/personal/auth');
+		$this->visit('/login');
 	}
 
 	/** @test */

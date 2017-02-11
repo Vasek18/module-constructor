@@ -1437,3 +1437,8 @@ a.you-can-change:hover {
     margin-bottom: 5px;
   }
 }
+
+.navbar-nav > li button {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}

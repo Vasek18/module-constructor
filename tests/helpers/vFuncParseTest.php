@@ -2,6 +2,7 @@
 
 use App\Helpers\vFuncParse;
 
+/** @group helpers */
 class vFuncParseTest extends TestCase{
 
 	/** @test */
