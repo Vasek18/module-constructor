@@ -2,10 +2,12 @@
 
 namespace App\Listeners;
 
+use Carbon\Carbon;
 use Illuminate\Auth\Events\Logout;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
+use App\Models\UserVisit;
 
 class LogSuccessfulLogout{
 	/**
@@ -24,6 +26,17 @@ class LogSuccessfulLogout{
 	 * @return void
 	 */
 	public function handle(Logout $event){
-		Log::info('LogSuccessfulLogout');
+		if ($event->user){
+			if ($event->user->id){
+				// берём визит этого пользователя с самым поздним логином
+				$lastLogin = UserVisit::where('user_id', $event->user->id)->orderBy('login_at', 'desc')->first();
+				// если он не закрыт
+				if (!$lastLogin->logout_at){
+					$lastLogin->update([
+						'logout_at' => Carbon::now()
+					]);
+				}
+			}
+		}
 	}
 }
