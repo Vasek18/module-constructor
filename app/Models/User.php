@@ -103,6 +103,10 @@ class User extends Model implements AuthenticatableContract,
 		return $this->hasMany('App\Models\Modules\Bitrix\Bitrix');
 	}
 
+	public function visits(){
+		return $this->hasMany('App\Models\UserVisit');
+	}
+
 	public function modules(){
 		return $this->hasMany('App\Models\Modules\Bitrix\Bitrix'); // пока только битрикс
 	}
