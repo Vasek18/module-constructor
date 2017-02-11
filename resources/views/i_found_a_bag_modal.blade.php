@@ -33,7 +33,7 @@
                     </div>
                     <button type="submit"
                             class="btn btn-primary"
-                            name="send">{{ trans('app.send') }}
+                            name="send_bug_report">{{ trans('app.send') }}
                     </button>
                 </form>
             </div>

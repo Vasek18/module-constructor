@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class TestCase extends Illuminate\Foundation\Testing\TestCase{
 	/**
@@ -132,5 +133,17 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase{
 		]);
 
 		return DB::table('bitrix_core_events')->where('id', $id)->first();
+	}
+
+	function sendBugReport($inputs = []){
+		Mail::shouldReceive('send')->once();
+
+		if (!isset($inputs['text'])){
+			$inputs['text'] = 'I found a bug';
+		}
+
+		$this->submitForm('send_bug_report', $inputs);
+
+		return true;
 	}
 }
