@@ -20,6 +20,7 @@ return [
 	'link_to_logout_title'                 => 'Logout',
 	'link_functional_suggestions_title'    => 'Functional suggestions',
 	'link_project_help_title'              => 'Project help',
+	'link_project_pulse_title'             => 'Project pulse',
 
 	'bitrix_module' => 'Module',
 	'file'          => 'File',

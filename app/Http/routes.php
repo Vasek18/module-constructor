@@ -317,6 +317,11 @@ Route::group(['middleware' => 'web'], function (){
 		});
 	});
 
+	// пульс проекта
+	Route::group(['prefix' => 'project_pulse'], function (){
+		Route::get('', ['uses' => 'ProjectPulsePostController@index']);
+	});
+
 	Route::get('{section_code}/{article_code}', ['uses' => 'ArticleController@show']);
 	Route::get('{section_code}', ['uses' => 'ArticleSectionController@show']);
 });

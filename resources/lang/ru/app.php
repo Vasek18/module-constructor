@@ -21,6 +21,7 @@ return [
 	'link_to_logout_title'                 => 'Выйти',
 	'link_functional_suggestions_title'    => 'Предложения по функционалу',
 	'link_project_help_title'              => 'Помощь проекту',
+	'link_project_pulse_title'             => 'Пульс проекта',
 
 	'bitrix_module' => 'Модуль',
 	'file'          => 'Файл',

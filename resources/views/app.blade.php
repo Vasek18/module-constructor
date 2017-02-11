@@ -170,7 +170,8 @@
                     </ul>
                 </nav>
             </div>
-            <div class="col-md-3 col-md-offset-5">
+            <div class="footer-menu col-md-3 col-md-offset-5">
+                <a href="{{ action('ProjectPulsePostController@index') }}">{{ trans('app.link_project_pulse_title') }}</a>
                 @include('scoset_share')
             </div>
         </div>
