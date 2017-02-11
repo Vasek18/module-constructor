@@ -2,10 +2,11 @@
 
 namespace App\Listeners;
 
+use Carbon\Carbon;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Support\Facades\Log;
+use App\Models\UserVisit;
 
 class LogSuccessfulLogin{
 	/**
@@ -24,6 +25,14 @@ class LogSuccessfulLogin{
 	 * @return void
 	 */
 	public function handle(Login $event){
-		Log::info('LogSuccessfulLogin');
+		if ($event->user){
+			if ($event->user->id){
+				UserVisit::create([
+					'user_id'  => $event->user->id,
+					'login_at' => Carbon::now(),
+					'ip'       => \Request::ip(),
+				]);
+			}
+		}
 	}
 }
