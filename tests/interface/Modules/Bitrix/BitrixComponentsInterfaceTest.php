@@ -62,7 +62,7 @@ class BitrixComponentsInterfaceTest extends BitrixTestCase{
 
 		$this->visit('/my-bitrix/'.$this->module->id.$this->path);
 
-		$this->seePageIs('/personal/auth');
+		$this->seePageIs(route('login'));
 
 		$this->deleteFolder($this->standartModuleCode);
 	}

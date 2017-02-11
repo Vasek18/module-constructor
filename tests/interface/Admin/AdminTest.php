@@ -13,7 +13,7 @@ class AdminTest extends \TestCase{
 	function unauthorized_cant_get_to_admin_page(){
 		$this->visit('/oko');
 
-		$this->seePageIs('/personal/auth');
+		$this->seePageIs(route('login'));
 	}
 
 	/** @test */

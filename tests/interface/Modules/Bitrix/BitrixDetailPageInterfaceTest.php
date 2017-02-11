@@ -27,7 +27,7 @@ class BitrixDetailPageInterfaceTest extends BitrixTestCase{
 		$this->logOut();
 
 		$this->visit('/my-bitrix/'.$this->module->id);
-		$this->seePageIs('/personal/auth');
+		$this->seePageIs(route('login'));
 	}
 
 	/** @test */
