@@ -264,6 +264,11 @@ Route::group(['middleware' => 'web'], function (){
 			Route::get('', ['uses' => 'Admin\AdminPaymentsController@index']);
 			Route::get('{payment}/delete', ['uses' => 'Admin\AdminPaymentsController@delete']);
 		});
+
+		// репорты пользователей
+		Route::group(['prefix' => 'user_reports'], function (){
+			Route::get('', ['uses' => 'Admin\AdminUserReportsController@index']);
+		});
 	});
 
 	Route::get('_ololotrololo_', function (){ // todo удалить

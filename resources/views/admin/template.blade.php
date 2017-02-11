@@ -34,6 +34,9 @@
                     <a href="{{ action('Admin\AdminSettingsController@index') }}"
                        class="list-group-item">Основные настройки
                     </a>
+                    <a href="{{ action('Admin\AdminUserReportsController@index') }}"
+                       class="list-group-item">Репорты
+                    </a>
                 </div>
             </div>
             <div class="col-md-9">
