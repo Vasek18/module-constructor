@@ -111,6 +111,24 @@ class AdminUsersTest extends TestCase{
 		$this->visit('/oko/modules');
 		$this->dontSee($module->name);
 	}
+
+	/** @test */
+	function it_shows_user_last_login_time_in_list(){
+		// авторизуемся через форму
+		factory(App\Models\User::class)->create([
+			'email'    => 'aristov-92@@mail.ru',
+			'password' => bcrypt("12345678"),
+			'group_id' => $this->adminUserGroup
+		]);
+		$this->visit(route('login'));
+		$this->submitForm('login', [
+			'email'    => 'aristov-92@@mail.ru',
+			'password' => '12345678',
+		]);
+
+		$this->visit('/oko/users/');
+		$this->see(\Carbon\Carbon::now()->toDateString());
+	}
 }
 
 ?>

@@ -6,7 +6,7 @@
             <h1>{{ $user->last_name }} {{ $user->first_name }}
                 <a href="{{ action('Admin\AdminUsersController@destroy', [$user]) }}"
                    class="btn btn-danger"
-                id="deleteUser">
+                   id="deleteUser">
                 <span class="glyphicon glyphicon-trash"
                       aria-hidden="true"></span>
                 </a>
@@ -41,6 +41,12 @@
                     </a>
                 @endforeach
             </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            Заходил: {{ $user->getLastLogin()?$user->getLastLogin()->login_at:'' }}
+            <br> С ip: {{ $user->getLastLogin()?$user->getLastLogin()->ip:'' }}
         </div>
     </div>
 @stop

@@ -14,7 +14,7 @@
                         {{ $user->last_name }} {{ $user->first_name }} ({{ $user->email }})
                     </div>
                     <div class="col-md-3">
-                        {{ $user->visits()->first()?'Заходил '.$user->visits()->last()->first()->login_at:'' }}
+                        {{ $user->getLastLogin()?'Заходил '.$user->getLastLogin()->login_at:'' }}
                     </div>
                     <div class="col-md-1">
                         <span class="badge">{{ $user->modules->count() }}</span>

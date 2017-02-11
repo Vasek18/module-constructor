@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use Illuminate\Auth\Events\Logout;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Support\Facades\Log;
 use App\Models\UserVisit;
 
 class LogSuccessfulLogout{

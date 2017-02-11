@@ -95,6 +95,10 @@ class User extends Model implements AuthenticatableContract,
 		return $days;
 	}
 
+	public function getLastLogin(){
+		return $this->visits()->last()->first();
+	}
+	
 	public function getNameAttribute(){
 		return $this->last_name.' '.$this->first_name;
 	}
