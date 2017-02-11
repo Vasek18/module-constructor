@@ -92,7 +92,7 @@ return [
 		
 		'logs'                => [
 			'driver' => 'local',
-			'root'   => storage_path().'/logs',
+			'root'   => storage_path().DIRECTORY_SEPARATOR.'logs',
 		],
 
 	],
