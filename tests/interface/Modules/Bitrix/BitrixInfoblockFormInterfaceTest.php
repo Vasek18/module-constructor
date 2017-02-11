@@ -6,6 +6,7 @@ use App\Models\Modules\Bitrix\BitrixInfoblocks;
 use App\Models\Modules\Bitrix\BitrixIblocksElements;
 
 // todo чекбоксы
+/** @group bitrix_interface */
 class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 
 	use DatabaseTransactions;

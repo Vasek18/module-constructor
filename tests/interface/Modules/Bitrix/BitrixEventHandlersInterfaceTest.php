@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Models\Modules\Bitrix\BitrixMailEventsVar;
 
+/** @group bitrix_interface */
 class BitrixEventHandlersInterfaceTest extends BitrixTestCase{
 
 	use DatabaseTransactions;

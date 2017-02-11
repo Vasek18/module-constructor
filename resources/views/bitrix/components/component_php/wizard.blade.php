@@ -2,7 +2,7 @@
       action="{{ action('Modules\Bitrix\BitrixComponentsController@get_logic_files_templates', ['module'=>$module->id, 'component' => $component->id]) }}">
     <h2>{{ trans('bitrix_components.logic_wizard_title') }}</h2>
     <b>{{ trans('bitrix_components.logic_wizard_text') }}</b>
-    @if(count($class_php_templates))
+    @if(isset($class_php_templates) && count($class_php_templates))
         <h3>{{ trans('bitrix_components.logic_wizard_my_templates_title') }}</h3>
         @foreach($class_php_templates as $class_php_template)
             <div class="row">

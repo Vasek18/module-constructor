@@ -4,6 +4,7 @@ use App\Models\Modules\Bitrix\Bitrix;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\DB;
 
+/** @group bitrix_interface */
 class BitrixCreateFormInterfaceTest extends BitrixTestCase{
 
 	use DatabaseTransactions;

@@ -29,9 +29,6 @@ class BitrixMailEventsController extends Controller{
 	}
 
 	public function create(Bitrix $module, Request $request){
-		if (!$this->userCreatedModule($module->id)){
-			return $this->unauthorized($request);
-		}
 		$data = [
 			'module' => $module,
 		];
@@ -40,10 +37,6 @@ class BitrixMailEventsController extends Controller{
 	}
 
 	public function store(Bitrix $module, Request $request){
-		if (!$this->userCreatedModule($module->id)){
-			return $this->unauthorized($request);
-		}
-
 		$mail_event = BitrixMailEvents::updateOrCreate(
 			[
 				'module_id' => $module->id,

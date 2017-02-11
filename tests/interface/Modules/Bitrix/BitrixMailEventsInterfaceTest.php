@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Models\Modules\Bitrix\BitrixMailEventsVar;
 
+/** @group bitrix_interface  */
 class BitrixMailEventsInterfaceTest extends BitrixTestCase{
 
 	use DatabaseTransactions;
@@ -108,7 +109,7 @@ class BitrixMailEventsInterfaceTest extends BitrixTestCase{
 		$this->module->deleteFolder();
 
 		// у другого юзера тоже есть модуль с событием
-		$this->signIn(factory(App\Models\User::class)->create());
+		$this->signIn();
 		$module2 = $this->fillNewBitrixForm();
 		$mail_event2 = $this->createMailEventOnForm($module2, [
 			'name' => 'TestMail',
@@ -211,7 +212,7 @@ class BitrixMailEventsInterfaceTest extends BitrixTestCase{
 		$module2 = $this->fillNewBitrixForm();
 		$mail_event2 = $this->createMailEventOnForm($module2, [
 			'name' => 'TestHackMail',
-			'code' => 'TEST_MAIL',
+			'code' => 'TEST_MAIL2',
 			'sort' => '1808',
 			'var0' => ['name' => 'Ololo', 'code' => 'trololo']
 		]);

@@ -2,6 +2,7 @@
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
+/** @group bitrix_interface */
 class BitrixAdminOptionsFormInterfaceTest extends BitrixTestCase{
 
 	use DatabaseTransactions;
