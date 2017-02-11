@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Mail;
 use App\Models\User\UserReport;
+use App\Models\User\UserReportType;
 
 class FeedbackController extends Controller{
 	public function sendILackSmthForm(Request $request){
@@ -28,6 +29,7 @@ class FeedbackController extends Controller{
 			'user_email'  => $this->user ? $this->user->email : null,
 			'description' => $request->text,
 			'page_link'   => $request->page,
+			'type_id'     => UserReportType::where('code', 'error')->first()->id,
 		]);
 
 		// отправляем сообщение

@@ -3,9 +3,8 @@
 @section("page")
     <h1>Репорты пользователей</h1>
 
-
     @foreach($reports as $report)
-        <div class="panel panel-primary">
+        <div class="panel panel-{{ $report->getBootstrapContextClass() }}">
             <div class="panel-heading">{{ $report->name }}</div>
             <div class="panel-body">
                 <p>{{ $report->description }}</p>

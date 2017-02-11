@@ -10,7 +10,7 @@ use App\Models\User\UserReport;
 class AdminUserReportsController extends Controller{
 	public function index(){
 		$data = [
-			'reports' => UserReport::all()
+			'reports' => UserReport::orderBy('created_at', 'desc')->get()
 		];
 
 		return view("admin.user_reports.index", $data);
