@@ -29,11 +29,13 @@ class LogSuccessfulLogout{
 			if ($event->user->id){
 				// берём визит этого пользователя с самым поздним логином
 				$lastLogin = UserVisit::where('user_id', $event->user->id)->orderBy('login_at', 'desc')->first();
-				// если он не закрыт
-				if (!$lastLogin->logout_at){
-					$lastLogin->update([
-						'logout_at' => Carbon::now()
-					]);
+				if ($lastLogin){
+					// если он не закрыт
+					if (!$lastLogin->logout_at){
+						$lastLogin->update([
+							'logout_at' => Carbon::now()
+						]);
+					}
 				}
 			}
 		}
