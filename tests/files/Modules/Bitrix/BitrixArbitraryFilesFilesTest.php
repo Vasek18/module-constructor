@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Models\Modules\Bitrix\BitrixArbitraryFiles;
 
+/** @group bitrix_files */
 class BitrixArbitraryFilesFilesTest extends BitrixTestCase{
 
 	use DatabaseTransactions;
@@ -22,7 +23,7 @@ class BitrixArbitraryFilesFilesTest extends BitrixTestCase{
 
 	function tearDown(){
 		parent::tearDown();
-		
+
 		if ($this->module){
 			unlink($this->file);
 		}

@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Helpers\vArrParse;
 
+/** @group bitrix_files */
 class BitrixAdminOptionsFormFilesTest extends BitrixTestCase{
 	use DatabaseTransactions;
 

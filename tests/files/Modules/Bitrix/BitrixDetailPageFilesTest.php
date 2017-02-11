@@ -3,6 +3,7 @@
 use Chumper\Zipper\Zipper;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
+/** @group bitrix_files */
 class BitrixDetailPageFilesTest extends BitrixTestCase{
 
 	use DatabaseTransactions;

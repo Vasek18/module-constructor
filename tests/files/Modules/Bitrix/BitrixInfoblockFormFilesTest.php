@@ -11,6 +11,7 @@ use App\Models\Modules\Bitrix\BitrixIblocksProps;
 
 // todo чёрт ногу сломит
 // todo отключение чекбоксов
+/** @group bitrix_files */
 class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 
 	use DatabaseTransactions;

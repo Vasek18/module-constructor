@@ -5,6 +5,7 @@ use App\Helpers\vArrParse;
 use App\Helpers\vFuncParse;
 use App\Models\Modules\Bitrix\BitrixAdminMenuItems;
 
+/** @group bitrix_files */
 class BitrixAdminMenuFilesTest extends BitrixTestCase{
 
 	use DatabaseTransactions;
