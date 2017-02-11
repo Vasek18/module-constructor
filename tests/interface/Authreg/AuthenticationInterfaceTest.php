@@ -2,6 +2,7 @@
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
+/** @group authreg */
 class AuthenticationInterfaceTest extends TestCase{
 
 	use DatabaseTransactions;

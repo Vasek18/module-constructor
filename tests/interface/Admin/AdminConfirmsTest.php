@@ -4,6 +4,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\DB;
 
+/** @group admin */
 class AdminConfirmsTest extends TestCase{
 
 	use DatabaseTransactions;

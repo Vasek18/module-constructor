@@ -3,6 +3,7 @@
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
+/** @group admin */
 class AdminModulesTest extends TestCase{
 
 	use DatabaseTransactions;

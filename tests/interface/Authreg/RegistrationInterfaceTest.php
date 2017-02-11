@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Mail;
 
+/** @group authreg */
 class RegistrationInterfaceTest extends TestCase{
 
 	use DatabaseTransactions;

@@ -3,6 +3,7 @@
 use App\Models\FunctionalSuggestion;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
+// todo здесь три теста перестали работать
 class FunctionalSuggestionTest extends TestCase{
 
 	protected $path = 'functional_suggestions';

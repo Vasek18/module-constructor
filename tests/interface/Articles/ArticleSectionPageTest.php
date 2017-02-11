@@ -4,6 +4,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Models\ArticleSection;
 use App\Models\Article;
 
+/** @group articles */
 class ArticleSectionPageTest extends TestCase{
 
 	use DatabaseTransactions;

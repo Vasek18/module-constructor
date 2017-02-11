@@ -2,6 +2,7 @@
 
 use App\Helpers\vArrParse;
 
+/** @group helpers */
 class vArrParseTest extends TestCase{
 
 	protected $vArrParse;

@@ -2,6 +2,7 @@
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
+/** @group admin */
 class AdminTest extends \TestCase{
 
 	use DatabaseTransactions;
