@@ -318,6 +318,7 @@ Route::group(['middleware' => 'web'], function (){
 	// пульс проекта
 	Route::group(['prefix' => 'project_pulse'], function (){
 		Route::get('', ['uses' => 'ProjectPulsePostController@index']);
+		Route::get('{post}/delete', ['uses' => 'ProjectPulsePostController@destroy']);
 	});
 
 	Route::get('{section_code}/{article_code}', ['uses' => 'ArticleController@show']);

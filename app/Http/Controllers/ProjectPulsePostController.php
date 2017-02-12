@@ -15,4 +15,13 @@ class ProjectPulsePostController extends Controller{
 
 		return view("project_pulse.index", $data);
 	}
+
+	public function destroy(ProjectPulsePost $post, Request $request){
+		if (!$this->user || !$this->user->isAdmin()){
+			return abort(404);
+		}
+		$post->delete();
+
+		return back();
+	}
 }
