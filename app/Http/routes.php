@@ -269,14 +269,12 @@ Route::group(['middleware' => 'web'], function (){
 		Route::group(['prefix' => 'user_reports'], function (){
 			Route::get('', ['uses' => 'Admin\AdminUserReportsController@index']);
 		});
-	});
 
-	Route::get('_ololotrololo_', function (){ // todo удалить
-		$me = \App\Models\User::where(['email' => 'aristov-92@mail.ru'])->first();
-		$me->group_id = \Illuminate\Support\Facades\Config::get('constants.ADMIN_GROUP_ID');
-		$me->save();
-
-		return redirect('/');
+		// пульс проекта
+		Route::group(['prefix' => 'project_pulse'], function (){
+			Route::get('', ['uses' => 'Admin\AdminProjectPulseController@index']);
+			Route::post('', ['uses' => 'Admin\AdminProjectPulseController@store']);
+		});
 	});
 
 	// просто страницы

@@ -37,6 +37,9 @@
                     <a href="{{ action('Admin\AdminUserReportsController@index') }}"
                        class="list-group-item">Репорты
                     </a>
+                    <a href="{{ action('Admin\AdminProjectPulseController@index') }}"
+                       class="list-group-item">Пульс проекта
+                    </a>
                 </div>
             </div>
             <div class="col-md-9">
