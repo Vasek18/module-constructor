@@ -15,7 +15,7 @@
                             @if ($user && $user->isAdmin())
                                 <a href="{{ action('ProjectPulsePostController@destroy', [$post->id]) }}"
                                    class="btn btn-sm btn-danger"
-                                   id="delete">
+                                   id="delete{{ $post->id }}">
                                 <span class="glyphicon glyphicon-trash"
                                       aria-hidden="true"></span>
                                 </a>
