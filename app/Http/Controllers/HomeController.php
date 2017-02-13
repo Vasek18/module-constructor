@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ProjectPulsePost;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -25,6 +26,7 @@ class HomeController extends Controller{
 		$data = [
 			'countModules'  => $countModules,
 			'modulesEnding' => $modulesEnding,
+			'project_pulse_posts' => ProjectPulsePost::orderBy('created_at', 'desc')->orderBy('id', 'desc')->take(5)->get()
 		];
 
 		// dd(vArrParse::parseFromText("Array('ololo' => '1,2,3,4')"));

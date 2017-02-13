@@ -31,5 +31,33 @@
                 <p>{{trans_choice('home.modules', $countModules, ['ru_ending' => $modulesEnding])}}</p>
             </div>
         </div>
+        <div class="project-pulse-on-main row">
+            <div class="col-md-6 col-md-offset-3">
+                <h2>{{ trans('project_pulse.h1') }}</h2>
+                @foreach($project_pulse_posts as $post)
+                    <div class="project-pulse-post panel panel-{{ $post->highlight?'primary':'default' }}">
+                        <div class="panel-heading clearfix">
+                            <div class="pull-left">
+                                <h3 class="panel-title">{{ $post->name }}</h3>
+                            </div>
+                            <div class="pull-right">
+                                @if ($user && $user->isAdmin())
+                                    <a href="{{ action('ProjectPulsePostController@destroy', [$post->id]) }}"
+                                       class="btn btn-sm btn-danger"
+                                       id="delete{{ $post->id }}">
+                                <span class="glyphicon glyphicon-trash"
+                                      aria-hidden="true"></span>
+                                    </a>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            {{ $post->description }}
+                        </div>
+                        <div class="panel-footer">{{ $post->created_at }}</div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
     </div>
 @stop

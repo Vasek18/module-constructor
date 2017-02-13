@@ -115,6 +115,14 @@ footer{
 .modules-created strong{
   font-size : 55px;
 }
+.project-pulse-on-main{
+  h2{
+    text-align     : center;
+    padding-top    : 0px;
+    padding-bottom : 20px;
+    font-size      : 63px;
+  }
+}
 a.you-can-change{
   border-bottom : 1px dashed;
   padding       : 3px;
@@ -201,4 +209,7 @@ a.you-can-change{
 .navbar-nav > li button{
   padding-top    : 15px;
   padding-bottom : 15px;
+}
+.project-pulse-post h3{
+  font-weight : bold;
 }
