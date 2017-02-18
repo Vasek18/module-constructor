@@ -177,4 +177,12 @@ Elements detail pictures settings',
 	'val_xml_id' => 'XML_ID',
 	'val_value'  => 'Value',
 	'val_sort'   => 'Sorting',
+
+	'prop_dop_param_hint'               => 'Hint',
+	'prop_dop_param_searchable'         => 'Searchable',
+	'prop_dop_param_list_type'          => 'List type',
+	'prop_dop_param_list_type_list'     => 'List',
+	'prop_dop_param_list_type_checkbox' => 'Checkboxes',
+	'prop_dop_param_default'            => 'Default value',
+	'prop_dop_param_file_type'          => 'Types of files (extensions separated by commas)',
 ];

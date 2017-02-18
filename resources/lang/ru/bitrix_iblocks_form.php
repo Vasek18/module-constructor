@@ -179,4 +179,12 @@ return [
 	'val_xml_id' => 'XML_ID',
 	'val_value'  => 'Значение',
 	'val_sort'   => 'Сортировка',
+
+	'prop_dop_param_hint'               => 'Подсказка',
+	'prop_dop_param_searchable'         => 'Значения свойства участвуют в поиске',
+	'prop_dop_param_list_type'          => 'Внешний вид',
+	'prop_dop_param_list_type_list'     => 'Список',
+	'prop_dop_param_list_type_checkbox' => 'Флажки',
+	'prop_dop_param_default'            => 'Значение по умолчанию',
+	'prop_dop_param_file_type'          => 'Типы загружаемых файлов (расширения через запятую)',
 ];

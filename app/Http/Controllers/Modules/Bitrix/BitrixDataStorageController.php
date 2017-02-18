@@ -292,6 +292,13 @@ class BitrixDataStorageController extends Controller{
 				continue;
 			}
 
+			$dop_params = Array();
+			foreach ($properties["dop_params"][$c] as $dopParamCode => $dopParamVal){
+				if ($dopParamVal){
+					$dop_params[$dopParamCode] = $dopParamVal;
+				}
+			}
+
 			$prop = BitrixIblocksProps::updateOrCreate(
 				[
 					'iblock_id' => $iblock->id,
@@ -304,7 +311,8 @@ class BitrixDataStorageController extends Controller{
 					'sort'        => $properties["SORT"][$c],
 					'type'        => $properties["TYPE"][$c],
 					'multiple'    => isset($properties["MULTIPLE"][$c]) && $properties["MULTIPLE"][$c] == "Y" ? true : false,
-					'is_required' => isset($properties["IS_REQUIRED"][$c]) && $properties["IS_REQUIRED"][$c] == "Y" ? true : false
+					'is_required' => isset($properties["IS_REQUIRED"][$c]) && $properties["IS_REQUIRED"][$c] == "Y" ? true : false,
+					'dop_params'  => $dop_params
 				]
 			);
 

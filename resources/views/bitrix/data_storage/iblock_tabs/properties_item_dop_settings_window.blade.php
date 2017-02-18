@@ -17,35 +17,48 @@
                 <div class="form-horizontal">
                     <div class="form-group"
                          data-for_type_ids="_FOR_ALL_">
-                        <label class="col-md-3">Подсказка:</label>
-                        <div class="col-md-9">
+                        <label class="col-md-5">{{ trans('bitrix_iblocks_form.prop_dop_param_hint') }}:</label>
+                        <div class="col-md-7">
                             <input type="text"
-                                   name="properties[HINT][{{$i}}]"
-                                   class="form-control">
+                                   name="properties[dop_params][{{$i}}][HINT]"
+                                   class="form-control"
+                                   @if ($property && $property->dop_params && isset($property->dop_params["HINT"]))
+                                   value="{{ $property->dop_params["HINT"] }}"
+                                    @endif
+                            >
                         </div>
                     </div>
                     <div class="form-group"
                          data-for_type_ids="_FOR_ALL_">
-                        <label class="col-md-3">Значения свойства участвуют в поиске:</label>
-                        <div class="col-md-9">
+                        <label class="col-md-5">{{ trans('bitrix_iblocks_form.prop_dop_param_searchable') }}:</label>
+                        <div class="col-md-7">
                             <div class="checkbox">
                                 <label>
                                     <input type="checkbox"
-                                           name="properties[SEARCHABLE][{{$i}}]"
-                                           value="Y">
+                                           name="properties[dop_params][{{$i}}][SEARCHABLE]"
+                                           value="Y"
+                                           @if ($property && $property->dop_params && isset($property->dop_params["SEARCHABLE"]) && $property->dop_params["SEARCHABLE"] == "Y")
+                                           checked
+                                            @endif
+                                    >
                                 </label>
                             </div>
                         </div>
                     </div>
                     <div class="form-group"
                          data-for_type_ids="L">
-                        <label class="col-md-3">Внешний вид:</label>
-                        <div class="col-md-9">
-                            <select name="properties[LIST_TYPE][{{$i}}]"
+                        <label class="col-md-5">{{ trans('bitrix_iblocks_form.prop_dop_param_list_type') }}:</label>
+                        <div class="col-md-7">
+                            <select name="properties[dop_params][{{$i}}][LIST_TYPE]"
                                     class="form-control">
                                 <option value="">Выберите</option>
-                                <option value="L">Список</option>
-                                <option value="C">Флажки
+                                <option value="L"
+                                        @if ($property && $property->dop_params && isset($property->dop_params["LIST_TYPE"]) && $property->dop_params["LIST_TYPE"] == "L") selected @endif>
+                                    {{ trans('bitrix_iblocks_form.prop_dop_param_list_type_list') }}
+                                </option>
+                                <option value="C"
+                                        @if ($property && $property->dop_params && isset($property->dop_params["LIST_TYPE"]) && $property->dop_params["LIST_TYPE"] == "C") selected @endif>
+                                    {{ trans('bitrix_iblocks_form.prop_dop_param_list_type_checkbox') }}
                                 </option>
                             </select>
                         </div>
@@ -82,20 +95,26 @@
                     </div>
                     <div class="form-group"
                          data-for_type_ids="S S:HTML N">
-                        <label class="col-md-3">Значение по умолчанию:</label>
-                        <div class="col-md-9">
+                        <label class="col-md-5">{{ trans('bitrix_iblocks_form.prop_dop_param_default') }}:</label>
+                        <div class="col-md-7">
                             <input type="text"
-                                   name="properties[DEFAULT_VALUE][{{$i}}]"
-                                   class="form-control">
+                                   name="properties[dop_params][{{$i}}][DEFAULT_VALUE]"
+                                   class="form-control"
+                                   @if ($property && $property->dop_params && isset($property->dop_params["DEFAULT_VALUE"]))
+                                   value="{{ $property->dop_params["DEFAULT_VALUE"] }}"
+                                    @endif>
                         </div>
                     </div>
                     <div class="form-group"
                          data-for_type_ids="F">
-                        <label class="col-md-3">Типы загружаемых файлов (расширения через запятую):</label>
-                        <div class="col-md-9">
+                        <label class="col-md-5">{{ trans('bitrix_iblocks_form.prop_dop_param_file_type') }}:</label>
+                        <div class="col-md-7">
                             <input type="text"
-                                   name="properties[FILE_TYPE][{{$i}}]"
-                                   class="form-control">
+                                   name="properties[dop_params][{{$i}}][FILE_TYPE]"
+                                   class="form-control"
+                                   @if ($property && $property->dop_params && isset($property->dop_params["FILE_TYPE"]))
+                                   value="{{ $property->dop_params["FILE_TYPE"] }}"
+                                    @endif>
                         </div>
                     </div>
                 </div>

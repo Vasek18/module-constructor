@@ -7,8 +7,11 @@ use Auth;
 
 class BitrixIblocksProps extends Model{
 	protected $table = 'bitrix_infoblocks_props';
-	protected $fillable = ['iblock_id', 'name', 'code', 'sort', 'type', 'multiple', 'is_required'];
+	protected $fillable = ['iblock_id', 'name', 'code', 'sort', 'type', 'multiple', 'is_required', 'dop_params'];
 	public $timestamps = false;
+	protected $casts = [
+		'dop_params' => 'array',
+	];
 
 	public static $types = [
 		['label' => "Базовые типы",
