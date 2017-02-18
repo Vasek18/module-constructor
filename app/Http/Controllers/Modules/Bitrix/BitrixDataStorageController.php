@@ -43,8 +43,6 @@ class BitrixDataStorageController extends Controller{
 			'properties_types' => BitrixIblocksProps::$types
 		];
 
-		//dd($data);
-
 		return view("bitrix.data_storage.add_ib", $data);
 	}
 
@@ -53,60 +51,7 @@ class BitrixDataStorageController extends Controller{
 		unset($params['_token']);
 		unset($params['save']);
 
-		$properties = $params["properties"];
-		unset($params["properties"]);
-
-		$iblock = BitrixInfoblocks::create([
-			'module_id' => $module->id,
-			'name'      => $params['NAME'],
-			'code'      => $params['CODE'],
-			'params'    => json_encode($params) // предыдущие пару параметров дублируются здесь специально, чтобы можно было создавать массив по одному лишь params
-		]);
-
-		foreach ($properties["NAME"] as $c => $name){
-			if (!$name){
-				continue;
-			}
-			if (!$properties["CODE"][$c]){
-				continue;
-			}
-
-			$prop = BitrixIblocksProps::updateOrCreate(
-				[
-					'iblock_id' => $iblock->id,
-					'code'      => $properties["CODE"][$c]
-				],
-				[
-					'iblock_id'   => $iblock->id,
-					'code'        => $properties["CODE"][$c],
-					'name'        => $name,
-					'sort'        => $properties["SORT"][$c],
-					'type'        => $properties["TYPE"][$c],
-					'multiple'    => isset($properties["MULTIPLE"][$c]) && $properties["MULTIPLE"][$c] == "Y" ? true : false,
-					'is_required' => isset($properties["IS_REQUIRED"][$c]) && $properties["IS_REQUIRED"][$c] == "Y" ? true : false
-				]
-			);
-
-			if ($prop->type = 'L' && isset($properties["VALUES"][$c])){
-				foreach ($properties["VALUES"][$c]["VALUE"] as $vc => $valueVal){
-					if ($valueVal){
-						$val = BitrixIblocksPropsVals::updateOrCreate(
-							[
-								'prop_id' => $prop->id,
-								'value'   => $valueVal
-							],
-							[
-								'prop_id' => $prop->id,
-								'value'   => $valueVal,
-								'xml_id'  => $properties["VALUES"][$c]["XML_ID"][$vc],
-								'sort'    => $properties["VALUES"][$c]["SORT"][$vc],
-								'default' => isset($properties["VALUES"][$c]["DEFAULT"]) && $properties["VALUES"][$c]["DEFAULT"] == $vc,
-							]
-						);
-					}
-				}
-			}
-		}
+		$iblock = static::create_or_update_ib($module, $params);
 
 		BitrixInfoblocks::writeInFile($module);
 
@@ -270,19 +215,32 @@ class BitrixDataStorageController extends Controller{
 
 		$params = $request->all();
 		unset($params['_token']);
-
-		$properties = $params["properties"];
-		unset($params["properties"]);
 		unset($params['save']);
 
-		//dd($params);
+		$iblock = static::create_or_update_ib($module, $params, $iblock);
 
-		$iblock->update([
-			'name'   => $params['NAME'],
-			'params' => json_encode($params, JSON_FORCE_OBJECT) // предыдущие пару параметров дублируются здесь специально, чтобы можно было создавать массив по одному лишь params
-		]);
+		BitrixInfoblocks::writeInFile($module);
 
-		// dd($properties);
+		return back();
+	}
+
+	public static function create_or_update_ib(Bitrix $module, $params, BitrixInfoblocks $iblock = null){
+		$properties = $params["properties"];
+		unset($params["properties"]);
+
+		if ($iblock){
+			$iblock->update([
+				'name'   => $params['NAME'],
+				'params' => json_encode($params, JSON_FORCE_OBJECT) // предыдущие пару параметров дублируются здесь специально, чтобы можно было создавать массив по одному лишь params
+			]);
+		}else{
+			$iblock = BitrixInfoblocks::create([
+				'module_id' => $module->id,
+				'name'      => $params['NAME'],
+				'code'      => $params['CODE'],
+				'params'    => json_encode($params) // предыдущие пару параметров дублируются здесь специально, чтобы можно было создавать массив по одному лишь params
+			]);
+		}
 
 		foreach ($properties["NAME"] as $c => $name){
 			if (!$name){
@@ -337,11 +295,7 @@ class BitrixDataStorageController extends Controller{
 			}
 		}
 
-		BitrixInfoblocks::writeInFile($module);
-
-		//dd();
-
-		return back();
+		return $iblock;
 	}
 
 	public function delete_ib(Bitrix $module, BitrixInfoblocks $iblock, Request $request){

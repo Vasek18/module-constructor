@@ -51,7 +51,9 @@
     <td>
         <input type="text"
                class="form-control"
+               @if(!$property)
                data-translit_from="IB_PROPERTY_n{{$i}}_NAME"
+               @endif
                data-transform="uppercase"
                name="properties[CODE][{{$i}}]"
                id="IB_PROPERTY_n{{$i}}_CODE"
