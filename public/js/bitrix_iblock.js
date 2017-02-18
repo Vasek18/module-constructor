@@ -7,6 +7,7 @@
     modal_form = $(button.attr('data-target'));
     modal_form.find('.form-group').hide();
     modal_form.find('[data-for_type_ids ~= "' + type_id + '"]').show();
+    modal_form.find('[data-for_type_ids ~= "_FOR_ALL_"]').show();
     modal_form.find(".only-one input:not([type=radio])").prop("disabled", true);
     if (!modal_form.find(".only-one input[type=radio]:checked").length) {
       modal_form.find(".only-one input[type=radio]:first").click();

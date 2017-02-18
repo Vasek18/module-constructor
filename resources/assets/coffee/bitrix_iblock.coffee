@@ -10,6 +10,8 @@ $('.prop .modal').on 'show.bs.modal', (event) ->
 	modal_form.find('.form-group').hide()
 	# показываем поля доступные для этого типа поля
 	modal_form.find('[data-for_type_ids ~= "' + type_id + '"]').show()
+	# также показываем поля нужные всем типам
+	modal_form.find('[data-for_type_ids ~= "_FOR_ALL_"]').show()
 	# блокируем исключающиеся варианты, если нужно
 	modal_form.find(".only-one input:not([type=radio])").prop("disabled", true)
 	if (!modal_form.find(".only-one input[type=radio]:checked").length)
