@@ -111,7 +111,7 @@
                                                        id="{{$property->id}}"
                                                        name="props[{{$property->id}}]"
                                                        class="form-control"
-                                                       value="{{ isset($props_vals[$property->id]) ? $props_vals[$property->id] : isset($property->dop_params["DEFAULT_VALUE"])&& !isset($element) ?$property->dop_params["DEFAULT_VALUE"]:'' }}"
+                                                       value="{{ isset($props_vals[$property->id]) ? $props_vals[$property->id] : ((isset($property->dop_params["DEFAULT_VALUE"])&& !isset($element)) ? $property->dop_params["DEFAULT_VALUE"] : '' )}}"
                                                         {{ $property->is_required ? 'required' : '' }}
                                                 >
                                             @endif
@@ -120,7 +120,7 @@
                                                        id="{{$property->id}}"
                                                        name="props[{{$property->id}}]"
                                                        class="form-control"
-                                                       value="{{ isset($props_vals[$property->id]) ? $props_vals[$property->id] : isset($property->dop_params["DEFAULT_VALUE"])&& !isset($element) ?$property->dop_params["DEFAULT_VALUE"]:'' }}"
+                                                       value="{{ isset($props_vals[$property->id]) ? $props_vals[$property->id] : ((isset($property->dop_params["DEFAULT_VALUE"]) && !isset($element)) ? $property->dop_params["DEFAULT_VALUE"] : '') }}"
                                                         {{ $property->is_required ? 'required' : '' }}
                                                 >
                                             @endif
@@ -129,7 +129,7 @@
                                                           name="props[{{$property->id}}]"
                                                           class="form-control"
                                                           rows="10"
-                                                        {{ $property->is_required ? 'required' : '' }}>{{ isset($props_vals[$property->id]) ? $props_vals[$property->id] : isset($property->dop_params["DEFAULT_VALUE"])&& !isset($element) ?$property->dop_params["DEFAULT_VALUE"]:'' }}</textarea>
+                                                        {{ $property->is_required ? 'required' : '' }}>{{ isset($props_vals[$property->id]) ? $props_vals[$property->id] : ((isset($property->dop_params["DEFAULT_VALUE"]) && !isset($element)) ?$property->dop_params["DEFAULT_VALUE"] : '') }}</textarea>
                                             @endif
                                             @if ($property->type == 'S:map_google')
                                                 <div class="row">
