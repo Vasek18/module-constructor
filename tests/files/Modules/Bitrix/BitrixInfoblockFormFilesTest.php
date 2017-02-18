@@ -484,8 +484,10 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 	/** @test */
 	function it_writes_creation_code_with_string_prop(){
 		$ib = $this->createIblockOnForm($this->module, [
-				"properties[NAME][0]" => "Тест",
-				"properties[CODE][0]" => "TEST",
+				"properties[NAME][0]"                      => "Тест",
+				"properties[CODE][0]"                      => "TEST",
+				"properties[dop_params][0][HINT]"          => "Подсказка",
+				"properties[dop_params][0][DEFAULT_VALUE]" => "ololo",
 			]
 		);
 
@@ -531,6 +533,8 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 			"USER_TYPE"     => "",
 			"MULTIPLE"      => "N",
 			"IS_REQUIRED"   => "N",
+			"HINT"          => 'Loc::getMessage("'.$this->module->lang_key.'_IBLOCK_TROLOLO_PARAM_'.$prop->id.'_HINT")',
+			"DEFAULT_VALUE" => 'Loc::getMessage("'.$this->module->lang_key.'_IBLOCK_TROLOLO_PARAM_'.$prop->id.'_DEFAULT_VALUE")',
 		];
 
 		$this->assertEquals(1, count($gottenInstallationFuncCodeArray));
@@ -538,6 +542,8 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 		$this->assertEquals($expectedPropCreationCodeArray, $gottenInstallationPropsFuncCodeArray[0], 'Prop array doesnt match');
 		$this->assertEquals($installFileLangArr[$this->module->lang_key.'_IBLOCK_TROLOLO_NAME'], 'Ololo');
 		$this->assertEquals($installFileLangArr[$this->module->lang_key.'_IBLOCK_TROLOLO_PARAM_'.$prop->id.'_NAME'], 'Тест');
+		$this->assertEquals($installFileLangArr[$this->module->lang_key.'_IBLOCK_TROLOLO_PARAM_'.$prop->id.'_HINT'], 'Подсказка');
+		$this->assertEquals($installFileLangArr[$this->module->lang_key.'_IBLOCK_TROLOLO_PARAM_'.$prop->id.'_DEFAULT_VALUE'], 'ololo');
 
 		$this->assertNotFalse(strpos($installationFileContent, 'function createIblockProp'));
 	}

@@ -66,6 +66,23 @@ class BitrixIblocksProps extends Model{
 		$code .= str_repeat("\t", $startingTabs)."\t\t".'"USER_TYPE"'." => ".'"'.$user_type.'",'.PHP_EOL;
 		$code .= str_repeat("\t", $startingTabs)."\t\t".'"MULTIPLE"'.' => "'.($this->multiple ? 'Y' : 'N').'",'.PHP_EOL;
 		$code .= str_repeat("\t", $startingTabs)."\t\t".'"IS_REQUIRED"'." => ".'"'.($this->is_required ? 'Y' : 'N').'",'.PHP_EOL;
+		if ($this->dop_params){
+			if (isset($this->dop_params["DEFAULT_VALUE"])){
+				$code .= str_repeat("\t", $startingTabs)."\t\t".'"DEFAULT_VALUE"'." => ".'Loc::getMessage("'.$this->lang_key.'_DEFAULT_VALUE"),'.PHP_EOL;
+			}
+			if (isset($this->dop_params["HINT"])){
+				$code .= str_repeat("\t", $startingTabs)."\t\t".'"HINT"'." => ".'Loc::getMessage("'.$this->lang_key.'_HINT"),'.PHP_EOL;
+			}
+			if (isset($this->dop_params["SEARCHABLE"]) && $this->dop_params["SEARCHABLE"] == 'Y'){
+				$code .= str_repeat("\t", $startingTabs)."\t\t".'"SEARCHABLE"'." => ".'"Y",'.PHP_EOL;
+			}
+			if (isset($this->dop_params["LIST_TYPE"])){
+				$code .= str_repeat("\t", $startingTabs)."\t\t".'"LIST_TYPE"'." => ".'"'.($this->dop_params["LIST_TYPE"]).'",'.PHP_EOL;
+			}
+			if (isset($this->dop_params["FILE_TYPE"])){
+				$code .= str_repeat("\t", $startingTabs)."\t\t".'"FILE_TYPE"'." => ".'"'.($this->dop_params["FILE_TYPE"]).'",'.PHP_EOL;
+			}
+		}
 		$code .= str_repeat("\t", $startingTabs)."\t".')'.PHP_EOL;
 		$code .= str_repeat("\t", $startingTabs).');'.PHP_EOL;
 

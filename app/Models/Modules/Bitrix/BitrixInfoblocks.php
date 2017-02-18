@@ -125,6 +125,15 @@ class BitrixInfoblocks extends Model{
 
 			foreach ($iblock->properties as $property){
 				$module->changeVarInLangFile($property->lang_key."_NAME", $property->name, '/lang/'.$module->default_lang.'/install/index.php');
+				
+				if ($property->dop_params){
+					if (isset($property->dop_params["DEFAULT_VALUE"])){
+						$module->changeVarInLangFile($property->lang_key."_DEFAULT_VALUE", $property->dop_params["DEFAULT_VALUE"], '/lang/'.$module->default_lang.'/install/index.php');
+					}
+					if (isset($property->dop_params["HINT"])){
+						$module->changeVarInLangFile($property->lang_key."_HINT", $property->dop_params["HINT"], '/lang/'.$module->default_lang.'/install/index.php');
+					}
+				}
 
 				foreach ($property->values as $val){
 					$module->changeVarInLangFile($val->lang_key."_VALUE", $val->value, '/lang/'.$module->default_lang.'/install/index.php');
