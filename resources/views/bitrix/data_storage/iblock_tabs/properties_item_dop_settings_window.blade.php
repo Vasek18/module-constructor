@@ -51,7 +51,7 @@
                         <div class="col-md-7">
                             <select name="properties[dop_params][{{$i}}][LIST_TYPE]"
                                     class="form-control">
-                                <option value="">Выберите</option>
+                                <option value="">{{ trans('app.select') }}</option>
                                 <option value="L"
                                         @if ($property && $property->dop_params && isset($property->dop_params["LIST_TYPE"]) && $property->dop_params["LIST_TYPE"] == "L") selected @endif>
                                     {{ trans('bitrix_iblocks_form.prop_dop_param_list_type_list') }}
