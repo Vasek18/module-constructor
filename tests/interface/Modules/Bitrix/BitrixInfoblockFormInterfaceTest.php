@@ -314,10 +314,12 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 	/** @test */
 	function it_returns_string_prop_data(){
 		$ib = $this->createIblockOnForm($this->module, [
-				"properties[NAME][0]"        => "Тест",
-				"properties[CODE][0]"        => "TEST",
-				"properties[MULTIPLE][0]"    => "Y",
-				"properties[IS_REQUIRED][0]" => "Y",
+				"properties[NAME][0]"                      => "Тест",
+				"properties[CODE][0]"                      => "TEST",
+				"properties[MULTIPLE][0]"                  => "Y",
+				"properties[IS_REQUIRED][0]"               => "Y",
+				"properties[dop_params][0][HINT]"          => "Подсказка",
+				"properties[dop_params][0][DEFAULT_VALUE]" => "ololo",
 			]
 		);
 
@@ -325,7 +327,10 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 		$this->seeInField("properties[CODE][0]", "TEST");
 		$this->seeIsChecked("properties[MULTIPLE][0]");
 		$this->seeIsChecked("properties[IS_REQUIRED][0]");
-		// $this->seeIsSelected("properties[TYPE][0]", 'S');
+		$this->seeIsChecked("properties[IS_REQUIRED][0]");
+		$this->seeInField("properties[dop_params][0][HINT]", 'Подсказка');
+		$this->seeInField("properties[dop_params][0][DEFAULT_VALUE]", 'ololo');
+		$this->seeIsSelected("properties[TYPE][0]", 'S');
 
 		$this->seePageIs('/my-bitrix/'.$this->module->id.'/data_storage/ib/'.$ib->id);
 	}
@@ -422,6 +427,21 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 		$this->seeInField('CODE', 'trololo');
 		$this->seeInField('SORT', '1487');
 		$this->seePageIs('/my-bitrix/'.$this->module->id.'/data_storage/ib/'.$ib->id.'/edit_element/'.$element->id);
+	}
+
+	/** @test */
+	function it_substitutes_string_prop_default_value_on_test_element_creating_form(){
+		$ib = $this->createIblockOnForm($this->module, [
+			"properties[NAME][0]"                      => "Тест",
+			"properties[CODE][0]"                      => "TEST",
+			"properties[IS_REQUIRED][0]"               => "Y",
+			"properties[dop_params][0][DEFAULT_VALUE]" => "ololo",
+		]);
+		$prop = BitrixIblocksProps::where('code', 'TEST')->first();
+
+		$this->visit('/my-bitrix/'.$this->module->id.'/data_storage/ib/'.$ib->id.'/create_element');
+
+		$this->seeInField('props['.$prop->id.']', 'ololo');
 	}
 
 	/** @test */
