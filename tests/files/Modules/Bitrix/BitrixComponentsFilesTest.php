@@ -1,11 +1,8 @@
 <?php
 
+use Chumper\Zipper\Zipper;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Models\Modules\Bitrix\BitrixComponent;
 use App\Helpers\vArrParse;
-use App\Models\Modules\Bitrix\BitrixComponentsParams;
-use App\Models\Modules\Bitrix\BitrixComponentsTemplates;
-use App\Models\Modules\Bitrix\BitrixComponentsArbitraryFiles;
 
 /** @group bitrix_files */
 class BitrixComponentsFilesTest extends BitrixTestCase{
@@ -748,6 +745,32 @@ class BitrixComponentsFilesTest extends BitrixTestCase{
 		$this->assertEquals('234', $script_js);
 		$this->assertEquals('345', $result_modifier_php);
 		$this->assertEquals('<? ?>', $component_epilog_php);
+	}
+
+	/** @test */
+	function archive_for_download_contains_folders_starting_with_dot(){
+		$component = $this->createComponentOnForm($this->module, [
+			'name' => 'Heh',
+			'sort' => '334',
+			'code' => 'ololo',
+			'desc' => 'HelloWorld',
+		]);
+
+		// скачиваем
+		$this->visit('/my-bitrix/'.$this->module->id.$this->path.'/'.$component->id);
+		$this->click('download');
+
+		// есть архив
+		$archivePath = public_path().'/user_downloads/ololo.zip';
+		$this->assertFileExists($archivePath);
+
+		// проверка, что файл в принципе есть
+		$zipper = new Zipper;
+		$zipper->make($archivePath);
+		$template_php = $zipper->getFileContent('ololo\templates\.default\template.php');
+		$zipper->close();
+
+		unlink($archivePath);
 	}
 }
 

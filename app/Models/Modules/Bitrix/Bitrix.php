@@ -4,6 +4,7 @@ namespace App\Models\Modules\Bitrix;
 
 use App\Helpers\vFuncParse;
 use App\Helpers\vLang;
+use App\Helpers\vZipArchive;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Auth;
@@ -12,9 +13,6 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use App\Helpers\vArrParse;
 use Illuminate\Filesystem\Filesystem;
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
-use ZipArchive;
 
 class Bitrix extends Model{
 	/**
@@ -175,21 +173,7 @@ class Bitrix extends Model{
 			file_put_contents($path.DIRECTORY_SEPARATOR.$rootFolder.DIRECTORY_SEPARATOR.'description.ru', mb_convert_encoding($description, $encoding, 'UTF-8'));
 		}
 
-		$zip = new ZipArchive();
-		$zip->open(public_path().DIRECTORY_SEPARATOR.$archiveFullName, ZipArchive::CREATE | ZipArchive::OVERWRITE);
-
-		$files = new RecursiveIteratorIterator(
-			new RecursiveDirectoryIterator($path),
-			RecursiveIteratorIterator::LEAVES_ONLY
-		);
-		foreach ($files as $name => $file){
-			if (!$file->isDir()){
-				$filePath = $file->getRealPath();
-				$relativePath = substr($filePath, strlen($path) + 1);
-				$zip->addFile($filePath, $relativePath);
-			}
-		}
-		$zip->close();
+		vZipArchive::createZipArchiveFromFolder(public_path().DIRECTORY_SEPARATOR.$archiveFullName, $path);
 
 		// todo как проще?
 		$Filesystem = new Filesystem;

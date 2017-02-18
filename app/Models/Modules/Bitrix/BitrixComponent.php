@@ -2,6 +2,7 @@
 
 namespace App\Models\Modules\Bitrix;
 
+use App\Helpers\vZipArchive;
 use App\Http\Utilities\Bitrix\BitrixHelperFunctions;
 use Illuminate\Database\Eloquent\Model;
 use App\Helpers\vArrParse;
@@ -206,11 +207,7 @@ class BitrixComponent extends Model{
 	public function generateZip(){
 		$archiveName = public_path().DIRECTORY_SEPARATOR.'user_downloads'.DIRECTORY_SEPARATOR.$this->code.".zip";
 
-		//dd(glob($this->getFolder(true). '/{,.[a-zA-Z]}*', GLOB_BRACE));
-
-		$zipper = new \Chumper\Zipper\Zipper;
-		//$zipper->make($archiveName)->folder($this->code)->add(glob($this->getFolder(true). '/{,.}*', GLOB_BRACE))->close();
-		$zipper->make($archiveName)->folder($this->code)->add($this->getFolder(true))->close();
+		vZipArchive::createZipArchiveFromFolder($archiveName, $this->getFolder(true), $this->code);
 
 		return $archiveName;
 	}

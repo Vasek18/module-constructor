@@ -112,8 +112,6 @@ class BitrixComponentsController extends Controller{
 		}
 	}
 
-	// todo проверка на возможность скачивания
-	// todo файлы и папки начинающиеся с .
 	public function download(Bitrix $module, BitrixComponent $component, Request $request){
 		if (!$this->moduleOwnsComponent($module, $component)){
 			return $this->unauthorized($request);

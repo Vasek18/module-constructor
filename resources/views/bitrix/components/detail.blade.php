@@ -54,14 +54,15 @@
     </div>
     <div class="col-md-1">
         @if ($user->canDownloadModule())
-        <p>
-            <a href="{{ action('Modules\Bitrix\BitrixComponentsController@download', [$module->id, $component->id]) }}"
-               class="btn btn-sm btn-success">
+            <p>
+                <a href="{{ action('Modules\Bitrix\BitrixComponentsController@download', [$module->id, $component->id]) }}"
+                   class="btn btn-sm btn-success"
+                   id="download">
                 <span class="glyphicon glyphicon-download"
                       aria-hidden="true"></span>
-                {{ trans('app.download') }}
-            </a>
-        </p>
+                    {{ trans('app.download') }}
+                </a>
+            </p>
         @endif
         <p>
             <a href="{{ action('Modules\Bitrix\BitrixComponentsController@destroy', [$module->id, $component->id]) }}"
