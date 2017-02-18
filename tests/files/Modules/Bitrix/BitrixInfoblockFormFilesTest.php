@@ -175,6 +175,10 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 		$this->assertEquals($expectedInstallationFuncCodeArray, $gottenInstallationFuncCodeArray[0]);
 		$this->assertEquals($installFileLangArr[$this->module->lang_key.'_IBLOCK_TROLOLO_NAME'], 'Ololo');
 
+		// обязательные ланги
+		$this->assertEquals($installFileLangArr[$this->module->lang_key.'_IBLOCK_TYPE_NAME_EN'], $this->module->module_full_id);
+		$this->assertEquals($installFileLangArr[$this->module->lang_key.'_IBLOCK_TYPE_NAME_RU'], $this->module->name);
+
 		$this->assertNotFalse(strpos($installationFileContent, 'function createIblockType'));
 		$this->assertNotFalse(strpos($installationFileContent, 'function removeIblockType'));
 		$this->assertNotFalse(strpos($installationFileContent, 'function createIblock'));

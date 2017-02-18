@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Auth;
 use App\Helpers\vFuncParse;
 
+// todo переименовать в BitrixIblock
 class BitrixInfoblocks extends Model{
 	protected $table = 'bitrix_infoblocks';
 	protected $fillable = ['module_id', 'name', 'code', 'params'];
@@ -120,12 +121,19 @@ class BitrixInfoblocks extends Model{
 	}
 
 	public static function writeInLangFile(Bitrix $module){
+		// эти ключи должны всегда быть (todo мб тест какой замутить на самолечение)
+		$module->changeVarInLangFile($module->lang_key.'_IBLOCK_TYPE_NAME_EN', $module->module_full_id, '/lang/'.$module->default_lang.'/install/index.php');
+		$module->changeVarInLangFile($module->lang_key.'_IBLOCK_TYPE_NAME_RU', $module->name, '/lang/'.$module->default_lang.'/install/index.php');
+		$module->changeVarInLangFile($module->lang_key.'_IBLOCK_TYPE_ALREADY_EXISTS', "Такой тип инфоблока уже существует", '/lang/'.$module->default_lang.'/install/index.php'); // todo нужные переводы
+		$module->changeVarInLangFile($module->lang_key.'_IBLOCK_ALREADY_EXISTS', "Инфоблок с таким кодом уже существует", '/lang/'.$module->default_lang.'/install/index.php'); // todo нужные переводы
+		$module->changeVarInLangFile($module->lang_key.'_IBLOCK_TYPE_DELETION_ERROR', "Ошибка удаления типа инфоблока", '/lang/'.$module->default_lang.'/install/index.php'); // todo нужные переводы
+
 		foreach ($module->infoblocks as $iblock){
 			$module->changeVarInLangFile($iblock->lang_key."_NAME", $iblock->name, '/lang/'.$module->default_lang.'/install/index.php');
 
 			foreach ($iblock->properties as $property){
 				$module->changeVarInLangFile($property->lang_key."_NAME", $property->name, '/lang/'.$module->default_lang.'/install/index.php');
-				
+
 				if ($property->dop_params){
 					if (isset($property->dop_params["DEFAULT_VALUE"])){
 						$module->changeVarInLangFile($property->lang_key."_DEFAULT_VALUE", $property->dop_params["DEFAULT_VALUE"], '/lang/'.$module->default_lang.'/install/index.php');
