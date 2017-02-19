@@ -20,6 +20,7 @@ elixir(function(mix){
 		.sass('admin_articles.scss')
 
 		.coffee('app.coffee')
+		.coffee('human_ajax_deletion.coffee')
 		.coffee('a.you-can-change.coffee')
 		.coffee('bitrix_module_admin_options.coffee')
 		.coffee('bitrix_module_components_params.coffee')

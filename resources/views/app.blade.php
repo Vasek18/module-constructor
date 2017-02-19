@@ -190,77 +190,11 @@
 <script src="/js/translit.js"></script>
 <script src="/js/sweetalert.js"></script>
 <script src="/js/deletion_with_confirm.js"></script>
+<script src="/js/human_ajax_deletion.js"></script>
 <script src="/js/app.js"></script>
 @stack('scripts')
 @include('flash')
-<!-- Yandex.Metrika counter -->
-<script type="text/javascript">
-    (function(d, w, c){
-        (w[c] = w[c] || []).push(function(){
-            try{
-                w.yaCounter41741859 = new Ya.Metrika({
-                    id                 : 41741859,
-                    clickmap           : true,
-                    trackLinks         : true,
-                    accurateTrackBounce: true,
-                    webvisor           : true,
-                    trackHash          : true
-                });
-            } catch (e){
-            }
-        });
-
-        var n   = d.getElementsByTagName("script")[0],
-            s   = d.createElement("script"),
-            f   = function(){
-                n.parentNode.insertBefore(s, n);
-            };
-        s.type  = "text/javascript";
-        s.async = true;
-        s.src   = "https://mc.yandex.ru/metrika/watch.js";
-
-        if (w.opera == "[object Opera]"){
-            d.addEventListener("DOMContentLoaded", f, false);
-        }else{
-            f();
-        }
-    })(document, window, "yandex_metrika_callbacks");
-</script>
-<noscript>
-    <div>
-        <img src="https://mc.yandex.ru/watch/41741859"
-             style="position:absolute; left:-9999px;"
-             alt=""/>
-    </div>
-</noscript>
-<!-- /Yandex.Metrika counter -->
-{{--модалка для подтвеждения удаления--}}
-<div class="modal fade"
-     id="delete-confirm-modal"
-     tabindex="-1"
-     role="dialog">
-    <div class="modal-dialog"
-         role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button"
-                        class="close"
-                        data-dismiss="modal"
-                        aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title">Удаление</h4>
-            </div>
-            <div class="modal-body">
-                <p class="text">Уверены?</p>
-            </div>
-            <div class="modal-footer">
-                <a type="button"
-                   class="btn btn-danger delete">Всё-таки удалить
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
+@include('yandex_metrika')
+@include('delete_confirm_modal')
 </body>
 </html>

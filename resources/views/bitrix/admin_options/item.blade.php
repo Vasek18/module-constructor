@@ -54,7 +54,7 @@
     <div class="col-md-1 col-xs-4 text-right">
         @if ($option)
             <a href="{{ action('Modules\Bitrix\BitrixOptionsController@destroy', [$module->id, $option->id]) }}"
-               class="btn btn-danger btn-sm"
+               class="btn btn-danger btn-sm deletion-with-confirm"
                id="delete_option_{{$option->id}}">
                 <span class="glyphicon glyphicon-trash"
                       aria-hidden="true"></span>

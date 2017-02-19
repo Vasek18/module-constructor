@@ -23,7 +23,7 @@
                         {{ trans('bitrix_data_storage.iblock') }} "{{$infoblock->name}}" ({{$infoblock->code}})
                     </a>
                     <a href="{{ action('Modules\Bitrix\BitrixDataStorageController@delete_ib', [$module->id, $infoblock->id]) }}"
-                       class="btn btn-danger pull-right human_ajax_deletion"
+                       class="btn btn-danger pull-right deletion-with-confirm"
                        data-method="get"
                        id="delete_iblock_{{$infoblock->id}}">
                         <span class="glyphicon glyphicon-trash"
