@@ -56,7 +56,7 @@ Class {MODULE_CLASS_NAME} extends CModule{
 		}
 
 		if (\Bitrix\Main\IO\Directory::isDirectoryExists($path = $this->GetPath().'/admin')){
-			CopyDirFiles($this->GetPath()."/install/admin/", $_SERVER["DOCUMENT_ROOT"]."/bitrix/admin"); //если есть файлы для копирования
+			CopyDirFiles($this->GetPath()."/install/admin/", $_SERVER["DOCUMENT_ROOT"]."/bitrix/admin");
 			if ($dir = opendir($path)){
 				while (false !== $item = readdir($dir)){
 					if (in_array($item, $this->exclusionAdminFiles))
