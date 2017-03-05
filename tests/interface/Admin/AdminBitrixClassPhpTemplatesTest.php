@@ -126,6 +126,7 @@ class AdminBitrixClassPhpTemplatesTest extends TestCase{
 			'group_id' => $this->adminUserGroup
 		]);
 
+		// добавляем шаблоны
 		$template = $this->createClassPhpTemplate([
 			'show_everyone' => true,
 			'name'          => 'new_template',
@@ -149,8 +150,8 @@ class AdminBitrixClassPhpTemplatesTest extends TestCase{
 		$this->seePageIs($this->path);
 		$this->dontSee('new_template');
 		$this->dontSee('echo "ololo";');
-		$this->See('edited_template');
-		$this->See('echo "trololo";');
+		$this->see('edited_template');
+		$this->see('echo "trololo";');
 	}
 }
 
