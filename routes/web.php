@@ -257,6 +257,11 @@ Route::group(['prefix' => 'oko', 'middleware' => 'admin'], function (){
 		Route::get('{event}/delete_event', ['uses' => 'Admin\AdminConfirmsController@deleteEvent']);
 	});
 
+	// шаблоны class.php компонентов Битрикса
+	Route::group(['prefix' => 'bitrix_class_php_templates'], function (){
+		Route::get('', ['uses' => 'Admin\AdminClassPhpTemplatesController@index']);
+	});
+
 	// оплаты
 	Route::group(['prefix' => 'payments'], function (){
 		Route::get('', ['uses' => 'Admin\AdminPaymentsController@index']);

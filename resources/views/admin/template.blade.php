@@ -35,6 +35,9 @@
                         <a href="{{ action('Admin\AdminConfirmsController@index') }}"
                            class="list-group-item">На утверждение
                         </a>
+                        <a href="{{ action('Admin\AdminClassPhpTemplatesController@index') }}"
+                           class="list-group-item">Шаблоны class.php
+                        </a>
                     </div>
                     <a class="list-group-item"
                        role="button"
