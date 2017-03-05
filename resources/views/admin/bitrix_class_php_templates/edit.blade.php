@@ -30,9 +30,7 @@
                       name="template"
                       class="form-control"
                       rows="10"
-                      required>
-                {!! $template->template !!}
-            </textarea>
+                      required>{!! $template->template !!}</textarea>
         </div>
         <div class="form-group">
             <button id="update"
