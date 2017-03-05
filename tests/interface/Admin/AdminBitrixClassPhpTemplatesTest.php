@@ -78,6 +78,24 @@ class AdminBitrixClassPhpTemplatesTest extends TestCase{
 		$this->dontSee($this->classPhpTemplateFishName);
 		$this->see('ololo_private_template');
 	}
+
+	/** @test */
+	function it_can_add_template(){
+		$this->signIn(null, [
+			'group_id' => $this->adminUserGroup
+		]);
+
+		$this->visit($this->path);
+
+		$this->submitForm('add', [
+			'name'     => 'new_template',
+			'template' => 'echo "ololo";',
+		]);
+
+		$this->seePageIs($this->path);
+		$this->see('new_template');
+		$this->see('echo "ololo";');
+	}
 }
 
 ?>

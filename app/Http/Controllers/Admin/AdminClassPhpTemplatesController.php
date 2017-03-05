@@ -22,4 +22,15 @@ class AdminClassPhpTemplatesController extends Controller{
 
 		return view("admin.bitrix_class_php_templates.private_ones", $data);
 	}
+
+	public function add(Request $request){
+		BitrixComponentClassPhpTemplates::create([
+			'name'          => $request->name,
+			'code'          => $request->code,
+			'template'      => $request->template,
+			'show_everyone' => true,
+		]);
+
+		return back();
+	}
 }

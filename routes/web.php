@@ -261,6 +261,7 @@ Route::group(['prefix' => 'oko', 'middleware' => 'admin'], function (){
 	Route::group(['prefix' => 'bitrix_class_php_templates'], function (){
 		Route::get('', ['uses' => 'Admin\AdminClassPhpTemplatesController@index']);
 		Route::get('private_ones', ['uses' => 'Admin\AdminClassPhpTemplatesController@private_ones']);
+		Route::post('add', ['uses' => 'Admin\AdminClassPhpTemplatesController@add']);
 	});
 
 	// оплаты
