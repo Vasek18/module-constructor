@@ -33,4 +33,10 @@ class AdminClassPhpTemplatesController extends Controller{
 
 		return back();
 	}
+
+	public function delete(Request $request, BitrixComponentClassPhpTemplates $template){
+		$template->delete();
+
+		return back();
+	}
 }

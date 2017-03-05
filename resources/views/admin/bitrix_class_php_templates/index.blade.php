@@ -40,7 +40,19 @@
         <h2>Все общие шаблоны</h2>
         @foreach($public_templates as $public_template)
             <div class="panel panel-default">
-                <div class="panel-heading">{{ $public_template->name }}</div>
+                <div class="panel-heading clearfix">
+                    <div class="pull-left">
+                        <h3 class="panel-title">{{ $public_template->name }}</h3>
+                    </div>
+                    <div class="pull-right">
+                        <a href="{{ action('Admin\AdminClassPhpTemplatesController@delete', [$public_template->id]) }}"
+                           id="delete{{ $public_template->id }}"
+                           class="btn btn-danger btn-sm deletion-with-confirm">
+                          <span class="glyphicon glyphicon-trash"
+                                aria-hidden="true"></span>
+                        </a>
+                    </div>
+                </div>
                 <div class="panel-body">
                     {{ $public_template->template }}
                 </div>

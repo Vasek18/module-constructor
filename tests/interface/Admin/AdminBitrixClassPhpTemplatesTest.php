@@ -17,7 +17,8 @@ class AdminBitrixClassPhpTemplatesTest extends TestCase{
 		if (!isset($params["name"]) || !$params["name"]){
 			$params["name"] = $this->classPhpTemplateFishName;
 		}
-		BitrixComponentClassPhpTemplates::create($params);
+
+		return BitrixComponentClassPhpTemplates::create($params);
 	}
 
 	/** @test */
@@ -95,6 +96,28 @@ class AdminBitrixClassPhpTemplatesTest extends TestCase{
 		$this->seePageIs($this->path);
 		$this->see('new_template');
 		$this->see('echo "ololo";');
+	}
+
+	/** @test */
+	function it_can_delete_template(){
+		$this->signIn(null, [
+			'group_id' => $this->adminUserGroup
+		]);
+
+		$template = $this->createClassPhpTemplate([
+			'show_everyone' => true,
+			'name'          => 'new_template'
+		]);
+
+		// проверяем, что шаблон добавился
+		$this->visit($this->path);
+		$this->see('new_template');
+
+		// удаляем шаблон
+		$this->click('delete'.$template->id);
+		// проверяем, что он удалился
+		$this->seePageIs($this->path);
+		$this->dontSee('new_template');
 	}
 }
 
