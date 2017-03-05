@@ -273,15 +273,7 @@ class BitrixComponentsController extends Controller{
 		// }
 		$component_php = ''; // его делаем пустым и переезжаем на ооп
 
-		if (!$request->template_id){
-			// todo от этой схемы, наверное вообще уйду
-			$functions = [];
-			foreach ($request->all() as $code => $val){
-				// todo тут надо будет удалять лищние параметры
-				$functions[] = $val;
-			}
-			$class_php = $component->getClassPhp($functions);
-		}else{
+		if ($request->template_id){
 			// шаблоны из бд
 			$template = BitrixComponentClassPhpTemplates::find($request->template_id);
 			if ($template->userCanUse($this->user) || $template->isPublic()){

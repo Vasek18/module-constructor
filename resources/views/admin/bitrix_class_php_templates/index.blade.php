@@ -26,7 +26,7 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    {{ $public_template->template }}
+                    {{ html_entity_decode($public_template->template) }}
                 </div>
             </div>
         @endforeach

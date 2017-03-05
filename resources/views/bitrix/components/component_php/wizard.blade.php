@@ -40,24 +40,6 @@
             </div>
         @endforeach
     @endif
-    <div class="form-group">
-        <div class="radio">
-            <label>
-                <input type="radio"
-                       name="items_list"
-                       value="items_list">
-                {{ trans('bitrix_components.logic_wizard_items_list') }}
-            </label>
-        </div>
-        <div class="radio">
-            <label>
-                <input type="radio"
-                       name="items_list"
-                       value="items_list_with_props">
-                {{ trans('bitrix_components.logic_wizard_items_list_with_props') }}
-            </label>
-        </div>
-    </div>
     <div class="hidden">
         <button id="use_template"
                 name="use_template"
