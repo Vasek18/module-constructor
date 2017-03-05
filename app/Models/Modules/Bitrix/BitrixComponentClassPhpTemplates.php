@@ -17,6 +17,14 @@ class BitrixComponentClassPhpTemplates extends Model{
 		}
 	}
 
+	public function scopePublicTemplates($query){
+		return $query->where('show_everyone', true);
+	}
+
+	public function scopePrivateTemplates($query){
+		return $query->where('show_everyone', false);
+	}
+
 	public function userCanUse(User $user){
 		// todo нельзя удалять утверждённые шаблоны
 		if ($user->id){

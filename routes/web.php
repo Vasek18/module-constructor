@@ -260,6 +260,7 @@ Route::group(['prefix' => 'oko', 'middleware' => 'admin'], function (){
 	// шаблоны class.php компонентов Битрикса
 	Route::group(['prefix' => 'bitrix_class_php_templates'], function (){
 		Route::get('', ['uses' => 'Admin\AdminClassPhpTemplatesController@index']);
+		Route::get('private_ones', ['uses' => 'Admin\AdminClassPhpTemplatesController@private_ones']);
 	});
 
 	// оплаты
