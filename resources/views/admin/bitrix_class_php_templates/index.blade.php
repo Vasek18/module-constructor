@@ -45,6 +45,12 @@
                         <h3 class="panel-title">{{ $public_template->name }}</h3>
                     </div>
                     <div class="pull-right">
+                        <a href="{{ action('Admin\AdminClassPhpTemplatesController@edit', [$public_template->id]) }}"
+                           id="edit{{ $public_template->id }}"
+                           class="btn btn-primary btn-sm">
+                          <span class="glyphicon glyphicon-pencil"
+                                aria-hidden="true"></span>
+                        </a>
                         <a href="{{ action('Admin\AdminClassPhpTemplatesController@delete', [$public_template->id]) }}"
                            id="delete{{ $public_template->id }}"
                            class="btn btn-danger btn-sm deletion-with-confirm">

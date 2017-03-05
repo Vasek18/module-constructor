@@ -39,4 +39,22 @@ class AdminClassPhpTemplatesController extends Controller{
 
 		return back();
 	}
+
+	public function edit(Request $request, BitrixComponentClassPhpTemplates $template){
+		$data = [
+			'template' => $template,
+		];
+
+		return view("admin.bitrix_class_php_templates.edit", $data);
+	}
+
+	public function update(Request $request, BitrixComponentClassPhpTemplates $template){
+		$template->update([
+			'name'     => $request->name,
+			'code'     => $request->code,
+			'template' => $request->template,
+		]);
+
+		return redirect(action('Admin\AdminClassPhpTemplatesController@index'));
+	}
 }

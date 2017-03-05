@@ -119,6 +119,39 @@ class AdminBitrixClassPhpTemplatesTest extends TestCase{
 		$this->seePageIs($this->path);
 		$this->dontSee('new_template');
 	}
+
+	/** @test */
+	function it_can_edit_template(){
+		$this->signIn(null, [
+			'group_id' => $this->adminUserGroup
+		]);
+
+		$template = $this->createClassPhpTemplate([
+			'show_everyone' => true,
+			'name'          => 'new_template',
+			'template'      => 'echo "ololo";',
+		]);
+		// проверяем, что шаблон добавился, и тех значений, на которые мы хотим менять нет
+		$this->visit($this->path);
+		$this->see('new_template');
+		$this->see('echo "ololo";');
+		$this->dontSee('edited_template');
+		$this->dontSee('echo "trololo";');
+
+		// идём на редактирование
+		$this->click('edit'.$template->id);
+		// редактируем
+		$this->submitForm('update', [
+			'name'     => 'edited_template',
+			'template' => 'echo "trololo";',
+		]);
+		// проверяем, что он данные изменились и мы на индексной
+		$this->seePageIs($this->path);
+		$this->dontSee('new_template');
+		$this->dontSee('echo "ololo";');
+		$this->See('edited_template');
+		$this->See('echo "trololo";');
+	}
 }
 
 ?>

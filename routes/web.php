@@ -263,6 +263,8 @@ Route::group(['prefix' => 'oko', 'middleware' => 'admin'], function (){
 		Route::get('private_ones', ['uses' => 'Admin\AdminClassPhpTemplatesController@private_ones']);
 		Route::post('add', ['uses' => 'Admin\AdminClassPhpTemplatesController@add']);
 		Route::get('{template}/delete', ['uses' => 'Admin\AdminClassPhpTemplatesController@delete']);
+		Route::get('{template}/edit', ['uses' => 'Admin\AdminClassPhpTemplatesController@edit']);
+		Route::put('{template}', ['uses' => 'Admin\AdminClassPhpTemplatesController@update']);
 	});
 
 	// оплаты
