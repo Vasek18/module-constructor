@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Modules\Bitrix\BitrixComponentClassPhpTemplates;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Models\Modules\Bitrix\BitrixComponent;
 use App\Models\Modules\Bitrix\BitrixComponentsParams;
@@ -325,6 +326,27 @@ class BitrixComponentsInterfaceTest extends BitrixTestCase{
 		]);
 
 		$this->see('<body><p>{"component_php":"","class_php":" echo \"Hi\"; ?&gt;"}</p></body>');
+	}
+
+	/** @test */
+	function user_can_use_public_class_php_template(){
+		$component = $this->createComponentOnForm($this->module);
+
+		// создаём общий шаблон
+		$template = BitrixComponentClassPhpTemplates::create([
+			'name'          => 'public_super_template',
+			'template'      => '<? echo "trololo"; ?>',
+			'show_everyone' => true,
+		]);
+
+		$this->visit('/my-bitrix/'.$this->module->id.'/components/'.$component->id.'/component_php');
+
+		$this->see('public_super_template');
+		$this->submitForm('use_template', [
+			'template_id' => $template->id,
+		]);
+
+		$this->see('<body><p>{"component_php":"","class_php":" echo \"trololo\"; ?&gt;"}</p></body>');
 	}
 
 	/** @test */

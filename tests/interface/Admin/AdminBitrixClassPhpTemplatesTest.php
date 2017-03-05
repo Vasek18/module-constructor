@@ -13,7 +13,7 @@ class AdminBitrixClassPhpTemplatesTest extends TestCase{
 	protected $path = '/oko/bitrix_class_php_templates';
 	protected $classPhpTemplateFishName = 'ololo_template';
 
-	public function createClassPhpTemplate($params = Array()){
+	public function createBitrixClassPhpTemplate($params = Array()){
 		if (!isset($params["name"]) || !$params["name"]){
 			$params["name"] = $this->classPhpTemplateFishName;
 		}
@@ -47,10 +47,10 @@ class AdminBitrixClassPhpTemplatesTest extends TestCase{
 			'group_id' => $this->adminUserGroup
 		]);
 
-		$this->createClassPhpTemplate([
+		$this->createBitrixClassPhpTemplate([
 			'show_everyone' => true
 		]);
-		$this->createClassPhpTemplate([
+		$this->createBitrixClassPhpTemplate([
 			'name'          => 'ololo_private_template',
 			'show_everyone' => false,
 		]);
@@ -67,10 +67,10 @@ class AdminBitrixClassPhpTemplatesTest extends TestCase{
 			'group_id' => $this->adminUserGroup
 		]);
 
-		$this->createClassPhpTemplate([
+		$this->createBitrixClassPhpTemplate([
 			'show_everyone' => true
 		]);
-		$this->createClassPhpTemplate([
+		$this->createBitrixClassPhpTemplate([
 			'name'          => 'ololo_private_template',
 			'show_everyone' => false,
 		]);
@@ -104,7 +104,7 @@ class AdminBitrixClassPhpTemplatesTest extends TestCase{
 			'group_id' => $this->adminUserGroup
 		]);
 
-		$template = $this->createClassPhpTemplate([
+		$template = $this->createBitrixClassPhpTemplate([
 			'show_everyone' => true,
 			'name'          => 'new_template'
 		]);
@@ -127,7 +127,7 @@ class AdminBitrixClassPhpTemplatesTest extends TestCase{
 		]);
 
 		// добавляем шаблоны
-		$template = $this->createClassPhpTemplate([
+		$template = $this->createBitrixClassPhpTemplate([
 			'show_everyone' => true,
 			'name'          => 'new_template',
 			'template'      => 'echo "ololo";',

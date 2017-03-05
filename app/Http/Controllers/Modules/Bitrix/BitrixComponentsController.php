@@ -224,9 +224,10 @@ class BitrixComponentsController extends Controller{
 		}
 
 		$data = [
-			'module'              => $module,
-			'component'           => $component,
-			'class_php_templates' => BitrixComponentClassPhpTemplates::thatUserCanSee($this->user)->get(),
+			'module'                      => $module,
+			'component'                   => $component,
+			'private_class_php_templates' => BitrixComponentClassPhpTemplates::thatUserCanSee($this->user)->get(),
+			'public_class_php_templates'  => BitrixComponentClassPhpTemplates::publicTemplates()->get(),
 		];
 
 		return view("bitrix.components.component_php.index", $data);
@@ -283,7 +284,7 @@ class BitrixComponentsController extends Controller{
 		}else{
 			// шаблоны из бд
 			$template = BitrixComponentClassPhpTemplates::find($request->template_id);
-			if ($template->userCanUse($this->user)){
+			if ($template->userCanUse($this->user) || $template->isPublic()){
 				$class_php = $template->template;
 			}else{
 				$class_php = '';

@@ -35,4 +35,12 @@ class BitrixComponentClassPhpTemplates extends Model{
 
 		return false;
 	}
+
+	public function isPublic(){
+		if ($this->show_everyone){
+			return true;
+		}
+
+		return false;
+	}
 }

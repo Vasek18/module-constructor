@@ -76,7 +76,7 @@ class ProjectHelpController extends Controller{
 	}
 
 	public function bitrixClassPhpTemplatesDelete(BitrixComponentClassPhpTemplates $template, Request $request){
-		if ($template->userCanUse($this->user)){
+		if ($template->userCanUse($this->user) && !$template->isPublic()){
 			$template->delete();
 		}
 
