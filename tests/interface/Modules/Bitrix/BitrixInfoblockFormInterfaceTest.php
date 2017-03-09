@@ -558,6 +558,23 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 	}
 
 	/** @test */
+	function it_imports_checkbox_var_from_xml(){
+		$this->signIn();
+		$this->module = $this->fillNewBitrixForm();
+
+		$file = public_path().'/for_tests/test_iblock_one_section_w_element_and_element_at_root_and_empty_section_and_props_dop_params.xml';
+		$this->visit('/my-bitrix/'.$this->module->id.$this->path);
+		$this->attach($file, 'file');
+		$this->press('import');
+
+		$this->seeInField('properties[NAME][1]', 'Чекбокс');
+		$this->seeInField('properties[CODE][1]', 'CHECKBOX');
+		$this->seeIsSelected('properties[TYPE][1]', 'L');
+		$this->seeIsSelected('properties[dop_params][1][LIST_TYPE]', 'C');
+		$this->seeInField('properties[VALUES][1][VALUE][]', 'Y');
+	}
+
+	/** @test */
 	function it_imports_iblock_elements_from_xml(){
 		$file = public_path().'/for_tests/test_iblock.xml';
 		$this->visit('/my-bitrix/'.$this->module->id.$this->path);

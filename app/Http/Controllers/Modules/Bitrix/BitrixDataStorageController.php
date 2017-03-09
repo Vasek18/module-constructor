@@ -110,8 +110,10 @@ class BitrixDataStorageController extends Controller{
 					$addPropArr
 				);
 
+				if (isset($propArr['ВариантыЗначений']['Вариант']['Ид'])){ // если значение только одно
+					$propArr['ВариантыЗначений']['Вариант'] = [$propArr['ВариантыЗначений']['Вариант']];
+				}
 				if (isset($propArr['ВариантыЗначений']['Вариант'])){
-					// dd($propArr['ВариантыЗначений']['Вариант']);
 					foreach ($propArr['ВариантыЗначений']['Вариант'] as $valArr){
 						if (isset($valArr['Ид'])){
 							$vals[$valArr['Ид']] = BitrixIblocksPropsVals::updateOrCreate(
