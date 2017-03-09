@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Modules\Bitrix\BitrixIblocksProps;
+use App\Models\Modules\Bitrix\BitrixIblocksSections;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Models\Modules\Bitrix\BitrixInfoblocks;
 use App\Models\Modules\Bitrix\BitrixIblocksElements;
@@ -549,6 +550,22 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 		$this->seeInField('CODE', 'ololo');
 		$this->seeInField('SORT', '500');
 		$this->seeInField('props['.$prop->id.']', '');
+	}
+
+	/** @test
+	 * тест на одну категорию есть в тесте файлов
+	 */
+	function it_imports_more_than_one_iblock_sections_from_xml(){
+		$file = public_path().'/for_tests/test_iblock_one_section_w_element_and_element_at_root_and_empty_section_and_props_dop_params.xml';
+		$this->visit('/my-bitrix/'.$this->module->id.$this->path);
+		$this->attach($file, 'file');
+		$this->press('import');
+
+		$iblock = BitrixInfoblocks::where('code', "ololo")->first();
+
+		$this->visit('/my-bitrix/'.$this->module->id.'/data_storage/ib/'.$iblock->id);
+		$this->see('Тестовый раздел');
+		$this->see('Пустой раздел');
 	}
 
 	/** @test */

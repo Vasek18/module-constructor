@@ -1902,7 +1902,9 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 		$this->assertEquals($installFileLangArr[$iblock->lang_key.'_ELEMENT_'.$element2->id.'_PROP_'.$prop2->id.'_VALUE'], '447');
 	}
 
-	/** @test */
+	/** @test
+	 * тест на несколько категорий находится в тесте интерфейса
+	 */
 	function it_imports_iblock_section_with_element_in_it_from_xml(){
 		$file = public_path().'/for_tests/test_iblock_with_section.xml';
 		$this->visit('/my-bitrix/'.$this->module->id.$this->path);

@@ -107,13 +107,7 @@
                                         <div class="form-group">
                                             <label for="{{$property->id}}">{{$property->name}}</label>
                                             @if ($property->type == 'S')
-                                                <input type="text"
-                                                       id="{{$property->id}}"
-                                                       name="props[{{$property->id}}]"
-                                                       class="form-control"
-                                                       value="{{ isset($props_vals[$property->id]) ? $props_vals[$property->id] : ((isset($property->dop_params["DEFAULT_VALUE"])&& !isset($element)) ? $property->dop_params["DEFAULT_VALUE"] : '' )}}"
-                                                        {{ $property->is_required ? 'required' : '' }}
-                                                >
+                                                @include('bitrix.data_storage.iblock_tabs.element_props.string', ['property' => $property, 'val' => isset($props_vals[$property->id]) ?: null, 'element' => isset($element) ?: null])
                                             @endif
                                             @if ($property->type == 'N')
                                                 <input type="text"

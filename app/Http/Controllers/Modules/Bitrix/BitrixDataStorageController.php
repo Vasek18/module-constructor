@@ -130,8 +130,14 @@ class BitrixDataStorageController extends Controller{
 		if (!$request->only_structure){
 			// импорт разделов
 			$sections = [];
-			if (isset($arr['Классификатор']['Группы']) && is_array($arr['Классификатор']['Группы'])){ // todo тест на отсутвие категорий в xml
-				foreach ($arr['Классификатор']['Группы'] as $itemArr){
+			if (isset($arr['Классификатор']['Группы']) && is_array($arr['Классификатор']['Группы'])){
+				if (isset($arr['Классификатор']['Группы']["Группа"]["Ид"])){ // только одна группа
+					$sectionsForImport = [$arr['Классификатор']['Группы']["Группа"]];
+				}
+				else{ // несколько групп
+					$sectionsForImport = $arr['Классификатор']['Группы']["Группа"];
+				}
+				foreach ($sectionsForImport as $itemArr){
 					if (isset($itemArr['Ид'])){
 						$sectionArr = [
 							'iblock_id' => $iblock->id,
