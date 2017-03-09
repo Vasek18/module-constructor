@@ -528,6 +528,36 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 	}
 
 	/** @test */
+	function it_imports_iblock_properties_dop_params_from_xml(){
+		$this->signIn();
+		$this->module = $this->fillNewBitrixForm();
+
+		$file = public_path().'/for_tests/test_iblock_one_section_w_element_and_element_at_root_and_empty_section_and_props_dop_params.xml';
+		$this->visit('/my-bitrix/'.$this->module->id.$this->path);
+		$this->attach($file, 'file');
+		$this->press('import');
+
+		$this->seeInField('properties[NAME][0]', 'Строка с дефолтом');
+		$this->seeInField('properties[CODE][0]', 'STROKA');
+		$this->seeIsSelected('properties[TYPE][0]', 'S');
+		$this->seeInField('properties[dop_params][0][DEFAULT_VALUE]', 'Test');
+
+		$this->seeInField('properties[NAME][1]', 'Чекбокс');
+		$this->seeInField('properties[CODE][1]', 'CHECKBOX');
+		$this->seeIsSelected('properties[TYPE][1]', 'L');
+		$this->seeIsSelected('properties[dop_params][1][LIST_TYPE]', 'C');
+
+		$this->seeInField('properties[NAME][2]', 'Список');
+		$this->seeInField('properties[CODE][2]', 'SPISOK');
+		$this->seeIsSelected('properties[TYPE][2]', 'L');
+
+		$this->seeInField('properties[NAME][3]', 'Множественная строка');
+		$this->seeInField('properties[CODE][3]', 'STROKA_MULTIPLE');
+		$this->seeIsSelected('properties[TYPE][3]', 'S');
+		$this->seeIsChecked('properties[MULTIPLE][3]');
+	}
+
+	/** @test */
 	function it_imports_iblock_elements_from_xml(){
 		$file = public_path().'/for_tests/test_iblock.xml';
 		$this->visit('/my-bitrix/'.$this->module->id.$this->path);

@@ -99,7 +99,11 @@ class BitrixDataStorageController extends Controller{
 						'sort'        => $propArr["БитриксСортировка"],
 						'type'        => $propArr["БитриксТипСвойства"],
 						'multiple'    => ($propArr["Множественное"] == 'true') ? true : false,
-						'is_required' => ($propArr["БитриксОбязательное"] == 'true') ? true : false
+						'is_required' => ($propArr["БитриксОбязательное"] == 'true') ? true : false,
+						'dop_params'  => [
+							"DEFAULT_VALUE" => $propArr["БитриксЗначениеПоУмолчанию"] ? unserialize($propArr["БитриксЗначениеПоУмолчанию"]) : false,
+							"LIST_TYPE" => isset($propArr["БитриксТипСписка"]) ? $propArr["БитриксТипСписка"] : '',
+						]
 					]
 				);
 
@@ -133,8 +137,7 @@ class BitrixDataStorageController extends Controller{
 			if (isset($arr['Классификатор']['Группы']) && is_array($arr['Классификатор']['Группы'])){
 				if (isset($arr['Классификатор']['Группы']["Группа"]["Ид"])){ // только одна группа
 					$sectionsForImport = [$arr['Классификатор']['Группы']["Группа"]];
-				}
-				else{ // несколько групп
+				}else{ // несколько групп
 					$sectionsForImport = $arr['Классификатор']['Группы']["Группа"];
 				}
 				foreach ($sectionsForImport as $itemArr){
