@@ -87,24 +87,27 @@ class BitrixDataStorageController extends Controller{
 		$vals = [];
 		foreach ($arr["Классификатор"]["Свойства"]['Свойство'] as $propArr){
 			if (isset($propArr["БитриксТипСвойства"])){ // считаем, что свойство от прочих элементов отличает именно это поле
+				$addPropArr = [
+					'iblock_id'   => $iblock->id,
+					'code'        => $propArr['БитриксКод'],
+					'name'        => $propArr['Наименование'],
+					'sort'        => $propArr["БитриксСортировка"],
+					'type'        => $propArr["БитриксТипСвойства"],
+					'multiple'    => ($propArr["Множественное"] == 'true') ? true : false,
+					'is_required' => ($propArr["БитриксОбязательное"] == 'true') ? true : false,
+				];
+				if (isset($propArr["БитриксЗначениеПоУмолчанию"]) && unserialize($propArr["БитриксЗначениеПоУмолчанию"])){
+					$addPropArr["dop_params"]["DEFAULT_VALUE"] = unserialize($propArr["БитриксЗначениеПоУмолчанию"]);
+				}
+				if (isset($propArr["БитриксТипСписка"]) && $propArr["БитриксТипСписка"] != 'L'){
+					$addPropArr["dop_params"]["LIST_TYPE"] = $propArr["БитриксТипСписка"];
+				}
 				$prop = BitrixIblocksProps::updateOrCreate(
 					[
 						'iblock_id' => $iblock->id,
 						'code'      => $propArr['БитриксКод']
 					],
-					[
-						'iblock_id'   => $iblock->id,
-						'code'        => $propArr['БитриксКод'],
-						'name'        => $propArr['Наименование'],
-						'sort'        => $propArr["БитриксСортировка"],
-						'type'        => $propArr["БитриксТипСвойства"],
-						'multiple'    => ($propArr["Множественное"] == 'true') ? true : false,
-						'is_required' => ($propArr["БитриксОбязательное"] == 'true') ? true : false,
-						'dop_params'  => [
-							"DEFAULT_VALUE" => $propArr["БитриксЗначениеПоУмолчанию"] ? unserialize($propArr["БитриксЗначениеПоУмолчанию"]) : false,
-							"LIST_TYPE" => isset($propArr["БитриксТипСписка"]) ? $propArr["БитриксТипСписка"] : '',
-						]
-					]
+					$addPropArr
 				);
 
 				if (isset($propArr['ВариантыЗначений']['Вариант'])){
