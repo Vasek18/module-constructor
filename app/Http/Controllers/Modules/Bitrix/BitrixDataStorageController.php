@@ -66,7 +66,7 @@ class BitrixDataStorageController extends Controller{
 		$iblock = BitrixInfoblocks::updateOrCreate(
 			[
 				'module_id' => $module->id,
-				'code'      => $arr['Каталог']['БитриксКод'],
+				'name'      => $arr['Каталог']['Наименование'],
 			],
 			[
 				'module_id' => $module->id,
