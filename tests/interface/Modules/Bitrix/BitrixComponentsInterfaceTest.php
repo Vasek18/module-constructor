@@ -471,6 +471,18 @@ class BitrixComponentsInterfaceTest extends BitrixTestCase{
 	}
 
 	/** @test */
+	function it_can_store_param_without_name(){
+		$component = $this->createComponentOnForm($this->module);
+
+		$this->createComponentParamOnForm($this->module, $component, 0, [
+			'code' => 'trololo',
+			'type' => 'STRING',
+		]);
+
+		$this->seeInField('param_code[]', 'trololo');
+	}
+
+	/** @test */
 	function it_can_find_name_of_noname_system_param(){
 		$component = $this->createComponentOnForm($this->module);
 

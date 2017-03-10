@@ -11,12 +11,13 @@
     @endpush
 
     @include('bitrix.components.progress_way_menu')
-    <button class="btn btn-primary"
-            data-toggle="modal"
-            data-target="#upload_prepared_files">{{ trans('bitrix_components.params_button_upload') }}
-    </button>
-    @include('bitrix.button_n_modal_for_file_copy', ['path' => '\install\components\\'.$component->namespace.'\\'.$component->code.'\.parameters.php', 'show' => $user->canSeePaidFiles(), 'is_lang' => false])
-    @include('bitrix.button_n_modal_for_file_copy', ['path' => '\install\components\\'.$component->namespace.'\\'.$component->code.'\lang\ru\.parameters.php', 'show' => $user->canSeePaidFiles(), 'is_lang' => true, 'add_id' => '_lang'])
+    {{--todo--}}
+    {{--<button class="btn btn-primary"--}}
+            {{--data-toggle="modal"--}}
+            {{--data-target="#upload_prepared_files">{{ trans('bitrix_components.params_button_upload') }}--}}
+    {{--</button>--}}
+    @include('bitrix.button_n_modal_for_file_copy', ['path' => DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.$component->namespace.DIRECTORY_SEPARATOR.$component->code.DIRECTORY_SEPARATOR.'.parameters.php', 'show' => $user->canSeePaidFiles(), 'is_lang' => false])
+    @include('bitrix.button_n_modal_for_file_copy', ['path' => DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.$component->namespace.DIRECTORY_SEPARATOR.$component->code.DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.'ru'.DIRECTORY_SEPARATOR.'.parameters.php', 'show' => $user->canSeePaidFiles(), 'is_lang' => true, 'add_id' => '_lang'])
     @include('bitrix.components.params.hint_vars_for_input', ['name' => 'params_variables_list'])
     <div class="modal fade"
          tabindex="-1"

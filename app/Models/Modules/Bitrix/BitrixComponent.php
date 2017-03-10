@@ -436,7 +436,6 @@ class BitrixComponent extends Model{
 			];
 			if (isset($param["NAME"])){
 				$newParamParams['name'] = extractLangVal($param["NAME"], $this->getFolder(true).'/lang/ru/.parameters.php');
-
 			}else{
 				$newParamParams['name'] = BitrixComponentsParams::getSystemPropName($code);
 			}

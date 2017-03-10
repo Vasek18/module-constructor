@@ -54,6 +54,9 @@ class BitrixComponentsParamsController extends Controller{
 				if (!$request['param_name'][$i]){
 					$paramArr['name'] = BitrixComponentsParams::getSystemPropName($code);
 				}
+				if (!$paramArr["name"]){
+					$paramArr['name'] = "";
+				}
 			}
 			if (isset($request['param_sort'][$i])){
 				$paramArr['sort'] = $request['param_sort'][$i];
@@ -148,6 +151,7 @@ class BitrixComponentsParamsController extends Controller{
 		return back();
 	}
 
+	// todo
 	public
 	function upload_params_files(Bitrix $module, BitrixComponent $component, Request $request){
 		if (!$this->moduleOwnsComponent($module, $component)){
