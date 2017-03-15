@@ -1037,6 +1037,110 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 	}
 
 	/** @test */
+	function it_writes_creation_code_with_test_element_with_multiple_string_prop_value(){
+		$ib = $this->createIblockOnForm($this->module, [
+			"properties[NAME][0]"        => "Тест",
+			"properties[CODE][0]"        => "TEST",
+			"properties[MULTIPLE][0]"    => "Y",
+			"properties[IS_REQUIRED][0]" => "Y",
+		]);
+		$prop = BitrixIblocksProps::where('code', 'TEST')->first();
+		$element = $this->createIblockElementOnForm($this->module, $ib, [
+			'NAME'                    => 'Trololo',
+			'CODE'                    => 'trololo',
+			'props['.$prop->id.'][0]' => 'test',
+			'props['.$prop->id.'][1]' => 'ololo',
+		]);
+
+		$gottenInstallationFuncCodeArray = $this->getIblockCreationFuncCallParamsArray($this->module);
+		$gottenInstallationElementsFuncCodeArray = $this->getIblockElementsCreationFuncCallParamsArray($this->module);
+		$installFileLangArr = $this->getLangFileArray($this->module);
+
+		$expectedInstallationFuncCodeArray = [
+			"IBLOCK_TYPE_ID"   => '$iblockType',
+			"ACTIVE"           => "Y",
+			"LID"              => '$this->getSitesIdsArray()',
+			"VERSION"          => "2",
+			"CODE"             => "trololo",
+			"NAME"             => 'Loc::getMessage("'.$this->module->lang_key.'_IBLOCK_TROLOLO_NAME")',
+			"SORT"             => "555",
+			"LIST_PAGE_URL"    => "#SITE_DIR#/".$this->module->code."/index.php?ID=#IBLOCK_ID##hi",
+			"SECTION_PAGE_URL" => "#SITE_DIR#/".$this->module->code."/list.php?SECTION_ID=#SECTION_ID##hi",
+			"DETAIL_PAGE_URL"  => "#SITE_DIR#/".$this->module->code."/detail.php?ID=#ELEMENT_ID##hi",
+			"FIELDS"           => Array(
+				"ACTIVE"            => Array(
+					"DEFAULT_VALUE" => "Y",
+				),
+				"PREVIEW_TEXT_TYPE" => Array(
+					"DEFAULT_VALUE" => "text",
+				),
+				"DETAIL_TEXT_TYPE"  => Array(
+					"DEFAULT_VALUE" => "text",
+				),
+			),
+			"GROUP_ID"         => [
+				2 => "R"
+			]
+		];
+		$expectedInstallationElementsFuncCodeArray = [
+			"IBLOCK_ID"       => '$iblockID',
+			"ACTIVE"          => "Y",
+			"SORT"            => "500",
+			"CODE"            => "trololo",
+			"NAME"            => 'Loc::getMessage("'.$ib->lang_key.'_ELEMENT_'.$element->id.'_NAME")',
+			"PROPERTY_VALUES" => Array(
+				'$prop'.$prop->id.'ID' => Array(
+					'Loc::getMessage("'.$ib->lang_key.'_ELEMENT_'.$element->id.'_PROP_'.$prop->id.'_VALUE_0")',
+					'Loc::getMessage("'.$ib->lang_key.'_ELEMENT_'.$element->id.'_PROP_'.$prop->id.'_VALUE_1")',
+				),
+			)
+		];
+
+		$this->assertEquals(1, count($gottenInstallationFuncCodeArray));
+		$this->assertEquals($expectedInstallationFuncCodeArray, $gottenInstallationFuncCodeArray[0]);
+		$this->assertEquals($expectedInstallationElementsFuncCodeArray, $gottenInstallationElementsFuncCodeArray[0]);
+		$this->assertEquals($installFileLangArr[$this->module->lang_key.'_IBLOCK_TROLOLO_NAME'], 'Ololo');
+		$this->assertEquals($installFileLangArr[$ib->lang_key.'_ELEMENT_'.$element->id.'_NAME'], 'Trololo');
+		$this->assertEquals($installFileLangArr[$ib->lang_key.'_ELEMENT_'.$element->id.'_PROP_'.$prop->id.'_VALUE_0'], 'test');
+		$this->assertEquals($installFileLangArr[$ib->lang_key.'_ELEMENT_'.$element->id.'_PROP_'.$prop->id.'_VALUE_1'], 'ololo');
+	}
+
+
+	/** @test */
+	function it_writes_creation_code_with_test_element_with_multiple_string_prop_but_single_value(){
+		$ib = $this->createIblockOnForm($this->module, [
+			"properties[NAME][0]"        => "Тест",
+			"properties[CODE][0]"        => "TEST",
+			"properties[MULTIPLE][0]"    => "Y",
+			"properties[IS_REQUIRED][0]" => "Y",
+		]);
+		$prop = BitrixIblocksProps::where('code', 'TEST')->first();
+		$element = $this->createIblockElementOnForm($this->module, $ib, [
+			'NAME'                    => 'Trololo',
+			'CODE'                    => 'trololo',
+			'props['.$prop->id.'][0]' => 'test',
+		]);
+
+		$gottenInstallationElementsFuncCodeArray = $this->getIblockElementsCreationFuncCallParamsArray($this->module);
+		$installFileLangArr = $this->getLangFileArray($this->module);
+
+		$expectedInstallationElementsFuncCodeArray = [
+			"IBLOCK_ID"       => '$iblockID',
+			"ACTIVE"          => "Y",
+			"SORT"            => "500",
+			"CODE"            => "trololo",
+			"NAME"            => 'Loc::getMessage("'.$ib->lang_key.'_ELEMENT_'.$element->id.'_NAME")',
+			"PROPERTY_VALUES" => Array(
+				'$prop'.$prop->id.'ID' => 'Loc::getMessage("'.$ib->lang_key.'_ELEMENT_'.$element->id.'_PROP_'.$prop->id.'_VALUE")',
+			)
+		];
+
+		$this->assertEquals($expectedInstallationElementsFuncCodeArray, $gottenInstallationElementsFuncCodeArray[0]);
+		$this->assertEquals($installFileLangArr[$ib->lang_key.'_ELEMENT_'.$element->id.'_NAME'], 'Trololo');
+		$this->assertEquals($installFileLangArr[$ib->lang_key.'_ELEMENT_'.$element->id.'_PROP_'.$prop->id.'_VALUE'], 'test');
+	}
+
+	/** @test */
 	function it_writes_creation_code_with_test_section(){
 		$ib = $this->createIblockOnForm($this->module);
 		$section = $this->createIblockSectionOnForm($this->module, $ib, [
@@ -1880,7 +1984,10 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 			"NAME"            => 'Loc::getMessage("'.$iblock->lang_key.'_ELEMENT_'.$element->id.'_NAME")',
 			"PROPERTY_VALUES" => Array(
 				'$prop'.$prop->id.'ID'  => 'Loc::getMessage("'.$iblock->lang_key.'_ELEMENT_'.$element->id.'_PROP_'.$prop->id.'_VALUE")',
-				'$prop'.$prop2->id.'ID' => 'Loc::getMessage("'.$iblock->lang_key.'_ELEMENT_'.$element->id.'_PROP_'.$prop2->id.'_VALUE")',
+				'$prop'.$prop2->id.'ID' => Array(
+					'Loc::getMessage("'.$iblock->lang_key.'_ELEMENT_'.$element->id.'_PROP_'.$prop2->id.'_VALUE_0")',
+					'Loc::getMessage("'.$iblock->lang_key.'_ELEMENT_'.$element->id.'_PROP_'.$prop2->id.'_VALUE_1")',
+				)
 			)
 		];
 		$expectedInstallationElementsFuncCodeArray2 = [
