@@ -402,6 +402,11 @@ class BitrixDataStorageController extends Controller{
 					continue;
 				}
 				if (is_array($val)){
+					foreach ($val as $cVal => $valVal){
+						if (!$valVal){
+							unset($val[$cVal]); // удаляем пустые
+						}
+					}
 					$val = implode(static::$arrayGlue, $val);
 				}
 
@@ -428,6 +433,9 @@ class BitrixDataStorageController extends Controller{
 			$val = $prop->pivot->value;
 			if (strpos($val, static::$arrayGlue) !== false){
 				$val = explode(static::$arrayGlue, $val);
+			}
+			if ($prop->multiple && !is_array($val)){ // у множественного своства одно значение
+				$val = [$val];
 			}
 			$props_vals[$prop->id] = $val;
 		}
@@ -475,6 +483,11 @@ class BitrixDataStorageController extends Controller{
 					continue;
 				}
 				if (is_array($val)){
+					foreach ($val as $cVal => $valVal){
+						if (!$valVal){
+							unset($val[$cVal]); // удаляем пустые
+						}
+					}
 					$val = implode(static::$arrayGlue, $val);
 				}
 

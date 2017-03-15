@@ -165,11 +165,19 @@ class BitrixInfoblocks extends Model{
 					}
 
 					if (is_array($val)){
-						$val = implode(',', $val);
+						if (!$prop->multiple){
+							$val = implode(',', $val);
+						}
 					}
 
-					if ($val){
-						$module->changeVarInLangFile($element->lang_key.'_PROP_'.$prop->id.'_VALUE', $val, '/lang/'.$module->default_lang.'/install/index.php');
+					if (is_array($val)){
+						foreach ($val as $cVal => $valVal){
+							$module->changeVarInLangFile($element->lang_key.'_PROP_'.$prop->id.'_VALUE_'.$cVal, $valVal, '/lang/'.$module->default_lang.'/install/index.php');
+						}
+					}else{
+						if ($val){
+							$module->changeVarInLangFile($element->lang_key.'_PROP_'.$prop->id.'_VALUE', $val, '/lang/'.$module->default_lang.'/install/index.php');
+						}
 					}
 				}
 			}
