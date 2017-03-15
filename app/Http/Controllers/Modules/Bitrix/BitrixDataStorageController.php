@@ -402,6 +402,11 @@ class BitrixDataStorageController extends Controller{
 					continue;
 				}
 				if (is_array($val)){
+					foreach ($val as $cVal => $valVal){
+						if (!$valVal){
+							unset($val[$cVal]); // удаляем пустые
+						}
+					}
 					$val = implode(static::$arrayGlue, $val);
 				}
 
@@ -475,6 +480,11 @@ class BitrixDataStorageController extends Controller{
 					continue;
 				}
 				if (is_array($val)){
+					foreach ($val as $cVal => $valVal){
+						if (!$valVal){
+							unset($val[$cVal]); // удаляем пустые
+						}
+					}
 					$val = implode(static::$arrayGlue, $val);
 				}
 

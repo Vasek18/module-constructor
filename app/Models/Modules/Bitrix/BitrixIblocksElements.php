@@ -57,10 +57,22 @@ class BitrixIblocksElements extends Model{
 					continue;
 				}
 
-				if ($replaceByLoc){
-					$propsCode .= "\t\t\t\t\t".'$prop'.$prop->id.'ID'." => ".'Loc::getMessage("'.$this->lang_key.'_PROP_'.$prop->id.'_VALUE"),'.PHP_EOL;
+				if (is_array($val)){
+					$propsCode .= "\t\t\t\t\t".'$prop'.$prop->id.'ID'." => Array(".PHP_EOL;
+					foreach ($val as $cVal => $valVal){
+						if ($replaceByLoc){
+							$propsCode .= "\t\t\t\t\t\t"."".'Loc::getMessage("'.$this->lang_key.'_PROP_'.$prop->id.'_VALUE_'.$cVal.'"),'.PHP_EOL;
+						}else{
+							$propsCode .= "\t\t\t\t\t\t"."".$valVal.','.PHP_EOL;
+						}
+					}
+					$propsCode .= "\t\t\t\t\t"."),".PHP_EOL;
 				}else{
-					$propsCode .= "\t\t\t\t\t".'$prop'.$prop->id.'ID'." => ".$val.','.PHP_EOL;
+					if ($replaceByLoc){
+						$propsCode .= "\t\t\t\t\t".'$prop'.$prop->id.'ID'." => ".'Loc::getMessage("'.$this->lang_key.'_PROP_'.$prop->id.'_VALUE"),'.PHP_EOL;
+					}else{
+						$propsCode .= "\t\t\t\t\t".'$prop'.$prop->id.'ID'." => ".$val.','.PHP_EOL;
+					}
 				}
 			}
 		}
