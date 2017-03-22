@@ -33,6 +33,15 @@
                                required
                                accept=".zip">
                     </div>
+                    <div class="form-group">
+                        <label for="namespace">{{ trans('bitrix_components.archive_namespace') }}</label>
+                        <input type="text"
+                               id="namespace"
+                               name="namespace"
+                               class="form-control"
+                               value="{{ $module->full_id }}"
+                               required>
+                    </div>
                     <div class="clearfix">
                         <button class="btn btn-primary"
                                 name="upload">{{ trans('bitrix_components.button_upload') }}</button>

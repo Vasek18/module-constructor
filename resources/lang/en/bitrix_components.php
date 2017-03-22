@@ -9,6 +9,7 @@ return [
 	'button_upload_zip'       => 'Parse from zip',
 	'upload_zip_window_title' => 'Zip upload',
 	'archive_field'           => 'Archive',
+	'archive_namespace'       => 'Namespace',
 	'button_upload'           => 'Upload',
 	'upload_desc'             => 'You can upload <b>a zip-archive</b> with the component, and it will be integrated into our system.<br>
                         <span class="text-danger">Attention!</span><br>

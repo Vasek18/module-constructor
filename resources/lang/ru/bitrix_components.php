@@ -9,6 +9,7 @@ return [
 	'button_upload_zip'       => 'Загрузить архивом',
 	'upload_zip_window_title' => 'Загрузка архива компонента',
 	'archive_field'           => 'Архив',
+	'archive_namespace'       => 'Пространство имён',
 	'button_upload'           => 'Загрузить',
 	'upload_desc'             => ' Вы можете загрузить <b>zip-архив</b> с компонентом и он интегрируется в нашу систему.<br>
                         <span class="text-danger">Внимание!</span><br>

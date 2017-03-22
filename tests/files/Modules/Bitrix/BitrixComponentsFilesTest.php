@@ -772,6 +772,18 @@ class BitrixComponentsFilesTest extends BitrixTestCase{
 
 		unlink($archivePath);
 	}
+
+
+	/** @test */
+	function you_can_change_namespace_folder_at_import(){
+		$archive = public_path().'/for_tests/bitrix_catalog.section.zip';
+		$this->visit('/my-bitrix/'.$this->module->id.$this->path);
+		$this->attach($archive, 'archive');
+		$this->type('ololo', 'namespace');
+		$this->press('upload');
+
+		$this->assertTrue(is_dir($this->module->getFolder(true).'/install/components/ololo'));
+	}
 }
 
 ?>

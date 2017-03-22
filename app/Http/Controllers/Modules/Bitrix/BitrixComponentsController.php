@@ -290,10 +290,10 @@ class BitrixComponentsController extends Controller{
 	// todo сейчас работает только с зипом
 	public function upload_zip(Bitrix $module, Request $request){
 		$fileName = $this->moveComponentToPublic($request);
-		$this->extractComponentToModuleFolder($module, $fileName);
+		$this->extractComponentToModuleFolder($module, $fileName, $request->namespace);
 		$componentCode = $this->getComponentCodeFromFolder($fileName);
 		unlink(public_path().DIRECTORY_SEPARATOR.'user_upload'.DIRECTORY_SEPARATOR.$fileName);
-		$component = $this->createEmptyComponent($module, $componentCode);
+		$component = $this->createEmptyComponent($module, $componentCode, $request->namespace);
 		$component->parseDescriptionFile();
 		$component->parseParamsFile();
 		$component->gatherListOfArbitraryFiles();
@@ -316,14 +316,14 @@ class BitrixComponentsController extends Controller{
 		return $fileName;
 	}
 
-	public function extractComponentToModuleFolder(Bitrix $module, $fileName){
+	public function extractComponentToModuleFolder(Bitrix $module, $fileName, $namespace){
 		// если вдруг папки для компонентов нет => создаём её
-		$module->disk()->makeDirectory($module->module_full_id.DIRECTORY_SEPARATOR."install".DIRECTORY_SEPARATOR."components".DIRECTORY_SEPARATOR.$module->module_full_id);
+		$module->disk()->makeDirectory($module->module_full_id.DIRECTORY_SEPARATOR."install".DIRECTORY_SEPARATOR."components".DIRECTORY_SEPARATOR.$namespace);
 
 		$moduleFolder = $module->getFolder();
 		$zipper = new Zipper;
 		$zipper->make(public_path().DIRECTORY_SEPARATOR.'user_upload'.DIRECTORY_SEPARATOR.$fileName);
-		$zipper->extractTo($moduleFolder.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.$module->module_full_id);
+		$zipper->extractTo($moduleFolder.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.$namespace);
 
 		return true;
 	}
@@ -337,13 +337,13 @@ class BitrixComponentsController extends Controller{
 		return $path[0];
 	}
 
-	public function createEmptyComponent(Bitrix $module, $componentCode){
+	public function createEmptyComponent(Bitrix $module, $componentCode, $namespace){
 		BitrixComponent::where(['module_id' => $module->id, 'code' => $componentCode])->delete(); // не обновляем, а удаляем, чтобы каскадно удалить записи из связанных таблиц
 
 		$component = new BitrixComponent;
 		$component->module_id = $module->id;
 		$component->code = $componentCode;
-		$component->namespace = $module->full_id;
+		$component->namespace = $namespace;
 		$component->save();
 
 		return $component;
