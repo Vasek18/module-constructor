@@ -276,6 +276,7 @@ Route::group(['prefix' => 'oko', 'middleware' => 'admin'], function (){
 	// репорты пользователей
 	Route::group(['prefix' => 'user_reports'], function (){
 		Route::get('', ['uses' => 'Admin\AdminUserReportsController@index']);
+		Route::get('{report}/delete', ['uses' => 'Admin\AdminUserReportsController@destroy']);
 	});
 
 	// пульс проекта

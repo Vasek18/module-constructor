@@ -15,4 +15,10 @@ class AdminUserReportsController extends Controller{
 
 		return view("admin.user_reports.index", $data);
 	}
+
+	public function destroy(UserReport $report){
+		$report->delete();
+
+		return back();
+	}
 }

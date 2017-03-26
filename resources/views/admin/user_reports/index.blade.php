@@ -5,7 +5,16 @@
 
     @foreach($reports as $report)
         <div class="panel panel-{{ $report->getBootstrapContextClass() }}">
-            <div class="panel-heading">{{ $report->name }}</div>
+            <div class="panel-heading clearfix">{{ $report->name }}
+                <div class="pull-right">
+                    <a href="{{ action('Admin\AdminUserReportsController@destroy', [$report]) }}"
+                       id="delete{{ $report->id }}"
+                       class="btn btn-danger btn-sm">
+                <span class="glyphicon glyphicon-trash"
+                      aria-hidden="true"></span>
+                    </a>
+                </div>
+            </div>
             <div class="panel-body">
                 <p>{{ $report->description }}</p>
                 <dl>
