@@ -9,7 +9,7 @@
                 <div class="pull-right">
                     <a href="{{ action('Admin\AdminUserReportsController@destroy', [$report]) }}"
                        id="delete{{ $report->id }}"
-                       class="btn btn-danger btn-sm">
+                       class="btn btn-danger btn-sm deletion-with-confirm">
                 <span class="glyphicon glyphicon-trash"
                       aria-hidden="true"></span>
                     </a>
