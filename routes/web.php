@@ -33,6 +33,10 @@ Route::group(['prefix' => 'personal'], function (){
 	Route::group(['prefix' => 'donate'], function (){
 		Route::get('', 'PersonalController@donate');
 	});
+
+	Route::group(['prefix' => 'info'], function (){
+		Route::get('', 'PersonalController@info');
+	});
 });
 
 // Битрикс

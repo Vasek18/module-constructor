@@ -43,4 +43,8 @@ class PersonalController extends Controller{
 	public function donate(){
 		return view("personal.donate");
 	}
+
+	public function info(){
+		return view("personal.info");
+	}
 }
