@@ -11,12 +11,14 @@ use App\Models\User\UserReportType;
 
 class FeedbackController extends Controller{
 	public function sendILackSmthForm(Request $request){
-		$mail = Mail::send('emails.ilack', ['page' => $request->page, 'email' => $request->email, 'text' => $request->text], function ($m){
-			$m->to(env('GOD_EMAIL'))->subject('Кому-то то-то не нравится');
-		});
+		if (trim($request->text)){
+			$mail = Mail::send('emails.ilack', ['page' => $request->page, 'email' => $request->email, 'text' => $request->text], function ($m){
+				$m->to(env('GOD_EMAIL'))->subject('Кому-то то-то не нравится');
+			});
 
-		if ($mail){
-			flash()->success(trans('app.email_was_sent'));
+			if ($mail){
+				flash()->success(trans('app.email_was_sent'));
+			}
 		}
 
 		return back();
