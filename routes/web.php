@@ -37,6 +37,10 @@ Route::group(['prefix' => 'personal'], function (){
 	Route::group(['prefix' => 'info'], function (){
 		Route::get('', 'PersonalController@info');
 	});
+
+	Route::group(['prefix' => 'get-token'], function (){
+		Route::get('', 'PersonalController@getToken');
+	});
 });
 
 // Битрикс

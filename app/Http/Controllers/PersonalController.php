@@ -47,4 +47,9 @@ class PersonalController extends Controller{
 	public function info(){
 		return view("personal.info");
 	}
+
+	public function getToken(){
+		$this->user->createToken('API')->accessToken; // todo что за имя нужно?
+		return back();
+	}
 }

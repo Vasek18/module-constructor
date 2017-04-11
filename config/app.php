@@ -148,6 +148,8 @@ return [
 
 		Chumper\Zipper\ZipperServiceProvider::class, // для zip'а
 		Nathanmac\Utilities\Parser\ParserServiceProvider::class, // для xml
+
+		Laravel\Passport\PassportServiceProvider::class, // для апи
 	],
 
 	/*
