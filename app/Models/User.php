@@ -12,14 +12,16 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use App\Models\Modules\Bitrix\Bitrix;
 use Illuminate\Notifications\Notifiable;
 use App\Notifications\MyOwnResetPassword as ResetPasswordNotification;
+use Laravel\Passport\HasApiTokens;
+
 
 class User extends Model implements AuthenticatableContract,
 	AuthorizableContract,
 	CanResetPasswordContract{
 
-	use Authenticatable, Authorizable, CanResetPassword, Notifiable;
+	use Authenticatable, Authorizable, CanResetPassword, Notifiable, HasApiTokens;
 	protected $table = 'users';
-	protected $fillable = ['first_name', 'last_name', 'company_name', 'site', 'email', 'password'];
+	protected $fillable = ['first_name', 'last_name', 'company_name', 'site', 'email', 'password', 'bitrix_company_name', 'bitrix_partner_code'];
 	protected $hidden = ['password', 'remember_token'];
 	public static $adminGroup = 1;
 	public static $defaultGroup = 2;

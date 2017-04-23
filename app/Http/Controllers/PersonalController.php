@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Models\User;
 use Auth;
 
@@ -42,5 +43,41 @@ class PersonalController extends Controller{
 
 	public function donate(){
 		return view("personal.donate");
+	}
+
+	public function info(){
+		return view("personal.info");
+	}
+
+	public function infoEdit(Request $request){
+		if (!$this->user){
+			return back();
+		}
+
+		$updateArr = [];
+
+		if ($request->name){
+			$updateArr['first_name'] = $request->name;
+		}
+		if ($request->surname){
+			$updateArr['last_name'] = $request->surname;
+		}
+		if ($request->company_name){
+			$updateArr['bitrix_company_name'] = $request->company_name;
+		}
+		if ($request->partner_code){
+			$updateArr['bitrix_partner_code'] = $request->partner_code;
+		}
+
+		if (!empty($updateArr)){
+			$this->user->update($updateArr);
+		}
+
+		return back();
+	}
+
+	public function getToken(){
+		$this->user->createToken('API')->accessToken; // todo что за имя нужно?
+		return back();
 	}
 }

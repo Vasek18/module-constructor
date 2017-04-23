@@ -33,6 +33,15 @@ Route::group(['prefix' => 'personal'], function (){
 	Route::group(['prefix' => 'donate'], function (){
 		Route::get('', 'PersonalController@donate');
 	});
+
+	Route::group(['prefix' => 'info'], function (){
+		Route::get('', 'PersonalController@info');
+		Route::post('', 'PersonalController@infoEdit');
+	});
+
+	Route::group(['prefix' => 'get-token'], function (){
+		Route::get('', 'PersonalController@getToken');
+	});
 });
 
 // Битрикс
