@@ -21,7 +21,7 @@ class User extends Model implements AuthenticatableContract,
 
 	use Authenticatable, Authorizable, CanResetPassword, Notifiable, HasApiTokens;
 	protected $table = 'users';
-	protected $fillable = ['first_name', 'last_name', 'company_name', 'site', 'email', 'password'];
+	protected $fillable = ['first_name', 'last_name', 'company_name', 'site', 'email', 'password', 'bitrix_company_name', 'bitrix_partner_code'];
 	protected $hidden = ['password', 'remember_token'];
 	public static $adminGroup = 1;
 	public static $defaultGroup = 2;

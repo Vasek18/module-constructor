@@ -5,7 +5,10 @@
         @include('personal.header')
         <h1>{{ trans('personal_cabinet.personal_info_h1') }}</h1>
         <div class="row">
-            <form class="col-md-6">
+            <form class="col-md-6"
+                  action="{{ action('PersonalController@infoEdit') }}"
+                  method="post">
+                {{ csrf_field() }}
                 <div class="form-group">
                     <label for="email">{{ trans('personal_cabinet.personal_info_email') }}</label>
                     <input type="text"
@@ -16,19 +19,19 @@
                            disabled>
                 </div>
                 <div class="form-group">
-                    <label for="NAME">{{ trans('personal_cabinet.personal_info_name') }}</label>
+                    <label for="name">{{ trans('personal_cabinet.personal_info_name') }}</label>
                     <input type="text"
-                           id="NAME"
-                           name="NAME"
+                           id="name"
+                           name="name"
                            class="form-control"
                            value="{{ $user->first_name }}"
                            required>
                 </div>
                 <div class="form-group">
-                    <label for="SURNAME">{{ trans('personal_cabinet.personal_info_surname') }}</label>
+                    <label for="surname">{{ trans('personal_cabinet.personal_info_surname') }}</label>
                     <input type="text"
-                           id="SURNAME"
-                           name="SURNAME"
+                           id="surname"
+                           name="surname"
                            class="form-control"
                            value="{{ $user->last_name }}"
                            required>
@@ -43,10 +46,10 @@
                            required>
                 </div>
                 <div class="form-group">
-                    <label for="bitrix_partner_code">{{ trans('personal_cabinet.personal_info_bitrix_partner_code') }}</label>
+                    <label for="partner_code">{{ trans('personal_cabinet.personal_info_bitrix_partner_code') }}</label>
                     <input type="text"
-                           id="bitrix_partner_code"
-                           name="bitrix_partner_code"
+                           id="partner_code"
+                           name="partner_code"
                            class="form-control"
                            value="{{ $user->bitrix_partner_code }}"
                            required>
@@ -58,23 +61,25 @@
                 </div>
             </form>
         </div>
+        {{--
+        todo
         <h2>{{ trans('personal_cabinet.personal_info_api_key') }}</h2>
-        <div class="row">
-            @if ($user->tokens()->count())
-                <div class="col-md-8">
-                    <input type="text"
-                           class="form-control"
-                           value="{{ $user->tokens()->first()->id }}"
-                           disabled>
-                </div>
-            @else
-                <div class="col-md-2">
-                    <a href="{{ action('PersonalController@getToken') }}"
-                       class="btn btn-primary btn-block">{{ trans('personal_cabinet.personal_info_generate_api_key') }}
-                    </a>
-                </div>
-            @endif
-        </div>
+         <div class="row">
+             @if ($user->tokens()->count())
+                 <div class="col-md-8">
+                     <input type="text"
+                            class="form-control"
+                            value="{{ $user->tokens()->first()->id }}"
+                            disabled>
+                 </div>
+             @else
+                 <div class="col-md-2">
+                     <a href="{{ action('PersonalController@getToken') }}"
+                        class="btn btn-primary btn-block">{{ trans('personal_cabinet.personal_info_generate_api_key') }}
+                     </a>
+                 </div>
+             @endif
+         </div>--}}
         <br> <br>
     </div>
 @stop

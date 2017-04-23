@@ -36,6 +36,7 @@ Route::group(['prefix' => 'personal'], function (){
 
 	Route::group(['prefix' => 'info'], function (){
 		Route::get('', 'PersonalController@info');
+		Route::post('', 'PersonalController@infoEdit');
 	});
 
 	Route::group(['prefix' => 'get-token'], function (){
