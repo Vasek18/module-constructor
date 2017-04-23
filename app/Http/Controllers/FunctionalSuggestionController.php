@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\FunctionalSuggestion;
+use Illuminate\Support\Facades\Mail;
 
 class FunctionalSuggestionController extends Controller{
 
@@ -39,6 +40,10 @@ class FunctionalSuggestionController extends Controller{
 			'votes'       => $userID ? 1 : 0,
 			'user_ids'    => $userID ? json_encode([$userID]) : '',
 		]);
+
+		$mail = Mail::send('emails.new_functional_suggestion', ['name' => $request->name, 'description' => $request->description], function ($m){
+			$m->to(env('GOD_EMAIL'))->subject('Предложение по функционалу');
+		});
 
 		return back();
 	}
