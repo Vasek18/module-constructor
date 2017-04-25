@@ -10,7 +10,7 @@ class ProjectPulsePostController extends Controller{
 
 	public function index(Request $request){
 		$data = [
-			'posts' => ProjectPulsePost::orderBy('created_at', 'desc')->orderBy('id', 'desc')->get()
+			'posts' => ProjectPulsePost::orderBy('created_at', 'desc')->orderBy('id', 'desc')->paginate(10)
 		];
 
 		return view("project_pulse.index", $data);

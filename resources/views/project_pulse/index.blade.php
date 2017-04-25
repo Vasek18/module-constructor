@@ -28,6 +28,9 @@
                     <div class="panel-footer">{{ $post->created_at }}</div>
                 </div>
             @endforeach
+            <div class="text-center">
+                {{ $posts->links() }}
+            </div>
         </div>
     </div>
 @stop
