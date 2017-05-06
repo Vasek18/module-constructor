@@ -187,6 +187,29 @@ class BitrixCreateFormInterfaceTest extends BitrixTestCase{
 
 		$this->see('Module with such code already exists among yours');
 	}
+
+	/** @test */
+	function it_returns_an_error_when_partner_code_is_not_unique(){
+		$bitrix_partner_code = 'test';
+
+		// кто-то создаёт модуль
+		$this->signIn(null, ['bitrix_partner_code' => $bitrix_partner_code]);
+		$module1 = $this->fillNewBitrixForm();
+
+		// приходит другой парень
+		$this->signIn(null, ['bitrix_partner_code' => '']);
+		// и создаёт модуль с тем же кодом партнёра
+		$module2 = $this->fillNewBitrixForm(['MODULE_CODE' => 'ololo', 'PARTNER_CODE' => $bitrix_partner_code]);
+
+		if ($module1){
+			$module1->deleteFolder();
+		}
+		if ($module2){
+			$module2->deleteFolder();
+		}
+
+		$this->see('Такой код партнёра уже занят');
+	}
 }
 
 ?>

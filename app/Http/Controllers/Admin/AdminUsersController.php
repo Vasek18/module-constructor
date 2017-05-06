@@ -34,6 +34,7 @@ class AdminUsersController extends Controller{
 		return back();
 	}
 
+	// todo удаление заходов тоже
 	public function destroy(User $user, Request $request){
 		foreach ($user->modules as $module){
 			$module->deleteFolder();

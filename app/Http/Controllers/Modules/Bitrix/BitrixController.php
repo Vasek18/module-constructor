@@ -38,6 +38,11 @@ class BitrixController extends Controller{
 		// создание записи в бд и шаблона
 		$bitrix = new Bitrix;
 
+		// смотрим не занят ли код пользователя
+		if (User::where('bitrix_partner_code',trim($request->PARTNER_CODE))->count()){
+			return back()->withErrors([trans('bitrix_create.this_bitrix_partner_code_is_already_taken')]);
+		}
+
 		// на будущее сохраняем какие-то поля в таблицу пользователя, если они не были указаны, но были указаны сейчас
 		Bitrix::completeUserProfile(Auth::id(), $request);
 
