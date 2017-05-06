@@ -49,4 +49,17 @@
             <br> С ip: {{ $user->getLastLogin()?$user->getLastLogin()->ip:'' }}
         </div>
     </div>
+    <br>
+    <div class="row">
+        <div class="col-md-4">
+            <dl>
+                <dt>Название компании у Битрикса</dt>
+                <dd>{{ $user->bitrix_company_name }}</dd>
+                <dt>Код партнёра Битрикс</dt>
+                <dd>{{ $user->bitrix_partner_code }}</dd>
+                <dt>Сайт</dt>
+                <dd>{{ $user->site }}</dd>
+            </dl>
+        </div>
+    </div>
 @stop
