@@ -61,25 +61,7 @@
                 </div>
             </form>
         </div>
-        {{--
-        todo
-        <h2>{{ trans('personal_cabinet.personal_info_api_key') }}</h2>
-         <div class="row">
-             @if ($user->tokens()->count())
-                 <div class="col-md-8">
-                     <input type="text"
-                            class="form-control"
-                            value="{{ $user->tokens()->first()->id }}"
-                            disabled>
-                 </div>
-             @else
-                 <div class="col-md-2">
-                     <a href="{{ action('PersonalController@getToken') }}"
-                        class="btn btn-primary btn-block">{{ trans('personal_cabinet.personal_info_generate_api_key') }}
-                     </a>
-                 </div>
-             @endif
-         </div>--}}
+        @include('personal.access-token')
         <br> <br>
     </div>
 @stop

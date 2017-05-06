@@ -77,7 +77,8 @@ class PersonalController extends Controller{
 	}
 
 	public function getToken(){
-		$this->user->createToken('API')->accessToken; // todo что за имя нужно?
+		$this->user->tokens()->delete(); // удаляем старые токены
+		$this->user->createToken($this->user->id.' Access Token')->accessToken; // создаём новый токен
 		return back();
 	}
 }
