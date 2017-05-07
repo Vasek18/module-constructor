@@ -39,7 +39,7 @@ class BitrixController extends Controller{
 		$bitrix = new Bitrix;
 
 		// смотрим не занят ли код пользователя
-		if (User::where('bitrix_partner_code',trim($request->PARTNER_CODE))->count()){
+		if (User::where('bitrix_partner_code',trim($request->PARTNER_CODE))->where('id', '!=', $this->user->id)->count()){
 			return back()->withErrors([trans('bitrix_create.this_bitrix_partner_code_is_already_taken')]);
 		}
 

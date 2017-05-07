@@ -22,7 +22,7 @@
     <tr>
         <th>{{ trans('bitrix_iblocks_form.param_code') }}:</th>
         <td>
-            @if (isset($iblock))
+            @if (isset($iblock) && isset($iblock->params->CODE) && $iblock->params->CODE)
                 <input type="hidden"
                        name="CODE"
                        value="{{isset($iblock)?$iblock->params->CODE:''}}">
@@ -34,7 +34,7 @@
                        name="CODE"
                        size="50"
                        maxlength="50"
-                       value="{{isset($iblock)?$iblock->params->CODE:''}}"
+                       value="{{ (isset($iblock) && isset($iblock->params->CODE)) ? $iblock->params->CODE:''}}"
                        data-translit_from="NAME"
                        required>
             @endif
@@ -59,7 +59,7 @@
             <input type="text"
                    class="form-control"
                    name="SORT"
-                   value="{{isset($iblock)?$iblock->params->SORT:'500'}}">
+                   value="{{ (isset($iblock) && isset($iblock->params->SORT) && $iblock->params->SORT) ? $iblock->params->SORT:'500'}}">
         </td>
     </tr>
     <tr>
@@ -69,7 +69,7 @@
                    class="form-control"
                    name="LIST_PAGE_URL"
                    id="LIST_PAGE_URL"
-                   value="{{isset($iblock)?$iblock->params->LIST_PAGE_URL:'#SITE_DIR#/'.$module->code.'/index.php?ID=#IBLOCK_ID#'}}">
+                   value="{{ (isset($iblock) && isset($iblock->params->LIST_PAGE_URL)) ?$iblock->params->LIST_PAGE_URL:'#SITE_DIR#/'.$module->code.'/index.php?ID=#IBLOCK_ID#'}}">
         </td>
     </tr>
     <tr>
@@ -79,7 +79,7 @@
                    class="form-control"
                    name="SECTION_PAGE_URL"
                    id="SECTION_PAGE_URL"
-                   value="{{isset($iblock)?$iblock->params->SECTION_PAGE_URL:'#SITE_DIR#/'.$module->code.'/list.php?SECTION_ID=#SECTION_ID#'}}">
+                   value="{{ (isset($iblock) && isset($iblock->params->SECTION_PAGE_URL)) ?$iblock->params->SECTION_PAGE_URL:'#SITE_DIR#/'.$module->code.'/list.php?SECTION_ID=#SECTION_ID#'}}">
         </td>
     </tr>
     <tr>
@@ -89,7 +89,7 @@
                    class="form-control"
                    name="DETAIL_PAGE_URL"
                    id="DETAIL_PAGE_URL"
-                   value="{{isset($iblock)?$iblock->params->DETAIL_PAGE_URL:'#SITE_DIR#/'.$module->code.'/detail.php?ID=#ELEMENT_ID#'}}">
+                   value="{{ (isset($iblock) && isset($iblock->params->DETAIL_PAGE_URL)) ?$iblock->params->DETAIL_PAGE_URL:'#SITE_DIR#/'.$module->code.'/detail.php?ID=#ELEMENT_ID#'}}">
         </td>
     </tr>
     <tr>
@@ -100,7 +100,7 @@
                    class="form-control"
                    name="CANONICAL_PAGE_URL"
                    id="CANONICAL_PAGE_URL"
-                   value="{{isset($iblock)?$iblock->params->CANONICAL_PAGE_URL:''}}">
+                   value="{{ (isset($iblock) && isset($iblock->params->CANONICAL_PAGE_URL)) ?$iblock->params->CANONICAL_PAGE_URL:''}}">
         </td>
     </tr>
     <tr>

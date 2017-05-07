@@ -707,6 +707,18 @@ class BitrixInfoblockFormInterfaceTest extends BitrixTestCase{
 	//
 	// 	$this->visit('/my-bitrix/'.$this->module->id.'/data_storage/')->dontSee('bitrix');
 	// }
+
+	/** @test */
+	function it_imports_iblock_that_have_only_name_from_xml(){
+		$file = public_path().'/for_tests/test_iblock_with_only_name.xml';
+		$this->visit('/my-bitrix/'.$this->module->id.$this->path);
+		$this->attach($file, 'file');
+		$this->press('import');
+
+		$iblock = BitrixInfoblocks::first();
+
+		$this->seeInField('NAME', $iblock->name);
+	}
 }
 
 ?>

@@ -63,76 +63,94 @@ class BitrixDataStorageController extends Controller{
 
 		$arr = Parser::xml($file);
 
-		$iblock = BitrixInfoblocks::updateOrCreate(
-			[
-				'module_id' => $module->id,
-				'name'      => $arr['Каталог']['Наименование'],
-			],
-			[
-				'module_id' => $module->id,
-				'name'      => $arr['Каталог']['Наименование'],
-				'code'      => $arr['Каталог']['БитриксКод'],
-				'params'    => json_encode([
-					'NAME'               => $arr['Каталог']['Наименование'],
-					'CODE'               => $arr['Каталог']['БитриксКод'],
-					'SORT'               => $arr['Каталог']['БитриксСортировка'],
-					'LIST_PAGE_URL'      => $arr['Каталог']['БитриксURLСписок'],
-					'SECTION_PAGE_URL'   => $arr['Каталог']['БитриксURLРаздел'],
-					'DETAIL_PAGE_URL'    => $arr['Каталог']['БитриксURLДеталь'],
-					'CANONICAL_PAGE_URL' => $arr['Каталог']['БитриксURLКанонический'],
-				])
-			]);
+		if (isset($arr['Каталог'])){
+			$iblock = BitrixInfoblocks::updateOrCreate(
+				[
+					'module_id' => $module->id,
+					'name'      => $arr['Каталог']['Наименование'],
+				],
+				[
+					'module_id' => $module->id,
+					'name'      => $arr['Каталог']['Наименование'],
+					'code'      => $arr['Каталог']['БитриксКод'],
+					'params'    => json_encode([
+						'NAME'               => $arr['Каталог']['Наименование'],
+						'CODE'               => $arr['Каталог']['БитриксКод'],
+						'SORT'               => $arr['Каталог']['БитриксСортировка'],
+						'LIST_PAGE_URL'      => $arr['Каталог']['БитриксURLСписок'],
+						'SECTION_PAGE_URL'   => $arr['Каталог']['БитриксURLРаздел'],
+						'DETAIL_PAGE_URL'    => $arr['Каталог']['БитриксURLДеталь'],
+						'CANONICAL_PAGE_URL' => $arr['Каталог']['БитриксURLКанонический'],
+					])
+				]);
+		}else{
+			$iblock = BitrixInfoblocks::updateOrCreate(
+				[
+					'module_id' => $module->id,
+					'name'      => $arr['Классификатор']['Наименование'],
+				],
+				[
+					'module_id' => $module->id,
+					'name'      => $arr['Классификатор']['Наименование'],
+					'params'    => json_encode([
+						'NAME' => $arr['Классификатор']['Наименование'],
+					])
+				]);
+		}
 
 		$tempPropArr = [];
 		$vals = [];
-		foreach ($arr["Классификатор"]["Свойства"]['Свойство'] as $propArr){
-			if (isset($propArr["БитриксТипСвойства"])){ // считаем, что свойство от прочих элементов отличает именно это поле
-				$addPropArr = [
-					'iblock_id'   => $iblock->id,
-					'code'        => $propArr['БитриксКод'],
-					'name'        => $propArr['Наименование'],
-					'sort'        => $propArr["БитриксСортировка"],
-					'type'        => $propArr["БитриксТипСвойства"],
-					'multiple'    => ($propArr["Множественное"] == 'true') ? true : false,
-					'is_required' => ($propArr["БитриксОбязательное"] == 'true') ? true : false,
-				];
-				if (isset($propArr["БитриксЗначениеПоУмолчанию"]) && unserialize($propArr["БитриксЗначениеПоУмолчанию"])){
-					$addPropArr["dop_params"]["DEFAULT_VALUE"] = unserialize($propArr["БитриксЗначениеПоУмолчанию"]);
-				}
-				if (isset($propArr["БитриксТипСписка"]) && $propArr["БитриксТипСписка"] != 'L'){
-					$addPropArr["dop_params"]["LIST_TYPE"] = $propArr["БитриксТипСписка"];
-				}
-				$prop = BitrixIblocksProps::updateOrCreate(
-					[
-						'iblock_id' => $iblock->id,
-						'code'      => $propArr['БитриксКод']
-					],
-					$addPropArr
-				);
 
-				if (isset($propArr['ВариантыЗначений']['Вариант']['Ид'])){ // если значение только одно
-					$propArr['ВариантыЗначений']['Вариант'] = [$propArr['ВариантыЗначений']['Вариант']];
-				}
-				if (isset($propArr['ВариантыЗначений']['Вариант'])){
-					foreach ($propArr['ВариантыЗначений']['Вариант'] as $valArr){
-						if (isset($valArr['Ид'])){
-							$vals[$valArr['Ид']] = BitrixIblocksPropsVals::updateOrCreate(
-								[
-									'prop_id' => $prop->id,
-									'value'   => $valArr['Значение']
-								],
-								[
-									'prop_id' => $prop->id,
-									'value'   => $valArr['Значение'],
-									'sort'    => $valArr["Сортировка"],
-									'default' => ($valArr["ПоУмолчанию"] == 'true') ? true : false
-								]
-							);
+		if (isset($arr["Классификатор"]["Свойства"]) && isset($arr["Классификатор"]["Свойства"]['Свойство'])){
+			foreach ($arr["Классификатор"]["Свойства"]['Свойство'] as $propArr){
+				if (isset($propArr["БитриксТипСвойства"])){ // считаем, что свойство от прочих элементов отличает именно это поле
+					$addPropArr = [
+						'iblock_id'   => $iblock->id,
+						'code'        => $propArr['БитриксКод'],
+						'name'        => $propArr['Наименование'],
+						'sort'        => $propArr["БитриксСортировка"],
+						'type'        => $propArr["БитриксТипСвойства"],
+						'multiple'    => ($propArr["Множественное"] == 'true') ? true : false,
+						'is_required' => ($propArr["БитриксОбязательное"] == 'true') ? true : false,
+					];
+					if (isset($propArr["БитриксЗначениеПоУмолчанию"]) && unserialize($propArr["БитриксЗначениеПоУмолчанию"])){
+						$addPropArr["dop_params"]["DEFAULT_VALUE"] = unserialize($propArr["БитриксЗначениеПоУмолчанию"]);
+					}
+					if (isset($propArr["БитриксТипСписка"]) && $propArr["БитриксТипСписка"] != 'L'){
+						$addPropArr["dop_params"]["LIST_TYPE"] = $propArr["БитриксТипСписка"];
+					}
+					$prop = BitrixIblocksProps::updateOrCreate(
+						[
+							'iblock_id' => $iblock->id,
+							'code'      => $propArr['БитриксКод']
+						],
+						$addPropArr
+					);
+
+					if (isset($propArr['ВариантыЗначений']['Вариант']['Ид'])){ // если значение только одно
+						$propArr['ВариантыЗначений']['Вариант'] = [$propArr['ВариантыЗначений']['Вариант']];
+					}
+					if (isset($propArr['ВариантыЗначений']['Вариант'])){
+						foreach ($propArr['ВариантыЗначений']['Вариант'] as $valArr){
+							if (isset($valArr['Ид'])){
+								$vals[$valArr['Ид']] = BitrixIblocksPropsVals::updateOrCreate(
+									[
+										'prop_id' => $prop->id,
+										'value'   => $valArr['Значение']
+									],
+									[
+										'prop_id' => $prop->id,
+										'value'   => $valArr['Значение'],
+										'sort'    => $valArr["Сортировка"],
+										'default' => ($valArr["ПоУмолчанию"] == 'true') ? true : false
+									]
+								);
+							}
 						}
 					}
-				}
 
-				$tempPropArr[$propArr['Ид']] = $propArr['БитриксКод'];
+					$tempPropArr[$propArr['Ид']] = $propArr['БитриксКод'];
+				}
 			}
 		}
 
