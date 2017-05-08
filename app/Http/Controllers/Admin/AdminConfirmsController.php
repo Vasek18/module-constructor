@@ -64,6 +64,16 @@ class AdminConfirmsController extends Controller{
 
 	// todo
 	public function clearEventsFormDuplicates(Request $request){
+		$events = BitrixCoreEvents::get();
+		foreach ($events as $event){
+			if (!BitrixCoreEvents::where('id', $event->id)->count()){
+				continue;
+			}
+			$duplicates = BitrixCoreEvents::where('code', $event->code)->where('id', '!=', $event->id)->where('module_id', $event->module_id)->get();
+			foreach ($duplicates as $duplicate){
+				$duplicate->delete();
+			}
+		}
 
 		return back();
 	}
