@@ -3,6 +3,13 @@
 @section("page")
     <h1>На утверждение</h1>
     <h2>Модули</h2>
+
+    <div class="text-right">
+        <a href="{{ action('Admin\AdminConfirmsController@clearModulesFormDuplicates') }}"
+           class="btn btn-danger">Удалить дубляжи
+        </a>
+    </div>
+    <br>
     <table class="table table-bordered">
         <tr>
             <th>Название</th>
@@ -30,6 +37,13 @@
         @endforeach
     </table>
     <h2>События</h2>
+
+    <div class="text-right">
+        <a href="{{ action('Admin\AdminConfirmsController@clearEventsFormDuplicates') }}"
+           class="btn btn-danger">Удалить дубляжи
+        </a>
+    </div>
+    <br>
     <table class="table table-bordered">
         <tr>
             <th>Модуль</th>

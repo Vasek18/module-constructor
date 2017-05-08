@@ -21,4 +21,8 @@ class BitrixCoreModules extends Model{
 	public function scopeUnapproved($query){
 		return $query->where('approved', false);
 	}
+
+	public function events(){
+		return $this->hasMany('App\Models\Modules\Bitrix\BitrixCoreEvents', 'module_id');
+	}
 }

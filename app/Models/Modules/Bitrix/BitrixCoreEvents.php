@@ -36,4 +36,8 @@ class BitrixCoreEvents extends Model{
 	public function scopeMarked($query){
 		return $query->where('is_bad', true);
 	}
+
+	public function ownedBy(BitrixCoreModules $module){
+		return $this->module_id == $module->id;
+	}
 }

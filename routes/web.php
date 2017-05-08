@@ -264,6 +264,8 @@ Route::group(['prefix' => 'oko', 'middleware' => 'admin'], function (){
 		Route::get('{module}/delete_module', ['uses' => 'Admin\AdminConfirmsController@deleteModule']);
 		Route::get('{event}/approve_event', ['uses' => 'Admin\AdminConfirmsController@approveEvent']);
 		Route::get('{event}/delete_event', ['uses' => 'Admin\AdminConfirmsController@deleteEvent']);
+		Route::get('clear_modules_form_duplicates', ['uses' => 'Admin\AdminConfirmsController@clearModulesFormDuplicates']);
+		Route::get('clear_events_form_duplicates', ['uses' => 'Admin\AdminConfirmsController@clearEventsFormDuplicates']);
 	});
 
 	// шаблоны class.php компонентов Битрикса

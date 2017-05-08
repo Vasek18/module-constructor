@@ -29,6 +29,7 @@ class AdminConfirmsController extends Controller{
 
 		return back();
 	}
+
 	public function approveEvent(BitrixCoreEvents $event, Request $request){
 		$event->approve();
 
@@ -37,6 +38,32 @@ class AdminConfirmsController extends Controller{
 
 	public function deleteEvent(BitrixCoreEvents $event, Request $request){
 		$event->delete();
+
+		return back();
+	}
+
+	// todo написать тест
+	public function clearModulesFormDuplicates(Request $request){
+		$modules = BitrixCoreModules::get();
+		foreach ($modules as $module){
+			if (!BitrixCoreModules::where('id', $module->id)->count()){
+				continue;
+			}
+			$duplicates = BitrixCoreModules::where('code', $module->code)->where('id', '!=', $module->id)->get();
+			foreach ($duplicates as $duplicate){
+				// сначала удаляем события
+				$duplicate->events()->delete();
+
+				// а затем и сам модуль
+				$duplicate->delete();
+			}
+		}
+
+		return back();
+	}
+
+	// todo
+	public function clearEventsFormDuplicates(Request $request){
 
 		return back();
 	}
