@@ -62,7 +62,7 @@ class AdminConfirmsController extends Controller{
 		return back();
 	}
 
-	// todo
+	// todo написать тест
 	public function clearEventsFormDuplicates(Request $request){
 		$events = BitrixCoreEvents::get();
 		foreach ($events as $event){
