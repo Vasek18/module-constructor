@@ -13,7 +13,8 @@
     "laravelcollective/html": "^5.2.0",
     "chumper/zipper": "^0.6.1",
     "Nathanmac/Parser": "4.*",
-    "laravel/passport":  "^0.1.0"
+    "laravel/passport":  "~1.0",
+    "symfony/psr-http-message-bridge": "^0.2.0"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",
