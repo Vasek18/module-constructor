@@ -63,15 +63,15 @@
                                            value="{{ old('company_name') }}">
                                 </div>
                             </div>--}}
-                           {{-- <div class="form-group">
-                                <label class="col-md-4 control-label">{{ trans('reg.company_site') }}</label>
-                                <div class="col-md-6">
-                                    <input type="url"
-                                           class="form-control"
-                                           name="site"
-                                           value="{{ old('site') }}">
-                                </div>
-                            </div>--}}
+                            {{-- <div class="form-group">
+                                 <label class="col-md-4 control-label">{{ trans('reg.company_site') }}</label>
+                                 <div class="col-md-6">
+                                     <input type="url"
+                                            class="form-control"
+                                            name="site"
+                                            value="{{ old('site') }}">
+                                 </div>
+                             </div>--}}
                             <div class="form-group">
                                 <label class="col-md-4 control-label">{{ trans('reg.password') }}</label>
                                 <div class="col-md-6">
@@ -87,6 +87,21 @@
                                     <input type="password"
                                            class="form-control"
                                            name="password_confirmation">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="checkbox">
+                                    <div class="col-md-6 col-md-offset-4">
+                                        <label>
+                                            <input type="checkbox"
+                                                   name="personal_info_agreement"
+                                                   id="personal_info_agreement"
+                                                   checked
+                                                   required>
+                                            <a href="{{ action('HtmlPagesController@personal_info_agreement') }}"
+                                               target="_blank">{{ trans('reg.i_agree_with_personal_info_agreement') }}</a>
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">

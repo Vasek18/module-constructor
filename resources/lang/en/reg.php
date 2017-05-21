@@ -9,6 +9,7 @@ return [
 	'company_name'  => 'Company name',
 	'password'      => 'Password',
 	'password_conf' => 'Password confirmation',
+	'i_agree_with_personal_info_agreement' => 'I accept the personal info agreement',
 	'submit'        => 'Sign up',
 
 	'you_ve_registered' => 'You have been registered',

@@ -1,5 +1,7 @@
 <?php
 
+// todo тест на неприятие соглашения об обработке данных
+
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Mail;
 

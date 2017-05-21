@@ -20,7 +20,6 @@ Route::post('password/reset', ['as' => 'password.reset.post', 'uses' => 'Auth\Re
 // Личный кабинет
 Route::group(['prefix' => 'personal'], function (){
 	Route::get('', ['as' => 'personal', 'uses' => 'PersonalController@index']);
-	// страница авторизации
 
 	Route::group(['prefix' => 'oplata'], function (){
 		Route::get('', 'PersonalController@oplata');
@@ -302,6 +301,7 @@ Route::get('oplata', ['uses' => 'HtmlPagesController@oplata']);
 Route::get('does_it_charge', ['uses' => 'HtmlPagesController@does_it_charge']);
 Route::get('contacts', ['uses' => 'HtmlPagesController@contacts']);
 Route::get('requisites', ['uses' => 'HtmlPagesController@requisites']);
+Route::get('personal-info-agreement', ['uses' => 'HtmlPagesController@personal_info_agreement']);
 
 // яндекс.касса
 Route::group(['prefix' => 'yandex_kassa'], function (){

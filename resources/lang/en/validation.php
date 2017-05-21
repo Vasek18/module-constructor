@@ -90,50 +90,53 @@ return [
 	*/
 
 	'custom' => [
-		'NAME'           => [
+		'NAME'                    => [
 			'required' => 'The "Name" field is required',
 		],
-		'name'           => [
+		'name'                    => [
 			'required' => 'The "Name" field is required',
 		],
-		'CODE'           => [
+		'CODE'                    => [
 			'required' => 'The "Code" field is required',
 			'unique'   => 'This code is already taken',
 		],
-		'code'           => [
+		'code'                    => [
 			'required' => 'The "Code" field is required',
 			'unique'   => 'This code is already taken',
 		],
-		'MODULE_NAME'    => [
+		'MODULE_NAME'             => [
 			'required' => 'The "Module name" field is required',
 		],
-		'MODULE_CODE'    => [
+		'MODULE_CODE'             => [
 			'required' => 'The "Module code" field is required',
 			'unique'   => 'Module with such code already exists among yours',
 		],
-		'MODULE_VERSION' => [
+		'MODULE_VERSION'          => [
 			'required' => 'The "Module version" field is required',
 		],
-		'PARTNER_NAME'   => [
+		'PARTNER_NAME'            => [
 			'required' => 'The "Partner name" field is required',
 		],
-		'PARTNER_URI'    => [
+		'PARTNER_URI'             => [
 			'required' => 'The "Partner uri" field is required',
 		],
-		'PARTNER_CODE'   => [
+		'PARTNER_CODE'            => [
 			'required' => 'The "Partner code" field is required',
 		],
-		'password'       => [
+		'password'                => [
 			'required'  => 'The password field is required',
 			'min'       => 'The password must be at least :min characters',
 			'confirmed' => 'The password confirmation does not match',
 		],
-		'email'          => [
+		'email'                   => [
 			'required' => 'The email field is required',
 			'unique'   => 'The email has already been taken',
 		],
-		'first_name'     => [
+		'first_name'              => [
 			'required' => 'The first name field is required',
+		],
+		'personal_info_agreement' => [
+			'required' => 'To continue, you must accept the terms of data processing',
 		],
 	],
 
