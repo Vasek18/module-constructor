@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Внимание! Был измененён файл C:\xampp\htdocs\constructor.local\vendor\laravel\passport\src\PassportServiceProvider.php
+ * P100Y заменён на P1Y
+ */
+
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\DB;
@@ -44,10 +49,32 @@ class ApiTest extends TestCase{
 	}
 
 	/** @test */
-	// todo не работает
 	public function you_can_auth_with_token(){
 		$this->json('GET', '/api/user', [], $this->headers);
 		$this->see($this->user->first_name);
+	}
+
+	/** @test */
+	public function user_can_see_his_modules(){
+		$module = factory(App\Models\Modules\Bitrix\Bitrix::class)->create(['user_id' => $this->user->id]);
+		$module2 = factory(App\Models\Modules\Bitrix\Bitrix::class)->create(['user_id' => $this->user->id]);
+
+		$this->json('GET', '/api/modules', [], $this->headers);
+
+		$this->seeJsonEquals([
+			[
+				'name'         => $module->name,
+				'description'  => $module->description,
+				'code'         => $module->code,
+				'PARTNER_CODE' => $module->PARTNER_CODE,
+			],
+			[
+				'name'         => $module2->name,
+				'description'  => $module2->description,
+				'code'         => $module2->code,
+				'PARTNER_CODE' => $module2->PARTNER_CODE,
+			]
+		]);
 	}
 }
 

@@ -1,7 +1,4 @@
 <?php
 
-use Illuminate\Http\Request;
-
-Route::get('user', function (Request $request){
-	return $request->user();
-});
+Route::get('user', ['uses' => 'Api\ApiController@getUserInfo']);
+Route::get('modules', ['uses' => 'Api\ApiController@getModulesList']);
