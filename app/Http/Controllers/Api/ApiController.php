@@ -27,7 +27,11 @@ class ApiController extends Controller{
 				$moduleArr['components'] = BitrixComponent::where('module_id', $module->id)->get(['name', 'code', 'namespace']);
 			}
 			if (BitrixInfoblocks::where('module_id', $module->id)->count()){
-				$moduleArr['iblocks'] = BitrixInfoblocks::where('module_id', $module->id)->get(['name', 'code']);
+				$iblocks = BitrixInfoblocks::where('module_id', $module->id)->get(['name', 'code']);
+				foreach ($iblocks as $iblock){
+					$iblock['type'] = $module->class_name.'_iblock_type';
+					$moduleArr['iblocks'][] = $iblock;
+				}
 			}
 
 			$response[] = $moduleArr;

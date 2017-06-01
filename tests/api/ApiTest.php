@@ -102,6 +102,7 @@ class ApiTest extends TestCase{
 					[
 						'name' => $iblock->name,
 						'code' => $iblock->code,
+						'type' => $module->class_name.'_iblock_type',
 					]
 				]
 			]
