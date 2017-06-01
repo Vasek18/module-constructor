@@ -66,16 +66,44 @@ class ApiTest extends TestCase{
 				'name'         => $module->name,
 				'description'  => $module->description,
 				'code'         => $module->code,
-				'PARTNER_CODE' => $module->PARTNER_CODE,
+				'partner_code' => $module->PARTNER_CODE,
 			],
 			[
 				'name'         => $module2->name,
 				'description'  => $module2->description,
 				'code'         => $module2->code,
-				'PARTNER_CODE' => $module2->PARTNER_CODE,
+				'partner_code' => $module2->PARTNER_CODE,
+			]
+		]);
+	}
+
+	/** @test */
+	public function with_modules_user_get_iblocks_n_components(){
+		$module = factory(App\Models\Modules\Bitrix\Bitrix::class)->create(['user_id' => $this->user->id]);
+		$component = factory(App\Models\Modules\Bitrix\BitrixComponent::class)->create(['module_id' => $module->id]);
+		$iblock = factory(App\Models\Modules\Bitrix\BitrixInfoblocks::class)->create(['module_id' => $module->id]);
+
+		$this->json('GET', '/api/modules', [], $this->headers);
+
+		$this->seeJsonEquals([
+			[
+				'name'         => $module->name,
+				'description'  => $module->description,
+				'code'         => $module->code,
+				'partner_code' => $module->PARTNER_CODE,
+				'components'   => [
+					[
+						'name' => $component->name,
+						'code' => $component->code,
+					]
+				],
+				'iblocks'      => [
+					[
+						'name' => $iblock->name,
+						'code' => $iblock->code,
+					]
+				]
 			]
 		]);
 	}
 }
-
-?>

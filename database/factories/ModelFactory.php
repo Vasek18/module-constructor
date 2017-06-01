@@ -29,14 +29,39 @@ $factory->define(App\Models\Modules\Bitrix\Bitrix::class, function (Faker\Genera
 	$user = factory(App\Models\User::class)->create();
 
 	return [
-		'name'        => $faker->word,
-		'code'        => $faker->word,
-		'description' => $faker->sentence(7),
-		'PARTNER_NAME'       => $user->first_name,
-		'PARTNER_URI'        => $user->site,
-		'PARTNER_CODE'       => $user->bitrix_partner_code,
-		'user_id'            => $user->id,
-		'version'            => "0.0.1",
-		'download_counter'   => 0,
+		'name'             => $faker->word,
+		'code'             => $faker->word,
+		'description'      => $faker->sentence(7),
+		'PARTNER_NAME'     => $user->first_name,
+		'PARTNER_URI'      => $user->site,
+		'PARTNER_CODE'     => $user->bitrix_partner_code,
+		'user_id'          => $user->id,
+		'version'          => "0.0.1",
+		'download_counter' => 0,
+	];
+});
+
+$factory->define(App\Models\Modules\Bitrix\BitrixComponent::class, function (Faker\Generator $faker){
+	$module = factory(App\Models\Modules\Bitrix\Bitrix::class)->create();
+
+	return [
+		'module_id'     => $module->id,
+		'name'          => $faker->word,
+		'code'          => $faker->word,
+		'uploaded_path' => '',
+		'sort'          => 500,
+		'icon_path'     => '',
+		'desc'          => $faker->text(),
+		'steps'         => '',
+		'namespace'     => $module->full_id,
+	];
+});
+$factory->define(App\Models\Modules\Bitrix\BitrixInfoblocks::class, function (Faker\Generator $faker){
+	$module = factory(App\Models\Modules\Bitrix\Bitrix::class)->create();
+
+	return [
+		'module_id' => $module->id,
+		'name'      => $faker->word,
+		'code'      => $faker->word,
 	];
 });
