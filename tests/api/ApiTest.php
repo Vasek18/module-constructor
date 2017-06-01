@@ -93,8 +93,9 @@ class ApiTest extends TestCase{
 				'partner_code' => $module->PARTNER_CODE,
 				'components'   => [
 					[
-						'name' => $component->name,
-						'code' => $component->code,
+						'name'      => $component->name,
+						'code'      => $component->code,
+						'namespace' => $component->namespace,
 					]
 				],
 				'iblocks'      => [

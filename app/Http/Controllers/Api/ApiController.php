@@ -24,7 +24,7 @@ class ApiController extends Controller{
 				'partner_code' => $module['PARTNER_CODE'],
 			];
 			if (BitrixComponent::where('module_id', $module->id)->count()){
-				$moduleArr['components'] = BitrixComponent::where('module_id', $module->id)->get(['name', 'code']);
+				$moduleArr['components'] = BitrixComponent::where('module_id', $module->id)->get(['name', 'code', 'namespace']);
 			}
 			if (BitrixInfoblocks::where('module_id', $module->id)->count()){
 				$moduleArr['iblocks'] = BitrixInfoblocks::where('module_id', $module->id)->get(['name', 'code']);
