@@ -108,4 +108,10 @@ class ApiTest extends TestCase{
 			]
 		]);
 	}
+
+	/** @test */ // todo сделать
+	public function it_can_import_iblock_to_module(){
+		$this->json('POST', '/api/modules/test/import/iblock', [], $this->headers);
+		dd($this->response->getContent());
+	}
 }

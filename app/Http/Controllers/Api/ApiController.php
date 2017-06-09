@@ -39,4 +39,8 @@ class ApiController extends Controller{
 
 		return $response;
 	}
+
+	public function importIblock($module, Request $request){
+		return ['success' => true];
+	}
 }
