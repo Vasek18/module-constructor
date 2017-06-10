@@ -972,4 +972,21 @@ class ApiTest extends TestCase{
 		// не забываем удалить папку с модулем
 		$module->deleteFolder();
 	}
+
+	/** @test */
+	public function it_can_import_component_to_module(){
+		$module = factory(App\Models\Modules\Bitrix\Bitrix::class)->create(['user_id' => $this->user->id]);
+		$module = App\Models\Modules\Bitrix\Bitrix::where('id', $module->id)->first();
+		$module->createFolder();
+		$this->json(
+			'POST',
+			'/api/modules/'.$module->PARTNER_CODE.'.'.$module->code.'/import/component',
+			[
+				'namespace' => $module->PARTNER_CODE.'.'.$module->code
+			],
+			$this->headers
+		);
+
+		$this->assertResponseOk();
+	}
 }

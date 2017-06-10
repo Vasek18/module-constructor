@@ -130,4 +130,18 @@ class ApiController extends Controller{
 			],
 		];
 	}
+
+	public function importComponent($moduleFullCode, Request $request){
+		// получаем модуль
+		list($partnerCode, $moduleCode) = explode('.', $moduleFullCode);
+		$module = Bitrix::where('user_id', $request->user()->id)->where('PARTNER_CODE', $partnerCode)->where('code', $moduleCode)->first();
+		if (!$module){
+			return ['error' => 'Not found module'];
+		}
+
+		return [
+			'success' => false,
+			'request' => $request->all()
+		];
+	}
 }
