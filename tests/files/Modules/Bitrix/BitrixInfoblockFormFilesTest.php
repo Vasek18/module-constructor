@@ -33,22 +33,6 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 		}
 	}
 
-	// берёт сразу все свойства и записывает их в массивы, то есть возвращается не массив установки, а массив массивов установки
-	function getIblockPropsCreationFuncCallParamsArray($module){
-		$answer = [];
-		$installationFileContent = file_get_contents($module->getFolder(true).'/install/index.php');
-		$gottenInstallationFuncCode = vFuncParse::parseFromText($installationFileContent, 'createNecessaryIblocks');
-		// dd($installationFileContent);
-
-		preg_match_all('/\$this\-\>createIblockProp\(([^\;]+)\);/is', $gottenInstallationFuncCode, $matches);
-		// dd($matches[1]);
-		foreach ($matches[1] as $gottenInstallationFuncCodePart){
-			$answer[] = vArrParse::parseFromText($gottenInstallationFuncCodePart);
-		}
-
-		return $answer;
-	}
-
 	function getIblockElementsCreationFuncCallParamsArray($module){
 		$answer = [];
 		$installationFileContent = file_get_contents($module->getFolder(true).'/install/index.php');
