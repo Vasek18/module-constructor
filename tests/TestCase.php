@@ -178,7 +178,6 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase{
 		return Storage::disk('user_modules_bitrix');
 	}
 
-
 	// берёт сразу все свойства и записывает их в массивы, то есть возвращается не массив установки, а массив массивов установки
 	function getIblockPropsCreationFuncCallParamsArray($module){
 		$answer = [];
@@ -187,6 +186,21 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase{
 		// dd($installationFileContent);
 
 		preg_match_all('/\$this\-\>createIblockProp\(([^\;]+)\);/is', $gottenInstallationFuncCode, $matches);
+		// dd($matches[1]);
+		foreach ($matches[1] as $gottenInstallationFuncCodePart){
+			$answer[] = vArrParse::parseFromText($gottenInstallationFuncCodePart);
+		}
+
+		return $answer;
+	}
+
+	function getIblockPropsValsCreationFuncCallParamsArray($module){
+		$answer = [];
+		$installationFileContent = file_get_contents($module->getFolder(true).'/install/index.php');
+		$gottenInstallationFuncCode = vFuncParse::parseFromText($installationFileContent, 'createNecessaryIblocks');
+		// dd($installationFileContent);
+
+		preg_match_all('/\$this\-\>createIblockPropVal\(([^\;]+)\);/is', $gottenInstallationFuncCode, $matches);
 		// dd($matches[1]);
 		foreach ($matches[1] as $gottenInstallationFuncCodePart){
 			$answer[] = vArrParse::parseFromText($gottenInstallationFuncCodePart);

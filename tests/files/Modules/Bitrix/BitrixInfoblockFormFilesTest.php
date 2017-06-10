@@ -63,21 +63,6 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 		return $answer;
 	}
 
-	function getIblockPropsValsCreationFuncCallParamsArray($module){
-		$answer = [];
-		$installationFileContent = file_get_contents($module->getFolder(true).'/install/index.php');
-		$gottenInstallationFuncCode = vFuncParse::parseFromText($installationFileContent, 'createNecessaryIblocks');
-		// dd($installationFileContent);
-
-		preg_match_all('/\$this\-\>createIblockPropVal\(([^\;]+)\);/is', $gottenInstallationFuncCode, $matches);
-		// dd($matches[1]);
-		foreach ($matches[1] as $gottenInstallationFuncCodePart){
-			$answer[] = vArrParse::parseFromText($gottenInstallationFuncCodePart);
-		}
-
-		return $answer;
-	}
-
 	/** @test */
 	function at_first_there_is_no_optional_functions(){
 		$installationFileContent = file_get_contents($this->module->getFolder(true).'/install/index.php');

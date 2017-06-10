@@ -6,6 +6,7 @@
  */
 
 use App\Models\Modules\Bitrix\BitrixIblocksProps;
+use App\Models\Modules\Bitrix\BitrixIblocksPropsVals;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\DB;
@@ -871,6 +872,54 @@ class ApiTest extends TestCase{
 							'API_KEY' => '',
 						),
 						'HINT'               => '',
+					),
+					Array(
+						'ID'                 => '224',
+						'TIMESTAMP_X'        => '2017-05-20 23:50:47',
+						'IBLOCK_ID'          => '20',
+						'NAME'               => 'Избранный?',
+						'ACTIVE'             => 'Y',
+						'SORT'               => '600',
+						'CODE'               => 'CHOSEN_ONE',
+						'DEFAULT_VALUE'      => '',
+						'PROPERTY_TYPE'      => 'L',
+						'ROW_COUNT'          => '1',
+						'COL_COUNT'          => '30',
+						'LIST_TYPE'          => 'C',
+						'MULTIPLE'           => 'N',
+						'XML_ID'             => '',
+						'FILE_TYPE'          => '',
+						'MULTIPLE_CNT'       => '5',
+						'TMP_ID'             => '',
+						'LINK_IBLOCK_ID'     => '0',
+						'WITH_DESCRIPTION'   => 'N',
+						'SEARCHABLE'         => 'N',
+						'FILTRABLE'          => 'N',
+						'IS_REQUIRED'        => 'N',
+						'VERSION'            => '1',
+						'USER_TYPE'          => '',
+						'USER_TYPE_SETTINGS' => '',
+						'HINT'               => '',
+						'VALUES'             => Array(
+							Array(
+								'ID'           => '60',
+								'~ID'          => '60',
+								'PROPERTY_ID'  => '224',
+								'~PROPERTY_ID' => '224',
+								'VALUE'        => 'Y',
+								'~VALUE'       => 'Y',
+								'DEF'          => 'N',
+								'~DEF'         => 'N',
+								'SORT'         => '500',
+								'~SORT'        => '500',
+								'XML_ID'       => '49a3fb6c929ec3dca70c46f214626525',
+								'~XML_ID'      => '49a3fb6c929ec3dca70c46f214626525',
+								'TMP_ID'       => '',
+								'~TMP_ID'      => '',
+								'EXTERNAL_ID'  => '49a3fb6c929ec3dca70c46f214626525',
+								'~EXTERNAL_ID' => '49a3fb6c929ec3dca70c46f214626525',
+							)
+						)
 					)
 				)
 			],
@@ -891,26 +940,34 @@ class ApiTest extends TestCase{
 		// проверка в файлах
 		$installFileLangArr = $this->getLangFileArray($module);
 		$gottenInstallationPropsFuncCodeArray = $this->getIblockPropsCreationFuncCallParamsArray($module);
+		$gottenInstallationPropsValsFuncCodeArray = $this->getIblockPropsValsCreationFuncCallParamsArray($module);
 		$prop = BitrixIblocksProps::where('CODE', 'WHERE')->first();
 		$prop1 = BitrixIblocksProps::where('CODE', 'ADRES')->first();
 		$prop2 = BitrixIblocksProps::where('CODE', 'CENTR_REGIONA')->first();
+		$prop3 = BitrixIblocksProps::where('CODE', 'CHOSEN_ONE')->first();
+		$val = BitrixIblocksPropsVals::where('value', 'Y')->first();
 
 		$this->assertEquals($gottenInstallationPropsFuncCodeArray[0]['CODE'], 'WHERE');
 		$this->assertEquals($gottenInstallationPropsFuncCodeArray[1]['CODE'], 'ADRES');
 		$this->assertEquals($gottenInstallationPropsFuncCodeArray[2]['CODE'], 'CENTR_REGIONA');
+		$this->assertEquals($gottenInstallationPropsFuncCodeArray[3]['CODE'], 'CHOSEN_ONE');
 		$this->assertEquals($gottenInstallationPropsFuncCodeArray[0]['SORT'], '400');
 		$this->assertEquals($gottenInstallationPropsFuncCodeArray[1]['SORT'], '500');
 		$this->assertEquals($gottenInstallationPropsFuncCodeArray[2]['SORT'], '2000');
 		$this->assertEquals($gottenInstallationPropsFuncCodeArray[0]['PROPERTY_TYPE'], 'S');
 		$this->assertEquals($gottenInstallationPropsFuncCodeArray[1]['PROPERTY_TYPE'], 'S');
 		$this->assertEquals($gottenInstallationPropsFuncCodeArray[2]['PROPERTY_TYPE'], 'S');
+		$this->assertEquals($gottenInstallationPropsFuncCodeArray[3]['PROPERTY_TYPE'], 'L');
 		$this->assertEquals($gottenInstallationPropsFuncCodeArray[0]['USER_TYPE'], '');
 		$this->assertEquals($gottenInstallationPropsFuncCodeArray[1]['USER_TYPE'], 'HTML');
 		$this->assertEquals($gottenInstallationPropsFuncCodeArray[2]['USER_TYPE'], 'map_google');
+		$this->assertEquals($gottenInstallationPropsFuncCodeArray[3]['USER_TYPE'], '');
 
 		$this->assertEquals($installFileLangArr[$prop->lang_key.'_NAME'], 'Предложный падеж');
 		$this->assertEquals($installFileLangArr[$prop1->lang_key.'_NAME'], 'Адрес');
 		$this->assertEquals($installFileLangArr[$prop2->lang_key.'_NAME'], 'Центр региона');
+		$this->assertEquals($installFileLangArr[$prop3->lang_key.'_NAME'], 'Избранный?');
+		$this->assertEquals($installFileLangArr[$val->lang_key.'_VALUE'], 'Y');
 
 		// не забываем удалить папку с модулем
 		$module->deleteFolder();

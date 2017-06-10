@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\Modules\Bitrix\Bitrix;
 use App\Models\Modules\Bitrix\BitrixComponent;
 use App\Models\Modules\Bitrix\BitrixIblocksProps;
+use App\Models\Modules\Bitrix\BitrixIblocksPropsVals;
 use App\Models\Modules\Bitrix\BitrixInfoblocks;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -96,27 +97,26 @@ class ApiController extends Controller{
 					);
 				}
 
-				// todo варианты свойства
-				// if ($prop->type = 'L' && isset($properties["VALUES"][$c])){
-				// 	foreach ($properties["VALUES"][$c]["VALUE"] as $vc => $valueVal){
-				// 		if ($valueVal){
-				// 			$val = BitrixIblocksPropsVals::updateOrCreate(
-				// 				[
-				// 					'prop_id' => $prop->id,
-				// 					'value'   => $valueVal
-				// 				],
-				// 				[
-				// 					'prop_id' => $prop->id,
-				// 					'value'   => $valueVal,
-				// 					'xml_id'  => $properties["VALUES"][$c]["XML_ID"][$vc],
-				// 					'sort'    => $properties["VALUES"][$c]["SORT"][$vc],
-				// 					'default' => isset($properties["VALUES"][$c]["DEFAULT"]) && $properties["VALUES"][$c]["DEFAULT"] == $vc,
-				// 				]
-				// 			);
-				// 		}
-				// 	}
-				// }
-
+				// варианты свойства
+				if ($prop->type = 'L' && isset($propertyArr["VALUES"])){
+					foreach ($propertyArr["VALUES"] as $vc => $valueArr){
+						if (isset($valueArr['VALUE']) && $valueArr['VALUE']){
+							$val = BitrixIblocksPropsVals::updateOrCreate(
+								[
+									'prop_id' => $prop->id,
+									'value'   => $valueArr['VALUE']
+								],
+								[
+									'prop_id' => $prop->id,
+									'value'   => $valueArr['VALUE'],
+									'xml_id'  => isset($valueArr['XML_ID']) ? $valueArr['XML_ID'] : '',
+									'sort'    => isset($valueArr['SORT']) ? $valueArr['SORT'] : '500',
+									'default' => isset($valueArr['DEF']) ? $valueArr['DEF'] == 'Y' : false,
+								]
+							);
+						}
+					}
+				}
 			}
 		}
 
