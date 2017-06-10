@@ -141,7 +141,9 @@ class ApiController extends Controller{
 
 		return [
 			'success' => false,
-			'request' => $request->all()
+			'request' => $request->all(),
+			'files'   => $request->allFiles(),
+			'file'    => $request->file('archive'),
 		];
 	}
 }
