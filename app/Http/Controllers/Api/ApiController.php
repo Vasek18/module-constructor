@@ -77,22 +77,24 @@ class ApiController extends Controller{
 		if ($request->PROPERTIES){
 			foreach ($request->PROPERTIES as $propertyArr){
 
-				$prop = BitrixIblocksProps::updateOrCreate(
-					[
-						'iblock_id' => $iblock->id,
-						'code'      => $propertyArr["CODE"]
-					],
-					[
-						'iblock_id'   => $iblock->id,
-						'code'        => $propertyArr["CODE"],
-						'name'        => $propertyArr['NAME'],
-						'sort'        => $propertyArr["SORT"],
-						'type'        => $propertyArr["PROPERTY_TYPE"].($propertyArr['USER_TYPE'] ? ':'.$propertyArr['USER_TYPE'] : ''),
-						'multiple'    => $propertyArr["MULTIPLE"] == "Y" ? true : false,
-						'is_required' => $propertyArr["IS_REQUIRED"] == "Y" ? true : false,
-						'dop_params'  => json_encode($propertyArr)
-					]
-				);
+				if (isset($propertyArr["CODE"]) && $propertyArr["CODE"]){
+					$prop = BitrixIblocksProps::updateOrCreate(
+						[
+							'iblock_id' => $iblock->id,
+							'code'      => $propertyArr["CODE"]
+						],
+						[
+							'iblock_id'   => $iblock->id,
+							'code'        => $propertyArr["CODE"],
+							'name'        => $propertyArr['NAME'],
+							'sort'        => isset($propertyArr["SORT"]) ? $propertyArr["SORT"] : '500',
+							'type'        => isset($propertyArr["PROPERTY_TYPE"]) ? $propertyArr["PROPERTY_TYPE"].((isset($propertyArr['USER_TYPE']) && $propertyArr['USER_TYPE']) ? ':'.$propertyArr['USER_TYPE'] : '') : 'S',
+							'multiple'    => (isset($propertyArr["MULTIPLE"]) && $propertyArr["MULTIPLE"] == "Y") ? true : false,
+							'is_required' => (isset($propertyArr["IS_REQUIRED"]) && $propertyArr["IS_REQUIRED"] == "Y") ? true : false,
+							'dop_params'  => json_encode($propertyArr)
+						]
+					);
+				}
 
 				// todo варианты свойства
 				// if ($prop->type = 'L' && isset($properties["VALUES"][$c])){
