@@ -109,9 +109,350 @@ class ApiTest extends TestCase{
 		]);
 	}
 
-	/** @test */ // todo сделать
+	/** @test */
 	public function it_can_import_iblock_to_module(){
-		$this->json('POST', '/api/modules/test/import/iblock', [], $this->headers);
-		dd($this->response->getContent());
+		$module = factory(App\Models\Modules\Bitrix\Bitrix::class)->create(['user_id' => $this->user->id]);
+		$module = App\Models\Modules\Bitrix\Bitrix::where('id', $module->id)->first();
+		$module->createFolder();
+		$this->json(
+			'POST',
+			'/api/modules/'.$module->PARTNER_CODE.'.'.$module->code.'/import/iblock',
+			[
+				'IBLOCK' => Array(
+					'ID'                 => '40',
+					'TIMESTAMP_X'        => '30.10.2016 02:39:21',
+					'IBLOCK_TYPE_ID'     => $module->PARTNER_CODE.'_'.$module->code.'_iblock_type',
+					'LID'                => 's1',
+					'CODE'               => 'test_iblock',
+					'NAME'               => 'Тестовый инфоблок',
+					'ACTIVE'             => 'Y',
+					'SORT'               => '500',
+					'LIST_PAGE_URL'      => '#SITE_DIR#/test_iblock/index.php?ID=#IBLOCK_ID#',
+					'DETAIL_PAGE_URL'    => '#SITE_DIR#/test_iblock/detail.php?ID=#ELEMENT_ID#',
+					'SECTION_PAGE_URL'   => '#SITE_DIR#/test_iblock/list.php?SECTION_ID=#SECTION_ID#',
+					'CANONICAL_PAGE_URL' => '',
+					'PICTURE'            => '',
+					'DESCRIPTION'        => '',
+					'DESCRIPTION_TYPE'   => 'text',
+					'RSS_TTL'            => '24',
+					'RSS_ACTIVE'         => 'Y',
+					'RSS_FILE_ACTIVE'    => 'N',
+					'RSS_FILE_LIMIT'     => '',
+					'RSS_FILE_DAYS'      => '',
+					'RSS_YANDEX_ACTIVE'  => 'N',
+					'XML_ID'             => '',
+					'TMP_ID'             => '',
+					'INDEX_ELEMENT'      => 'N',
+					'INDEX_SECTION'      => 'N',
+					'WORKFLOW'           => 'Y',
+					'BIZPROC'            => 'N',
+					'SECTION_CHOOSER'    => 'L',
+					'LIST_MODE'          => '',
+					'RIGHTS_MODE'        => 'S',
+					'SECTION_PROPERTY'   => '',
+					'PROPERTY_INDEX'     => '',
+					'VERSION'            => '1',
+					'LAST_CONV_ELEMENT'  => '0',
+					'SOCNET_GROUP_ID'    => '',
+					'EDIT_FILE_BEFORE'   => '',
+					'EDIT_FILE_AFTER'    => '',
+					'SECTIONS_NAME'      => 'Разделы',
+					'SECTION_NAME'       => 'Раздел',
+					'ELEMENTS_NAME'      => 'Элементы',
+					'ELEMENT_NAME'       => 'Элемент',
+					'ELEMENT_ADD'        => 'Добавить элемент',
+					'ELEMENT_EDIT'       => 'Изменить элемент',
+					'ELEMENT_DELETE'     => 'Удалить элемент',
+					'SECTION_ADD'        => 'Добавить раздел',
+					'SECTION_EDIT'       => 'Изменить раздел',
+					'SECTION_DELETE'     => 'Удалить раздел',
+					'FIELDS'             => Array(
+						'IBLOCK_SECTION'                        => Array(
+							'NAME'          => 'Привязка к разделам',
+							'IS_REQUIRED'   => 'N',
+							'DEFAULT_VALUE' => Array(
+								'KEEP_IBLOCK_SECTION_ID' => 'N'
+							),
+						),
+						'ACTIVE'                                => Array(
+							'NAME'          => 'Активность',
+							'IS_REQUIRED'   => 'Y',
+							'DEFAULT_VALUE' => 'Y',
+						),
+						'ACTIVE_FROM'                           => Array(
+							'NAME'          => 'Начало активности',
+							'IS_REQUIRED'   => 'N',
+							'DEFAULT_VALUE' => '',
+						),
+						'ACTIVE_TO'                             => Array(
+							'NAME'          => 'Окончание активности',
+							'IS_REQUIRED'   => 'N',
+							'DEFAULT_VALUE' => '',
+						),
+						'SORT'                                  => Array(
+							'NAME'          => 'Сортировка',
+							'IS_REQUIRED'   => 'N',
+							'DEFAULT_VALUE' => '0',
+						),
+						'NAME'                                  => Array(
+							'NAME'          => 'Название',
+							'IS_REQUIRED'   => 'Y',
+							'DEFAULT_VALUE' => '',
+						),
+						'PREVIEW_PICTURE'                       => Array(
+							'NAME'          => 'Картинка для анонса',
+							'IS_REQUIRED'   => 'N',
+							'DEFAULT_VALUE' => Array(
+								'FROM_DETAIL'             => 'N',
+								'SCALE'                   => 'N',
+								'WIDTH'                   => '',
+								'HEIGHT'                  => '',
+								'IGNORE_ERRORS'           => 'N',
+								'METHOD'                  => '',
+								'COMPRESSION'             => '',
+								'DELETE_WITH_DETAIL'      => 'N',
+								'UPDATE_WITH_DETAIL'      => 'N',
+								'USE_WATERMARK_TEXT'      => 'N',
+								'WATERMARK_TEXT'          => '',
+								'WATERMARK_TEXT_FONT'     => '',
+								'WATERMARK_TEXT_COLOR'    => '',
+								'WATERMARK_TEXT_SIZE'     => '',
+								'WATERMARK_TEXT_POSITION' => 'tl',
+								'USE_WATERMARK_FILE'      => 'N',
+								'WATERMARK_FILE'          => '',
+								'WATERMARK_FILE_ALPHA'    => '',
+								'WATERMARK_FILE_POSITION' => 'tl',
+								'WATERMARK_FILE_ORDER'    => '',
+							),
+						),
+						'PREVIEW_TEXT_TYPE'                     => Array(
+							'NAME'          => 'Тип описания для анонса',
+							'IS_REQUIRED'   => 'Y',
+							'DEFAULT_VALUE' => 'text',
+						),
+						'PREVIEW_TEXT'                          => Array(
+							'NAME'          => 'Описание для анонса',
+							'IS_REQUIRED'   => 'N',
+							'DEFAULT_VALUE' => '',
+						),
+						'DETAIL_PICTURE'                        => Array(
+							'NAME'          => 'Детальная картинка',
+							'IS_REQUIRED'   => 'N',
+							'DEFAULT_VALUE' => Array(
+								'SCALE'                   => 'N',
+								'WIDTH'                   => '',
+								'HEIGHT'                  => '',
+								'IGNORE_ERRORS'           => 'N',
+								'METHOD'                  => '',
+								'COMPRESSION'             => '',
+								'USE_WATERMARK_TEXT'      => 'N',
+								'WATERMARK_TEXT'          => '',
+								'WATERMARK_TEXT_FONT'     => '',
+								'WATERMARK_TEXT_COLOR'    => '',
+								'WATERMARK_TEXT_SIZE'     => '',
+								'WATERMARK_TEXT_POSITION' => 'tl',
+								'USE_WATERMARK_FILE'      => 'N',
+								'WATERMARK_FILE'          => '',
+								'WATERMARK_FILE_ALPHA'    => '',
+								'WATERMARK_FILE_POSITION' => 'tl',
+								'WATERMARK_FILE_ORDER'    => '',
+							),
+						),
+						'DETAIL_TEXT_TYPE'                      => Array(
+							'NAME'          => 'Тип детального описания',
+							'IS_REQUIRED'   => 'Y',
+							'DEFAULT_VALUE' => 'text',
+						),
+						'DETAIL_TEXT'                           => Array(
+							'NAME'          => 'Детальное описание',
+							'IS_REQUIRED'   => 'N',
+							'DEFAULT_VALUE' => '',
+						),
+						'XML_ID'                                => Array(
+							'NAME'          => 'Внешний код',
+							'IS_REQUIRED'   => 'Y',
+							'DEFAULT_VALUE' => '',
+						),
+						'CODE'                                  => Array(
+							'NAME'          => 'Символьный код',
+							'IS_REQUIRED'   => 'N',
+							'DEFAULT_VALUE' => Array(
+								'UNIQUE'          => 'N',
+								'TRANSLITERATION' => 'N',
+								'TRANS_LEN'       => '100',
+								'TRANS_CASE'      => '',
+								'TRANS_SPACE'     => '',
+								'TRANS_OTHER'     => '',
+								'TRANS_EAT'       => 'N',
+								'USE_GOOGLE'      => 'N',
+							),
+						),
+						'TAGS'                                  => Array(
+							'NAME'          => 'Теги',
+							'IS_REQUIRED'   => 'N',
+							'DEFAULT_VALUE' => '',
+						),
+						'SECTION_NAME'                          => Array(
+							'NAME'          => 'Название',
+							'IS_REQUIRED'   => 'Y',
+							'DEFAULT_VALUE' => '',
+						),
+						'SECTION_PICTURE'                       => Array(
+							'NAME'          => 'Картинка для анонса',
+							'IS_REQUIRED'   => 'N',
+							'DEFAULT_VALUE' => Array(
+								'FROM_DETAIL'             => 'N',
+								'SCALE'                   => 'N',
+								'WIDTH'                   => '',
+								'HEIGHT'                  => '',
+								'IGNORE_ERRORS'           => 'N',
+								'METHOD'                  => '',
+								'COMPRESSION'             => '',
+								'DELETE_WITH_DETAIL'      => 'N',
+								'UPDATE_WITH_DETAIL'      => 'N',
+								'USE_WATERMARK_TEXT'      => 'N',
+								'WATERMARK_TEXT'          => '',
+								'WATERMARK_TEXT_FONT'     => '',
+								'WATERMARK_TEXT_COLOR'    => '',
+								'WATERMARK_TEXT_SIZE'     => '',
+								'WATERMARK_TEXT_POSITION' => 'tl',
+								'USE_WATERMARK_FILE'      => 'N',
+								'WATERMARK_FILE'          => '',
+								'WATERMARK_FILE_ALPHA'    => '',
+								'WATERMARK_FILE_POSITION' => 'tl',
+								'WATERMARK_FILE_ORDER'    => '',
+							),
+						),
+						'SECTION_DESCRIPTION_TYPE'              => Array(
+							'NAME'          => 'Тип описания',
+							'IS_REQUIRED'   => 'Y',
+							'DEFAULT_VALUE' => 'text',
+						),
+						'SECTION_DESCRIPTION'                   => Array(
+							'NAME'          => 'Описание',
+							'IS_REQUIRED'   => 'N',
+							'DEFAULT_VALUE' => '',
+						),
+						'SECTION_DETAIL_PICTURE'                => Array(
+							'NAME'          => 'Детальная картинка',
+							'IS_REQUIRED'   => 'N',
+							'DEFAULT_VALUE' => Array(
+								'SCALE'                   => 'N',
+								'WIDTH'                   => '',
+								'HEIGHT'                  => '',
+								'IGNORE_ERRORS'           => 'N',
+								'METHOD'                  => '',
+								'COMPRESSION'             => '',
+								'USE_WATERMARK_TEXT'      => 'N',
+								'WATERMARK_TEXT'          => '',
+								'WATERMARK_TEXT_FONT'     => '',
+								'WATERMARK_TEXT_COLOR'    => '',
+								'WATERMARK_TEXT_SIZE'     => '',
+								'WATERMARK_TEXT_POSITION' => 'tl',
+								'USE_WATERMARK_FILE'      => 'N',
+								'WATERMARK_FILE'          => '',
+								'WATERMARK_FILE_ALPHA'    => '',
+								'WATERMARK_FILE_POSITION' => 'tl',
+								'WATERMARK_FILE_ORDER'    => '',
+							),
+						),
+						'SECTION_XML_ID'                        => Array(
+							'NAME'          => 'Внешний код',
+							'IS_REQUIRED'   => 'N',
+							'DEFAULT_VALUE' => '',
+						),
+						'SECTION_CODE'                          => Array(
+							'NAME'          => 'Символьный код',
+							'IS_REQUIRED'   => 'N',
+							'DEFAULT_VALUE' => Array(
+								'UNIQUE'          => 'N',
+								'TRANSLITERATION' => 'N',
+								'TRANS_LEN'       => '100',
+								'TRANS_CASE'      => '',
+								'TRANS_SPACE'     => '',
+								'TRANS_OTHER'     => '',
+								'TRANS_EAT'       => 'N',
+								'USE_GOOGLE'      => 'N',
+							),
+						),
+						'LOG_SECTION_ADD'                       => Array(
+							'NAME'          => 'LOG_SECTION_ADD',
+							'IS_REQUIRED'   => 'N',
+							'DEFAULT_VALUE' => '',
+						),
+						'LOG_SECTION_EDIT'                      => Array(
+							'NAME'          => 'LOG_SECTION_EDIT',
+							'IS_REQUIRED'   => 'N',
+							'DEFAULT_VALUE' => '',
+						),
+						'LOG_SECTION_DELETE'                    => Array(
+							'NAME'          => 'LOG_SECTION_DELETE',
+							'IS_REQUIRED'   => 'N',
+							'DEFAULT_VALUE' => '',
+						),
+						'LOG_ELEMENT_ADD'                       => Array(
+							'NAME'          => 'LOG_ELEMENT_ADD',
+							'IS_REQUIRED'   => 'N',
+							'DEFAULT_VALUE' => '',
+						),
+						'LOG_ELEMENT_EDIT'                      => Array(
+							'NAME'          => 'LOG_ELEMENT_EDIT',
+							'IS_REQUIRED'   => 'N',
+							'DEFAULT_VALUE' => '',
+						),
+						'LOG_ELEMENT_DELETE'                    => Array(
+							'NAME'          => 'LOG_ELEMENT_DELETE',
+							'IS_REQUIRED'   => 'N',
+							'DEFAULT_VALUE' => '',
+						),
+						'XML_IMPORT_START_TIME'                 => Array(
+							'NAME'          => 'XML_IMPORT_START_TIME',
+							'IS_REQUIRED'   => 'N',
+							'DEFAULT_VALUE' => '',
+							'VISIBLE'       => 'N',
+						),
+						'DETAIL_TEXT_TYPE_ALLOW_CHANGE'         => Array(
+							'NAME'          => 'DETAIL_TEXT_TYPE_ALLOW_CHANGE',
+							'IS_REQUIRED'   => 'N',
+							'DEFAULT_VALUE' => 'N',
+							'VISIBLE'       => 'N',
+						),
+						'PREVIEW_TEXT_TYPE_ALLOW_CHANGE'        => Array(
+							'NAME'          => 'PREVIEW_TEXT_TYPE_ALLOW_CHANGE',
+							'IS_REQUIRED'   => 'N',
+							'DEFAULT_VALUE' => 'N',
+							'VISIBLE'       => 'N',
+						),
+						'SECTION_DESCRIPTION_TYPE_ALLOW_CHANGE' => Array(
+							'NAME'          => 'SECTION_DESCRIPTION_TYPE_ALLOW_CHANGE',
+							'IS_REQUIRED'   => 'N',
+							'DEFAULT_VALUE' => 'Y',
+							'VISIBLE'       => 'N',
+						),
+					),
+				)
+			],
+			$this->headers
+		);
+
+		// проверка ответа
+		$this->seeJsonEquals(
+			[
+				'success' => true,
+				'iblock'  => [
+					'code' => 'test_iblock'
+				],
+			]
+		);
+
+		// проверка в интерфейсе (todo?)
+
+		// проверка в файлах
+		$gottenInstallationFuncCodeArray = $this->getIblockCreationFuncCallParamsArray($module);
+		$installFileLangArr = $this->getLangFileArray($module);
+		$this->assertEquals($gottenInstallationFuncCodeArray[0]['CODE'], 'test_iblock');
+		$this->assertEquals($installFileLangArr[strtoupper($module->PARTNER_CODE.'_'.$module->code).'_IBLOCK_TEST_IBLOCK_NAME'], 'Тестовый инфоблок');
+
+		$module->deleteFolder();
 	}
 }

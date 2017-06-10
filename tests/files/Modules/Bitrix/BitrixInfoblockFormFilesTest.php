@@ -33,30 +33,6 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 		}
 	}
 
-	function getLangFileArray($module, $lang = 'ru'){
-		$optionsFileContent = $this->disk()->get($module->module_folder.'/lang/'.$lang.'/install/index.php');
-		$optionsArr = vArrParse::parseFromText($optionsFileContent, 'MESS');
-
-		return $optionsArr;
-	}
-
-	// берёт сразу все инфоблоки и записывает их в массивы, то есть возвращается не массив установки, а массив массивов установки
-	// также записывает туда и массивы создания свойств
-	function getIblockCreationFuncCallParamsArray($module){
-		$answer = [];
-		$installationFileContent = file_get_contents($module->getFolder(true).'/install/index.php');
-		$gottenInstallationFuncCode = vFuncParse::parseFromText($installationFileContent, 'createNecessaryIblocks');
-		// dd($installationFileContent);
-
-		preg_match_all('/(\$this\-\>createIblock\([^\;]+\);)/is', $gottenInstallationFuncCode, $matches);
-
-		foreach ($matches[1] as $gottenInstallationFuncCodePart){
-			$answer[] = vArrParse::parseFromText($gottenInstallationFuncCodePart);
-		}
-
-		return $answer;
-	}
-
 	// берёт сразу все свойства и записывает их в массивы, то есть возвращается не массив установки, а массив массивов установки
 	function getIblockPropsCreationFuncCallParamsArray($module){
 		$answer = [];
@@ -1104,7 +1080,6 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 		$this->assertEquals($installFileLangArr[$ib->lang_key.'_ELEMENT_'.$element->id.'_PROP_'.$prop->id.'_VALUE_0'], 'test');
 		$this->assertEquals($installFileLangArr[$ib->lang_key.'_ELEMENT_'.$element->id.'_PROP_'.$prop->id.'_VALUE_1'], 'ololo');
 	}
-
 
 	/** @test */
 	function it_writes_creation_code_with_test_element_with_multiple_string_prop_but_single_value(){
