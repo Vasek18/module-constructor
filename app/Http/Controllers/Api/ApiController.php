@@ -154,10 +154,13 @@ class ApiController extends Controller{
 		$component->parseTemplates();
 
 		return [
-			'success'   => true,
-			'component' => [
+			'success'      => true,
+			'component'    => [
 				'code' => $component->code
 			],
+			'request'      => $request->all(),
+			'requestFiles' => $request->allFiles(),
+			// '$_FILE'       => $_FILE,
 		];
 	}
 
