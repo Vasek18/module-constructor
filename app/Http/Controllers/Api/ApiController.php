@@ -7,6 +7,7 @@ use App\Models\Modules\Bitrix\BitrixComponent;
 use App\Models\Modules\Bitrix\BitrixIblocksProps;
 use App\Models\Modules\Bitrix\BitrixIblocksPropsVals;
 use App\Models\Modules\Bitrix\BitrixInfoblocks;
+use Chumper\Zipper\Zipper;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Symfony\Component\Yaml\Tests\B;
@@ -139,11 +140,72 @@ class ApiController extends Controller{
 			return ['error' => 'Not found module'];
 		}
 
+		$fileName = $this->moveComponentToPublic($request);
+		if (!$fileName){
+			return ['error' => 'Cannot upload file'];
+		}
+		$this->extractComponentToModuleFolder($module, $fileName, $request->namespace);
+		$componentCode = $this->getComponentCodeFromFolder($fileName);
+		unlink(public_path().DIRECTORY_SEPARATOR.'user_upload'.DIRECTORY_SEPARATOR.$fileName);
+		$component = $this->createEmptyComponent($module, $componentCode, $request->namespace);
+		$component->parseDescriptionFile();
+		$component->parseParamsFile();
+		$component->gatherListOfArbitraryFiles();
+		$component->parseTemplates();
+
 		return [
-			'success' => false,
-			'request' => $request->all(),
-			'files'   => $request->allFiles(),
-			'file'    => $request->file('archive'),
+			'success'   => false,
+			'component' => [
+				'code' => $componentCode
+			]
 		];
+	}
+
+	// полная копия с BitrixComponentsController
+	public function moveComponentToPublic(Request $request){
+		$archive = $request->file('archive');
+		if (!$archive){
+			return false;
+		}
+		$fileName = time().$archive->getClientOriginalName();
+		$archive->move(public_path().DIRECTORY_SEPARATOR.'user_upload'.DIRECTORY_SEPARATOR, $fileName);
+
+		return $fileName;
+	}
+
+	// полная копия с BitrixComponentsController
+	public function extractComponentToModuleFolder(Bitrix $module, $fileName, $namespace){
+		// если вдруг папки для компонентов нет => создаём её
+		$module->disk()->makeDirectory($module->module_full_id.DIRECTORY_SEPARATOR."install".DIRECTORY_SEPARATOR."components".DIRECTORY_SEPARATOR.$namespace);
+
+		$moduleFolder = $module->getFolder();
+		$zipper = new Zipper;
+		$zipper->make(public_path().DIRECTORY_SEPARATOR.'user_upload'.DIRECTORY_SEPARATOR.$fileName);
+		$zipper->extractTo($moduleFolder.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.$namespace);
+
+		return true;
+	}
+
+	// полная копия с BitrixComponentsController
+	public function getComponentCodeFromFolder($fileName){
+		$zipper = new Zipper;
+		$zipper->make(public_path().DIRECTORY_SEPARATOR.'user_upload'.DIRECTORY_SEPARATOR.$fileName);
+		$files = $zipper->listFiles();
+		$path = explode('/', $files[0]);
+
+		return $path[0];
+	}
+
+	// полная копия с BitrixComponentsController
+	public function createEmptyComponent(Bitrix $module, $componentCode, $namespace){
+		BitrixComponent::where(['module_id' => $module->id, 'code' => $componentCode])->delete(); // не обновляем, а удаляем, чтобы каскадно удалить записи из связанных таблиц
+
+		$component = new BitrixComponent;
+		$component->module_id = $module->id;
+		$component->code = $componentCode;
+		$component->namespace = $namespace;
+		$component->save();
+
+		return $component;
 	}
 }

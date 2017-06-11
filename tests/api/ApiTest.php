@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\DB;
 use Laravel\Passport\ClientRepository;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ApiTest extends TestCase{
 
@@ -18,6 +19,7 @@ class ApiTest extends TestCase{
 
 	protected $headers = [];
 	protected $scopes = [];
+	protected $token;
 
 	public function setUp(){
 		parent::setUp();
@@ -43,11 +45,11 @@ class ApiTest extends TestCase{
 		]);
 
 		// создаём пользотелю токен
-		$token = $this->user->createToken($this->user->id.' Access Token')->accessToken; // создаём новый токен
+		$this->token = $this->user->createToken($this->user->id.' Access Token')->accessToken; // создаём новый токен
 
 		// устанавливаем заголовки для авторизации через api
 		$this->headers['Accept'] = 'application/json';
-		$this->headers['Authorization'] = 'Bearer '.$token;
+		$this->headers['Authorization'] = 'Bearer '.$this->token;
 	}
 
 	/** @test */
@@ -973,20 +975,68 @@ class ApiTest extends TestCase{
 		$module->deleteFolder();
 	}
 
-	/** @test */
+	/** @test */ // todo
 	public function it_can_import_component_to_module(){
 		$module = factory(App\Models\Modules\Bitrix\Bitrix::class)->create(['user_id' => $this->user->id]);
 		$module = App\Models\Modules\Bitrix\Bitrix::where('id', $module->id)->first();
 		$module->createFolder();
+
+		// почему-то не проходит авторизацию
+		// $host = $this->baseUrl;
+		// $url = '/api/modules/'.$module->PARTNER_CODE.'.'.$module->code.'/import/component';
+		// $method = 'POST';
+		// $ch = curl_init();
+		// curl_setopt($ch, CURLOPT_URL, $host.$url);
+		// curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		// curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
+		// curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+		// 	'namespace' => $module->PARTNER_CODE.'.'.$module->code,
+		// 	'archive'   => new CURLFile(public_path().'/for_tests/bitrix_catalog.section.zip')
+		// ]));
+		// $headers = array();
+		// $headers['Accept'] = 'application/json';
+		// $headers['Authorization'] = "Bearer ".$this->token;
+		// curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		// $result = curl_exec($ch);
+		// curl_close($ch);
+		// dd($result);
+
+		// не передаётся файл
+		$testFile = public_path().'/for_tests/bitrix_catalog.section.zip';
 		$this->json(
 			'POST',
 			'/api/modules/'.$module->PARTNER_CODE.'.'.$module->code.'/import/component',
 			[
-				'namespace' => $module->PARTNER_CODE.'.'.$module->code
+				'namespace' => $module->PARTNER_CODE.'.'.$module->code,
+				'archive'   => new UploadedFile($testFile, 'bitrix_catalog.section.zip', 'application/octet-stream', filesize($testFile), null, true)
 			],
 			$this->headers
 		);
 
-		$this->assertResponseOk();
+		// не проходит авторизацию
+		// $testFile = public_path().'/for_tests/bitrix_catalog.section.zip';
+		// $componentArchive = new UploadedFile($testFile, 'bitrix_catalog.section.zip', filesize($testFile));
+		// $response = $this->call(
+		// 	'POST',
+		// 	'/api/modules/'.$module->PARTNER_CODE.'.'.$module->code.'/import/component',
+		// 	[
+		// 		'namespace' => $module->PARTNER_CODE.'.'.$module->code
+		// 	],
+		// 	[],
+		// 	[
+		// 		'archive' => $componentArchive
+		// 	],
+		// 	$this->headers
+		// );
+
+		// проверка ответа
+		$this->seeJsonEquals(
+			[
+				'success'   => true,
+				'component' => [
+					'code' => 'catalog.section'
+				],
+			]
+		);
 	}
 }
