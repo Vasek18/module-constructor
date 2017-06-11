@@ -10,7 +10,6 @@ use App\Models\Modules\Bitrix\BitrixIblocksPropsVals;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\DB;
-use Laravel\Passport\ClientRepository;
 use \Illuminate\Http\UploadedFile;
 
 class ApiTest extends TestCase{

@@ -139,11 +139,13 @@ class ApiController extends Controller{
 		if (!$module){
 			return ['error' => 'Not found module'];
 		}
-echo "<pre>";
-print_r($request->all());
-print_r($request->allFiles());
-print_r($_FILES);
-echo "</pre>";
+
+		echo "<pre>";
+		print_r($request->all());
+		print_r($request->allFiles());
+		print_r($_FILES);
+		echo "</pre>";
+
 		$fileName = $this->moveComponentToPublic($request);
 		if (!$fileName){
 			return ['error' => 'Cannot upload file'];
@@ -167,12 +169,28 @@ echo "</pre>";
 
 	// полная копия с BitrixComponentsController
 	public function moveComponentToPublic(Request $request){
+		$uploadFolder = public_path().DIRECTORY_SEPARATOR.'user_upload'.DIRECTORY_SEPARATOR;
+
 		$archive = $request->file('archive');
 		if (!$archive){
-			return false;
+			// curl почему-то не в files передаётся, а в all
+			$archive = $request->archive;
+			echo "<pre>";
+			print_r($archive);
+			echo "</pre>";
+			if (!$archive){
+				$path = $uploadFolder.basename($archive['name']);
+				$fileName = time().$archive['name'];
+				if (!move_uploaded_file($fileName, $path)){
+					echo 'ololo';
+
+					return false;
+				}
+			}
+		}else{
+			$fileName = time().$archive->getClientOriginalName();
+			$archive->move($uploadFolder, $fileName);
 		}
-		$fileName = time().$archive->getClientOriginalName();
-		$archive->move(public_path().DIRECTORY_SEPARATOR.'user_upload'.DIRECTORY_SEPARATOR, $fileName);
 
 		return $fileName;
 	}
