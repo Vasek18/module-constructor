@@ -11,7 +11,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\DB;
 use Laravel\Passport\ClientRepository;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use \Illuminate\Http\UploadedFile;
 
 class ApiTest extends TestCase{
 
@@ -981,53 +981,20 @@ class ApiTest extends TestCase{
 		$module = App\Models\Modules\Bitrix\Bitrix::where('id', $module->id)->first();
 		$module->createFolder();
 
-		// почему-то не проходит авторизацию
-		// $host = $this->baseUrl;
-		// $url = '/api/modules/'.$module->PARTNER_CODE.'.'.$module->code.'/import/component';
-		// $method = 'POST';
-		// $ch = curl_init();
-		// curl_setopt($ch, CURLOPT_URL, $host.$url);
-		// curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		// curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
-		// curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
-		// 	'namespace' => $module->PARTNER_CODE.'.'.$module->code,
-		// 	'archive'   => new CURLFile(public_path().'/for_tests/bitrix_catalog.section.zip')
-		// ]));
-		// $headers = array();
-		// $headers['Accept'] = 'application/json';
-		// $headers['Authorization'] = "Bearer ".$this->token;
-		// curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-		// $result = curl_exec($ch);
-		// curl_close($ch);
-		// dd($result);
-
 		// не передаётся файл
-		$testFile = public_path().'/for_tests/bitrix_catalog.section.zip';
+		$testFileFolder = public_path().'/for_tests/';
+		$testFileName = 'bitrix_catalog.section.zip';
+		$copiedTestFileName = 'bitrix_catalog.section2.zip';
+		copy($testFileFolder.$testFileName, $testFileFolder.$copiedTestFileName);
 		$this->json(
 			'POST',
 			'/api/modules/'.$module->PARTNER_CODE.'.'.$module->code.'/import/component',
 			[
 				'namespace' => $module->PARTNER_CODE.'.'.$module->code,
-				'archive'   => new UploadedFile($testFile, 'bitrix_catalog.section.zip', 'application/octet-stream', filesize($testFile), null, true)
+				'archive'   => new UploadedFile($testFileFolder.$copiedTestFileName, $copiedTestFileName, 'application/octet-stream', filesize($testFileFolder.$copiedTestFileName), null, true)
 			],
 			$this->headers
 		);
-
-		// не проходит авторизацию
-		// $testFile = public_path().'/for_tests/bitrix_catalog.section.zip';
-		// $componentArchive = new UploadedFile($testFile, 'bitrix_catalog.section.zip', filesize($testFile));
-		// $response = $this->call(
-		// 	'POST',
-		// 	'/api/modules/'.$module->PARTNER_CODE.'.'.$module->code.'/import/component',
-		// 	[
-		// 		'namespace' => $module->PARTNER_CODE.'.'.$module->code
-		// 	],
-		// 	[],
-		// 	[
-		// 		'archive' => $componentArchive
-		// 	],
-		// 	$this->headers
-		// );
 
 		// проверка ответа
 		$this->seeJsonEquals(
@@ -1038,5 +1005,11 @@ class ApiTest extends TestCase{
 				],
 			]
 		);
+
+		// проверка того, что компонент есть
+		$this->assertTrue(file_exists($module->getFolder(true).DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.$module->PARTNER_CODE.'.'.$module->code.DIRECTORY_SEPARATOR.'catalog.section'.DIRECTORY_SEPARATOR));
+
+		// не забываем удалить папку с модулем
+		$module->deleteFolder();
 	}
 }

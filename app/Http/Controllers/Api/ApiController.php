@@ -154,10 +154,10 @@ class ApiController extends Controller{
 		$component->parseTemplates();
 
 		return [
-			'success'   => false,
+			'success'   => true,
 			'component' => [
-				'code' => $componentCode
-			]
+				'code' => $component->code
+			],
 		];
 	}
 
