@@ -140,12 +140,6 @@ class ApiController extends Controller{
 			return ['error' => 'Not found module'];
 		}
 
-		echo "<pre>";
-		print_r($request->all());
-		print_r($request->allFiles());
-		print_r($_FILES);
-		echo "</pre>";
-
 		$fileName = $this->moveComponentToPublic($request);
 		if (!$fileName){
 			return ['error' => 'Cannot upload file'];
@@ -179,13 +173,14 @@ class ApiController extends Controller{
 			print_r($archive);
 			echo "</pre>";
 			if (!$archive){
-				$path = $uploadFolder.basename($archive['name']);
-				$fileName = time().$archive['name'];
-				if (!move_uploaded_file($fileName, $path)){
-					echo 'ololo';
+				return false;
+			}
+			$path = $uploadFolder.basename($archive['name']);
+			$fileName = time().$archive['name'];
+			if (!move_uploaded_file($fileName, $path)){
+				echo 'ololo';
 
-					return false;
-				}
+				return false;
 			}
 		}else{
 			$fileName = time().$archive->getClientOriginalName();
