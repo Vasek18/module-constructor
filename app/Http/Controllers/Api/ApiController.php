@@ -172,11 +172,9 @@ class ApiController extends Controller{
 			if (!$archive){
 				return false;
 			}
-			echo $path = $uploadFolder.time().basename($archive['name']);
-			echo "#";
-			echo $fileName = $archive['name'];
+			$path = $uploadFolder.time().basename($archive['name']);
+			$fileName = $archive['name'];
 			if (!move_uploaded_file($fileName, $path)){
-				echo 'ololo';
 
 				return false;
 			}
