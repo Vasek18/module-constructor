@@ -142,6 +142,7 @@ class ApiController extends Controller{
 echo "<pre>";
 print_r($request->all());
 print_r($request->allFiles());
+print_r($_FILES);
 echo "</pre>";
 		$fileName = $this->moveComponentToPublic($request);
 		if (!$fileName){
