@@ -139,7 +139,10 @@ class ApiController extends Controller{
 		if (!$module){
 			return ['error' => 'Not found module'];
 		}
-
+echo "<pre>";
+print_r($request->all());
+print_r($request->allFiles());
+echo "</pre>";
 		$fileName = $this->moveComponentToPublic($request);
 		if (!$fileName){
 			return ['error' => 'Cannot upload file'];
@@ -154,13 +157,10 @@ class ApiController extends Controller{
 		$component->parseTemplates();
 
 		return [
-			'success'      => true,
-			'component'    => [
+			'success'   => true,
+			'component' => [
 				'code' => $component->code
 			],
-			'request'      => $request->all(),
-			'requestFiles' => $request->allFiles(),
-			// '$_FILE'       => $_FILE,
 		];
 	}
 
