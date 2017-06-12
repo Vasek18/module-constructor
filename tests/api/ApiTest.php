@@ -980,7 +980,7 @@ class ApiTest extends TestCase{
 		$module = App\Models\Modules\Bitrix\Bitrix::where('id', $module->id)->first();
 		$module->createFolder();
 
-		// не передаётся файл
+		// передаём компонент файл
 		$testFileFolder = public_path().'/for_tests/';
 		$testFileName = 'bitrix_catalog.section.zip';
 		$copiedTestFileName = 'bitrix_catalog.section2.zip';
@@ -1019,6 +1019,40 @@ class ApiTest extends TestCase{
 
 	/** @test */
 	public function it_can_import_otherfile_to_module(){
+		$module = factory(App\Models\Modules\Bitrix\Bitrix::class)->create(['user_id' => $this->user->id]);
+		$module = App\Models\Modules\Bitrix\Bitrix::where('id', $module->id)->first();
+		$module->createFolder();
 
+		// передаём файл
+		$testFileFolder = public_path().'/for_tests/';
+		$testFileName = 'test.jpg';
+		$copiedTestFileName = 'test2.jpg';
+		copy($testFileFolder.$testFileName, $testFileFolder.$copiedTestFileName);
+		$this->json(
+			'POST',
+			'/api/modules/'.$module->PARTNER_CODE.'.'.$module->code.'/import/otherfile',
+			[
+				'path' => 'ololo/',
+				'file' => new UploadedFile($testFileFolder.$copiedTestFileName, $copiedTestFileName, 'application/octet-stream', filesize($testFileFolder.$copiedTestFileName), null, true)
+			],
+			$this->headers
+		);
+
+		// проверка ответа
+		$this->seeJsonEquals(
+			[
+				'success' => true,
+				'file'    => [
+					'path'     => '/ololo/',
+					'filename' => 'test2.jpg'
+				],
+			]
+		);
+
+		// проверяем, что файл есть
+		$this->assertTrue(file_exists($module->getFolder(true).'/ololo/test2.jpg'));
+
+		// не забываем удалить папку с модулем
+		$module->deleteFolder();
 	}
 }

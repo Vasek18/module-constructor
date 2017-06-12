@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Modules\Bitrix\Bitrix;
+use App\Models\Modules\Bitrix\BitrixArbitraryFiles;
 use App\Models\Modules\Bitrix\BitrixComponent;
 use App\Models\Modules\Bitrix\BitrixIblocksProps;
 use App\Models\Modules\Bitrix\BitrixIblocksPropsVals;
@@ -235,8 +236,50 @@ class ApiController extends Controller{
 			return ['error' => 'Not found module'];
 		}
 
+		$file = $request->file('file');
+		if (!$file){
+			return back();
+		}
+
+		$path = $this->validatePath($request->path);
+
+		$aFile = BitrixArbitraryFiles::updateOrCreate(
+			[
+				'module_id' => $module->id,
+				'path'      => $path,
+				'filename'  => $file->getClientOriginalName(),
+				'location'  => $request->location ?: 'in_module' // todo
+			],
+			[
+				'module_id' => $module->id,
+				'path'      => $path,
+				'filename'  => $file->getClientOriginalName(),
+				'location'  => $request->location ?: 'in_module' // todo
+			]
+		);
+
+		$aFile->putFileInModuleFolder($path, $file, $request->location);
+
 		return [
-			'success' => true
+			'success' => true,
+			'file'    => [
+				'path'     => $aFile->path,
+				'filename' => $aFile->filename,
+			]
 		];
+	}
+
+	protected function validatePath($path){
+		if (!in_array(substr($path, 0, 1), ['/', '\\'])){
+			$path = '/'.$path;
+		}
+		if (!in_array(substr($path, -1), ['/', '\\'])){
+			$path .= '/';
+		}
+		$path = preg_replace('/\.+/i', '', $path); // защита от ../
+		$path = preg_replace('/\\\+/i', '/', $path);
+		$path = preg_replace('/\/\/+/i', '/', $path);
+
+		return $path;
 	}
 }
