@@ -167,17 +167,7 @@ class ApiController extends Controller{
 
 		$archive = $request->file('archive');
 		if (!$archive){
-			// curl почему-то не в files передаётся, а в all
-			$archive = $request->archive;
-			if (!$archive){
-				return false;
-			}
-			$path = $uploadFolder.time().basename($archive['name']);
-			$fileName = $archive['name'];
-			if (!move_uploaded_file($fileName, $path)){
-
-				return false;
-			}
+			return false;
 		}else{
 			$fileName = time().$archive->getClientOriginalName();
 			$archive->move($uploadFolder, $fileName);
