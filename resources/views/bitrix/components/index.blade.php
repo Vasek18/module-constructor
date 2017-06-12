@@ -19,7 +19,7 @@
                         {{ trans('bitrix_components.component') }} "{{$component->name}}" ({{$component->code}})
                     </a>
                     <a href="{{ action('Modules\Bitrix\BitrixComponentsController@destroy', [$module->id, $component->id]) }}"
-                       class="btn btn-danger pull-right human_ajax_deletion"
+                       class="btn btn-danger pull-right deletion-with-confirm"
                        id="delete_component_{{$component->id}}">
                         <span class="glyphicon glyphicon-trash"
                               aria-hidden="true"></span>
