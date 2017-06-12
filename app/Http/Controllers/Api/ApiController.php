@@ -235,9 +235,6 @@ class ApiController extends Controller{
 		if (!$request->file_content){
 			return ['error' => 'No file'];
 		}
-		if (!$request->lang_file_content){
-			return ['error' => 'No lang file'];
-		}
 		if (!$request->name){
 			return ['error' => 'No name field'];
 		}
