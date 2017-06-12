@@ -78,62 +78,66 @@ class ApiController extends Controller{
 			]
 		);
 
-		// импортируем свойства
-		$propertiesArr = unserialize($request->PROPERTIES);
-		if ($propertiesArr){
-			foreach ($propertiesArr as $propertyArr){
+		if ($iblock->id){
+			// импортируем свойства
+			$propertiesArr = unserialize($request->PROPERTIES);
+			if ($propertiesArr){
+				foreach ($propertiesArr as $propertyArr){
 
-				if (isset($propertyArr["CODE"]) && $propertyArr["CODE"]){
-					$prop = BitrixIblocksProps::updateOrCreate(
-						[
-							'iblock_id' => $iblock->id,
-							'code'      => $propertyArr["CODE"]
-						],
-						[
-							'iblock_id'   => $iblock->id,
-							'code'        => $propertyArr["CODE"],
-							'name'        => $propertyArr['NAME'],
-							'sort'        => isset($propertyArr["SORT"]) ? $propertyArr["SORT"] : '500',
-							'type'        => isset($propertyArr["PROPERTY_TYPE"]) ? $propertyArr["PROPERTY_TYPE"].((isset($propertyArr['USER_TYPE']) && $propertyArr['USER_TYPE']) ? ':'.$propertyArr['USER_TYPE'] : '') : 'S',
-							'multiple'    => (isset($propertyArr["MULTIPLE"]) && $propertyArr["MULTIPLE"] == "Y") ? true : false,
-							'is_required' => (isset($propertyArr["IS_REQUIRED"]) && $propertyArr["IS_REQUIRED"] == "Y") ? true : false,
-							'dop_params'  => json_encode($propertyArr)
-						]
-					);
-				}
+					if (isset($propertyArr["CODE"]) && $propertyArr["CODE"]){
+						$prop = BitrixIblocksProps::updateOrCreate(
+							[
+								'iblock_id' => $iblock->id,
+								'code'      => $propertyArr["CODE"]
+							],
+							[
+								'iblock_id'   => $iblock->id,
+								'code'        => $propertyArr["CODE"],
+								'name'        => $propertyArr['NAME'],
+								'sort'        => isset($propertyArr["SORT"]) ? $propertyArr["SORT"] : '500',
+								'type'        => isset($propertyArr["PROPERTY_TYPE"]) ? $propertyArr["PROPERTY_TYPE"].((isset($propertyArr['USER_TYPE']) && $propertyArr['USER_TYPE']) ? ':'.$propertyArr['USER_TYPE'] : '') : 'S',
+								'multiple'    => (isset($propertyArr["MULTIPLE"]) && $propertyArr["MULTIPLE"] == "Y") ? true : false,
+								'is_required' => (isset($propertyArr["IS_REQUIRED"]) && $propertyArr["IS_REQUIRED"] == "Y") ? true : false,
+								'dop_params'  => json_encode($propertyArr)
+							]
+						);
+					}
 
-				// варианты свойства
-				if ($prop->type = 'L' && isset($propertyArr["VALUES"])){
-					foreach ($propertyArr["VALUES"] as $vc => $valueArr){
-						if (isset($valueArr['VALUE']) && $valueArr['VALUE']){
-							$val = BitrixIblocksPropsVals::updateOrCreate(
-								[
-									'prop_id' => $prop->id,
-									'value'   => $valueArr['VALUE']
-								],
-								[
-									'prop_id' => $prop->id,
-									'value'   => $valueArr['VALUE'],
-									'xml_id'  => isset($valueArr['XML_ID']) ? $valueArr['XML_ID'] : '',
-									'sort'    => isset($valueArr['SORT']) ? $valueArr['SORT'] : '500',
-									'default' => isset($valueArr['DEF']) ? $valueArr['DEF'] == 'Y' : false,
-								]
-							);
+					// варианты свойства
+					if ($prop->type = 'L' && isset($propertyArr["VALUES"])){
+						foreach ($propertyArr["VALUES"] as $vc => $valueArr){
+							if (isset($valueArr['VALUE']) && $valueArr['VALUE']){
+								$val = BitrixIblocksPropsVals::updateOrCreate(
+									[
+										'prop_id' => $prop->id,
+										'value'   => $valueArr['VALUE']
+									],
+									[
+										'prop_id' => $prop->id,
+										'value'   => $valueArr['VALUE'],
+										'xml_id'  => isset($valueArr['XML_ID']) ? $valueArr['XML_ID'] : '',
+										'sort'    => isset($valueArr['SORT']) ? $valueArr['SORT'] : '500',
+										'default' => isset($valueArr['DEF']) ? $valueArr['DEF'] == 'Y' : false,
+									]
+								);
+							}
 						}
 					}
 				}
 			}
+
+			// записываем инфоблок в файлы модуля
+			BitrixInfoblocks::writeInFile($module);
+
+			return [
+				'success' => true,
+				'iblock'  => [
+					'code' => $iblock->code
+				],
+			];
 		}
 
-		// записываем инфоблок в файлы модуля
-		BitrixInfoblocks::writeInFile($module);
-
-		return [
-			'success' => true,
-			'iblock'  => [
-				'code' => $iblock->code
-			],
-		];
+		return ['error' => 'Undefined error'];
 	}
 
 	public function importComponent($moduleFullCode, Request $request){
@@ -152,17 +156,21 @@ class ApiController extends Controller{
 		$componentCode = $this->getComponentCodeFromFolder($fileName);
 		unlink(public_path().DIRECTORY_SEPARATOR.'user_upload'.DIRECTORY_SEPARATOR.$fileName);
 		$component = $this->createEmptyComponent($module, $componentCode, $request->namespace);
-		$component->parseDescriptionFile();
-		$component->parseParamsFile();
-		$component->gatherListOfArbitraryFiles();
-		$component->parseTemplates();
+		if ($component->id){
+			$component->parseDescriptionFile();
+			$component->parseParamsFile();
+			$component->gatherListOfArbitraryFiles();
+			$component->parseTemplates();
 
-		return [
-			'success'   => true,
-			'component' => [
-				'code' => $component->code
-			],
-		];
+			return [
+				'success'   => true,
+				'component' => [
+					'code' => $component->code
+				],
+			];
+		}
+
+		return ['error' => 'Undefined error'];
 	}
 
 	// полная копия с BitrixComponentsController
@@ -257,14 +265,18 @@ class ApiController extends Controller{
 			]
 		);
 
-		BitrixAdminMenuItems::storeInModuleFolder($module);
+		if ($admin_menu_page->id){
+			BitrixAdminMenuItems::storeInModuleFolder($module);
 
-		return [
-			'success' => true,
-			'file'    => [
-				'code' => $admin_menu_page->code
-			]
-		];
+			return [
+				'success' => true,
+				'file'    => [
+					'code' => $admin_menu_page->code
+				]
+			];
+		}
+
+		return ['error' => 'Undefined error'];
 	}
 
 	public function importOtherfile($moduleFullCode, Request $request){
@@ -297,15 +309,19 @@ class ApiController extends Controller{
 			]
 		);
 
-		$aFile->putFileInModuleFolder($path, $file, $request->location);
+		if ($aFile->id){
+			$aFile->putFileInModuleFolder($path, $file, $request->location);
 
-		return [
-			'success' => true,
-			'file'    => [
-				'path'     => $aFile->path,
-				'filename' => $aFile->filename,
-			]
-		];
+			return [
+				'success' => true,
+				'file'    => [
+					'path'     => $aFile->path,
+					'filename' => $aFile->filename,
+				]
+			];
+		}
+
+		return ['error' => 'Undefined error'];
 	}
 
 	protected function validatePath($path){
