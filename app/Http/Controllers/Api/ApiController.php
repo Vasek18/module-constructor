@@ -53,14 +53,15 @@ class ApiController extends Controller{
 			return ['error' => 'Not found module'];
 		}
 
-		if (!isset($request->IBLOCK['CODE']) || !$request->IBLOCK['CODE']){
+		$iblockArr = unserialize($request->IBLOCK);
+		if (!isset($iblockArr['CODE']) || !$iblockArr['CODE']){
 			return ['error' => 'No iblock code'];
 		}
-		if (!isset($request->IBLOCK['NAME']) || !$request->IBLOCK['NAME']){
+		if (!isset($iblockArr['NAME']) || !$iblockArr['NAME']){
 			return ['error' => 'No iblock name'];
 		}
-		$iblockName = $request->IBLOCK['NAME'];
-		$iblockCode = $request->IBLOCK['CODE'];
+		$iblockName = $iblockArr['NAME'];
+		$iblockCode = $iblockArr['CODE'];
 		// если инфоблока нет, создаём его, иначе обновим
 		$iblock = BitrixInfoblocks::updateOrCreate(
 			[
@@ -71,13 +72,14 @@ class ApiController extends Controller{
 				'module_id' => $module->id,
 				'code'      => $iblockCode,
 				'name'      => $iblockName,
-				'params'    => json_encode($request->IBLOCK),
+				'params'    => json_encode($iblockArr),
 			]
 		);
 
 		// импортируем свойства
-		if ($request->PROPERTIES){
-			foreach ($request->PROPERTIES as $propertyArr){
+		$propertiesArr = unserialize($request->PROPERTIES);
+		if ($propertiesArr){
+			foreach ($propertiesArr as $propertyArr){
 
 				if (isset($propertyArr["CODE"]) && $propertyArr["CODE"]){
 					$prop = BitrixIblocksProps::updateOrCreate(

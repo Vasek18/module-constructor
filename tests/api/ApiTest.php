@@ -121,7 +121,7 @@ class ApiTest extends TestCase{
 			'POST',
 			'/api/modules/'.$module->PARTNER_CODE.'.'.$module->code.'/import/iblock',
 			[
-				'IBLOCK' => Array(
+				'IBLOCK' => serialize(Array(
 					'ID'                 => '40',
 					'TIMESTAMP_X'        => '30.10.2016 02:39:21',
 					'IBLOCK_TYPE_ID'     => $module->PARTNER_CODE.'_'.$module->code.'_iblock_type',
@@ -433,7 +433,7 @@ class ApiTest extends TestCase{
 							'VISIBLE'       => 'N',
 						),
 					),
-				)
+				))
 			],
 			$this->headers
 		);
@@ -469,7 +469,7 @@ class ApiTest extends TestCase{
 			'POST',
 			'/api/modules/'.$module->PARTNER_CODE.'.'.$module->code.'/import/iblock',
 			[
-				'IBLOCK'     => Array(
+				'IBLOCK'     => serialize(Array(
 					'ID'                 => '40',
 					'TIMESTAMP_X'        => '30.10.2016 02:39:21',
 					'IBLOCK_TYPE_ID'     => $module->PARTNER_CODE.'_'.$module->code.'_iblock_type',
@@ -781,8 +781,8 @@ class ApiTest extends TestCase{
 							'VISIBLE'       => 'N',
 						),
 					),
-				),
-				'PROPERTIES' => Array(
+				)),
+				'PROPERTIES' => serialize(Array(
 					Array(
 						'ID'                 => '102',
 						'TIMESTAMP_X'        => '2017-05-20 23:50:47',
@@ -922,7 +922,7 @@ class ApiTest extends TestCase{
 							)
 						)
 					)
-				)
+				))
 			],
 			$this->headers
 		);
