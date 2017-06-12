@@ -213,4 +213,30 @@ class ApiController extends Controller{
 
 		return $component;
 	}
+
+	public function importAdminpage($moduleFullCode, Request $request){
+		// получаем модуль
+		list($partnerCode, $moduleCode) = explode('.', $moduleFullCode);
+		$module = Bitrix::where('user_id', $request->user()->id)->where('PARTNER_CODE', $partnerCode)->where('code', $moduleCode)->first();
+		if (!$module){
+			return ['error' => 'Not found module'];
+		}
+
+		return [
+			'success' => true
+		];
+	}
+
+	public function importOtherfile($moduleFullCode, Request $request){
+		// получаем модуль
+		list($partnerCode, $moduleCode) = explode('.', $moduleFullCode);
+		$module = Bitrix::where('user_id', $request->user()->id)->where('PARTNER_CODE', $partnerCode)->where('code', $moduleCode)->first();
+		if (!$module){
+			return ['error' => 'Not found module'];
+		}
+
+		return [
+			'success' => true
+		];
+	}
 }
