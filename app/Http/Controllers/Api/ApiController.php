@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Modules\Bitrix\Bitrix;
+use App\Models\Modules\Bitrix\BitrixAdminMenuItems;
 use App\Models\Modules\Bitrix\BitrixArbitraryFiles;
 use App\Models\Modules\Bitrix\BitrixComponent;
 use App\Models\Modules\Bitrix\BitrixIblocksProps;
@@ -223,8 +224,46 @@ class ApiController extends Controller{
 			return ['error' => 'Not found module'];
 		}
 
+		if (!$request->file_content){
+			return ['error' => 'No file'];
+		}
+		if (!$request->lang_file_content){
+			return ['error' => 'No lang file'];
+		}
+		if (!$request->name){
+			return ['error' => 'No name field'];
+		}
+		if (!$request->code){
+			return ['error' => 'No code field'];
+		}
+		if (!$request->parent_menu){
+			return ['error' => 'No parent menu field'];
+		}
+
+		$admin_menu_page = BitrixAdminMenuItems::updateOrCreate(
+			[
+				'module_id' => $module->id,
+				'code'      => $request->code,
+			],
+			[
+				'module_id'   => $module->id,
+				'name'        => $request->name,
+				'code'        => $request->code,
+				'parent_menu' => $request->parent_menu,
+				'sort'        => $request->sort ?: 500,
+				'text'        => $request->text ?: $request->name,
+				'php_code'    => $request->file_content,
+				'lang_code'   => $request->lang_file_content,
+			]
+		);
+
+		BitrixAdminMenuItems::storeInModuleFolder($module);
+
 		return [
-			'success' => true
+			'success' => true,
+			'file'    => [
+				'code' => $admin_menu_page->code
+			]
 		];
 	}
 
@@ -238,7 +277,7 @@ class ApiController extends Controller{
 
 		$file = $request->file('file');
 		if (!$file){
-			return back();
+			return ['error' => 'Cannot upload file'];
 		}
 
 		$path = $this->validatePath($request->path);

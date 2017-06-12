@@ -1014,7 +1014,39 @@ class ApiTest extends TestCase{
 
 	/** @test */
 	public function it_can_import_adminpage_to_module(){
+		$module = factory(App\Models\Modules\Bitrix\Bitrix::class)->create(['user_id' => $this->user->id]);
+		$module = App\Models\Modules\Bitrix\Bitrix::where('id', $module->id)->first();
+		$module->createFolder();
 
+		// передаём файл
+		$this->json(
+			'POST',
+			'/api/modules/'.$module->PARTNER_CODE.'.'.$module->code.'/import/adminpage',
+			[
+				'name'              => 'Test',
+				'code'              => 'ololo',
+				'parent_menu'       => 'services',
+				'file_content'      => '<? echo "ololo"; ?>',
+				'lang_file_content' => '<? $MESS["ololo"] = "trololo"?>',
+			],
+			$this->headers
+		);
+
+		// проверка ответа
+		$this->seeJsonEquals(
+			[
+				'success' => true,
+				'file'    => [
+					'code' => 'ololo'
+				],
+			]
+		);
+
+		// проверяем, что файл есть
+		$this->assertTrue(file_exists($module->getFolder(true).'/admin/'.$module->PARTNER_CODE.'_'.$module->code.'_ololo.php'));
+
+		// не забываем удалить папку с модулем
+		$module->deleteFolder();
 	}
 
 	/** @test */
