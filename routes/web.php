@@ -196,6 +196,9 @@ Route::group(['prefix' => 'my-bitrix', 'middleware' => ['bitrix.owner', 'auth']]
 		Route::get('/edit', ['uses' => 'Modules\Bitrix\BitrixLangController@edit']);
 		Route::post('/update', ['uses' => 'Modules\Bitrix\BitrixLangController@update']);
 	});
+
+	// маркетинг
+	Route::get('{module}/marketing', ['uses' => 'Modules\Bitrix\BitrixController@marketing']);
 });
 
 Route::post('feedback/ilack', 'FeedbackController@sendILackSmthForm');

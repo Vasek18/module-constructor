@@ -40,6 +40,12 @@
                                   aria-hidden="true"></span>
                             {{ trans('app.edit') }}
                         </a>
+                        <a href="{{ action('Modules\Bitrix\BitrixController@marketing', $module->id) }}"
+                           class="btn btn-sm btn-block btn-info">
+                            <span class="glyphicon glyphicon-ruble"
+                                  aria-hidden="true"></span>
+                            {{ trans('bitrix.marketing_link') }}
+                        </a>
                         <a class="btn btn-sm btn-danger btn-block"
                            data-toggle="modal"
                            data-target="#modal_delete_{{$module->id}}"
@@ -71,7 +77,9 @@
                                 <ul>
                                     @foreach($module->components as $component)
                                         <li>
-                                            <a href="{{action('Modules\Bitrix\BitrixComponentsController@show', [$module->id, $component->id])}}">{{$component->name}} ({{$component->code}})</a>
+                                            <a href="{{action('Modules\Bitrix\BitrixComponentsController@show', [$module->id, $component->id])}}">{{$component->name}}
+                                                ({{$component->code}})
+                                            </a>
                                         </li>
                                     @endforeach
                                 </ul>

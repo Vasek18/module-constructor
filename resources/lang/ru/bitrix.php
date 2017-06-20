@@ -56,4 +56,7 @@ return [
 	'see_lang_file'    => 'Просмотреть ланг файл',
 	'see_file_title'   => 'Просмотр файла',
 	'no_money_no_file' => 'Эту услугу нужно оплатить',
+
+	'marketing_link' => 'Маркетинг',
+	'marketing_h1' => 'Маркетинг',
 ];

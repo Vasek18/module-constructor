@@ -56,4 +56,7 @@ return [
 	'see_lang_file'    => 'See lang file',
 	'see_file_title'   => 'See file',
 	'no_money_no_file' => 'Sorry, this is a paid service',
+
+	'marketing_link' => 'Marketing',
+	'marketing_h1' => 'Marketing',
 ];
