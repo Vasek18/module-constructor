@@ -305,6 +305,7 @@ Route::get('does_it_charge', ['uses' => 'HtmlPagesController@does_it_charge']);
 Route::get('contacts', ['uses' => 'HtmlPagesController@contacts']);
 Route::get('requisites', ['uses' => 'HtmlPagesController@requisites']);
 Route::get('personal-info-agreement', ['uses' => 'HtmlPagesController@personal_info_agreement']);
+Route::get('politika-konfidencialnosti', ['uses' => 'HtmlPagesController@politika_konfidencialnosti']);
 
 // яндекс.касса
 Route::group(['prefix' => 'yandex_kassa'], function (){

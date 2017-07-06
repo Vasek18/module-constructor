@@ -180,10 +180,24 @@
                         </li>
                     </ul>
                 </nav>
+                @include('scoset_share')
             </div>
             <div class="footer-menu col-md-3 col-md-offset-5">
-                <a href="{{ action('ProjectPulsePostController@index') }}">{{ trans('app.link_project_pulse_title') }}</a>
-                @include('scoset_share')
+                <nav>
+                    <ul>
+                        <li>
+                            <a href="{{ action('ProjectPulsePostController@index') }}">{{ trans('app.link_project_pulse_title') }}</a>
+                        </li>
+                    </ul>
+                    <ul>
+                        <li>
+                            <a href="{{ action('HtmlPagesController@personal_info_agreement') }}">{{ trans('app.link_personal_info_agreement_title') }}</a>
+                        </li>
+                        <li>
+                            <a href="{{ action('HtmlPagesController@politika_konfidencialnosti') }}">{{ trans('app.link_politika_konfidencialnosti_title') }}</a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
         </div>
         <div class="creator">

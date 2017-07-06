@@ -98,8 +98,7 @@
                                                    id="personal_info_agreement"
                                                    checked
                                                    required>
-                                            <a href="{{ action('HtmlPagesController@personal_info_agreement') }}"
-                                               target="_blank">{{ trans('reg.i_agree_with_personal_info_agreement') }}</a>
+                                            {!! trans('reg.i_agree_with_personal_info_agreement', ['polzovatelskoe_soglashenie_link' => action('HtmlPagesController@personal_info_agreement'),'politika_konfidencialnosti_link' => action('HtmlPagesController@politika_konfidencialnosti')]) !!}
                                         </label>
                                     </div>
                                 </div>
