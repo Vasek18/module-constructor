@@ -33,7 +33,7 @@
                     <span class="glyphicon glyphicon-pencil"
                           aria-hidden="true"></span>
                     </a>
-                    <a class="btn btn-danger btn-sm"
+                    <a class="btn btn-danger btn-sm deletion-with-confirm"
                        id="delete{{ $section->id }}"
                        href="{{ action('Admin\AdminArticleSectionsController@destroy', [$section]) }}">
                     <span class="glyphicon glyphicon-trash"
