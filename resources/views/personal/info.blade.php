@@ -55,6 +55,18 @@
                            required>
                 </div>
                 <div class="form-group">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox"
+                                   name="personal_info_agreement"
+                                   id="personal_info_agreement"
+                                   checked
+                                   required>
+                            {!! trans('personal_cabinet.i_agree_with_personal_info_agreement', ['polzovatelskoe_soglashenie_link' => action('HtmlPagesController@personal_info_agreement'),'politika_konfidencialnosti_link' => action('HtmlPagesController@politika_konfidencialnosti')]) !!}
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
                     <button id="edit"
                             name="edit"
                             class="btn btn-primary">{{ trans('app.edit') }}</button>

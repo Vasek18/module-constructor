@@ -22,4 +22,6 @@ return [
 	'personal_info_bitrix_partner_code' => 'Код партнёра Битрикса',
 	'personal_info_api_key'             => 'Ключ API',
 	'personal_info_generate_api_key'    => 'Сгенерировать',
+
+	'i_agree_with_personal_info_agreement' => 'Заполняя форму, я принимаю <a href=":polzovatelskoe_soglashenie_link" target="_blank">пользовательское соглашение</a> и подтверждаю, что ознакомлен и согласен с <a href=":politika_konfidencialnosti_link" target="_blank">политикой конфиденциальности</a> данного сайта',
 ];

@@ -22,4 +22,6 @@ Service helps everyone for free, so it will be grateful to pay developers to piz
 	'personal_info_bitrix_partner_code' => 'Bitrix partner code',
 	'personal_info_api_key'             => 'API key',
 	'personal_info_generate_api_key'    => 'Generate',
+
+	'i_agree_with_personal_info_agreement' => 'By filling a form, I accept <a href=":polzovatelskoe_soglashenie_link" target="_blank">the user agreement</a> and confirm that I have read and agree with <a href=":politika_konfidencialnosti_link" target="_blank">the privacy policy</a> of this site',
 ];

@@ -23,6 +23,9 @@
                     <input type="hidden"
                            name="page"
                            value="{{ Request::url() }}">
+                    <input type="hidden"
+                           name="hint"
+                           value="">
                     <div class="form-group">
                         <label for="email">{{ trans('feedback.on_this_page_i_lack_email') }}</label>
                         <input class="form-control"
@@ -39,6 +42,18 @@
                                   id="text"
                                   rows="10"
                                   required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox"
+                                       name="personal_info_agreement"
+                                       id="personal_info_agreement"
+                                       checked
+                                       required>
+                                {!! trans('feedback.i_agree_with_personal_info_agreement', ['polzovatelskoe_soglashenie_link' => action('HtmlPagesController@personal_info_agreement'),'politika_konfidencialnosti_link' => action('HtmlPagesController@politika_konfidencialnosti')]) !!}
+                            </label>
+                        </div>
                     </div>
                     <button type="submit"
                             class="btn btn-primary"
