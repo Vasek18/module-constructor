@@ -54,7 +54,7 @@
                id="option_{{$i}}_id"
                placeholder="{{ trans('bitrix_admin_options.tab_name') }}"
                value="{{ $option && $option->tab ? $option->tab  : trans('bitrix_admin_options.tab_name_default') }}"
-               @unless ($option) data-translit_from="option_{{$i}}_name" @endif>
+        >
     </div>
     <div class="col-md-1 col-xs-8 xs-margin-bottom">
         <a href="#"
