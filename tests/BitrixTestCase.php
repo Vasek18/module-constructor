@@ -124,6 +124,9 @@ class BitrixTestCase extends TestCase{
 		if (isset($params['type'])){
 			$inputs['option_type['.$rowNumber.']'] = $params['type'];
 		}
+		if (isset($params['tab'])){
+			$inputs['option_tab['.$rowNumber.']'] = $params['tab'];
+		}
 		if (isset($params['width'])){
 			$inputs['option_width['.$rowNumber.']'] = $params['width'];
 		}

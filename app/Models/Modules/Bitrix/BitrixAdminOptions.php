@@ -8,7 +8,7 @@ use Auth;
 
 class BitrixAdminOptions extends Model{
 	protected $table = 'bitrix_modules_options';
-	protected $fillable = ['type', 'module_id', 'sort', 'code', 'name', 'height', 'width', 'spec_vals', 'spec_vals_args', 'default_value'];
+	protected $fillable = ['type', 'module_id', 'sort', 'code', 'name', 'height', 'width', 'spec_vals', 'spec_vals_args', 'default_value', 'tab'];
 	public $timestamps = false;
 
 	public static function getDefaultType(){
@@ -20,39 +20,50 @@ class BitrixAdminOptions extends Model{
 		$optionsString = '';
 		$helperFunctionsArr = [];
 		$helperFunctions = "";
-		Bitrix::changeVarsInModuleFileAndSave('bitrix'.DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.$module->default_lang.DIRECTORY_SEPARATOR.'options.php', $module->id);
+
+		$optionsLangFilePath = 'lang'.DIRECTORY_SEPARATOR.$module->default_lang.DIRECTORY_SEPARATOR.'options.php';
+
+		Bitrix::changeVarsInModuleFileAndSave('bitrix'.DIRECTORY_SEPARATOR.$optionsLangFilePath, $module->id);
+
 		if ($module->options()->count()){
-			$options = $module->options()->orderBy('sort', 'asc')->get();
+			$tabs = $module->options()->orderBy('sort', 'asc')->get()->groupBy('tab');
 
-			foreach ($options as $option){
-				$field_params_string = $option->getParamsStringForFile($option->type);
-				if ($option->spec_vals){
-					$helperFunctionsArr[] = $option->getNeededHelperFunctionName();
-				}
+			foreach ($tabs as $tabName => $options){
+				$tabCode = translit($tabName);
 
-				$default_value_string = "''";
-				if ($option->default_value){
-					$default_value_string = "Loc::getMessage('".$option->lang_key."_DEFAULT_VALUE')";
-				}
+				$tabLangKey = $module->lang_key."_TAB_".strtoupper($tabCode);
+				$module->changeVarInLangFile($tabLangKey, $tabName, $optionsLangFilePath);
 
-				//dd($field_params_string);
-				// код, название, значение по умолчанию, [тип поля, параметры]
-				$string = PHP_EOL."\t\t\tarray('".$option->code."', Loc::getMessage('".$option->lang_key."_TITLE'), ".$default_value_string.", array('".$option->type."'".$field_params_string.")),";
-				//echo $string;
+				$optionsString .= "\tArray(
+\t\t'DIV'     => '".strtoupper($tabCode)."',
+\t\t'TAB'     => Loc::getMessage('".$tabLangKey."'),
+\t\t'OPTIONS' => Array(";
 
-				$optionsString .= $string;
+				foreach ($options as $option){
+					/**
+					 * @@var BitrixAdminOptions $option
+					 */
+					$optionsString .= $option->getPhpCodeString();
 
-				$module->changeVarInLangFile($option->lang_key.'_TITLE', $option->name, 'lang'.DIRECTORY_SEPARATOR.$module->default_lang.DIRECTORY_SEPARATOR.'options.php');
-				if ($option->default_value){
-					$module->changeVarInLangFile($option->lang_key."_DEFAULT_VALUE", $option->default_value, 'lang'.DIRECTORY_SEPARATOR.$module->default_lang.DIRECTORY_SEPARATOR.'options.php');
-				}
-				if ($option->type == 'selectbox' || $option->type == 'multiselectbox'){
-					if ($option->vals->count()){
-						foreach ($option->vals as $val){
-							$module->changeVarInLangFile($val->lang_key, $val->value, 'lang'.DIRECTORY_SEPARATOR.$module->default_lang.DIRECTORY_SEPARATOR.'options.php'); // todo, а это всегда надо?
+					// запоминаем какие нужны доп. функции
+					if ($option->spec_vals){
+						$helperFunctionsArr[] = $option->getNeededHelperFunctionName();
+					}
+
+					$module->changeVarInLangFile($option->lang_key.'_TITLE', $option->name, $optionsLangFilePath);
+					if ($option->default_value){
+						$module->changeVarInLangFile($option->lang_key."_DEFAULT_VALUE", $option->default_value, $optionsLangFilePath);
+					}
+					if ($option->type == 'selectbox' || $option->type == 'multiselectbox'){
+						if ($option->vals->count()){
+							foreach ($option->vals as $val){
+								$module->changeVarInLangFile($val->lang_key, $val->value, $optionsLangFilePath); // todo, а это всегда надо?
+							}
 						}
 					}
 				}
+
+				$optionsString .= "\t\t),".PHP_EOL."\t),".PHP_EOL;
 			}
 
 			// dd($helperFunctionsArr);
@@ -61,6 +72,21 @@ class BitrixAdminOptions extends Model{
 		}
 
 		Bitrix::changeVarsInModuleFileAndSave('bitrix'.DIRECTORY_SEPARATOR.'options.php', $module->id, Array("{OPTIONS}", "{HELPER_FUNCTIONS}"), Array($optionsString, $helperFunctions));
+	}
+
+	public function getPhpCodeString(){
+		$field_params_string = $this->getParamsStringForFile($this->type);
+
+		$default_value_string = "''";
+		if ($this->default_value){
+			$default_value_string = "Loc::getMessage('".$this->lang_key."_DEFAULT_VALUE')";
+		}
+
+		//dd($field_params_string);
+		// код, название, значение по умолчанию, [тип поля, параметры]
+		$string = PHP_EOL."\t\t\tarray('".$this->code."', Loc::getMessage('".$this->lang_key."_TITLE'), ".$default_value_string.", array('".$this->type."'".$field_params_string.")),";
+
+		return $string;
 	}
 
 	public function getNeededHelperFunctionName(){

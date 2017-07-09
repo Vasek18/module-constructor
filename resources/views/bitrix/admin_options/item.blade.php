@@ -6,7 +6,7 @@
            class="sort-val"
            name="option_sort[]"
            value="{{$i}}">
-    <div class="col-md-4 col-xs-12 xs-margin-bottom">
+    <div class="col-md-3 col-xs-12 xs-margin-bottom">
         <label class="sr-only"
                for="option_{{$i}}_name">{{ trans('bitrix_admin_options.name') }}</label>
         <input type="text"
@@ -45,14 +45,24 @@
             @endforeach
         </select>
     </div>
-    <div class="col-md-2 col-xs-8 xs-margin-bottom">
+    <div class="col-md-2 col-xs-12 xs-margin-bottom">
+        <label class="sr-only"
+               for="option_{{$i}}_id">{{ trans('bitrix_admin_options.tab_name') }}</label>
+        <input type="text"
+               class="form-control"
+               name="option_tab[]"
+               id="option_{{$i}}_id"
+               placeholder="{{ trans('bitrix_admin_options.tab_name') }}"
+               value="{{ $option && $option->tab ? $option->tab  : trans('bitrix_admin_options.tab_name_default') }}"
+               @unless ($option) data-translit_from="option_{{$i}}_name" @endif>
+    </div>
+    <div class="col-md-1 col-xs-8 xs-margin-bottom">
         <a href="#"
            class="btn btn-default btn-block"
            data-toggle="modal"
            data-target="#admin_options_dop_settings_window_{{$i}}">
-            <span class="">
-                {{ trans('bitrix_admin_options.additional_settings_button') }}
-            </span>
+            <span class="glyphicon glyphicon-pencil"
+                  aria-hidden="true"></span>
         </a>
     </div>
     <div class="col-md-1 col-xs-4 text-right">

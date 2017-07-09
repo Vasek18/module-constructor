@@ -1000,6 +1000,34 @@ class BitrixAdminOptionsFormFilesTest extends BitrixTestCase{
 
 		$this->assertArraySubset([$this->module->lang_key.'_OPTION_TEST_OLOLO_FROM_TEST_TITLE' => 'Test'], $optionsLangArr);
 	}
+
+	/** @test */
+	function smn_can_create_options_in_different_tabs(){
+		$this->createAdminOptionOnForm($this->module, 0, [
+			'name' => 'Ololo',
+			'code' => 'ololo_from_test',
+			'type' => 'text',
+			'tab'  => 'ololo',
+		]);
+		$this->createAdminOptionOnForm($this->module, 1, [
+			'name' => 'Test',
+			'code' => 'test_from_test',
+			'type' => 'text',
+			'tab'  => 'test',
+		]);
+
+		$optionsArr = $this->getPropsArrayFromFile($this->module);
+		$optionsLangArr = $this->getLangFileArray($this->module);
+
+		$optionArrExpected = [['ololo_from_test', "Loc::getMessage('".$this->module->lang_key."_OPTION_OLOLO_FROM_TEST_TITLE')", '', ['text', 0]]];
+		$this->assertEquals($optionArrExpected, $optionsArr[0]['OPTIONS']);
+
+		$optionArrExpected2 = [['test_from_test', "Loc::getMessage('".$this->module->lang_key."_OPTION_TEST_FROM_TEST_TITLE')", '', ['text', 0]]];
+		$this->assertEquals($optionArrExpected2, $optionsArr[1]['OPTIONS']);
+
+		$this->assertArraySubset([$this->module->lang_key.'_TAB_OLOLO' => 'ololo'], $optionsLangArr);
+		$this->assertArraySubset([$this->module->lang_key.'_TAB_TEST' => 'test'], $optionsLangArr);
+	}
 }
 
 ?>

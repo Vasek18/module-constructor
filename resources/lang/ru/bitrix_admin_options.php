@@ -6,6 +6,7 @@ return [
 	'option_code'                => 'Код свойства',
 	'option_type'                => 'Тип свойства',
 	'option_additional_settings' => 'Доп. поля',
+	'tab_name'                   => 'Вкладка',
 	'add_row'                    => 'Добавить строчку',
 	'save'                       => 'Сохранить',
 	'step_description'           => 'Здесь задаются настройки, которые можно будет получить на сайте через
@@ -39,4 +40,5 @@ return [
 	'textarea_type'              => 'Многострочный текст',
 	'no_additional_params'       => 'Нет доп. параметров',
 	'bitrix_receive_code'        => 'Код для получения значения',
+	'tab_name_default'           => 'Основное',
 ];

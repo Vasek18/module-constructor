@@ -23,7 +23,7 @@
                name="_token"
                value="{{ csrf_token() }}">
         <div class="row hidden-xs option-headers">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <label>{{ trans('bitrix_admin_options.option_name') }}</label>
             </div>
             <div class="col-md-3">
@@ -33,6 +33,9 @@
                 <label>{{ trans('bitrix_admin_options.option_type') }}</label>
             </div>
             <div class="col-md-2">
+                <label>{{ trans('bitrix_admin_options.tab_name') }}</label>
+            </div>
+            <div class="col-md-1">
                 <label>{{ trans('bitrix_admin_options.option_additional_settings') }}</label>
             </div>
             <div class="col-md-1"></div>

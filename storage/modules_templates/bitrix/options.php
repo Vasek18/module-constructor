@@ -19,11 +19,7 @@ $request = \Bitrix\Main\HttpApplication::getInstance()->getContext()->getRequest
 {HELPER_FUNCTIONS}
 
 $aTabs = array(
-	array(
-		'DIV'     => 'props',
-		'TAB'     => Loc::getMessage('{LANG_KEY}_TAB_SETTINGS'),
-		'OPTIONS' => array({OPTIONS})
-	),
+{OPTIONS}
 	array(
 		"DIV"     => "rights",
 		"TAB"     => Loc::getMessage("MAIN_TAB_RIGHTS"),
