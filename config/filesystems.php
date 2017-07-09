@@ -82,12 +82,12 @@ return [
 
 		'modules_templates' => [ // шаблоны модулей
 								 'driver' => 'local',
-								 'root'   => storage_path().'/modules_templates',
+								 'root'   => storage_path().DIRECTORY_SEPARATOR.'modules_templates',
 		],
 
 		'user_modules_bitrix' => [ // модули пользователей
 								   'driver' => 'local',
-								   'root'   => storage_path().'/user_modules_bitrix',
+								   'root'   => storage_path().DIRECTORY_SEPARATOR.'user_modules_bitrix',
 		],
 		
 		'logs'                => [
