@@ -982,6 +982,24 @@ class BitrixAdminOptionsFormFilesTest extends BitrixTestCase{
 		$this->assertArrayNotHasKey($this->module->lang_key.'_OPTION_OLOLO_FROM_TEST_TITLE', $optionsLangArr);
 		$this->assertArrayNotHasKey($this->module->lang_key.'_OPTION_OLOLO_FROM_TEST_TITLE_'.'A'.'_TITLE', $optionsLangArr);
 	}
+
+	/** @test */
+	function semicolon_in_name_doesnt_corrupt_lang_file(){
+		$this->createAdminOptionOnForm($this->module, 0, [
+			'name' => 'Какие данные собираются (через ;)',
+			'code' => 'ololo_from_test',
+			'type' => 'text',
+		]);
+		$this->createAdminOptionOnForm($this->module, 1, [
+			'name' => 'Test',
+			'code' => 'test_ololo_from_test',
+			'type' => 'text',
+		]);
+
+		$optionsLangArr = $this->getLangFileArray($this->module);
+
+		$this->assertArraySubset([$this->module->lang_key.'_OPTION_TEST_OLOLO_FROM_TEST_TITLE' => 'Test'], $optionsLangArr);
+	}
 }
 
 ?>

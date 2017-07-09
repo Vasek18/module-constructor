@@ -14,7 +14,9 @@
                name="option_name[]"
                id="option_{{$i}}_name"
                placeholder="{{ trans('bitrix_admin_options.name') }}"
-               value="{{$option ? $option->name : ''}}">
+               value="{{$option ? $option->name : ''}}"
+               pattern="[^;]+"
+        >
     </div>
     <div class="col-md-3 col-xs-12 xs-margin-bottom">
         <label class="sr-only"
@@ -25,6 +27,7 @@
                id="option_{{$i}}_id"
                placeholder="{{ trans('bitrix_admin_options.code') }}"
                value="{{$option ? $option->code : ''}}"
+               {{--               {{ $option && $option->code ? 'disabled' : ''}}--}}
                @unless ($option) data-translit_from="option_{{$i}}_name" @endif>
     </div>
     <div class="col-md-2 col-xs-12 xs-margin-bottom">
@@ -36,7 +39,8 @@
             @foreach($options_types as $type)
                 <option @if ($option && $option['type'] == $type['FORM_TYPE']) selected
                         @endif
-                        @if ((!$option || !$option['type']) && $type['FORM_TYPE'] == 'text') selected @endif
+                        @if ((!$option || !$option['type']) && $type['FORM_TYPE'] == 'text') selected
+                        @endif
                         value="{{$type['FORM_TYPE']}}">{{ trans('bitrix_admin_options.'.$type['FORM_TYPE'].'_type') }}</option>
             @endforeach
         </select>

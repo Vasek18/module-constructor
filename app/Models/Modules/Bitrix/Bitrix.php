@@ -286,7 +286,10 @@ if(IsModuleInstalled(\''.$this->full_id.'\')){
 		if (strpos($path, DIRECTORY_SEPARATOR.$this->module_folder) !== 0){
 			$path = $this->module_folder.$path;
 		}
+
+		// экранирование
 		$var = str_replace('"', '\"', $var);
+		$var = str_replace(';', '', $var);
 
 		if ($this->disk()->exists($path)){
 			$langFile = $this->disk()->get($path);
