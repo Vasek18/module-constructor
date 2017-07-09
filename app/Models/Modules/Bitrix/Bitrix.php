@@ -278,10 +278,12 @@ if(IsModuleInstalled(\''.$this->full_id.'\')){
 	// мб в vArrParse перенести
 	// todo перенести работу с лангами всех сущностей Битрикса сюда
 	public function changeVarInLangFile($key, $var, $path){
-		if (substr($path, 0, 1) != '/'){
-			$path = '/'.$path;
+		// делаем путь путём от корня
+		if (substr($path, 0, 1) != DIRECTORY_SEPARATOR){
+			$path = DIRECTORY_SEPARATOR.$path;
 		}
-		if (strpos($path, '/'.$this->module_folder) !== 0){
+		// добавляем в путь папку проекта
+		if (strpos($path, DIRECTORY_SEPARATOR.$this->module_folder) !== 0){
 			$path = $this->module_folder.$path;
 		}
 		$var = str_replace('"', '\"', $var);
