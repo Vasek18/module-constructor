@@ -15,9 +15,11 @@
                     </a>
                 </li>
             </ul>
-            <h2>{{ trans('project_help.material_help_title') }}</h2>
-            <p class="big-text">{!! trans('project_help.material_help_p') !!}</p>
-            @include('donate_form')
+            @if (setting('donat'))
+                <h2>{{ trans('project_help.material_help_title') }}</h2>
+                <p class="big-text">{!! trans('project_help.material_help_p') !!}</p>
+                @include('donate_form')
+            @endif
             <h2>{{ trans('project_help.any_other_ideas') }}</h2>
             <p class="big-text">{!! trans('project_help.write_your_ideas') !!}
                 <a href="mailto:{{ env('PUBLIC_EMAIL') }}"><b>{{ env('PUBLIC_EMAIL') }}</b></a>
