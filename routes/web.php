@@ -152,6 +152,11 @@ Route::group(['prefix' => 'my-bitrix', 'middleware' => ['bitrix.owner', 'auth']]
 		// элементы
 		Route::group(['prefix' => '{iblock}/elements'], function (){
 		});
+
+		// пользовательские свойства
+		Route::group(['prefix' => 'user_fields'], function (){
+			Route::get('create', 'Modules\Bitrix\BitrixUserFieldsController@create');
+		});
 	});
 
 	// произвольные файлы
