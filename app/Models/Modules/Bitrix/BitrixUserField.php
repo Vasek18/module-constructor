@@ -8,6 +8,7 @@ class BitrixUserField extends Model{
 	protected $table = 'bitrix_user_fields';
 	protected $fillable = [
 		'id',
+		'module_id',
 		'user_type_id',
 		'entity_id',
 		'field_name',

@@ -13,7 +13,9 @@ class CreateBitrixUserFieldsTable extends Migration{
 	public function up(){
 		Schema::create('bitrix_user_fields', function (Blueprint $table){
 			$table->increments('id');
-			$table->integer('user_type_id');
+			$table->integer('module_id')->unsigned();
+			$table->foreign('module_id')->references('id')->on('bitrixes')->onDelete('cascade');
+			$table->string('user_type_id');
 			$table->string('entity_id');
 			$table->string('field_name');
 			$table->string('xml_id');
