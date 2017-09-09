@@ -28,11 +28,27 @@ class BitrixUserField extends Model{
 		'help_message',
 	];
 	public $timestamps = false;
-	protected $casts = [
-		'settings'          => 'array',
-		'edit_form_label'   => 'array',
-		'list_column_label' => 'array',
-		'list_filter_label' => 'array',
-		'error_message'     => 'array',
-	];
+	// protected $casts = [
+	// 	'settings'          => 'array',
+	// 	'edit_form_label'   => 'array',
+	// 	'list_column_label' => 'array',
+	// 	'list_filter_label' => 'array',
+	// 	'error_message'     => 'array',
+	// ];
+
+	public function setSettingsAttribute($value){
+		$this->attributes['settings'] = is_array($value) ? json_encode($value) : $value;
+	}
+	public function setEditFormLabelAttribute($value){
+		$this->attributes['edit_form_label'] = is_array($value) ? json_encode($value) : $value;
+	}
+	public function setListColumnEditAttribute($value){
+		$this->attributes['list_column_label'] = is_array($value) ? json_encode($value) : $value;
+	}
+	public function setListFilterLabelAttribute($value){
+		$this->attributes['list_filter_label'] = is_array($value) ? json_encode($value) : $value;
+	}
+	public function setErrorMessageAttribute($value){
+		$this->attributes['error_message'] = is_array($value) ? json_encode($value) : $value;
+	}
 }

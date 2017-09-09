@@ -9,6 +9,11 @@
 @stop
 
 @section('page')
+
+    @push('scripts')
+    <script src="/js/bitrix_user_fields.js"></script>
+    @endpush
+
     <form action="{{ action('Modules\Bitrix\BitrixUserFieldsController@store', [$module->id]) }}"
           method="post">
         {{ csrf_field() }}
@@ -16,7 +21,7 @@
             <tr>
                 <td>Тип данных (можно задать только для нового поля):</td>
                 <td>
-                    <select class="form-control"
+                    <select class="form-control js-change-fields-visibility"
                             name="user_type_id"
                             required>
                         <option value="string">Строка</option>
@@ -136,9 +141,9 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="2">Дополнительные настройки поля (зависят от типа)</td>
+                <td colspan="2"><h2>Дополнительные настройки поля (зависят от типа)</h2></td>
             </tr>
-            <tr>
+            <tr data-for_types="string">
                 <td>Значение по умолчанию:</td>
                 <td>
                     <input type="text"
@@ -147,7 +152,7 @@
                            value="">
                 </td>
             </tr>
-            <tr>
+            <tr data-for_types="string">
                 <td>Размер поля ввода для отображения:</td>
                 <td>
                     <input type="text"
@@ -156,7 +161,7 @@
                            value="20">
                 </td>
             </tr>
-            <tr>
+            <tr data-for_types="string">
                 <td>Количество строчек поля ввода:</td>
                 <td>
                     <input type="text"
@@ -165,7 +170,7 @@
                            value="1">
                 </td>
             </tr>
-            <tr>
+            <tr data-for_types="string">
                 <td>Минимальная длина строки (0 - не проверять):</td>
                 <td>
                     <input type="text"
@@ -174,7 +179,7 @@
                            value="0">
                 </td>
             </tr>
-            <tr>
+            <tr data-for_types="string">
                 <td>Максимальная длина строки (0 - не проверять):</td>
                 <td>
                     <input type="text"
@@ -183,7 +188,7 @@
                            value="0">
                 </td>
             </tr>
-            <tr>
+            <tr data-for_types="string">
                 <td>Регулярное выражение для проверки:</td>
                 <td>
                     <input type="text"
