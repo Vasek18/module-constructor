@@ -24,21 +24,9 @@
                     <select class="form-control js-change-fields-visibility"
                             name="user_type_id"
                             required>
-                        <option value="string">Строка</option>
-                        <option value="video">Видео</option>
-                        <option value="hlblock">Привязка к элементам highload-блоков</option>
-                        <option value="integer">Целое число</option>
-                        <option value="double">Число</option>
-                        <option value="datetime">Дата со временем</option>
-                        <option value="date">Дата</option>
-                        <option value="boolean">Да/Нет</option>
-                        <option value="file">Файл</option>
-                        <option value="enumeration">Список</option>
-                        <option value="iblock_section">Привязка к разделам инф. блоков</option>
-                        <option value="iblock_element">Привязка к элементам инф. блоков</option>
-                        <option value="string_formatted">Шаблон</option>
-                        <option value="vote">Опрос</option>
-                        <option value="url_preview">Содержимое ссылки</option>
+                        @foreach($userFieldTypes as $type)
+                            <option value="{{ $type['code'] }}">{{ $type['name'] }}</option>
+                        @endforeach
                     </select>
                 </td>
             </tr>

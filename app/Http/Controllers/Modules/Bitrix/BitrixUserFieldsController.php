@@ -14,8 +14,9 @@ class BitrixUserFieldsController extends Controller{
 
 	public function create(Bitrix $module, Request $request){
 		$data = [
-			'module'     => $module,
-			'user_field' => null,
+			'module'         => $module,
+			'userFieldTypes' => BitrixUserField::$types,
+			'user_field'     => null,
 		];
 
 		return view("bitrix.data_storage.user_fields.add", $data);
