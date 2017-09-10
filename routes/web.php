@@ -157,6 +157,8 @@ Route::group(['prefix' => 'my-bitrix', 'middleware' => ['bitrix.owner', 'auth']]
 		Route::group(['prefix' => 'user_fields'], function (){
 			Route::get('create', 'Modules\Bitrix\BitrixUserFieldsController@create');
 			Route::post('store', 'Modules\Bitrix\BitrixUserFieldsController@store');
+			Route::get('{user_field}/edit', 'Modules\Bitrix\BitrixUserFieldsController@edit');
+			Route::post('{user_field}/update', 'Modules\Bitrix\BitrixUserFieldsController@update');
 		});
 	});
 

@@ -41,7 +41,7 @@ class BitrixUserField extends Model{
 	// ];
 
 	public static $types = [
-		'string'           => [
+		'string' => [
 			'name' => 'Строка',
 			'code' => 'string'
 		],
@@ -121,5 +121,25 @@ class BitrixUserField extends Model{
 
 	public function setErrorMessageAttribute($value){
 		$this->attributes['error_message'] = is_array($value) ? json_encode($value) : $value;
+	}
+
+	public function getSettingsAttribute($value){
+		return (array)json_decode($value);
+	}
+
+	public function getEditFormLabelAttribute($value){
+		return (array)json_decode($value);
+	}
+
+	public function getListColumnEditAttribute($value){
+		return (array)json_decode($value);
+	}
+
+	public function getListFilterLabelAttribute($value){
+		return (array)json_decode($value);
+	}
+
+	public function getErrorMessageAttribute($value){
+		return (array)json_decode($value);
 	}
 }
