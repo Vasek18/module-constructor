@@ -131,7 +131,7 @@ class BitrixUserField extends Model{
 		return (array)json_decode($value);
 	}
 
-	public function getListColumnEditAttribute($value){
+	public function getListColumnLabelAttribute($value){
 		return (array)json_decode($value);
 	}
 
@@ -140,6 +140,9 @@ class BitrixUserField extends Model{
 	}
 
 	public function getErrorMessageAttribute($value){
+		return (array)json_decode($value);
+	}
+	public function getHelpMessageAttribute($value){
 		return (array)json_decode($value);
 	}
 }
