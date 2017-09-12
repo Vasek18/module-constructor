@@ -142,6 +142,7 @@ class BitrixUserField extends Model{
 	public function getErrorMessageAttribute($value){
 		return (array)json_decode($value);
 	}
+
 	public function getHelpMessageAttribute($value){
 		return (array)json_decode($value);
 	}

@@ -33,6 +33,25 @@
             @endforeach
         </div>
     @endif
+    <h2>Пользовательские поля</h2>
+    @if (count($user_fields))
+        <div class="list-group">
+            @foreach($user_fields as $user_field)
+                <div class="list-group-item clearfix infoblock deletion_wrapper">
+                    <a href="{{ action('Modules\Bitrix\BitrixUserFieldsController@show', [$module->id, $user_field->id]) }}">
+                       Пользовательское поле {{$user_field->field_name}}
+                    </a>
+                    <a href="{{ action('Modules\Bitrix\BitrixUserFieldsController@destroy', [$module->id, $user_field->id]) }}"
+                       class="btn btn-danger pull-right deletion-with-confirm"
+                       data-method="get"
+                       id="delete_user_field_{{$user_field->id}}">
+                        <span class="glyphicon glyphicon-trash"
+                              aria-hidden="true"></span>
+                    </a>
+                </div>
+            @endforeach
+        </div>
+    @endif
 
     @include('bitrix.data_storage.xml_ib_import_modal', [ 'module' => $module])
 @stop

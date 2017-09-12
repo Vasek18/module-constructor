@@ -558,6 +558,10 @@ if(IsModuleInstalled(\''.$this->full_id.'\')){
 		return $this->hasMany('App\Models\Modules\Bitrix\BitrixInfoblocks', 'module_id');
 	}
 
+	public function user_fields(){
+		return $this->hasMany('App\Models\Modules\Bitrix\BitrixUserField', 'module_id');
+	}
+
 	public function mailEvents(){
 		return $this->hasMany('App\Models\Modules\Bitrix\BitrixMailEvents', 'module_id');
 	}

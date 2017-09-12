@@ -29,6 +29,7 @@ class BitrixDataStorageController extends Controller{
 		$data = [
 			'module'     => $module,
 			'infoblocks' => $module->infoblocks()->get(),
+			'user_fields' => $module->user_fields()->get(),
 		];
 
 		//dd($data);
