@@ -164,7 +164,7 @@
                                 <input type="text"
                                        class="form-control"
                                        name="settings[DEFAULT_VALUE]"
-                                       value="{{ isset($userField) ? $userField->settings['DEFAULT_VALUE'] : '' }}"
+                                       value="{{ isset($userField) && isset($userField->settings['DEFAULT_VALUE']) ? $userField->settings['DEFAULT_VALUE'] : '' }}"
                                 >
                             </td>
                         </tr>
@@ -174,7 +174,7 @@
                                 <input type="text"
                                        class="form-control"
                                        name="settings[SIZE]"
-                                       value="{{ isset($userField) ? $userField->settings['SIZE'] : '20' }}"
+                                       value="{{ isset($userField) && isset($userField->settings['SIZE']) ? $userField->settings['SIZE'] : '20' }}"
                                 >
                             </td>
                         </tr>
@@ -184,7 +184,7 @@
                                 <input type="text"
                                        class="form-control"
                                        name="settings[ROWS]"
-                                       value="{{ isset($userField) ? $userField->settings['ROWS'] : '1' }}"
+                                       value="{{ isset($userField) && isset($userField->settings['ROWS']) ? $userField->settings['ROWS'] : '1' }}"
                                 >
                             </td>
                         </tr>
@@ -194,7 +194,7 @@
                                 <input type="text"
                                        class="form-control"
                                        name="settings[MIN_LENGTH]"
-                                       value="{{ isset($userField) ? $userField->settings['MIN_LENGTH'] : '0' }}"
+                                       value="{{ isset($userField) && isset($userField->settings['MIN_LENGTH']) ? $userField->settings['MIN_LENGTH'] : '0' }}"
                                 >
                             </td>
                         </tr>
@@ -204,7 +204,7 @@
                                 <input type="text"
                                        class="form-control"
                                        name="settings[MAX_LENGTH]"
-                                       value="{{ isset($userField) ? $userField->settings['MAX_LENGTH'] : '0' }}"
+                                       value="{{ isset($userField) && isset($userField->settings['MAX_LENGTH']) ? $userField->settings['MAX_LENGTH'] : '0' }}"
                                 >
                             </td>
                         </tr>
@@ -214,7 +214,7 @@
                                 <input type="text"
                                        class="form-control"
                                        name="settings[REGEXP]"
-                                       value="{{ isset($userField) ? $userField->settings['REGEXP'] : '' }}"
+                                       value="{{ isset($userField) && isset($userField->settings['REGEXP']) ? $userField->settings['REGEXP'] : '' }}"
                                 >
                             </td>
                         </tr>
@@ -238,35 +238,35 @@
                                             <input type="text"
                                                    class="form-control"
                                                    name="edit_form_label[ru]"
-                                                   value="{{ isset($userField) ? $userField->edit_form_label['ru'] : '' }}"
+                                                   value="{{ isset($userField) && isset($userField->edit_form_label['ru']) ? $userField->edit_form_label['ru'] : '' }}"
                                                    required>
                                         </td>
                                         <td>
                                             <input type="text"
                                                    class="form-control"
                                                    name="list_column_label[ru]"
-                                                   value="{{ isset($userField) ? $userField->list_column_label['ru'] : '' }}"
+                                                   value="{{ isset($userField) && isset($userField->list_column_label['ru']) ? $userField->list_column_label['ru'] : '' }}"
                                             >
                                         </td>
                                         <td>
                                             <input type="text"
                                                    class="form-control"
                                                    name="list_filter_label[ru]"
-                                                   value="{{ isset($userField) ? $userField->list_filter_label['ru'] : '' }}"
+                                                   value="{{ isset($userField) && isset($userField->list_filter_label['ru']) ? $userField->list_filter_label['ru'] : '' }}"
                                             >
                                         </td>
                                         <td>
                                             <input type="text"
                                                    class="form-control"
                                                    name="error_message[ru]"
-                                                   value="{{ isset($userField) ? $userField->error_message['ru'] : '' }}"
+                                                   value="{{ isset($userField) && isset($userField->error_message['ru']) ? $userField->error_message['ru'] : '' }}"
                                             >
                                         </td>
                                         <td>
                                             <input type="text"
                                                    class="form-control"
                                                    name="help_message[ru]"
-                                                   value="{{ isset($userField) ? $userField->help_message['ru'] : '' }}"
+                                                   value="{{ isset($userField) && isset($userField->help_message['ru']) ? $userField->help_message['ru'] : '' }}"
                                             >
                                         </td>
                                     </tr>
@@ -276,35 +276,35 @@
                                             <input type="text"
                                                    class="form-control"
                                                    name="edit_form_label[en]"
-                                                   value="{{ isset($userField) ? $userField->edit_form_label['en'] : '' }}"
+                                                   value="{{ isset($userField) && isset($userField->edit_form_label['en']) ? $userField->edit_form_label['en'] : '' }}"
                                             >
                                         </td>
                                         <td>
                                             <input type="text"
                                                    class="form-control"
                                                    name="list_column_label[en]"
-                                                   value="{{ isset($userField) ? $userField->list_column_label['en'] : '' }}"
+                                                   value="{{ isset($userField) && isset($userField->list_column_label['en']) ? $userField->list_column_label['en'] : '' }}"
                                             >
                                         </td>
                                         <td>
                                             <input type="text"
                                                    class="form-control"
                                                    name="list_filter_label[en]"
-                                                   value="{{ isset($userField) ? $userField->list_filter_label['en'] : '' }}"
+                                                   value="{{ isset($userField) && isset($userField->list_filter_label['en']) ? $userField->list_filter_label['en'] : '' }}"
                                             >
                                         </td>
                                         <td>
                                             <input type="text"
                                                    class="form-control"
                                                    name="error_message[en]"
-                                                   value="{{ isset($userField) ? $userField->error_message['en'] : '' }}"
+                                                   value="{{ isset($userField) && isset($userField->error_message['en']) ? $userField->error_message['en'] : '' }}"
                                             >
                                         </td>
                                         <td>
                                             <input type="text"
                                                    class="form-control"
                                                    name="help_message[en]"
-                                                   value="{{ isset($userField) ? $userField->help_message['en'] : '' }}"
+                                                   value="{{ isset($userField) && isset($userField->help_message['en']) ? $userField->help_message['en'] : '' }}"
                                             >
                                         </td>
                                     </tr>

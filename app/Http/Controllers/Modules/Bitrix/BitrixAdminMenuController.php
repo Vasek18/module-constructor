@@ -59,6 +59,7 @@ class BitrixAdminMenuController extends Controller{
 		return redirect(action('Modules\Bitrix\BitrixAdminMenuController@show', [$module->id, $admin_menu_page->id]));
 	}
 
+	// todo проверка принадлежности к модулю
 	public function show(Bitrix $module, BitrixAdminMenuItems $admin_menu_page, Request $request){
 		$data = [
 			'module'           => $module,
@@ -73,6 +74,7 @@ class BitrixAdminMenuController extends Controller{
 		//
 	}
 
+	// todo проверка принадлежности к модулю
 	public function update(Bitrix $module, BitrixAdminMenuItems $admin_menu_page, Requests\AdminPageFormRequest $request){
 		$admin_menu_page->update([
 				'name'        => $request->name,
@@ -90,6 +92,7 @@ class BitrixAdminMenuController extends Controller{
 		return redirect(action('Modules\Bitrix\BitrixAdminMenuController@show', [$module->id, $admin_menu_page->id]));
 	}
 
+	// todo проверка принадлежности к модулю
 	public function destroy(Bitrix $module, BitrixAdminMenuItems $admin_menu_page, Request $request){
 		$admin_menu_page->delete();
 
