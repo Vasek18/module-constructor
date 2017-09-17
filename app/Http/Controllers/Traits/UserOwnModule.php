@@ -6,6 +6,7 @@ use App\Models\Modules\Bitrix\BitrixIblocksElements;
 use App\Models\Modules\Bitrix\BitrixIblocksProps;
 use App\Models\Modules\Bitrix\BitrixIblocksSections;
 use App\Models\Modules\Bitrix\BitrixInfoblocks;
+use App\Models\Modules\Bitrix\BitrixUserField;
 use Illuminate\Http\Request;
 use App\Models\Modules\Bitrix\Bitrix;
 use App\Models\Modules\Bitrix\BitrixComponent;
@@ -79,6 +80,10 @@ trait UserOwnModule{
 
 	protected function iblockOwnsSection(BitrixInfoblocks $iblock, BitrixIblocksSections $section){
 		return $section->iblock_id == $iblock->id;
+	}
+
+	protected function moduleOwnsUserField(Bitrix $module, BitrixUserField $user_field){
+		return $user_field->module->id == $module->id;
 	}
 }
 

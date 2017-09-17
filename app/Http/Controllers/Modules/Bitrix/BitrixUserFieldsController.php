@@ -48,8 +48,11 @@ class BitrixUserFieldsController extends Controller{
 		return redirect(action('Modules\Bitrix\BitrixUserFieldsController@edit', [$module->id, $userField->id]));
 	}
 
-	// todo проверка принадлежности к модулю
 	public function edit(Bitrix $module, BitrixUserField $user_field, Request $request){
+		if (!$this->moduleOwnsUserField($module, $user_field)){
+			return $this->unauthorized($request);
+		}
+
 		$data = [
 			'module'         => $module,
 			'userFieldTypes' => BitrixUserField::$types,
@@ -59,8 +62,11 @@ class BitrixUserFieldsController extends Controller{
 		return view("bitrix.data_storage.user_fields.add", $data);
 	}
 
-	// todo проверка принадлежности к модулю
 	public function update(Bitrix $module, BitrixUserField $user_field, Request $request){
+		if (!$this->moduleOwnsUserField($module, $user_field)){
+			return $this->unauthorized($request);
+		}
+
 		$user_field->update([
 			'user_type_id'      => $request->user_type_id,
 			'entity_id'         => $request->entity_id,
@@ -84,8 +90,11 @@ class BitrixUserFieldsController extends Controller{
 		return redirect(action('Modules\Bitrix\BitrixUserFieldsController@edit', [$module->id, $user_field->id]));
 	}
 
-	// todo проверка принадлежности к модулю
 	public function destroy(Bitrix $module, BitrixUserField $user_field, Request $request){
+		if (!$this->moduleOwnsUserField($module, $user_field)){
+			return $this->unauthorized($request);
+		}
+
 		$user_field->delete();
 
 		return redirect(action('Modules\Bitrix\BitrixDataStorageController@index', [$module->id]));

@@ -146,4 +146,8 @@ class BitrixUserField extends Model{
 	public function getHelpMessageAttribute($value){
 		return (array)json_decode($value);
 	}
+
+	public function module(){
+		return $this->belongsTo('App\Models\Modules\Bitrix\Bitrix');
+	}
 }
