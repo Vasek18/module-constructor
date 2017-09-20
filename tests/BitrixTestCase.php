@@ -15,6 +15,7 @@ use App\Models\Modules\Bitrix\BitrixMailEvents;
 use App\Models\Modules\Bitrix\BitrixMailEventsTemplate;
 use App\Models\Modules\Bitrix\BitrixEventsHandlers;
 use Illuminate\Support\Facades\Mail;
+use App\Models\Modules\Bitrix\BitrixUserField;
 
 class BitrixTestCase extends TestCase{
 	public $module;
@@ -402,6 +403,35 @@ class BitrixTestCase extends TestCase{
 
 		if (isset($params['CODE'])){
 			return BitrixInfoblocks::where('code', $params['CODE'])->where('module_id', $module->id)->first();
+		}
+
+		return true;
+	}
+
+	function createUserFieldOnForm($module, $params = []){
+		$this->visit('/my-bitrix/'.$module->id.'/data_storage/user_fields/create');
+		$inputs = [];
+
+		if (!isset($params['entity_id'])){
+			$params['entity_id'] = 'USER';
+		}
+		if (!isset($params['field_name'])){
+			$params['field_name'] = 'UF_TEST';
+		}
+		if (!isset($params['edit_form_label[ru]'])){
+			$params['edit_form_label[ru]'] = 'Test';
+		}
+
+		foreach ($params as $code => $val){
+			$inputs[$code] = $val;
+		}
+
+		//dd($params);
+
+		$this->submitForm('save', $inputs);
+
+		if (isset($params['field_name'])){
+			return BitrixUserField::where('field_name', $params['field_name'])->where('module_id', $module->id)->first();
 		}
 
 		return true;
