@@ -503,6 +503,18 @@ if(IsModuleInstalled(\''.$this->full_id.'\')){
 		return $files;
 	}
 
+	public function changeInstallFileFunctionCode($functionName, $code){
+		$module_folder = $this->module_folder;
+		$path = $module_folder.'/install/index.php';
+		$file = $this->disk()->get($path);
+
+		$functionCodeTemplate = vFuncParse::parseFromFile($this->getFolder(true).'/install/index.php', $functionName);
+
+		$file = str_replace($functionCodeTemplate, $code, $file);
+
+		$this->disk()->put($path, $file);
+	}
+
 	public function getCanDownloadAttribute(){
 		$user = User::find(Auth::id());
 

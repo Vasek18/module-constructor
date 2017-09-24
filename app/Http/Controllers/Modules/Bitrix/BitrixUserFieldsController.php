@@ -45,6 +45,8 @@ class BitrixUserFieldsController extends Controller{
 			'help_message'      => json_encode($request->help_message),
 		]);
 
+		BitrixUserField::writeInFile($module);
+
 		return redirect(action('Modules\Bitrix\BitrixUserFieldsController@edit', [$module->id, $userField->id]));
 	}
 
@@ -58,6 +60,8 @@ class BitrixUserFieldsController extends Controller{
 			'userFieldTypes' => BitrixUserField::$types,
 			'userField'      => $user_field,
 		];
+
+		BitrixUserField::writeInFile($module);
 
 		return view("bitrix.data_storage.user_fields.add", $data);
 	}
@@ -87,6 +91,8 @@ class BitrixUserFieldsController extends Controller{
 			'help_message'      => json_encode($request->help_message),
 		]);
 
+		BitrixUserField::writeInFile($module);
+
 		return redirect(action('Modules\Bitrix\BitrixUserFieldsController@edit', [$module->id, $user_field->id]));
 	}
 
@@ -95,7 +101,11 @@ class BitrixUserFieldsController extends Controller{
 			return $this->unauthorized($request);
 		}
 
+		$user_field->cleanLangFromYourself();
+
 		$user_field->delete();
+
+		BitrixUserField::writeInFile($module);
 
 		return redirect(action('Modules\Bitrix\BitrixDataStorageController@index', [$module->id]));
 	}

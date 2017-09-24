@@ -233,7 +233,7 @@
                                         <td>Помощь</td>
                                     </tr>
                                     <tr>
-                                        <td>Russian:</td>
+                                        <td>Русский:</td>
                                         <td>
                                             <input type="text"
                                                    class="form-control"
