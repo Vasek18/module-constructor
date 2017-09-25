@@ -20,7 +20,11 @@ class vFuncParse{
 	// переименовать в getFullCode
 	public static function parseFromText($text, $funcName){
 		$funcBeginning = static::getBeginningOfFunction($text, $funcName);
+		if (!$funcBeginning){
+			return false;
+		}
 		//dd($funcBeginning);
+
 		$funcBeginningPos = static::getBeginningPosOfFunction($text, $funcBeginning);
 		// dd($funcBeginningPos);
 		$funcEndingPos = static::getEndingPosOfFunction($text, $funcBeginning, $funcBeginningPos);

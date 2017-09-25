@@ -3,7 +3,6 @@
 namespace App\Models\Modules\Bitrix;
 
 use App\Helpers\vFuncParse;
-use App\Helpers\vLang;
 use App\Helpers\vZipArchive;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -508,11 +507,16 @@ if(IsModuleInstalled(\''.$this->full_id.'\')){
 		$path = $module_folder.'/install/index.php';
 		$file = $this->disk()->get($path);
 
-		$functionCodeTemplate = vFuncParse::parseFromFile($this->getFolder(true).'/install/index.php', $functionName);
+		$functionCodeTemplate = vFuncParse::parseFromText($file, $functionName);
+		if (!$functionCodeTemplate){
+			return false;
+		}
 
 		$file = str_replace($functionCodeTemplate, $code, $file);
 
 		$this->disk()->put($path, $file);
+
+		return true;
 	}
 
 	public function getCanDownloadAttribute(){

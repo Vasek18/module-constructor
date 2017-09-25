@@ -133,6 +133,14 @@ Class {MODULE_CLASS_NAME} extends CModule{
 		return true;
 	}
 
+	function createNecessaryUserFields(){
+		return true;
+	}
+
+	function deleteNecessaryUserFields(){
+		return true;
+	}
+
 	function createNecessaryMailEvents(){
 		return true;
 	}

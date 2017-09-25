@@ -17,4 +17,3 @@ function removeUserField($code){
 		$oUserTypeEntity->Delete($arRes['ID']);
 	}
 }
-}

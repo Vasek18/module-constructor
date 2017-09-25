@@ -97,7 +97,7 @@ class BitrixUserField extends Model{
 
 	public static $creationFunctionName = 'createNecessaryUserFields';
 	public static $deletionFunctionName = 'deleteNecessaryUserFields';
-	public static $helperFunctionsFileName = 'iblock.php';
+	public static $helperFunctionsFileName = 'user_fields.php';
 	public static $creationHelperFunctionName = 'createUserField';
 	public static $deletionHelperFunctionName = 'removeUserField';
 
@@ -116,13 +116,13 @@ class BitrixUserField extends Model{
 		$code = 'function '.static::$creationFunctionName.'(){'.PHP_EOL;
 		if ($module->user_fields()->count()){
 			foreach ($module->user_fields as $user_field){
-				$code .= $user_field->generateCreationCode();
+				$code .= "\t"."\t".$user_field->generateCreationCode();
 			}
 
 		}else{
 			$code .= "\t"."\t".'return true;'.PHP_EOL;
 		}
-		$code .= "\t".'}';
+		$code .= '}';
 
 		return $code;
 	}
@@ -161,7 +161,6 @@ class BitrixUserField extends Model{
 	public static function manageHelpersFunctions(Bitrix $module){
 		if ($module->user_fields()->count()){
 			$module->addAdditionalInstallHelpersFunctions([static::$creationHelperFunctionName, static::$deletionHelperFunctionName], static::$helperFunctionsFileName);
-
 		}else{
 			$module->removeAdditionalInstallHelpersFunctions([static::$creationHelperFunctionName, static::$deletionHelperFunctionName]);
 		}
