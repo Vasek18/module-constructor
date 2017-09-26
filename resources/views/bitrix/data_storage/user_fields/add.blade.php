@@ -270,7 +270,7 @@
                                             >
                                         </td>
                                     </tr>
-                                    <tr>
+                                    {{--<tr>
                                         <td>English:</td>
                                         <td>
                                             <input type="text"
@@ -307,7 +307,7 @@
                                                    value="{{ isset($userField) && isset($userField->help_message['en']) ? $userField->help_message['en'] : '' }}"
                                             >
                                         </td>
-                                    </tr>
+                                    </tr>--}}
                                 </table>
                             </td>
                         </tr>

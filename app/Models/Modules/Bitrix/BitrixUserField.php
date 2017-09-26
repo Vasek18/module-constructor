@@ -2,6 +2,7 @@
 
 namespace App\Models\Modules\Bitrix;
 
+use App\Helpers\PhpCodeGeneration;
 use Illuminate\Database\Eloquent\Model;
 
 class BitrixUserField extends Model{
@@ -142,7 +143,9 @@ class BitrixUserField extends Model{
 	}
 
 	public function generateCreationCode(){
-		$code = '$this->'.static::$creationHelperFunctionName.'('.$this->getCreationParamsArrayCode().');'.PHP_EOL;
+		$code = '$this->'.static::$creationHelperFunctionName.'('.PHP_EOL.
+			$this->getCreationParamsArrayCode(3).PHP_EOL.
+			"\t"."\t".');'.PHP_EOL;
 
 		return $code;
 	}
@@ -153,9 +156,38 @@ class BitrixUserField extends Model{
 		return $code;
 	}
 
-	// todo
-	public function getCreationParamsArrayCode(){
-		return 'Array()';
+	public function getCreationParamsArrayCode($tabsCount = 0){
+		$params = [
+			'USER_TYPE_ID'      => $this->user_type_id,
+			'ENTITY_ID'         => $this->entity_id,
+			'FIELD_NAME'        => $this->field_name,
+			'XML_ID'            => $this->xml_id,
+			'SORT'              => $this->sort,
+			'MULTIPLE'          => $this->multiple,
+			'MANDATORY'         => $this->mandatory,
+			'SHOW_FILTER'       => $this->show_filter,
+			'SHOW_IN_LIST'      => $this->show_in_list,
+			'EDIT_IN_LIST'      => $this->edit_in_list,
+			'IS_SEARCHABLE'     => $this->is_searchable,
+			'SETTINGS'          => $this->settings,
+			'EDIT_FORM_LABEL'   => [
+				'ru' => 'Loc::getMessage('.$this->lang_key.'_EDIT_FORM_LABEL)',
+			],
+			'LIST_COLUMN_LABEL' => [
+				'ru' => 'Loc::getMessage('.$this->lang_key.'_LIST_COLUMN_LABEL)',
+			],
+			'LIST_FILTER_LABEL' => [
+				'ru' => 'Loc::getMessage('.$this->lang_key.'_LIST_FILTER_LABEL)',
+			],
+			'ERROR_MESSAGE'     => [
+				'ru' => 'Loc::getMessage('.$this->lang_key.'_ERROR_MESSAGE)',
+			],
+			'HELP_MESSAGE'      => [
+				'ru' => 'Loc::getMessage('.$this->lang_key.'_HELP_MESSAGE)',
+			],
+		];
+
+		return PhpCodeGeneration::makeArrayCode($params, $tabsCount, '');
 	}
 
 	public static function manageHelpersFunctions(Bitrix $module){
@@ -225,6 +257,10 @@ class BitrixUserField extends Model{
 
 	public function getCodeAttribute($value){
 		return $this->field_name;
+	}
+
+	public function getLangKeyAttribute(){
+		return strtoupper($this->module()->first()->lang_key.'_USER_FIELD_'.strtoupper($this->code));
 	}
 
 	// связи с другими модулями
