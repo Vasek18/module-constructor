@@ -163,12 +163,12 @@ class BitrixUserField extends Model{
 			'FIELD_NAME'        => $this->field_name,
 			'XML_ID'            => $this->xml_id,
 			'SORT'              => $this->sort,
-			'MULTIPLE'          => $this->multiple,
-			'MANDATORY'         => $this->mandatory,
+			'MULTIPLE'          => $this->multiple ? 'Y' : 'N',
+			'MANDATORY'         => $this->mandatory ? 'Y' : 'N',
 			'SHOW_FILTER'       => $this->show_filter,
-			'SHOW_IN_LIST'      => $this->show_in_list,
-			'EDIT_IN_LIST'      => $this->edit_in_list,
-			'IS_SEARCHABLE'     => $this->is_searchable,
+			'SHOW_IN_LIST'      => $this->show_in_list ? 'Y' : 'N',
+			'EDIT_IN_LIST'      => $this->edit_in_list ? 'Y' : 'N',
+			'IS_SEARCHABLE'     => $this->is_searchable ? 'Y' : 'N',
 			'SETTINGS'          => $this->settings,
 			'EDIT_FORM_LABEL'   => [
 				'ru' => 'Loc::getMessage('.$this->lang_key.'_EDIT_FORM_LABEL)',
@@ -198,14 +198,29 @@ class BitrixUserField extends Model{
 		}
 	}
 
-	// todo
 	public static function writeInLangFile(Bitrix $module){
+		$file = '/lang/'.$module->default_lang.'/install/index.php';
 
+		foreach ($module->user_fields as $user_field){
+			$lang_key = $user_field->lang_key;
+			$module->changeVarInLangFile($lang_key.'_EDIT_FORM_LABEL', $user_field->edit_form_label['ru'], $file);
+			$module->changeVarInLangFile($lang_key.'_LIST_COLUMN_LABEL', $user_field->list_column_label['ru'], $file);
+			$module->changeVarInLangFile($lang_key.'_LIST_FILTER_LABEL', $user_field->list_filter_label['ru'], $file);
+			$module->changeVarInLangFile($lang_key.'_ERROR_MESSAGE', $user_field->error_message['ru'], $file);
+			$module->changeVarInLangFile($lang_key.'_HELP_MESSAGE', $user_field->help_message['ru'], $file);
+		}
 	}
 
-	// todo
 	public function cleanLangFromYourself(){
+		$module = $this->module()->first();
+		$file = '/lang/'.$module->default_lang.'/install/index.php';
+		$lang_key = $this->lang_key;
 
+		$module->changeVarInLangFile($lang_key.'_EDIT_FORM_LABEL', "", $file);
+		$module->changeVarInLangFile($lang_key.'_LIST_COLUMN_LABEL', "", $file);
+		$module->changeVarInLangFile($lang_key.'_LIST_FILTER_LABEL', "", $file);
+		$module->changeVarInLangFile($lang_key.'_ERROR_MESSAGE', "", $file);
+		$module->changeVarInLangFile($lang_key.'_HELP_MESSAGE', "", $file);
 	}
 
 	// доп. атрибуты
