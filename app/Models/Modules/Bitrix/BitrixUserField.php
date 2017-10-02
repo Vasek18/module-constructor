@@ -38,10 +38,10 @@ class BitrixUserField extends Model{
 			'name' => 'Строка',
 			'code' => 'string'
 		],
-		// 'video'            => [
-		// 	'name' => 'Видео',
-		// 	'code' => 'video'
-		// ],
+		 'video'            => [
+		 	'name' => 'Видео',
+		 	'code' => 'video'
+		 ],
 		// 'hlblock'          => [
 		// 	'name' => 'Привязка к элементам highload-блоков',
 		// 	'code' => 'hlblock'
@@ -66,10 +66,10 @@ class BitrixUserField extends Model{
 		// 	'name' => 'Да/Нет',
 		// 	'code' => 'boolean'
 		// ],
-		// 'file'             => [
-		// 	'name' => 'Файл',
-		// 	'code' => 'file'
-		// ],
+		 'file'             => [
+		 	'name' => 'Файл',
+		 	'code' => 'file'
+		 ],
 		// 'enumeration'      => [
 		// 	'name' => 'Список',
 		// 	'code' => 'enumeration'
@@ -171,19 +171,19 @@ class BitrixUserField extends Model{
 			'IS_SEARCHABLE'     => $this->is_searchable ? 'Y' : 'N',
 			'SETTINGS'          => $this->settings,
 			'EDIT_FORM_LABEL'   => [
-				'ru' => 'Loc::getMessage('.$this->lang_key.'_EDIT_FORM_LABEL)',
+				'ru' => 'Loc::getMessage("'.$this->lang_key.'_EDIT_FORM_LABEL")',
 			],
 			'LIST_COLUMN_LABEL' => [
-				'ru' => 'Loc::getMessage('.$this->lang_key.'_LIST_COLUMN_LABEL)',
+				'ru' => 'Loc::getMessage("'.$this->lang_key.'_LIST_COLUMN_LABEL")',
 			],
 			'LIST_FILTER_LABEL' => [
-				'ru' => 'Loc::getMessage('.$this->lang_key.'_LIST_FILTER_LABEL)',
+				'ru' => 'Loc::getMessage("'.$this->lang_key.'_LIST_FILTER_LABEL")',
 			],
 			'ERROR_MESSAGE'     => [
-				'ru' => 'Loc::getMessage('.$this->lang_key.'_ERROR_MESSAGE)',
+				'ru' => 'Loc::getMessage("'.$this->lang_key.'_ERROR_MESSAGE")',
 			],
 			'HELP_MESSAGE'      => [
-				'ru' => 'Loc::getMessage('.$this->lang_key.'_HELP_MESSAGE)',
+				'ru' => 'Loc::getMessage("'.$this->lang_key.'_HELP_MESSAGE")',
 			],
 		];
 

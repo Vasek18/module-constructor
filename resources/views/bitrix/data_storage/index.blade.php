@@ -45,7 +45,7 @@
             @foreach($user_fields as $user_field)
                 <div class="list-group-item clearfix infoblock deletion_wrapper">
                     <a href="{{ action('Modules\Bitrix\BitrixUserFieldsController@edit', [$module->id, $user_field->id]) }}">
-                        Пользовательское поле {{$user_field->field_name}}
+                        {{ $user_field->edit_form_label['ru'] }} ({{$user_field->field_name}})
                     </a>
                     <a href="{{ action('Modules\Bitrix\BitrixUserFieldsController@destroy', [$module->id, $user_field->id]) }}"
                        class="btn btn-danger pull-right deletion-with-confirm"

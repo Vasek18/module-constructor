@@ -33,11 +33,13 @@ Class {MODULE_CLASS_NAME} extends CModule{
 
 	function InstallDB($arParams = array()){
 		$this->createNecessaryIblocks();
+        $this->createNecessaryUserFields();
 	}
 
 	function UnInstallDB($arParams = array()){
 		\Bitrix\Main\Config\Option::delete($this->MODULE_ID);
 		$this->deleteNecessaryIblocks();
+        $this->deleteNecessaryUserFields();
 	}
 
 	function InstallEvents(){
