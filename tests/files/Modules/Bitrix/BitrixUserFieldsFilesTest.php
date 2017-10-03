@@ -109,15 +109,23 @@ class BitrixUserFieldsFilesTest extends BitrixTestCase{
             ],
         ];
 
+        // проверка параметров создания
         $this->assertEquals(1, count($gottenInstallationFuncCodeArray));
         $this->assertEquals($expectedInstallationFuncCodeArray, $gottenInstallationFuncCodeArray[0]);
 
+        // проверка лангов
         $this->assertArrayHasKey($this->module->lang_key.'_USER_FIELD_UF_TEST_EDIT_FORM_LABEL', $installFileLangArr);
         $this->assertEquals($installFileLangArr[$this->module->lang_key.'_USER_FIELD_UF_TEST_EDIT_FORM_LABEL'], 'Test');
 
         // проверка, что есть вспомогательные функции
         $this->assertNotFalse(strpos($installationFileContent, 'function createUserField'));
         $this->assertNotFalse(strpos($installationFileContent, 'function removeUserField'));
+
+        // проверка, что createNecessaryUserFields вообще вызываются
+        $installDBFuncContent = $gottenInstallationFuncCode = vFuncParse::getFullCode($installationFileContent, 'InstallDB');
+        $unInstallDBFuncContent = $gottenInstallationFuncCode = vFuncParse::getFullCode($installationFileContent, 'UnInstallDB');
+        $this->assertNotFalse(strpos($installDBFuncContent, '$this->createNecessaryUserFields();'));
+        $this->assertNotFalse(strpos($unInstallDBFuncContent, '$this->deleteNecessaryUserFields();'));
     }
 
 }
