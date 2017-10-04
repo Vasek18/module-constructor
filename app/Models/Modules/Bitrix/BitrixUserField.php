@@ -105,6 +105,7 @@ class BitrixUserField extends Model{
 
     public static function writeInFile(Bitrix $module){
         static::addCreationFunctionCall($module);
+        static::addCreationFunctions($module);
 
         $module->changeInstallFileFunctionCode(static::$creationFunctionName, static::generateCreationFunctionCode($module));
         $module->changeInstallFileFunctionCode(static::$deletionFunctionName, static::generateDeletionFunctionCode($module));
@@ -130,6 +131,29 @@ class BitrixUserField extends Model{
         if (strpos($unInstallDBFuncContent, '$this->deleteNecessaryUserFields();') === false){
             $unInstallDBFuncContentNew = str_replace('}', "\t".'$this->deleteNecessaryUserFields();'.PHP_EOL."\t".'}', $unInstallDBFuncContent);
             $installationFileContent   = str_replace($unInstallDBFuncContent, $unInstallDBFuncContentNew, $installationFileContent);
+        }
+
+        file_put_contents($installFilePath, $installationFileContent);
+    }
+
+    // у старых модулей нет этой функции, нужно добавить
+    // todo переделать что-то во вроде addFunctionAfterFunction и убрать все необязательные функции туда
+    public static function addCreationFunctions(Bitrix $module){
+        $installFilePath         = $module->getFolder(true).'/install/index.php';
+        $installationFileContent = file_get_contents($installFilePath);
+
+        if (strpos($installationFileContent, 'function createNecessaryUserFields(){') === false){
+            $installDBFuncContent = vFuncParse::getFullCode($installationFileContent, 'InstallDB');
+
+            // добавляем метод за InstallDB
+            $installationFileContent = str_replace($installDBFuncContent, $installDBFuncContent.PHP_EOL.PHP_EOL."\t".'function createNecessaryUserFields(){'.PHP_EOL."\t\t".'return false'.PHP_EOL."\t".'}', $installationFileContent);
+        }
+
+        if (strpos($installationFileContent, 'function deleteNecessaryUserFields(){') === false){
+            $unInstallDBFuncContent = vFuncParse::getFullCode($installationFileContent, 'UnInstallDB');
+
+            // добавляем метод за InstallDB
+            $installationFileContent = str_replace($unInstallDBFuncContent, $unInstallDBFuncContent.PHP_EOL.PHP_EOL."\t".'function deleteNecessaryUserFields(){'.PHP_EOL."\t\t".'return false'.PHP_EOL."\t".'}', $installationFileContent);
         }
 
         file_put_contents($installFilePath, $installationFileContent);
