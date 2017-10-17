@@ -135,10 +135,13 @@
                         <tr>
                             <td>Не разрешать редактирование пользователем:</td>
                             <td>
+                                <input type="hidden"
+                                       name="edit_in_list"
+                                       value="Y">
                                 <input type="checkbox"
                                        name="edit_in_list"
-                                       {{ isset($userField) && $userField->edit_in_list ? 'checked' : '' }}
-                                       value="Y">
+                                       {{ isset($userField) && $userField->edit_in_list ? '' : 'checked' }}
+                                       value="N">
                                 <label title=""></label>
                             </td>
                         </tr>
