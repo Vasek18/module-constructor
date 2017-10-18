@@ -214,6 +214,7 @@ Route::group(['prefix' => 'my-bitrix', 'middleware' => ['bitrix.owner', 'auth']]
 Route::group(['prefix' => 'module-management/{module}'], function(){
     Route::group(['prefix' => 'clients-issues'], function(){
         Route::get('', ['uses' => 'Modules\Management\ModulesClientsIssueController@index']);
+        Route::post('', ['uses' => 'Modules\Management\ModulesClientsIssueController@store']);
     });
 });
 

@@ -20,7 +20,7 @@ class CreateModulesClientsIssuesTable extends Migration{
             $table->text('description')->nullable();
             $table->text('solution_description')->nullable();
             $table->boolean('is_solved')->nullable()->default(false);
-            $table->integer('appeals_count')->unsigned()->nullable()->default(0);
+            $table->integer('appeals_count')->unsigned()->nullable()->default(1);
             $table->timestamps();
         });
     }
