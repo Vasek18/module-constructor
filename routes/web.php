@@ -210,6 +210,13 @@ Route::group(['prefix' => 'my-bitrix', 'middleware' => ['bitrix.owner', 'auth']]
 	Route::get('{module}/marketing', ['uses' => 'Modules\Bitrix\BitrixController@marketing']);
 });
 
+// менеджмент
+Route::group(['prefix' => 'module-management/{module}'], function(){
+    Route::group(['prefix' => 'clients-issues'], function(){
+        Route::get('', ['uses' => 'Modules\Management\ModulesClientsIssueController@index']);
+    });
+});
+
 Route::post('feedback/ilack', 'FeedbackController@sendILackSmthForm');
 Route::post('feedback/bug_report', 'FeedbackController@sendBugReportForm');
 

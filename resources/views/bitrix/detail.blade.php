@@ -67,6 +67,12 @@
                     {{ trans('app.download') }}
                 </a>
             @endif
+            <a href="{{ action('Modules\Management\ModulesClientsIssueController@index', $module->id) }}"
+               class="btn btn-sm btn-block btn-info">
+                            <span class="glyphicon glyphicon-ruble"
+                                  aria-hidden="true"></span>
+                Менеджмент
+            </a>
             <a class="btn btn-sm btn-danger btn-block"
                data-toggle="modal"
                data-target="#modal_delete_{{$module->id}}"

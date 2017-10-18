@@ -40,6 +40,12 @@
                                   aria-hidden="true"></span>
                             {{ trans('app.edit') }}
                         </a>
+                        <a href="{{ action('Modules\Management\ModulesClientsIssueController@index', $module->id) }}"
+                           class="btn btn-sm btn-block btn-info">
+                            <span class="glyphicon glyphicon-ruble"
+                                  aria-hidden="true"></span>
+                            Менеджмент
+                        </a>
                         {{--<a href="{{ action('Modules\Bitrix\BitrixController@marketing', $module->id) }}"
                            class="btn btn-sm btn-block btn-info">
                             <span class="glyphicon glyphicon-ruble"
