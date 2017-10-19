@@ -80,14 +80,22 @@ class ModulesClientsIssueController extends Controller{
     }
 
     /**
-     * Update the specified resource in storage.
      *
+     * @param Bitrix $module
+     * @param ModulesClientsIssue $issue
      * @param  \Illuminate\Http\Request $request
-     * @param  \App\Models\Modules\Management\ModulesClientsIssue $modulesClientsIssue
+     *
      * @return \Illuminate\Http\Response
+     *
      */
-    public function update(Request $request, ModulesClientsIssue $modulesClientsIssue){
-        //
+    public function update(Bitrix $module, ModulesClientsIssue $issue, Request $request){
+        $description = trim($request->description);
+
+        $issue->update([
+            'description' => $description,
+        ]);
+
+        return back();
     }
 
     /**
@@ -105,7 +113,17 @@ class ModulesClientsIssueController extends Controller{
         return back();
     }
 
-    // смена счётчика
+    /**
+     *
+     * Cмена счётчика
+     *
+     * @param Bitrix $module
+     * @param ModulesClientsIssue $issue
+     * @param  \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Http\Response
+     *
+     */
     public function changeCounter(Bitrix $module, ModulesClientsIssue $issue, Request $request){
         $newCount = intval($issue->appeals_count);
 
@@ -125,14 +143,33 @@ class ModulesClientsIssueController extends Controller{
         return back();
     }
 
-    // помечаем, что задача решена
+    /**
+     *
+     * Помечаем, что задача решена
+     *
+     * @param Bitrix $module
+     * @param ModulesClientsIssue $issue
+     * @param  \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Http\Response
+     *
+     */
     public function solved(Bitrix $module, ModulesClientsIssue $issue, Request $request){
         $issue->update(['is_solved' => true]);
 
         return back();
     }
 
-    // помечаем, что задача всё-таки не решена
+    /**
+     * Помечаем, что задача всё-таки не решена
+     *
+     * @param Bitrix $module
+     * @param ModulesClientsIssue $issue
+     * @param  \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Http\Response
+     *
+     */
     public function notSolved(Bitrix $module, ModulesClientsIssue $issue, Request $request){
         $issue->update(['is_solved' => false]);
 

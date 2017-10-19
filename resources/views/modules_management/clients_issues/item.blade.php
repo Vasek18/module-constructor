@@ -1,7 +1,10 @@
-<div class="clients-issues__item clients-issue panel panel-default">
+<div class="clients-issues__item clients-issue panel panel-default"
+     id="issue{{ $issue->id }}">
     <div class="clients-issue__heading panel-heading">
         <div class="row">
-            <div class="clients-issue__name col-md-10"><b>{{ $issue->name }}</b></div>
+            <div class="clients-issue__name col-md-10">
+                <a href="#issue{{ $issue->id }}">#</a><b>{{ $issue->name }}</b>
+            </div>
             <form class="clients-issue__counter col-md-2"
                   action="{{ action(
                       'Modules\Management\ModulesClientsIssueController@changeCounter',
@@ -36,7 +39,27 @@
     </div>
     <hr>
     <div class="clients-issue__body panel-body">
-        {{ $issue->description }}
+        <form class=""
+              action="{{ action(
+                      'Modules\Management\ModulesClientsIssueController@update',
+                       [
+                       'module'=>$module->id,
+                       'issue'=>$issue->id,
+                       ]
+                       ) }}"
+              method="post">
+            {{ csrf_field() }}
+            <div class="form-group">
+                <textarea class="form-control"
+                          name="description"
+                          cols="30"
+                          rows="10"
+                >{{ $issue->description }}</textarea>
+            </div>
+            <button type="submit"
+                    class="btn btn-primary">Изменить описание
+            </button>
+        </form>
     </div>
     <hr>
     <div class="clients-issue__footer panel-footer">
