@@ -212,9 +212,12 @@ Route::group(['prefix' => 'my-bitrix', 'middleware' => ['bitrix.owner', 'auth']]
 
 // менеджмент
 Route::group(['prefix' => 'module-management/{module}'], function(){
+
+    // жалобы клиентов
     Route::group(['prefix' => 'clients-issues'], function(){
         Route::get('', ['uses' => 'Modules\Management\ModulesClientsIssueController@index']);
         Route::post('', ['uses' => 'Modules\Management\ModulesClientsIssueController@store']);
+        Route::post('{issue}/change-counter', ['uses' => 'Modules\Management\ModulesClientsIssueController@changeCounter']);
     });
 });
 

@@ -45,7 +45,8 @@ class ModulesClientsIssueController extends Controller{
         $module->clientsIssues()->create([
             'name'          => trim($request->name),
             'description'   => trim($request->description),
-            'appeals_count' => 1, // проблема поднималась как минимум раз
+            'appeals_count' => 1,
+            // проблема поднималась как минимум раз
         ]);
 
         return back();
@@ -90,5 +91,25 @@ class ModulesClientsIssueController extends Controller{
      */
     public function destroy(ModulesClientsIssue $modulesClientsIssue){
         //
+    }
+
+    // смена счётчика
+    public function changeCounter(Bitrix $module, ModulesClientsIssue $issue, Request $request){
+        $newCount = intval($issue->appeals_count);
+
+        if ($request->action == 'decrease'){
+            $newCount--;
+        }
+        if ($request->action == 'increase'){
+            $newCount++;
+        }
+
+        if ($newCount < 1){
+            $newCount = 1;
+        }
+
+        $issue->update(['appeals_count' => $newCount]);
+
+        return back();
     }
 }
