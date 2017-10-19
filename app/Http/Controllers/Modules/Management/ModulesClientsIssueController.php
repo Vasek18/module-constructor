@@ -18,7 +18,7 @@ class ModulesClientsIssueController extends Controller{
      */
     public function index(Bitrix $module, Request $request){
         $data = [
-            'issues' => $module->clientsIssues()->orderBy('appeals_count', 'desc')->get(),
+            'issues' => $module->clientsIssues()->orderBy('is_solved', 'asc')->orderBy('appeals_count', 'desc')->get(),
             'module' => $module,
         ];
 
@@ -42,9 +42,16 @@ class ModulesClientsIssueController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function store(Bitrix $module, Request $request){
+        $name        = trim($request->name);
+        $description = trim($request->description);
+
+        if (!$name){
+            return back();
+        }
+
         $module->clientsIssues()->create([
-            'name'          => trim($request->name),
-            'description'   => trim($request->description),
+            'name'          => $name,
+            'description'   => $description,
             'appeals_count' => 1,
             // проблема поднималась как минимум раз
         ]);
@@ -84,13 +91,18 @@ class ModulesClientsIssueController extends Controller{
     }
 
     /**
-     * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Modules\Management\ModulesClientsIssue $modulesClientsIssue
+     * @param Bitrix $module
+     * @param ModulesClientsIssue $issue
+     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
+     *
      */
-    public function destroy(ModulesClientsIssue $modulesClientsIssue){
-        //
+    public function destroy(Bitrix $module, ModulesClientsIssue $issue, Request $request){
+        $issue->delete();
+
+        return back();
     }
 
     // смена счётчика
@@ -109,6 +121,20 @@ class ModulesClientsIssueController extends Controller{
         }
 
         $issue->update(['appeals_count' => $newCount]);
+
+        return back();
+    }
+
+    // помечаем, что задача решена
+    public function solved(Bitrix $module, ModulesClientsIssue $issue, Request $request){
+        $issue->update(['is_solved' => true]);
+
+        return back();
+    }
+
+    // помечаем, что задача всё-таки не решена
+    public function notSolved(Bitrix $module, ModulesClientsIssue $issue, Request $request){
+        $issue->update(['is_solved' => false]);
 
         return back();
     }

@@ -218,6 +218,9 @@ Route::group(['prefix' => 'module-management/{module}'], function(){
         Route::get('', ['uses' => 'Modules\Management\ModulesClientsIssueController@index']);
         Route::post('', ['uses' => 'Modules\Management\ModulesClientsIssueController@store']);
         Route::post('{issue}/change-counter', ['uses' => 'Modules\Management\ModulesClientsIssueController@changeCounter']);
+        Route::post('{issue}/solved', ['uses' => 'Modules\Management\ModulesClientsIssueController@solved']);
+        Route::post('{issue}/not-solved', ['uses' => 'Modules\Management\ModulesClientsIssueController@notSolved']);
+        Route::post('{issue}/destroy', ['uses' => 'Modules\Management\ModulesClientsIssueController@destroy']);
     });
 });
 
