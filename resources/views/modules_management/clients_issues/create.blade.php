@@ -18,8 +18,8 @@
                   rows="10"></textarea>
     </div>
     <div class="form-group">
-        <button id="create"
-                name="create"
+        <button id="create_issue"
+                name="create_issue"
                 class="btn btn-success">Записать
         </button>
     </div>

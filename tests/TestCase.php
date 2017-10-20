@@ -2,6 +2,7 @@
 
 use App\Helpers\vArrParse;
 use App\Helpers\vFuncParse;
+use App\Models\Modules\Bitrix\Bitrix;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -9,6 +10,8 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class TestCase extends Illuminate\Foundation\Testing\TestCase{
+	public $module;
+
 	/**
 	 * The base URL to use while testing the application.
 	 *
@@ -81,6 +84,48 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase{
 		$user->save();
 
 		$this->user->paid_days = intval($days);
+	}
+
+	// главная форма Битрикса
+	function fillNewBitrixForm($params = Array()){
+		Mail::shouldReceive('send')->zeroOrMoreTimes(); // против почты
+
+		if (!isset($params['PARTNER_NAME'])){
+			$params['PARTNER_NAME'] = $this->user->bitrix_company_name;
+		}
+		if (!isset($params['PARTNER_URI'])){
+			$params['PARTNER_URI'] = $this->user->site;
+		}
+		if (!isset($params['PARTNER_CODE'])){
+			$params['PARTNER_CODE'] = $this->user->bitrix_partner_code;
+		}
+		if (!isset($params['MODULE_NAME'])){
+			$params['MODULE_NAME'] = $this->standartModuleName;
+		}
+		if (!isset($params['MODULE_DESCRIPTION'])){
+			$params['MODULE_DESCRIPTION'] = $this->standartModuleDescription;
+		}
+		if (!isset($params['MODULE_CODE'])){
+			$params['MODULE_CODE'] = $this->standartModuleCode;
+		}
+		if (!isset($params['MODULE_VERSION'])){
+			$params['MODULE_VERSION'] = $this->standartModuleVersion;
+		}
+
+		$this->visit('/my-bitrix/create');
+
+		$this->type($params['PARTNER_NAME'], 'PARTNER_NAME');
+		$this->type($params['PARTNER_URI'], 'PARTNER_URI');
+		$this->type($params['PARTNER_CODE'], 'PARTNER_CODE');
+		$this->type($params['MODULE_NAME'], 'MODULE_NAME');
+		$this->type($params['MODULE_DESCRIPTION'], 'MODULE_DESCRIPTION');
+		$this->type($params['MODULE_CODE'], 'MODULE_CODE');
+		$this->type($params['MODULE_VERSION'], 'MODULE_VERSION');
+		$this->press('module_create');
+
+		if ($params['PARTNER_CODE'] && $params['MODULE_CODE']){
+			return Bitrix::where('PARTNER_CODE', $params['PARTNER_CODE'])->where('code', $params['MODULE_CODE'])->first();
+		}
 	}
 
 	public function create_approved_event(){

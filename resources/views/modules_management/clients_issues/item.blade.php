@@ -2,10 +2,11 @@
      id="issue{{ $issue->id }}">
     <div class="clients-issue__heading panel-heading">
         <div class="row">
-            <div class="clients-issue__name col-md-10">
-                <a href="#issue{{ $issue->id }}">#</a><b>{{ $issue->name }}</b>
+            <div class="clients-issue__name col-md-9">
+                <a href="#issue{{ $issue->id }}">#</a>
+                <b>{{ $issue->name }}</b>
             </div>
-            <form class="clients-issue__counter col-md-2"
+            <form class="clients-issue__counter col-md-3"
                   action="{{ action(
                       'Modules\Management\ModulesClientsIssueController@changeCounter',
                        [
@@ -20,18 +21,22 @@
                             <button class="btn btn-default"
                                     type="submit"
                                     name="action"
-                                    value="decrease">-</button>
+                                    value="decrease"
+                                    id="decrease_{{ $issue->id }}">-</button>
                         </span>
                     <input type="text"
                            class="form-control text-center"
                            disabled
                            title="Сколько раз обращались с этой проблемой"
-                           placeholder="{{ $issue->appeals_count }}">
+                           value="{{ $issue->appeals_count }}"
+                           id="appeals_count_{{ $issue->id }}"
+                    >
                     <span class="input-group-btn">
                             <button class="btn btn-default"
                                     type="submit"
                                     name="action"
-                                    value="increase">+</button>
+                                    value="increase"
+                                    id="increase_{{ $issue->id }}">+</button>
                         </span>
                 </div>
             </form>
