@@ -2,11 +2,11 @@
      id="issue{{ $issue->id }}">
     <div class="clients-issue__heading panel-heading">
         <div class="row">
-            <div class="clients-issue__name col-md-9">
+            <div class="clients-issue__name col-lg-10 col-md-9">
                 <a href="#issue{{ $issue->id }}">#</a>
                 <b>{{ $issue->name }}</b>
             </div>
-            <form class="clients-issue__counter col-md-3"
+            <form class="clients-issue__counter col-lg-2 col-md-3"
                   action="{{ action(
                       'Modules\Management\ModulesClientsIssueController@changeCounter',
                        [
@@ -56,13 +56,16 @@
             {{ csrf_field() }}
             <div class="form-group">
                 <textarea class="form-control"
+                          id="description_{{ $issue->id }}"
                           name="description"
                           cols="30"
                           rows="10"
                 >{{ $issue->description }}</textarea>
             </div>
             <button type="submit"
-                    class="btn btn-primary">Изменить описание
+                    class="btn btn-primary"
+                    name="change_description_{{ $issue->id }}"
+            >Изменить описание
             </button>
         </form>
     </div>
@@ -81,7 +84,8 @@
                       method="post">
                     {{ csrf_field() }}
                     <button class="btn btn-warning"
-                            type="submit">Не решена
+                            type="submit"
+                            id="not_solved_{{ $issue->id }}">Не решена
                     </button>
                 </form>
                 <form class="pull-right"
@@ -95,7 +99,8 @@
                       method="post">
                     {{ csrf_field() }}
                     <button class="btn btn-danger"
-                            type="submit">Удалить
+                            type="submit"
+                            id="delete_{{ $issue->id }}">Удалить
                     </button>
                 </form>
             @else
@@ -110,7 +115,8 @@
                       method="post">
                     {{ csrf_field() }}
                     <button class="btn btn-success"
-                            type="submit">Решена
+                            type="submit"
+                            id="solved_{{ $issue->id }}">Решена
                     </button>
                 </form>
             @endif

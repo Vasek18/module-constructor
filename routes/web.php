@@ -211,7 +211,13 @@ Route::group(['prefix' => 'my-bitrix', 'middleware' => ['bitrix.owner', 'auth']]
 });
 
 // менеджмент
-Route::group(['prefix' => 'module-management/{module}'], function(){
+Route::group([
+    'prefix' => 'module-management/{module}',
+    'middleware' => [
+        'module.owner',
+        'auth'
+    ]
+], function(){
 
     // жалобы клиентов
     Route::group(['prefix' => 'clients-issues'], function(){

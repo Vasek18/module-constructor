@@ -45,6 +45,7 @@ class Kernel extends HttpKernel{
 		'auth.basic'   => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
 		'guest'        => \App\Http\Middleware\RedirectIfAuthenticated::class,
 		'bitrix.owner' => \App\Http\Middleware\BitrixOwner::class,
+		'module.owner' => \App\Http\Middleware\ModuleOwner::class,
 		'admin'        => \App\Http\Middleware\CheckIfAdmin::class,
 		'bindings'     => \Illuminate\Routing\Middleware\SubstituteBindings::class,
 		'can'          => \Illuminate\Auth\Middleware\Authorize::class,
