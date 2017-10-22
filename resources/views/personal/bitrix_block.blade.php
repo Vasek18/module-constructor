@@ -36,11 +36,11 @@
                         @endif
                         <a href="{{ action('Modules\Bitrix\BitrixController@show', $module->id) }}"
                            class="btn btn-sm btn-block btn-primary">
-                            <span class="glyphicon glyphicon-pencil"
+                            <span class="glyphicon glyphicon-wrench"
                                   aria-hidden="true"></span>
-                            {{ trans('app.edit') }}
+                            Разработка
                         </a>
-                        <a href="{{ action('Modules\Management\ModulesClientsIssueController@index', $module->id) }}"
+                        <a href="{{ action('Modules\Management\ModulesManagementController@index', $module->id) }}"
                            class="btn btn-sm btn-block btn-info">
                             <span class="glyphicon glyphicon-ruble"
                                   aria-hidden="true"></span>

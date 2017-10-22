@@ -38,7 +38,19 @@ class Bitrix extends Model{
 	];
 
 	// на случай, если я где-то буду использовать create, эти поля можно будет записывать
-	protected $fillable = ['name', 'description', 'code', 'PARTNER_NAME', 'PARTNER_URI', 'PARTNER_CODE', 'version', 'default_lang', 'download_counter', 'last_download'];
+	protected $fillable = [
+        'name',
+        'description',
+        'code',
+        'PARTNER_NAME',
+        'PARTNER_URI',
+        'PARTNER_CODE',
+        'version',
+        'default_lang',
+        'download_counter',
+        'last_download',
+        'keywords',
+    ];
 
 	public static $requiredFiles = [
 		''.DIRECTORY_SEPARATOR.'include.php',

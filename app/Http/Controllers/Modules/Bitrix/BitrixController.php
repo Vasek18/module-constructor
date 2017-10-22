@@ -122,7 +122,12 @@ class BitrixController extends Controller{
 			$module->save();
 
 			$module->changeVarsInModuleFileAndSave('bitrix'.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'version.php', $module->id);
-		}
+        }
+
+        if ($this->request->keywords){
+            $module->keywords = $this->request->keywords;
+            $module->save();
+        }
 
 		if (!$this->request->ajax()){
 			return redirect(action('Modules\Bitrix\BitrixController@show', $module->id));

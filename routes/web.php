@@ -218,6 +218,7 @@ Route::group([
         'auth'
     ]
 ], function(){
+    Route::get('', ['uses' => 'Modules\Management\ModulesManagementController@index']);
 
     // жалобы клиентов
     Route::group(['prefix' => 'clients-issues'], function(){

@@ -16,6 +16,9 @@
         <div class="collapse navbar-collapse"
              id="bitrix_menu">
             <ul class="nav navbar-nav">
+                <li class="{!! classActiveSegment(3, null) !!}">
+                    <a href="{{ action('Modules\Management\ModulesManagementController@index', $module->id) }}">Основное</a>
+                </li>
                 <li class="{!! classActiveSegment(3, 'clients-issues') !!}">
                     <a href="{{ action('Modules\Management\ModulesClientsIssueController@index', $module->id) }}">Проблемы клиентов</a>
                 </li>

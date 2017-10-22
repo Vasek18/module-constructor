@@ -67,7 +67,7 @@
                     {{ trans('app.download') }}
                 </a>
             @endif
-            <a href="{{ action('Modules\Management\ModulesClientsIssueController@index', $module->id) }}"
+            <a href="{{ action('Modules\Management\ModulesManagementController@index', $module->id) }}"
                class="btn btn-sm btn-block btn-info">
                             <span class="glyphicon glyphicon-ruble"
                                   aria-hidden="true"></span>
