@@ -51,4 +51,22 @@ class ModulesCompetitorsTest extends BitrixTestCase{
         $this->seePageIs(action('Modules\Management\ModulesCompetitorsController@index', $this->module->id));
         $this->see('Ололошный модуль');
     }
+
+    /** @test */
+    function userCannotSeeCompetitorsOfStrangersModule(){
+        $this->createCompetitor([
+            'name'    => 'Ololo module',
+            'link'    => 'http://heh.ru',
+            'price'   => 100,
+            'sort'    => 200,
+            'comment' => 'Lorem ipsum',
+        ]);
+
+        // заходим на страницу под другим пользователем
+        $this->signIn(factory(User::class)->create());
+        $this->visit(action('Modules\Management\ModulesCompetitorsController@index', $this->module->id));
+
+        $this->dontSee('Ololo module');
+        $this->seePageIs('/personal/');
+    }
 }

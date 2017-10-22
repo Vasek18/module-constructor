@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Modules\Management;
 use App\Http\Controllers\Controller;
 use App\Models\Modules\Bitrix\Bitrix;
 use App\Models\Modules\Management\ModulesCompetitor;
+use App\Models\Modules\Management\ModulesCompetitorsUpdate;
 use Illuminate\Http\Request;
 
 class ModulesCompetitorsController extends Controller{
@@ -19,8 +20,9 @@ class ModulesCompetitorsController extends Controller{
      */
     public function index(Bitrix $module, Request $request){
         $data = [
-            'competitors' => $module->competitors()->orderBy('sort', 'asc')->get(),
-            'module'      => $module,
+            'competitors'         => $module->competitors()->orderBy('sort', 'asc')->get(),
+            'competitors_updates' => ModulesCompetitorsUpdate::getForCompetitors($module->competitors()->get()),
+            'module'              => $module,
         ];
 
         return view("modules_management.competitors.index", $data);
@@ -127,5 +129,17 @@ class ModulesCompetitorsController extends Controller{
         $competitor->delete();
 
         return redirect(action('Modules\Management\ModulesCompetitorsController@index', $module->id));
+    }
+
+    /**
+     * @param Bitrix $module
+     * @param ModulesCompetitor $competitor
+     * @param Request $request
+     */
+    public function getUpdatesFromParsing(Bitrix $module, ModulesCompetitor $competitor, Request $request){
+        // получаем страницу
+        // парсим страницу
+        // вытаскиваем инфу об обновлениях
+        // создаём обновления
     }
 }

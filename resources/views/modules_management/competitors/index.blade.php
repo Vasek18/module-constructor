@@ -8,4 +8,15 @@
     @include('modules_management.competitors.list')
     <a href="{{ action('Modules\Management\ModulesCompetitorsController@create', $module->id) }}"
        class="btn btn-primary">Записать конкурента</a>
+    <hr>
+    <h2>Обновления конкурентов</h2>
+    <a href="#"
+       class="btn btn-success js-check-competitors-updates">Проверить</a>
+    <div class="clear"></div>
+    <br>
+    @include('modules_management.competitors.updates_list')
 @stop
+
+@push('scripts')
+    <script src="/js/modules_competitors.js"></script>
+@endpush

@@ -20,7 +20,7 @@
                            required>
                 </div>
                 <div class="form-group">
-                    <label for="link">Ссылка</label>
+                    <label for="link">Ссылка на страницу на Маркетплейсе Битрикса</label>
                     <input type="url"
                            id="link"
                            name="link"
