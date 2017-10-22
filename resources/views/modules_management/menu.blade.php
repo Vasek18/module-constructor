@@ -23,7 +23,7 @@
                     <a href="{{ action('Modules\Management\ModulesClientsIssueController@index', $module->id) }}">Проблемы клиентов</a>
                 </li>
                 <li class="{!! classActiveSegment(3, 'competitors') !!}">
-                    <a href="{{ action('Modules\Management\ModulesCompetitorsController@index', $module->id) }}">Проблемы клиентов</a>
+                    <a href="{{ action('Modules\Management\ModulesCompetitorsController@index', $module->id) }}">Конкуренты</a>
                 </li>
             </ul>
         </div>
