@@ -62,17 +62,17 @@ class ModulesClientsIssuesTest extends BitrixTestCase{
     }
 
     /** @test */
-    function userCanChangeIssueDescription(){
-        $issue = $this->createIssue('Test issue', 'Popular');
-
-        $this->seeInField('description_'.$issue->id, 'Popular');
-
-        $this->submitForm('change_description_'.$issue->id, [
-            'description' => 'Ololo'
-        ]);
-
-        $this->seeInField('description_'.$issue->id, 'Ololo');
-    }
+//    function userCanChangeIssueDescription(){
+//        $issue = $this->createIssue('Test issue', 'Popular');
+//
+//        $this->seeInField('description_'.$issue->id, 'Popular');
+//
+//        $this->submitForm('change_description_'.$issue->id, [
+//            'description' => 'Ololo'
+//        ]);
+//
+//        $this->seeInField('description_'.$issue->id, 'Ololo');
+//    }
 
     /** @test */
     function userCanMarkIssueAsSolved(){

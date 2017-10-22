@@ -55,15 +55,16 @@
               method="post">
             {{ csrf_field() }}
             <div class="form-group">
-                <textarea class="form-control"
-                          id="description_{{ $issue->id }}"
-                          name="description"
-                          cols="30"
-                          rows="10"
-                >{{ $issue->description }}</textarea>
+                <p class="form-control-static">
+                    <a href="#"
+                       class="you-can-change ajax"
+                       data-name="description"
+                       data-formtype="textarea"
+                       data-pattern=".+">{{ $issue->description ?: '.' }}</a>
+                </p>
             </div>
             <button type="submit"
-                    class="btn btn-primary"
+                    class="btn btn-primary hidden"
                     name="change_description_{{ $issue->id }}"
             >Изменить описание
             </button>
