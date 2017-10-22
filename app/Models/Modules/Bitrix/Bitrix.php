@@ -594,6 +594,10 @@ if(IsModuleInstalled(\''.$this->full_id.'\')){
         return $this->hasMany('App\Models\Modules\Management\ModulesClientsIssue', 'module_id');
     }
 
+    public function competitors(){
+        return $this->hasMany('App\Models\Modules\Management\ModulesCompetitor', 'module_id');
+    }
+
 	public function ownedBy(User $user){
 		return $this->user_id == $user->id;
 	}

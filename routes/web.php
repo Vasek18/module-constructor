@@ -229,6 +229,16 @@ Route::group([
         Route::post('{issue}/not-solved', ['uses' => 'Modules\Management\ModulesClientsIssueController@notSolved']);
         Route::post('{issue}/destroy', ['uses' => 'Modules\Management\ModulesClientsIssueController@destroy']);
     });
+
+    // конкуренты
+    Route::group(['prefix' => 'competitors'], function(){
+        Route::get('', ['uses' => 'Modules\Management\ModulesCompetitorsController@index']);
+        Route::get('create', ['uses' => 'Modules\Management\ModulesCompetitorsController@create']);
+        Route::post('store', ['uses' => 'Modules\Management\ModulesCompetitorsController@store']);
+        Route::get('{competitor}/edit', ['uses' => 'Modules\Management\ModulesCompetitorsController@edit']);
+        Route::get('{competitor}/delete', ['uses' => 'Modules\Management\ModulesCompetitorsController@delete']);
+        Route::post('{competitor}/update', ['uses' => 'Modules\Management\ModulesCompetitorsController@update']);
+    });
 });
 
 Route::post('feedback/ilack', 'FeedbackController@sendILackSmthForm');
