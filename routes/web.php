@@ -239,6 +239,7 @@ Route::group([
         Route::get('{competitor}/edit', ['uses' => 'Modules\Management\ModulesCompetitorsController@edit']);
         Route::get('{competitor}/delete', ['uses' => 'Modules\Management\ModulesCompetitorsController@delete']);
         Route::post('{competitor}/update', ['uses' => 'Modules\Management\ModulesCompetitorsController@update']);
+        Route::get('{competitor}/parse-updates', ['uses' => 'Modules\Management\ModulesCompetitorsController@getUpdatesFromParsing']);
     });
 });
 

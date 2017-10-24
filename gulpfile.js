@@ -38,7 +38,8 @@ elixir(function(mix){
 		.coffee('bitrix_user_fields.coffee')
 
 		.copy('resources/assets/js/modules_competitors.js', 'public/js/modules_competitors.js')
+		.copy('resources/assets/js/main.js', 'public/js/main.js')
 
 		// .copy('resources/assets/js/popover.js', 'public/js/popover.js')
-		.copy('node_modules/sweetalert/dist/sweetalert-dev.js', 'public/js/sweetalert.js')
+		.copy('node_modules/sweetalert/dist/sweetalert.min.js', 'public/js/sweetalert.js')
 });

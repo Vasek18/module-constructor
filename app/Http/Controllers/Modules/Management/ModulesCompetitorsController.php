@@ -135,11 +135,10 @@ class ModulesCompetitorsController extends Controller{
      * @param Bitrix $module
      * @param ModulesCompetitor $competitor
      * @param Request $request
+     *
+     * @return bool|array
      */
     public function getUpdatesFromParsing(Bitrix $module, ModulesCompetitor $competitor, Request $request){
-        // получаем страницу
-        // парсим страницу
-        // вытаскиваем инфу об обновлениях
-        // создаём обновления
+       return $competitor->getUpdatesFromParsing();
     }
 }

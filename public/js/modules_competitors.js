@@ -1,24 +1,39 @@
+// обновление обновлений модулей
 $(document).on("click", ".js-check-competitors-updates", function(event){
-	event.preventDefault();
-	//
-	// var ajaxUrl     = "/ajax/accept-terms.php";
-	// var modalID     = $(this).parents(".modal").attr("id");
-	// var modalWindow = $('#' + modalID + '');
-	//
-	// $.ajax({
-	// 	url     : ajaxUrl,
-	// 	data    : {},
-	// 	type    : "post",
-	// 	dataType: "json",
-	// 	success : function(answer){
-	// 		if (answer.success){
-	// 			if (modalWindow.length){
-	// 				modalWindow.modal('hide');
-	// 			}
-	// 		}
-	// 	},
-	// 	error   : function(e){
-	// 		console.log(e);
-	// 	}
-	// });
+	showLoader();
+
+	var btn = $(this);
+
+	// получаем массив аякс ссылок
+	var ajaxLinks = [];
+	$('[name="parse_updates_url[]"]').each(function(i, item){
+		var link = $(item).val();
+		ajaxLinks.push(link);
+	});
+
+	var ajaxCount    = 0;
+	var ajaxTopCount = ajaxLinks.length;
+	ajaxLinks.forEach(function(ajaxPath){
+		$.ajax({
+			url     : ajaxPath,
+			data    : {},
+			dataType: "json",
+			type    : "get",
+			success : function(answer){
+				ajaxCount++;
+				if (ajaxCount >= ajaxTopCount){
+					location.reload();
+				}
+			},
+			error   : function(){
+				ajaxCount++;
+				if (ajaxCount >= ajaxTopCount){
+					location.reload();
+				}
+
+			}
+		});
+	});
+
+	return false;
 });

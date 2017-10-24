@@ -2,11 +2,11 @@
      id="issue{{ $issue->id }}">
     <div class="clients-issue__heading panel-heading">
         <div class="row">
-            <div class="clients-issue__name col-lg-10 col-md-9">
+            <div class="clients-issue__name col-lg-9 col-md-9">
                 <a href="#issue{{ $issue->id }}">#</a>
                 <b>{{ $issue->name }}</b>
             </div>
-            <form class="clients-issue__counter col-lg-2 col-md-3"
+            <form class="clients-issue__counter col-lg-3 col-md-3"
                   action="{{ action(
                       'Modules\Management\ModulesClientsIssueController@changeCounter',
                        [

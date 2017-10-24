@@ -217,6 +217,7 @@
 <script src="/js/deletion_with_confirm.js"></script>
 <script src="/js/human_ajax_deletion.js"></script>
 <script src="/js/app.js"></script>
+<script src="/js/main.js"></script>
 @stack('scripts')
 @include('flash')
 @include('yandex_metrika')
