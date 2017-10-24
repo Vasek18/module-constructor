@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Modules\Management\ModulesClientsIssue;
+use App\Models\Modules\Management\ModulesCompetitor;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -34,7 +35,7 @@ class ModulesCompetitorsTest extends BitrixTestCase{
         );
 
         if ($params['name']){
-            return ModulesClientsIssue::where('name', $params['name'])->first();
+            return ModulesCompetitor::where('name', $params['name'])->first();
         }
     }
 
@@ -68,5 +69,28 @@ class ModulesCompetitorsTest extends BitrixTestCase{
 
         $this->dontSee('Ololo module');
         $this->seePageIs('/personal/');
+    }
+
+    /** @test */
+    function userCannotDeleteCompetitorOfStrangersModule(){
+        $competitor = $this->createCompetitor([
+            'name'    => 'Ololo module',
+            'link'    => 'http://heh.ru',
+            'price'   => 100,
+            'sort'    => 200,
+            'comment' => 'Lorem ipsum',
+        ]);
+
+        $this->assertEquals(1, ModulesCompetitor::where('name', 'Ololo module')->count());
+
+        // удаляем под другим пользователем
+        $this->signIn(factory(User::class)->create());
+        $module2 = $this->fillNewBitrixForm();
+        $this->get(action('Modules\Management\ModulesCompetitorsController@delete', [
+            $module2->id,
+            $competitor->id
+        ]));
+
+        $this->assertEquals(1, ModulesCompetitor::where('name', 'Ololo module')->count());
     }
 }

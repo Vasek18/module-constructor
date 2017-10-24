@@ -89,6 +89,10 @@ class ModulesClientsIssueController extends Controller{
      *
      */
     public function update(Bitrix $module, ModulesClientsIssue $issue, Request $request){
+        if (!$this->moduleHasIssue($module, $issue)){
+            return abort(404);
+        }
+
         $description = trim($request->description);
 
         $issue->update([
@@ -108,6 +112,10 @@ class ModulesClientsIssueController extends Controller{
      *
      */
     public function destroy(Bitrix $module, ModulesClientsIssue $issue, Request $request){
+        if (!$this->moduleHasIssue($module, $issue)){
+            return abort(404);
+        }
+
         $issue->delete();
 
         return back();
@@ -125,6 +133,10 @@ class ModulesClientsIssueController extends Controller{
      *
      */
     public function changeCounter(Bitrix $module, ModulesClientsIssue $issue, Request $request){
+        if (!$this->moduleHasIssue($module, $issue)){
+            return abort(404);
+        }
+
         $newCount = intval($issue->appeals_count);
 
         if ($request->action == 'decrease'){
@@ -155,6 +167,10 @@ class ModulesClientsIssueController extends Controller{
      *
      */
     public function solved(Bitrix $module, ModulesClientsIssue $issue, Request $request){
+        if (!$this->moduleHasIssue($module, $issue)){
+            return abort(404);
+        }
+
         $issue->update(['is_solved' => true]);
 
         return back();
@@ -171,8 +187,16 @@ class ModulesClientsIssueController extends Controller{
      *
      */
     public function notSolved(Bitrix $module, ModulesClientsIssue $issue, Request $request){
+        if (!$this->moduleHasIssue($module, $issue)){
+            return abort(404);
+        }
+
         $issue->update(['is_solved' => false]);
 
         return back();
+    }
+
+    public function moduleHasIssue(Bitrix $module, ModulesClientsIssue $issue){
+        return $module->id == $issue->module_id;
     }
 }

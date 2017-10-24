@@ -62,17 +62,17 @@ class ModulesClientsIssuesTest extends BitrixTestCase{
     }
 
     /** @test */
-//    function userCanChangeIssueDescription(){
-//        $issue = $this->createIssue('Test issue', 'Popular');
-//
-//        $this->seeInField('description_'.$issue->id, 'Popular');
-//
-//        $this->submitForm('change_description_'.$issue->id, [
-//            'description' => 'Ololo'
-//        ]);
-//
-//        $this->seeInField('description_'.$issue->id, 'Ololo');
-//    }
+    //    function userCanChangeIssueDescription(){
+    //        $issue = $this->createIssue('Test issue', 'Popular');
+    //
+    //        $this->seeInField('description_'.$issue->id, 'Popular');
+    //
+    //        $this->submitForm('change_description_'.$issue->id, [
+    //            'description' => 'Ololo'
+    //        ]);
+    //
+    //        $this->seeInField('description_'.$issue->id, 'Ololo');
+    //    }
 
     /** @test */
     function userCanMarkIssueAsSolved(){
@@ -117,5 +117,22 @@ class ModulesClientsIssuesTest extends BitrixTestCase{
         $this->visit(action('Modules\Management\ModulesClientsIssueController@index', $this->module->id));
 
         $this->dontSee('Test issue');
+    }
+
+    /** @test */
+    function userCannotDeleteIssueOfStrangersModule(){
+        $issue = $this->createIssue('Test issue', 'Popular');
+
+        $this->assertEquals(1, ModulesClientsIssue::where('name', 'Test issue')->count());
+
+        // удаляем под другим пользователем
+        $this->signIn(factory(User::class)->create());
+        $module2 = $this->fillNewBitrixForm();
+        $this->post(action('Modules\Management\ModulesClientsIssueController@destroy', [
+            $module2->id,
+            $issue->id
+        ]));
+
+        $this->assertEquals(1, ModulesClientsIssue::where('name', 'Test issue')->count());
     }
 }

@@ -80,6 +80,10 @@ class ModulesCompetitorsController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function edit(Bitrix $module, ModulesCompetitor $competitor, Request $request){
+        if (!$this->moduleHasCompetitor($module, $competitor)){
+            return abort(404);
+        }
+
         $data = [
             'module'     => $module,
             'competitor' => $competitor,
@@ -98,6 +102,10 @@ class ModulesCompetitorsController extends Controller{
      *
      */
     public function update(Bitrix $module, ModulesCompetitor $competitor, Request $request){
+        if (!$this->moduleHasCompetitor($module, $competitor)){
+            return abort(404);
+        }
+
         $name    = trim($request->name);
         $comment = trim($request->comment);
 
@@ -126,6 +134,10 @@ class ModulesCompetitorsController extends Controller{
      *
      */
     public function delete(Bitrix $module, ModulesCompetitor $competitor, Request $request){
+        if (!$this->moduleHasCompetitor($module, $competitor)){
+            return abort(404);
+        }
+
         $competitor->delete();
 
         return redirect(action('Modules\Management\ModulesCompetitorsController@index', $module->id));
@@ -139,6 +151,14 @@ class ModulesCompetitorsController extends Controller{
      * @return bool|array
      */
     public function getUpdatesFromParsing(Bitrix $module, ModulesCompetitor $competitor, Request $request){
-       return $competitor->getUpdatesFromParsing();
+        if (!$this->moduleHasCompetitor($module, $competitor)){
+            return abort(404);
+        }
+
+        return $competitor->getUpdatesFromParsing();
+    }
+
+    public function moduleHasCompetitor(Bitrix $module, ModulesCompetitor $competitor){
+        return $module->id == $competitor->module_id;
     }
 }
