@@ -24,6 +24,8 @@
                 </li>
                 <li class="{!! classActiveSegment(3, 'competitors') !!}">
                     <a href="{{ action('Modules\Management\ModulesCompetitorsController@index', $module->id) }}">Конкуренты</a>
+                <li class="{!! classActiveSegment(3, 'accesses') !!}">
+                    <a href="{{ action('Modules\Management\ModulesAccessesController@index', $module->id) }}">Доступы</a>
                 </li>
             </ul>
         </div>

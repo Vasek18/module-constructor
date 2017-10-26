@@ -610,6 +610,10 @@ if(IsModuleInstalled(\''.$this->full_id.'\')){
         return $this->hasMany('App\Models\Modules\Management\ModulesCompetitor', 'module_id');
     }
 
+    public function accesses(){
+        return $this->hasMany('App\Models\Modules\Management\ModulesAccess', 'module_id');
+    }
+
 	public function ownedBy(User $user){
 		return $this->user_id == $user->id;
 	}
