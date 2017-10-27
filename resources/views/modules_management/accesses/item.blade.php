@@ -18,28 +18,33 @@
     </div>
     <div class="col-md-4 col-md-offset-1">
         @foreach($permissions as $permission)
-            <label>
-                <input type="checkbox"
-                       name="permission[{{ $i }}][]"
-                       value="{{ $permission['code'] }}"
-                       @if (in_array($permission['code'], $access_permissions))
-                       checked
+            <div class="clearfix">
+                <div class="checkbox">
+                    <div class="pull-left">
+                        <label>
+                            <input type="checkbox"
+                                   name="permission[{{ $i }}][]"
+                                   value="{{ $permission['code'] }}"
+                                   @if (isset($access_permissions[$permission['code']]))
+                                   checked
+                                   disabled
+                                    @endif
+                            >
+                            {{ $permission['name'] }}
+                        </label>&nbsp;
+                    </div>
+                    <div class="pull-left">
+                        @if (isset($access_permissions[$permission['code']]))
+                            <a class=""
+                                     href="{{ action('Modules\Management\ModulesAccessesController@delete', [$module->id, $access_permissions[$permission['code']]]) }}">
+                             <span class="glyphicon glyphicon-trash"
+                                   aria-hidden="true"></span>
+                            </a>
                         @endif
-                >
-                {{ $permission['name'] }}
-            </label>
-            <br>
+                    </div>
+                </div>
+            </div>
         @endforeach
-    </div>
-    <div class="col-md-2">
-        @if ($access_email)
-            <a class="btn btn-danger"
-               href="#">
-                <span class="glyphicon glyphicon-trash"
-                      aria-hidden="true"></span>
-                {{ trans('app.delete') }}
-            </a>
-        @endif
     </div>
 </div>
 <hr>

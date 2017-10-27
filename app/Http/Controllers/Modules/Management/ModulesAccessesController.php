@@ -40,6 +40,16 @@ class ModulesAccessesController extends Controller{
         return back();
     }
 
+    public function delete(Bitrix $module, ModulesAccess $access, Request $request){
+        if (!$this->moduleHasAccess($module, $access)){
+            return abort(404);
+        }
+
+        $access->delete();
+
+        return back();
+    }
+    
     public function moduleHasAccess(Bitrix $module, ModulesAccess $access){
         return $module->id == $access->module_id;
     }

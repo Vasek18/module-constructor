@@ -332,6 +332,7 @@ Route::group([
     Route::group(['prefix' => 'accesses'], function(){
         Route::get('', ['uses' => 'Modules\Management\ModulesAccessesController@index']);
         Route::post('', ['uses' => 'Modules\Management\ModulesAccessesController@store']);
+        Route::get('{access}/delete', ['uses' => 'Modules\Management\ModulesAccessesController@delete']);
     });
 });
 
