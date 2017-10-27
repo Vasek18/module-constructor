@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Modules\Bitrix\Bitrix;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Auth;
@@ -19,11 +20,9 @@ class PersonalController extends Controller{
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index(){
-		$user = User::find(Auth::id());
-
 		$data = [
-			'bitrix_modules' => $user->bitrixes()->orderBy('created_at', 'desc')->get(),
-			'user'           => $user
+			'bitrix_modules' => Bitrix::userCanSee($this->user->id)->orderBy('created_at', 'desc')->get(),
+			'user'           => $this->user
 		];
 
 		return view("personal.index", $data);
