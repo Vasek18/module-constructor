@@ -14,6 +14,8 @@ class ModulesAccess extends Model{
         'permission_code',
     ];
 
+    public $timestamps = false;
+
     public static $permissions = [
         [
             'code' => 'D',

@@ -9,10 +9,10 @@
           method="post">
         {{ csrf_field() }}
         @foreach($accesses as $access_email => $access_permissions)
-            @include('modules_management.accesses.item', ['access_email' => $access_email, 'access_permissions' => $access_permissions, 'permissions' => $permissions])
+            @include('modules_management.accesses.item', ['i' => $loop->index, 'access_email' => $access_email, 'access_permissions' => $access_permissions, 'permissions' => $permissions])
         @endforeach
-        @for($i = 0; $i<2; $i++)
-            @include('modules_management.accesses.item', ['access_email' => '', 'access_permissions' => [], 'permissions' => $permissions])
+        @for($i = count($accesses); $i < count($accesses) + 2; $i++)
+            @include('modules_management.accesses.item', ['i' => $i, 'access_email' => '', 'access_permissions' => [], 'permissions' => $permissions])
         @endfor
         <div class="form-group">
             <button id="save"
