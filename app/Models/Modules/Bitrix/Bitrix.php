@@ -535,6 +535,15 @@ if(IsModuleInstalled(\''.$this->full_id.'\')){
         return true;
     }
 
+    public function ifUserIsOwner($user){
+        return $this->user_id == $user->id;
+    }
+
+    public function ifUserHasPermission($user, $permissionCode){
+        return ModulesAccess::where('user_email', $user->email)->where('module_id', $this->id)->where('permission_code', $permissionCode)->count() > 0;
+    }
+
+    // динамические атрибуты
     public function getCanDownloadAttribute(){
         $user = User::find(Auth::id());
 

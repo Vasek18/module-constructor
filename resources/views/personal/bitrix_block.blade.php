@@ -23,43 +23,51 @@
                         </dl>
                     </div>
                     <div class="actions col-md-2">
-                        @if ($user->canDownloadModule())
-                            @include('bitrix.download_modal', [ 'module' => $module])
-                            <a data-toggle="modal"
-                               data-target="#modal_download_{{$module->id}}"
-                               href="#"
-                               class="btn btn-sm btn-block btn-success">
+                        @if ($module->ifUserHasPermission($user, 'D') || $module->ifUserIsOwner($user))
+                            @if ($user->canDownloadModule())
+                                @include('bitrix.download_modal', [ 'module' => $module])
+                                <a data-toggle="modal"
+                                   data-target="#modal_download_{{$module->id}}"
+                                   href="#"
+                                   class="btn btn-sm btn-block btn-success">
                                 <span class="glyphicon glyphicon-download"
                                       aria-hidden="true"></span>
-                                {{ trans('app.download') }}
-                            </a>
+                                    {{ trans('app.download') }}
+                                </a>
+                            @endif
                         @endif
-                        <a href="{{ action('Modules\Bitrix\BitrixController@show', $module->id) }}"
-                           class="btn btn-sm btn-block btn-primary">
+                        @if ($module->ifUserHasPermission($user, 'D') || $module->ifUserIsOwner($user))
+                            <a href="{{ action('Modules\Bitrix\BitrixController@show', $module->id) }}"
+                               class="btn btn-sm btn-block btn-primary">
                             <span class="glyphicon glyphicon-wrench"
                                   aria-hidden="true"></span>
-                            Разработка
-                        </a>
-                        <a href="{{ action('Modules\Management\ModulesManagementController@index', $module->id) }}"
-                           class="btn btn-sm btn-block btn-info">
+                                Разработка
+                            </a>
+                        @endif
+                        @if ($module->ifUserHasPermission($user, 'M') || $module->ifUserIsOwner($user))
+                            <a href="{{ action('Modules\Management\ModulesManagementController@index', $module->id) }}"
+                               class="btn btn-sm btn-block btn-info">
                             <span class="glyphicon glyphicon-ruble"
                                   aria-hidden="true"></span>
-                            Менеджмент
-                        </a>
+                                Менеджмент
+                            </a>
+                        @endif
                         {{--<a href="{{ action('Modules\Bitrix\BitrixController@marketing', $module->id) }}"
                            class="btn btn-sm btn-block btn-info">
                             <span class="glyphicon glyphicon-ruble"
                                   aria-hidden="true"></span>
                             {{ trans('bitrix.marketing_link') }}
                         </a>--}}
-                        <a class="btn btn-sm btn-danger btn-block"
-                           data-toggle="modal"
-                           data-target="#modal_delete_{{$module->id}}"
-                           href="#">
+                        @if ($module->ifUserIsOwner($user))
+                            <a class="btn btn-sm btn-danger btn-block"
+                               data-toggle="modal"
+                               data-target="#modal_delete_{{$module->id}}"
+                               href="#">
                             <span class="glyphicon glyphicon-trash"
                                   aria-hidden="true"></span>
-                            {{ trans('app.delete') }}
-                        </a>
+                                {{ trans('app.delete') }}
+                            </a>
+                        @endif
                         @include('bitrix.delete_modal', [ 'module' => $module])
                     </div>
                 </div>
