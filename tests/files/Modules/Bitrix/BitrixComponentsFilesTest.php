@@ -89,7 +89,7 @@ class BitrixComponentsFilesTest extends BitrixTestCase{
 			"NAME" => 'GetMessage("'.$component->lang_key.'_COMPONENTS_FOLDER_NAME")',
 		), $description_arr["PATH"]);
 		// dd($component_php);
-		$this->assertEquals('<?'."\n".'if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();'."\n"."\n".'$this->IncludeComponentTemplate();'."\n".'?>', $component_php);
+		$this->assertEquals('<?'.PHP_EOL.'if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();'.PHP_EOL.PHP_EOL.'$this->IncludeComponentTemplate();'.PHP_EOL.'?>', $component_php);
 		$this->assertEquals('Hello World', $default_template_php);
 	}
 
