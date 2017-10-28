@@ -172,14 +172,13 @@ class BitrixController extends Controller{
 		return view("bitrix.marketing.index", $data);
 	}
 
-	// удаление модуля
-	public function destroy(Bitrix $module){
+    // удаление модуля
+    public function destroy(Bitrix $module){
+        // удаляем папку
+        $module->deleteFolder(); // todo перенести в обработчик события удаления
+        // удаляем запись из БД
+        $module->delete();
 
-		// удаляем папку
-		$module->deleteFolder();
-		// удаляем запись из БД
-		$module->delete();
-
-		return redirect(action("PersonalController@index"));
-	}
+        return redirect(action("PersonalController@index"));
+    }
 }

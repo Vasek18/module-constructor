@@ -52,12 +52,6 @@
                                 Менеджмент
                             </a>
                         @endif
-                        {{--<a href="{{ action('Modules\Bitrix\BitrixController@marketing', $module->id) }}"
-                           class="btn btn-sm btn-block btn-info">
-                            <span class="glyphicon glyphicon-ruble"
-                                  aria-hidden="true"></span>
-                            {{ trans('bitrix.marketing_link') }}
-                        </a>--}}
                         @if ($module->ifUserIsOwner($user))
                             <a class="btn btn-sm btn-danger btn-block"
                                data-toggle="modal"
@@ -67,8 +61,8 @@
                                   aria-hidden="true"></span>
                                 {{ trans('app.delete') }}
                             </a>
+                            @include('bitrix.delete_modal', [ 'module' => $module])
                         @endif
-                        @include('bitrix.delete_modal', [ 'module' => $module])
                     </div>
                 </div>
                 @if ($module->ifUserHasPermission($user, 'D') || $module->ifUserIsOwner($user))

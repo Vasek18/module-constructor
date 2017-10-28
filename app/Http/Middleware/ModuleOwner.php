@@ -17,13 +17,11 @@ class ModuleOwner{
     public function handle($request, Closure $next){
         $user = $request->user();
         if ($user){ // если нет юзера, то мы не делаем проверки здесь, пусть этим другие middleware занимаются
-            if ($request->segment(1) == 'module-management'){ // на всякий случай проверка, что страницы те, которые мы проверяем
-                $module_id = $request->segment(2);
-                if (is_numeric($module_id)){ // если мы на странице какого-то конкретного модуля
-                    $module = Bitrix::find($module_id);
-                    if ($module && !$user->isBitrixModuleOwner($module)){ // если юзер владеет модулем
-                        return abort(404);
-                    }
+            $module_id = $request->segment(2);
+            if (intval($module_id)){ // если мы на странице какого-то конкретного модуля
+                $module = Bitrix::find($module_id);
+                if ($module && !$module->ifUserIsOwner($user)){ // если юзер владеет модулем
+                    return abort(404);
                 }
             }
         }

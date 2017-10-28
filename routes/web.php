@@ -89,7 +89,14 @@ Route::group([
         'uses' => 'Modules\Bitrix\BitrixController@show'
     ]);
     Route::put('{module}', 'Modules\Bitrix\BitrixController@update');
-    Route::delete('{module}', 'Modules\Bitrix\BitrixController@destroy');
+    // удалять может только владелец
+    Route::group([
+        'middleware' => [
+            'module.owner',
+        ]
+    ], function(){
+        Route::delete('{module}', 'Modules\Bitrix\BitrixController@destroy');
+    });
     Route::post('{module}/download', 'Modules\Bitrix\BitrixController@download_zip');
 
     // настройки
