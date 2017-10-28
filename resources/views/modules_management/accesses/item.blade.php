@@ -8,7 +8,7 @@
                    value="{{ $access_email }}"
             >
         @endif
-        <input type="text"
+        <input type="email"
                id="email"
                name="email[{{ $i }}]"
                class="form-control"
@@ -23,7 +23,7 @@
                     <div class="pull-left">
                         <label>
                             <input type="checkbox"
-                                   name="permission[{{ $i }}][]"
+                                   name="permission[{{ $i }}][{{ $permission['code'] }}]"
                                    value="{{ $permission['code'] }}"
                                    @if (isset($access_permissions[$permission['code']]))
                                    checked
@@ -36,7 +36,7 @@
                     <div class="pull-left">
                         @if (isset($access_permissions[$permission['code']]))
                             <a class=""
-                                     href="{{ action('Modules\Management\ModulesAccessesController@delete', [$module->id, $access_permissions[$permission['code']]]) }}">
+                               href="{{ action('Modules\Management\ModulesAccessesController@delete', [$module->id, $access_permissions[$permission['code']]]) }}">
                              <span class="glyphicon glyphicon-trash"
                                    aria-hidden="true"></span>
                             </a>

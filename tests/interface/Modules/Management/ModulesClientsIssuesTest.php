@@ -114,9 +114,8 @@ class ModulesClientsIssuesTest extends BitrixTestCase{
 
         // заходим на страницу под другим пользователем
         $this->signIn(factory(User::class)->create());
-        $this->visit(action('Modules\Management\ModulesClientsIssueController@index', $this->module->id));
-
-        $this->dontSee('Test issue');
+        $this->get(action('Modules\Management\ModulesClientsIssueController@index', $this->module->id));
+        $this->assertResponseStatus(404);
     }
 
     /** @test */

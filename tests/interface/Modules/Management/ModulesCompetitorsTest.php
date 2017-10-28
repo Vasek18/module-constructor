@@ -65,10 +65,8 @@ class ModulesCompetitorsTest extends BitrixTestCase{
 
         // заходим на страницу под другим пользователем
         $this->signIn(factory(User::class)->create());
-        $this->visit(action('Modules\Management\ModulesCompetitorsController@index', $this->module->id));
-
-        $this->dontSee('Ololo module');
-        $this->seePageIs('/personal/');
+        $this->get(action('Modules\Management\ModulesCompetitorsController@index', $this->module->id));
+        $this->assertResponseStatus(404);
     }
 
     /** @test */
