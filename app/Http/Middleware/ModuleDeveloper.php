@@ -15,7 +15,12 @@ class ModuleDeveloper{
                 $module = Bitrix::find($module_id);
                 if ($module){
                     if (!$module->ifUserIsOwner($user) && !$module->ifUserHasPermission($user, 'D')){ // если юзер владеет модулем
-                        return abort(404);
+
+                        // todo переделать на abort(404), для этого придётся тесты переписать
+                        if ($request->ajax()){
+                            return response(['message' => 'Nea'], 403);
+                        }
+                        return redirect('personal');
                     }
                 }
             }

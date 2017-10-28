@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Modules\Bitrix\Bitrix;
 use App\Models\Modules\Management\ModulesAccess;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class ModulesAccessesController extends Controller{
 
@@ -32,7 +33,22 @@ class ModulesAccessesController extends Controller{
                         'permission_code' => $permission,
                     ];
 
-                    $access = ModulesAccess::firstOrCreate($accessArr);
+                    if (!ModulesAccess::where('user_email', $accessArr['user_email'])->where('module_id', $accessArr['module_id'])->where('permission_code', $accessArr['permission_code'])->count()){
+                        $access = ModulesAccess::create($accessArr);
+
+                        // письмо пользователю о предоставлении доступы // todo убрать в обработчик события
+                        Mail::send(
+                            'emails.modules.management.access_granted',
+                            [
+                                'user'   => $this->user,
+                                'access' => $accessArr,
+                                'module' => $module,
+                            ],
+                            function($m) use ($accessArr){
+                                $m->to($accessArr['user_email'])->subject('Предоставлен доступ к модулю');
+                            }
+                        );
+                    }
                 }
             }
         }
@@ -49,7 +65,7 @@ class ModulesAccessesController extends Controller{
 
         return back();
     }
-    
+
     public function moduleHasAccess(Bitrix $module, ModulesAccess $access){
         return $module->id == $access->module_id;
     }
