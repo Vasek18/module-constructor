@@ -56,32 +56,38 @@
             </form>
         </div>
         <div class="col-md-2">
-            @if ($user->canDownloadModule())
-                @include('bitrix.download_modal', [ 'module' => $module])
-                <a class="btn btn-sm btn-success btn-block"
-                   data-toggle="modal"
-                   data-target="#modal_download_{{$module->id}}"
-                   href="#">
+            @if ($module->ifUserHasPermission($user, 'D') || $module->ifUserIsOwner($user))
+                @if ($user->canDownloadModule())
+                    @include('bitrix.download_modal', [ 'module' => $module])
+                    <a class="btn btn-sm btn-success btn-block"
+                       data-toggle="modal"
+                       data-target="#modal_download_{{$module->id}}"
+                       href="#">
                     <span class="glyphicon glyphicon-download"
                           aria-hidden="true"></span>
-                    {{ trans('app.download') }}
-                </a>
+                        {{ trans('app.download') }}
+                    </a>
+                @endif
             @endif
-            <a href="{{ action('Modules\Management\ModulesManagementController@index', $module->id) }}"
-               class="btn btn-sm btn-block btn-info">
+            @if ($module->ifUserHasPermission($user, 'M') || $module->ifUserIsOwner($user))
+                <a href="{{ action('Modules\Management\ModulesManagementController@index', $module->id) }}"
+                   class="btn btn-sm btn-block btn-info">
                             <span class="glyphicon glyphicon-ruble"
                                   aria-hidden="true"></span>
-                Менеджмент
-            </a>
-            <a class="btn btn-sm btn-danger btn-block"
-               data-toggle="modal"
-               data-target="#modal_delete_{{$module->id}}"
-               id="delete_{{$module->id}}"
-               href="#">
+                    Менеджмент
+                </a>
+            @endif
+            @if ($module->ifUserIsOwner($user))
+                <a class="btn btn-sm btn-danger btn-block"
+                   data-toggle="modal"
+                   data-target="#modal_delete_{{$module->id}}"
+                   id="delete_{{$module->id}}"
+                   href="#">
                 <span class="glyphicon glyphicon-trash"
                       aria-hidden="true"></span>
-                {{ trans('app.delete') }}
-            </a>
+                    {{ trans('app.delete') }}
+                </a>
+            @endif
         </div>
     </div>
     @include('bitrix.delete_modal', [ 'module' => $module])

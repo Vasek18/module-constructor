@@ -78,7 +78,7 @@ Route::group(['prefix' => 'personal'], function(){
 Route::group([
     'prefix'     => 'my-bitrix',
     'middleware' => [
-        'bitrix.owner',
+        'module.developer',
         'auth'
     ]
 ], function(){
@@ -300,7 +300,7 @@ Route::group([
 Route::group([
     'prefix'     => 'module-management/{module}',
     'middleware' => [
-        'module.owner',
+        'module.manager',
         'auth'
     ]
 ], function(){
@@ -329,7 +329,12 @@ Route::group([
     });
 
     // доступы
-    Route::group(['prefix' => 'accesses'], function(){
+    Route::group([
+        'prefix'     => 'accesses',
+        'middleware' => [
+            'module.owner',
+        ]
+    ], function(){
         Route::get('', ['uses' => 'Modules\Management\ModulesAccessesController@index']);
         Route::post('', ['uses' => 'Modules\Management\ModulesAccessesController@store']);
         Route::get('{access}/delete', ['uses' => 'Modules\Management\ModulesAccessesController@delete']);

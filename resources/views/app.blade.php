@@ -139,7 +139,7 @@
                                 <a href="{{ route('register') }}">{{trans('app.link_to_reg_title')}}</a>
                             </li>
                         @else
-                            <li class="{!! classActiveSegment(1, 'personal') !!}">
+                            <li class="{!! classActiveSegment(1, 'personal') !!} {!! classActiveSegment(1, 'my-bitrix') !!} {!! classActiveSegment(1, 'module-management') !!}">
                                 <a href="{{ route('personal') }}">{{trans('app.link_to_personal_title')}}</a>
                             </li>
                             <li>
