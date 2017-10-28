@@ -60,7 +60,7 @@
                        class="you-can-change ajax"
                        data-name="description"
                        data-formtype="textarea"
-                       data-pattern=".+">{{ $issue->description ?: '.' }}</a>
+                       data-pattern=".+">{{ $issue->description ?: 'Задать описание' }}</a>
                 </p>
             </div>
             <button type="submit"

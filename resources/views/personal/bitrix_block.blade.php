@@ -71,142 +71,144 @@
                         @include('bitrix.delete_modal', [ 'module' => $module])
                     </div>
                 </div>
-                <hr>
-                <p>
-                    <a class="btn btn-info"
-                       role="button"
-                       data-toggle="collapse"
-                       href="#module_dop_indo_{{$module->id}}"
-                       aria-expanded="false"
-                       aria-controls="module_dop_indo_{{$module->id}}">
-                        {{ trans('bitrix.dop_info_title') }}
-                    </a>
-                </p>
-                <div class="collapse"
-                     id="module_dop_indo_{{$module->id}}">
-                    <div class="row">
-                        <div class="sections-links col-md-10">
-                            <h3>{{ trans('bitrix.components_list_title_in_bitrix_block') }}</h3>
-                            @if (count($module->components))
-                                <ul>
-                                    @foreach($module->components as $component)
-                                        <li>
-                                            <a href="{{action('Modules\Bitrix\BitrixComponentsController@show', [$module->id, $component->id])}}">{{$component->name}}
-                                                ({{$component->code}})
-                                            </a>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            @else
-                                <p>{{ trans('bitrix.no_components_in_bitrix_block') }}</p>
-                            @endif
-                            <p>
-                                <a class="btn btn-primary"
-                                   href="{{ route('bitrix_module_components', $module->id) }}">{{ trans('bitrix.go_to_components_in_bitrix_block') }}
-                                </a>
-                            </p>
-                            <hr>
-                            <h3>{{ trans('bitrix.events_handlers_list_title_in_bitrix_block') }}</h3>
-                            @if (count($module->handlers))
-                                <ul>
-                                    @foreach($module->handlers as $handlers)
-                                        <li>
-                                            {{$handlers->class}}::{{$handlers->method}}
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            @else
-                                <p>{{ trans('bitrix.no_events_handlers_in_bitrix_block') }}</p>
-                            @endif
-                            <p>
-                                <a class="btn btn-primary"
-                                   href="{{ route('bitrix_module_events_handlers', $module->id) }}">{{ trans('bitrix.go_to_events_handlers_in_bitrix_block') }}
-                                </a>
-                            </p>
-                            <hr>
-                            <h3>{{ trans('bitrix.admin_options_list_title_in_bitrix_block') }}</h3>
-                            <p>{{count($module->options)}} {{ trans('bitrix.settings_in_bitrix_block') }}</p>
-                            <p>
-                                <a class="btn btn-primary"
-                                   href="{{ route('bitrix_module_admin_options', $module->id) }}">{{ trans('bitrix.go_to_admin_options_in_bitrix_block') }}
-                                </a>
-                            </p>
-                            <hr>
-                            <h3>{{ trans('bitrix.infoblocks_list_title_in_bitrix_block') }}</h3>
-                            @if (count($module->infoblocks))
-                                <ul>
-                                    @foreach($module->infoblocks as $infoblock)
-                                        <li>
-                                            <a href="{{ action('Modules\Bitrix\BitrixDataStorageController@detail_ib', [$module->id, $infoblock->id]) }}">{{$infoblock->name}}</a>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            @else
-                                <p>{{ trans('bitrix.no_infoblocks_in_bitrix_block') }}</p>
-                            @endif
-                            <p>
-                                <a class=" btn btn-primary
+                @if ($module->ifUserHasPermission($user, 'D') || $module->ifUserIsOwner($user))
+                    <hr>
+                    <p>
+                        <a class="btn btn-info"
+                           role="button"
+                           data-toggle="collapse"
+                           href="#module_dop_indo_{{$module->id}}"
+                           aria-expanded="false"
+                           aria-controls="module_dop_indo_{{$module->id}}">
+                            {{ trans('bitrix.dop_info_title') }}
+                        </a>
+                    </p>
+                    <div class="collapse"
+                         id="module_dop_indo_{{$module->id}}">
+                        <div class="row">
+                            <div class="sections-links col-md-10">
+                                <h3>{{ trans('bitrix.components_list_title_in_bitrix_block') }}</h3>
+                                @if (count($module->components))
+                                    <ul>
+                                        @foreach($module->components as $component)
+                                            <li>
+                                                <a href="{{action('Modules\Bitrix\BitrixComponentsController@show', [$module->id, $component->id])}}">{{$component->name}}
+                                                    ({{$component->code}})
+                                                </a>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                @else
+                                    <p>{{ trans('bitrix.no_components_in_bitrix_block') }}</p>
+                                @endif
+                                <p>
+                                    <a class="btn btn-primary"
+                                       href="{{ route('bitrix_module_components', $module->id) }}">{{ trans('bitrix.go_to_components_in_bitrix_block') }}
+                                    </a>
+                                </p>
+                                <hr>
+                                <h3>{{ trans('bitrix.events_handlers_list_title_in_bitrix_block') }}</h3>
+                                @if (count($module->handlers))
+                                    <ul>
+                                        @foreach($module->handlers as $handlers)
+                                            <li>
+                                                {{$handlers->class}}::{{$handlers->method}}
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                @else
+                                    <p>{{ trans('bitrix.no_events_handlers_in_bitrix_block') }}</p>
+                                @endif
+                                <p>
+                                    <a class="btn btn-primary"
+                                       href="{{ route('bitrix_module_events_handlers', $module->id) }}">{{ trans('bitrix.go_to_events_handlers_in_bitrix_block') }}
+                                    </a>
+                                </p>
+                                <hr>
+                                <h3>{{ trans('bitrix.admin_options_list_title_in_bitrix_block') }}</h3>
+                                <p>{{count($module->options)}} {{ trans('bitrix.settings_in_bitrix_block') }}</p>
+                                <p>
+                                    <a class="btn btn-primary"
+                                       href="{{ route('bitrix_module_admin_options', $module->id) }}">{{ trans('bitrix.go_to_admin_options_in_bitrix_block') }}
+                                    </a>
+                                </p>
+                                <hr>
+                                <h3>{{ trans('bitrix.infoblocks_list_title_in_bitrix_block') }}</h3>
+                                @if (count($module->infoblocks))
+                                    <ul>
+                                        @foreach($module->infoblocks as $infoblock)
+                                            <li>
+                                                <a href="{{ action('Modules\Bitrix\BitrixDataStorageController@detail_ib', [$module->id, $infoblock->id]) }}">{{$infoblock->name}}</a>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                @else
+                                    <p>{{ trans('bitrix.no_infoblocks_in_bitrix_block') }}</p>
+                                @endif
+                                <p>
+                                    <a class=" btn btn-primary
                                             "
-                                   href="{{ route('bitrix_module_data_storage', $module->id) }}">{{ trans('bitrix.go_to_infoblocks_in_bitrix_block') }}
-                                </a>
-                            </p>
-                            <hr>
-                            <h3>{{ trans('bitrix.mail_events_list_title_in_bitrix_block') }}</h3>
-                            @if (count($module->mailEvents))
-                                <ul>
-                                    @foreach($module->mailEvents as $mail_event)
-                                        <li>
-                                            <a href="{{ action('Modules\Bitrix\BitrixMailEventsController@show', [$module->id, $mail_event->id]) }}">{{$mail_event->name}}</a>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            @else
-                                <p>{{ trans('bitrix.no_mail_events_in_bitrix_block') }}</p>
-                            @endif
-                            <p>
-                                <a class="btn btn-primary"
-                                   href="{{ route('bitrix_module_mail_events', $module->id) }}">{{ trans('bitrix.go_to_mail_events_in_bitrix_block') }}
-                                </a>
-                            </p>
-                            <hr>
-                            <h3>{{ trans('bitrix.arbitrary_files_list_title_in_bitrix_block') }}</h3>
-                            @if (count($module->arbitraryFiles))
-                                <ul>
-                                    @foreach($module->arbitraryFiles as $af)
-                                        <li>
-                                            <a href="{{ route('bitrix_module_arbitrary_files', $module->id) }}">{{$af->path}}{{$af->filename}}</a>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            @else
-                                <p>{{ trans('bitrix.no_arbitrary_files_in_bitrix_block') }}</p>
-                            @endif
-                            <p>
-                                <a class="btn btn-primary"
-                                   href="{{ route('bitrix_module_arbitrary_files', $module->id) }}">{{ trans('bitrix.go_to_arbitrary_files_in_bitrix_block') }}
-                                </a>
-                            </p>
-                            <hr>
-                            <h3>{{ trans('bitrix.admin_menu_pages_list_title_in_bitrix_block') }}</h3>
-                            @if (count($module->adminMenuPages))
-                                <ul>
-                                    @foreach($module->adminMenuPages as $amp)
-                                        <li>
-                                            <a href="{{ action('Modules\Bitrix\BitrixAdminMenuController@show', [$module->id, $amp->id]) }}">{{$amp->name}}</a>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            @else
-                                <p>{{ trans('bitrix.no_admin_menu_pages_in_bitrix_block') }}</p>
-                            @endif
-                            <p>
-                                <a class="btn btn-primary"
-                                   href="{{ route('bitrix_module_admin_menu', $module->id) }}">{{ trans('bitrix.go_to_admin_menu_pages_in_bitrix_block') }}
-                                </a>
-                            </p>
+                                       href="{{ route('bitrix_module_data_storage', $module->id) }}">{{ trans('bitrix.go_to_infoblocks_in_bitrix_block') }}
+                                    </a>
+                                </p>
+                                <hr>
+                                <h3>{{ trans('bitrix.mail_events_list_title_in_bitrix_block') }}</h3>
+                                @if (count($module->mailEvents))
+                                    <ul>
+                                        @foreach($module->mailEvents as $mail_event)
+                                            <li>
+                                                <a href="{{ action('Modules\Bitrix\BitrixMailEventsController@show', [$module->id, $mail_event->id]) }}">{{$mail_event->name}}</a>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                @else
+                                    <p>{{ trans('bitrix.no_mail_events_in_bitrix_block') }}</p>
+                                @endif
+                                <p>
+                                    <a class="btn btn-primary"
+                                       href="{{ route('bitrix_module_mail_events', $module->id) }}">{{ trans('bitrix.go_to_mail_events_in_bitrix_block') }}
+                                    </a>
+                                </p>
+                                <hr>
+                                <h3>{{ trans('bitrix.arbitrary_files_list_title_in_bitrix_block') }}</h3>
+                                @if (count($module->arbitraryFiles))
+                                    <ul>
+                                        @foreach($module->arbitraryFiles as $af)
+                                            <li>
+                                                <a href="{{ route('bitrix_module_arbitrary_files', $module->id) }}">{{$af->path}}{{$af->filename}}</a>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                @else
+                                    <p>{{ trans('bitrix.no_arbitrary_files_in_bitrix_block') }}</p>
+                                @endif
+                                <p>
+                                    <a class="btn btn-primary"
+                                       href="{{ route('bitrix_module_arbitrary_files', $module->id) }}">{{ trans('bitrix.go_to_arbitrary_files_in_bitrix_block') }}
+                                    </a>
+                                </p>
+                                <hr>
+                                <h3>{{ trans('bitrix.admin_menu_pages_list_title_in_bitrix_block') }}</h3>
+                                @if (count($module->adminMenuPages))
+                                    <ul>
+                                        @foreach($module->adminMenuPages as $amp)
+                                            <li>
+                                                <a href="{{ action('Modules\Bitrix\BitrixAdminMenuController@show', [$module->id, $amp->id]) }}">{{$amp->name}}</a>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                @else
+                                    <p>{{ trans('bitrix.no_admin_menu_pages_in_bitrix_block') }}</p>
+                                @endif
+                                <p>
+                                    <a class="btn btn-primary"
+                                       href="{{ route('bitrix_module_admin_menu', $module->id) }}">{{ trans('bitrix.go_to_admin_menu_pages_in_bitrix_block') }}
+                                    </a>
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endif
             </div>
             <div class="panel-footer">{{ trans('bitrix.updated_at') }}: {{$module->updated_at}}</div>
         </div>
