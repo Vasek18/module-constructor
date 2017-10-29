@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Modules\Bitrix;
 
+use App\Models\Metrics\MetricsEventsLog;
 use App\Models\Modules\Bitrix\BitrixComponentClassPhpTemplates;
 use Illuminate\Http\Request;
 
