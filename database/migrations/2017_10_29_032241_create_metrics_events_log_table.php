@@ -16,7 +16,7 @@ class CreateMetricsEventsLogTable extends Migration{
             $table->increments('id');
             $table->integer('user_id')->unsigned()->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('name');
+            $table->string('event');
             $table->text('params')->nullable(); // на самом деле json
             $table->timestamps();
         });
