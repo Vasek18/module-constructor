@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Modules\Management;
 
 use App\Http\Controllers\Controller;
+use App\Models\Metrics\MetricsEventsLog;
 use App\Models\Modules\Bitrix\Bitrix;
 use App\Models\Modules\Management\ModulesAccess;
 use Illuminate\Http\Request;
@@ -34,6 +35,8 @@ class ModulesAccessesController extends Controller{
                     ];
 
                     if (!ModulesAccess::where('user_email', $accessArr['user_email'])->where('module_id', $accessArr['module_id'])->where('permission_code', $accessArr['permission_code'])->count()){
+
+                        // создаём доступ
                         $access = ModulesAccess::create($accessArr);
 
                         // письмо пользователю о предоставлении доступы // todo убрать в обработчик события
@@ -48,6 +51,9 @@ class ModulesAccessesController extends Controller{
                                 $m->to($accessArr['user_email'])->subject('Предоставлен доступ к модулю');
                             }
                         );
+
+                        // логируем действие
+                        MetricsEventsLog::log('Предоставлен доступ', $accessArr);
                     }
                 }
             }
@@ -62,6 +68,9 @@ class ModulesAccessesController extends Controller{
         }
 
         $access->delete();
+
+        // логируем действие
+        MetricsEventsLog::log('Удалён доступ', $access);
 
         return back();
     }

@@ -53,11 +53,14 @@ class BitrixComponentsController extends Controller{
 				'desc'      => $request->desc,
 				'namespace' => $request->namespace,
 			]
-		);
+        );
 
-		$component->createFolder();
-		$component->createDefaultPath();
-		$component->createDefaultComponentPhp();
+        // логируем действие
+        MetricsEventsLog::log('Создан компонент', $component);
+
+        $component->createFolder();
+        $component->createDefaultPath();
+        $component->createDefaultComponentPhp();
 		$component->createDefaultTemplate();
 
 		$component->saveStep(1);

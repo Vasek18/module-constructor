@@ -447,6 +447,11 @@ Route::group([
         Route::get('', ['uses' => 'Admin\AdminProjectPulseController@index']);
         Route::post('', ['uses' => 'Admin\AdminProjectPulseController@store']);
     });
+
+    // метрики
+    Route::group(['prefix' => 'metrics'], function(){
+        Route::get('', ['uses' => 'Admin\AdminMetricsEventsLogController@index']);
+    });
 });
 
 // просто страницы

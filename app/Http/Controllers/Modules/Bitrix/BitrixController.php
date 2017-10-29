@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Modules\Bitrix;
 
+use App\Models\Metrics\MetricsEventsLog;
 use App\Models\Modules\Bitrix\Bitrix;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -66,6 +67,9 @@ class BitrixController extends Controller{
 		Auth::user()->bitrixes()->save($bitrix);
 		$module_id = $bitrix->id;
 
+        // логируем действие
+        MetricsEventsLog::log('Добавлен модуль', $bitrix);
+
 		if ($module_id){
 			// создание папки модуля пользователя на серваке
 			if (!$bitrix->createFolder()){
@@ -86,13 +90,16 @@ class BitrixController extends Controller{
 	}
 
 	// детальная страница модуля
-	public function show(Bitrix $module){
-		$data = [
-			'module' => $module
-		];
+    public function show(Bitrix $module){
+        $data = [
+            'module' => $module
+        ];
 
-		return view("bitrix.detail", $data);
-	}
+        // логируем действие
+        MetricsEventsLog::log('Открыта детальная страница модуля', $module);
+
+        return view("bitrix.detail", $data);
+    }
 
 	// редактирование параметра
 	// todo не обновлять весь файл, а только нужные значения
@@ -139,6 +146,9 @@ class BitrixController extends Controller{
 		if (!$this->user->canDownloadModule()){
 			return response(['message' => 'Nea'], 403);
 		}
+
+        // логируем действие
+        MetricsEventsLog::log('Скачен архив модуля', $module);
 
 		$inputs = $request->all();
 

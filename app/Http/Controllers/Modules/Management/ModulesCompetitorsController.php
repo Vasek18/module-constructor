@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Modules\Management;
 
 use App\Http\Controllers\Controller;
+use App\Models\Metrics\MetricsEventsLog;
 use App\Models\Modules\Bitrix\Bitrix;
 use App\Models\Modules\Management\ModulesCompetitor;
 use App\Models\Modules\Management\ModulesCompetitorsUpdate;
@@ -60,13 +61,16 @@ class ModulesCompetitorsController extends Controller{
             return back();
         }
 
-        $module->competitors()->create([
+        $competitor = $module->competitors()->create([
             'name'    => $name,
             'comment' => $comment,
             'link'    => $request->link,
             'price'   => $request->price,
             'sort'    => $request->sort,
         ]);
+
+        // логируем действие
+        MetricsEventsLog::log('Добавлен конкурент модуля', $competitor);
 
         return redirect(action('Modules\Management\ModulesCompetitorsController@index', $module->id));
     }
@@ -121,6 +125,9 @@ class ModulesCompetitorsController extends Controller{
             'sort'    => $request->sort,
         ]);
 
+        // логируем действие
+        MetricsEventsLog::log('Изменён конкурент модуля', $competitor);
+
         return back();
     }
 
@@ -138,6 +145,9 @@ class ModulesCompetitorsController extends Controller{
             return abort(404);
         }
 
+        // логируем действие
+        MetricsEventsLog::log('Удалён конкурент модуля', $competitor);
+
         $competitor->delete();
 
         return redirect(action('Modules\Management\ModulesCompetitorsController@index', $module->id));
@@ -154,6 +164,9 @@ class ModulesCompetitorsController extends Controller{
         if (!$this->moduleHasCompetitor($module, $competitor)){
             return abort(404);
         }
+
+        // логируем действие
+        MetricsEventsLog::log('Запущен парсинг обновлений конкурента модуля', $competitor);
 
         return $competitor->getUpdatesFromParsing();
     }

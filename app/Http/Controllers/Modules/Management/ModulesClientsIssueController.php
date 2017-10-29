@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Modules\Management;
 
 use App\Http\Controllers\Controller;
+use App\Models\Metrics\MetricsEventsLog;
 use App\Models\Modules\Bitrix\Bitrix;
 use App\Models\Modules\Management\ModulesClientsIssue;
 use Illuminate\Http\Request;
@@ -49,12 +50,16 @@ class ModulesClientsIssueController extends Controller{
             return back();
         }
 
-        $module->clientsIssues()->create([
+        $issueArr = [
             'name'          => $name,
             'description'   => $description,
             'appeals_count' => 1,
             // проблема поднималась как минимум раз
-        ]);
+        ];
+        $module->clientsIssues()->create($issueArr);
+
+        // логируем действие
+        MetricsEventsLog::log('Добавлена проблема модуля', $issueArr);
 
         return back();
     }
@@ -95,9 +100,13 @@ class ModulesClientsIssueController extends Controller{
 
         $description = trim($request->description);
 
-        $issue->update([
+        $issueArr = [
             'description' => $description,
-        ]);
+        ];
+        $issue->update($issueArr);
+
+        // логируем действие
+        MetricsEventsLog::log('Изменёна проблема модуля', $issueArr);
 
         return back();
     }
@@ -115,6 +124,9 @@ class ModulesClientsIssueController extends Controller{
         if (!$this->moduleHasIssue($module, $issue)){
             return abort(404);
         }
+
+        // логируем действие
+        MetricsEventsLog::log('Удалёна проблема модуля', $issue);
 
         $issue->delete();
 
@@ -137,7 +149,8 @@ class ModulesClientsIssueController extends Controller{
             return abort(404);
         }
 
-        $newCount = intval($issue->appeals_count);
+        $oldCount = intval($issue->appeals_count);
+        $newCount = $oldCount;
 
         if ($request->action == 'decrease'){
             $newCount--;
@@ -151,6 +164,13 @@ class ModulesClientsIssueController extends Controller{
         }
 
         $issue->update(['appeals_count' => $newCount]);
+
+        // логируем действие
+        MetricsEventsLog::log('Изменён счётчик проблемы модуля', [
+            'oldCount' => $oldCount,
+            'newCount' => $newCount,
+            'issue'    => $issue,
+        ]);
 
         return back();
     }
@@ -173,6 +193,9 @@ class ModulesClientsIssueController extends Controller{
 
         $issue->update(['is_solved' => true]);
 
+        // логируем действие
+        MetricsEventsLog::log('Проблема модуля помечена решенной', $issue);
+
         return back();
     }
 
@@ -192,6 +215,9 @@ class ModulesClientsIssueController extends Controller{
         }
 
         $issue->update(['is_solved' => false]);
+
+        // логируем действие
+        MetricsEventsLog::log('Проблема модуля помечена нерешенной', $issue);
 
         return back();
     }

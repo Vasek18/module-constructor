@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Modules\Bitrix;
 
 use App\Http\Utilities\Bitrix\AdminOptionsTypes;
+use App\Models\Metrics\MetricsEventsLog;
 use Illuminate\Http\Request;
 
 use App\Http\Controllers\Controller;
@@ -101,6 +102,10 @@ class BitrixOptionsController extends Controller{
 				],
 				$prop
 			);
+
+            // логируем действие
+            MetricsEventsLog::log('Создана настройка модуля', $option);
+
 			$option->deleteProps(); // чтобы было возможным удалять опшионы
 
 			// сохранение опций

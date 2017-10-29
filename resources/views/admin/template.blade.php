@@ -22,7 +22,7 @@
                     <a href="{{ action('Admin\AdminSettingsController@index') }}"
                        class="list-group-item">Основные настройки сервиса
                     </a>
-                    <a class="list-group-item"
+                    <a class="list-group-item list-group-item-info"
                        role="button"
                        data-toggle="collapse"
                        href="#bitrixSubMenu"
@@ -39,7 +39,7 @@
                            class="list-group-item">Шаблоны class.php
                         </a>
                     </div>
-                    <a class="list-group-item"
+                    <a class="list-group-item list-group-item-info"
                        role="button"
                        data-toggle="collapse"
                        href="#publicTexts"
@@ -56,7 +56,7 @@
                            class="list-group-item">Пульс проекта
                         </a>
                     </div>
-                    <a class="list-group-item"
+                    <a class="list-group-item list-group-item-info"
                        role="button"
                        data-toggle="collapse"
                        href="#serviceImprovement"
@@ -73,6 +73,10 @@
                            class="list-group-item">Репорты
                         </a>
                     </div>
+                    <a class="list-group-item {!! classActiveSegment(2, 'metrics') !!}"
+                       href="{{ action('Admin\AdminMetricsEventsLogController@index') }}">
+                        Метрики
+                    </a>
                 </div>
             </div>
             <div class="col-md-9">

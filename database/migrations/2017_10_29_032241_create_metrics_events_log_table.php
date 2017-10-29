@@ -15,7 +15,6 @@ class CreateMetricsEventsLogTable extends Migration{
         Schema::create('metrics_events_log', function(Blueprint $table){
             $table->increments('id');
             $table->integer('user_id')->unsigned()->nullable();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('event');
             $table->text('params')->nullable(); // на самом деле json
             $table->timestamps();
