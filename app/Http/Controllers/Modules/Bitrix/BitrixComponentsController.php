@@ -139,7 +139,9 @@ class BitrixComponentsController extends Controller{
         if ($pathToZip = $component->generateZip()){
             if ($module->code != 'ololo_from_test'){ // для тестов, иначе эксепшион ловлю // todo придумать что-то поумнее
                 $response = Response::download($pathToZip)->deleteFileAfterSend(true);
-                ob_end_clean(); // без этого архив скачивается поверждённым
+                if ((ob_get_contents())){
+                    ob_end_clean(); // без этого архив скачивается поверждённым
+                }
 
                 return $response;
             }
