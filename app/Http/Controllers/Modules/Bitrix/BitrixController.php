@@ -184,6 +184,9 @@ class BitrixController extends Controller{
 
     // удаление модуля
     public function destroy(Bitrix $module){
+        // логируем действие
+        MetricsEventsLog::log('Удалён модуль', $module);
+        
         // удаляем папку
         $module->deleteFolder(); // todo перенести в обработчик события удаления
         // удаляем запись из БД

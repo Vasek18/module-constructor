@@ -31,7 +31,8 @@
                         @foreach($eventGroup['events'] as $event)
                             <li class="list-group-item">
                                 <div class="row">
-                                    <div class="col-md-4">{{ $event->userName }}</div>
+                                    <div class="col-md-2">{{ $event->userName }}</div>
+                                    <div class="col-md-2">{{ $event->created_at->format('d.m.Y H:i:s') }}</div>
                                     <div class="col-md-8">
                                         <pre>{{ print_r($event->params) }}</pre>
                                     </div>

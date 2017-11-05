@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\Auth;
 
+use App\Models\Metrics\MetricsEventsLog;
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
@@ -93,6 +94,9 @@ class RegisterController extends Controller{
 		Mail::send('emails.admin.new_user', ['user' => $user], function ($m){
 			$m->to(env('GOD_EMAIL'))->subject('Зарегался новый пользователь');
 		});
+
+        // логируем действие
+        MetricsEventsLog::log('Зарегистрирован пользователь', $user);
 
 		flash()->success(trans('reg.you_ve_registered').'\n'.(setting('day_price') ? trans_choice('reg.trial_provided', $daysTrial, ['days' => $daysTrial]) : ''));
 
