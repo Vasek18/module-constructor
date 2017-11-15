@@ -43,7 +43,6 @@
         <div class="options">
             <div class="draggable-container">
                 @foreach($options as $i => $option)
-                    {{--{{dd($option)}}--}}
                     @include('bitrix.admin_options.item', ['option' => $option, 'i' => $i, 'module' => $module])
                 @endforeach
             </div>

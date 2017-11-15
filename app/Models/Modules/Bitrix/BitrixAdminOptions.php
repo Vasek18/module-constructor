@@ -66,7 +66,6 @@ class BitrixAdminOptions extends Model{
 				$optionsString .= "\t\t),".PHP_EOL."\t),".PHP_EOL;
 			}
 
-			// dd($helperFunctionsArr);
 			$helperFunctions = BitrixHelperFunctions::getPhpCodeFromListOfFuncsNames($helperFunctionsArr);
 			$helperFunctions = str_replace(Array('{LANG_KEY}'), Array($module->lang_key), $helperFunctions);
 		}
@@ -90,15 +89,9 @@ class BitrixAdminOptions extends Model{
 	}
 
 	public function getNeededHelperFunctionName(){
-		if ($this->spec_vals == 'iblocks_list'){
-			return 'iblocks_list';
-		}
-		if ($this->spec_vals == 'iblock_items_list'){
-			return 'iblock_items_list';
-		}
-		if ($this->spec_vals == 'iblock_props_list'){
-			return 'iblock_props_list';
-		}
+	    if ($this->spec_vals){
+	        return $this->spec_vals;
+        }
 	}
 
 	public function getParamsStringForFile($option_type){
@@ -125,9 +118,12 @@ class BitrixAdminOptions extends Model{
 				if ($this->spec_vals == 'iblock_items_list'){
 					$params_string .= '$iblock_items_list('.$this->spec_vals_args.')';
 				}
-				if ($this->spec_vals == 'iblock_props_list'){
-					$params_string .= '$iblock_props_list('.$this->spec_vals_args.')';
-				}
+                if ($this->spec_vals == 'iblock_sections_list'){
+                    $params_string .= '$iblock_sections_list('.$this->spec_vals_args.')';
+                }
+                if ($this->spec_vals == 'iblock_props_list'){
+                    $params_string .= '$iblock_props_list('.$this->spec_vals_args.')';
+                }
 			}
 		}
 
