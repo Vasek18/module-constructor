@@ -10,6 +10,21 @@ class BitrixAdminMenuFilesTest extends BitrixTestCase{
 
 	use DatabaseTransactions;
 
+    function setUp(){
+        parent::setUp();
+
+        $this->signIn();
+        $this->module = $this->fillNewBitrixForm();
+    }
+
+    function tearDown(){
+        parent::tearDown();
+
+        if ($this->module){
+            $this->module->deleteFolder();
+        }
+    }
+
 	function getLangFileArray($module, $lang = 'ru'){
 		$optionsFileContent = $this->disk()->get($module->module_folder.'/lang/'.$lang.'/admin/menu.php');
 		$optionsArr = vArrParse::parseFromText($optionsFileContent, 'MESS');
@@ -37,10 +52,7 @@ class BitrixAdminMenuFilesTest extends BitrixTestCase{
 
 	/** @test */
 	function it_writes_menu_arr_for_one_page(){
-		$this->signIn();
-		$module = $this->fillNewBitrixForm();
-
-		$amp = $this->createAdminPageOnForm($module, [
+		$amp = $this->createAdminPageOnForm($this->module, [
 			'name'        => 'Ololo',
 			'code'        => 'trololo',
 			"sort"        => "334",
@@ -50,11 +62,10 @@ class BitrixAdminMenuFilesTest extends BitrixTestCase{
 			"lang_code"   => '<? $MESS["TEST"] = "test"; ?>'
 		]);
 
-		$gottenMenuArray = $this->getGlobalMenuArrays($module);
-		$fileLangArr = $this->getLangFileArray($module);
-		$pageContent = $this->disk()->get($module->module_folder.'/admin/'.$module->class_name."_trololo.php");
-		$pageLangContent = $this->disk()->get($module->module_folder.'/lang/ru/admin/'.$module->class_name."_trololo.php");
-		$module->deleteFolder();
+		$gottenMenuArray = $this->getGlobalMenuArrays($this->module);
+		$fileLangArr = $this->getLangFileArray($this->module);
+		$pageContent = $this->disk()->get($this->module->module_folder.'/admin/'.$this->module->class_name."_trololo.php");
+		$pageLangContent = $this->disk()->get($this->module->module_folder.'/lang/ru/admin/'.$this->module->class_name."_trololo.php");
 
 		$expectedInstallationFuncCodeArray = [
 			"icon"        => "default_menu_icon",
@@ -62,7 +73,7 @@ class BitrixAdminMenuFilesTest extends BitrixTestCase{
 			"text"        => 'Loc::getMessage("'.$amp->lang_key.'_TEXT")',
 			"title"       => 'Loc::getMessage("'.$amp->lang_key.'_TITLE")',
 			"parent_menu" => "global_menu_settings",
-			"url"         => $module->class_name."_trololo.php",
+			"url"         => $this->module->class_name."_trololo.php",
 		];
 
 		$this->assertEquals(1, count($gottenMenuArray));
@@ -77,19 +88,7 @@ class BitrixAdminMenuFilesTest extends BitrixTestCase{
 
 	/** @test */
 	function it_writes_menu_arr_for_two_pages(){
-		$this->signIn();
-		$module = $this->fillNewBitrixForm();
-
-		$amp = $this->createAdminPageOnForm($module, [
-			'name'        => 'Ololo',
-			'code'        => 'trololo',
-			"sort"        => "334",
-			"text"        => "item",
-			"parent_menu" => "global_menu_settings",
-			"php_code"    => '<a href="test">test</a>',
-			"lang_code"   => '<? $MESS["TEST"] = "test"; ?>'
-		]);
-		$amp = $this->createAdminPageOnForm($module, [
+		$amp = $this->createAdminPageOnForm($this->module, [
 			'name'        => 'Ololo',
 			'code'        => 'trololo',
 			"sort"        => "334",
@@ -99,7 +98,7 @@ class BitrixAdminMenuFilesTest extends BitrixTestCase{
 			"lang_code"   => '<? $MESS["TEST"] = "test"; ?>'
 		]);
 
-		$amp2 = $this->createAdminPageOnForm($module, [
+		$amp2 = $this->createAdminPageOnForm($this->module, [
 			'name'        => 'Test',
 			'code'        => 'ert',
 			"sort"        => "3242",
@@ -109,13 +108,8 @@ class BitrixAdminMenuFilesTest extends BitrixTestCase{
 			"lang_code"   => ''
 		]);
 
-		$gottenMenuArray = $this->getGlobalMenuArrays($module);
-		$fileLangArr = $this->getLangFileArray($module);
-		$pageContent = $this->disk()->get($module->module_folder.'/admin/'.$module->class_name."_trololo.php");
-		$pageLangContent = $this->disk()->get($module->module_folder.'/lang/ru/admin/'.$module->class_name."_trololo.php");
-		$pageContent2 = $this->disk()->get($module->module_folder.'/admin/'.$module->class_name."_ert.php");
-		$pageLangContent2 = $this->disk()->get($module->module_folder.'/lang/ru/admin/'.$module->class_name."_ert.php");
-		$module->deleteFolder();
+		$gottenMenuArray = $this->getGlobalMenuArrays($this->module);
+		$fileLangArr = $this->getLangFileArray($this->module);
 
 		$expectedMenuArray = [
 			"icon"        => "default_menu_icon",
@@ -123,7 +117,7 @@ class BitrixAdminMenuFilesTest extends BitrixTestCase{
 			"text"        => 'Loc::getMessage("'.$amp->lang_key.'_TEXT")',
 			"title"       => 'Loc::getMessage("'.$amp->lang_key.'_TITLE")',
 			"parent_menu" => "global_menu_settings",
-			"url"         => $module->class_name."_trololo.php",
+			"url"         => $this->module->class_name."_trololo.php",
 		];
 		$expectedMenuArray2 = [
 			"icon"        => "default_menu_icon",
@@ -131,7 +125,7 @@ class BitrixAdminMenuFilesTest extends BitrixTestCase{
 			"text"        => 'Loc::getMessage("'.$amp2->lang_key.'_TEXT")',
 			"title"       => 'Loc::getMessage("'.$amp2->lang_key.'_TITLE")',
 			"parent_menu" => "global_menu_services",
-			"url"         => $module->class_name."_ert.php",
+			"url"         => $this->module->class_name."_ert.php",
 		];
 
 		$this->assertEquals(2, count($gottenMenuArray));
@@ -145,18 +139,60 @@ class BitrixAdminMenuFilesTest extends BitrixTestCase{
 		$this->assertEquals('olllk', $fileLangArr[$amp2->lang_key.'_TEXT']);
 		$this->assertArrayHasKey($amp2->lang_key.'_TITLE', $fileLangArr);
 		$this->assertEquals('olllk', $fileLangArr[$amp2->lang_key.'_TITLE']);
-		$this->assertEquals('<a href="test">test</a>', $pageContent);
-		$this->assertEquals('<? $MESS["TEST"] = "test"; ?>', $pageLangContent);
-		$this->assertEquals('', $pageContent2);
-		$this->assertEquals('', $pageLangContent2);
 	}
 
 	/** @test */
-	function it_remove_admin_folder_if_there_is_no_more_pages(){
-		$this->signIn();
-		$module = $this->fillNewBitrixForm();
+	function it_creates_file_in_admin_folder(){
+        $amp = $this->createAdminPageOnForm($this->module, [
+            'name'        => 'Ololo',
+            'code'        => 'trololo',
+            "sort"        => "334",
+            "text"        => "item",
+            "parent_menu" => "global_menu_settings",
+            "php_code"    => '<a href="test">test</a>',
+            "lang_code"   => '<? $MESS["TEST"] = "test"; ?>'
+        ]);
 
-		$amp = $this->createAdminPageOnForm($module, [
+        $pageContent = $this->disk()->get($this->module->module_folder.'/admin/'.$this->module->class_name."_trololo.php");
+        $pageLangContent = $this->disk()->get($this->module->module_folder.'/lang/ru/admin/'.$this->module->class_name."_trololo.php");
+
+        $this->assertEquals('<a href="test">test</a>', $pageContent);
+        $this->assertEquals('<? $MESS["TEST"] = "test"; ?>', $pageLangContent);
+    }
+    /** @test */
+    function it_creates_admin_file_is_never_empty_folder(){
+        $amp = $this->createAdminPageOnForm($this->module, [
+            'name'        => 'Ololo',
+            'code'        => 'trololo',
+            "sort"        => "334",
+            "text"        => "item",
+            "parent_menu" => "global_menu_settings",
+            "php_code"    => '',
+            "lang_code"   => ''
+        ]);
+
+        $pageContent = $this->disk()->get($this->module->module_folder.'/admin/'.$this->module->class_name."_trololo.php");
+        $pageLangContent = $this->disk()->get($this->module->module_folder.'/lang/ru/admin/'.$this->module->class_name."_trololo.php");
+
+        $this->assertEquals('<? require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_admin_before.php");
+
+use \Bitrix\Main\Localization\Loc;
+
+Loc::loadMessages(__FILE__);
+
+global $USER, $APPLICATION, $DB;
+
+$APPLICATION->SetTitle(Loc::getMessage("TITLE"));
+
+require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_admin_after.php"); ?>
+<? require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/epilog_admin.php"); ?>', $pageContent);
+        $this->assertEquals('<?
+$MESS["TITLE"] = "Ololo";', trim($pageLangContent));
+    }
+
+	/** @test */
+	function it_remove_admin_folder_if_there_is_no_more_pages(){
+		$amp = $this->createAdminPageOnForm($this->module, [
 			'name'        => 'Ololo',
 			'code'        => 'trololo',
 			"sort"        => "334",
@@ -166,13 +202,11 @@ class BitrixAdminMenuFilesTest extends BitrixTestCase{
 			"lang_code"   => '<? $MESS["TEST"] = "test"; ?>'
 		]);
 
-		$this->removeAdminPage($module, $amp);
+		$this->removeAdminPage($this->module, $amp);
 
-		$this->assertFalse(file_exists($module->getFolder(true).'/admin/'.$module->class_name."_trololo.php"));
-		$this->assertFalse(file_exists($module->getFolder(true).'/admin/menu.php'));
-		$this->assertFalse(file_exists($module->getFolder(true).'/lang/ru/admin/'.$module->class_name."_trololo.php"));
-
-		$module->deleteFolder();
+		$this->assertFalse(file_exists($this->module->getFolder(true).'/admin/'.$this->module->class_name."_trololo.php"));
+		$this->assertFalse(file_exists($this->module->getFolder(true).'/admin/menu.php'));
+		$this->assertFalse(file_exists($this->module->getFolder(true).'/lang/ru/admin/'.$this->module->class_name."_trololo.php"));
 	}
 }
 

@@ -18,7 +18,7 @@
                         "{{$admin_menu_page->name}}" ({{ trans('bitrix_admin_menu.'.$admin_menu_page->parent_menu) }})
                     </a>
                     <a href="{{ action('Modules\Bitrix\BitrixAdminMenuController@destroy', [$module->id, $admin_menu_page->id]) }}"
-                       class="btn btn-danger pull-right human_ajax_deletion"
+                       class="btn btn-danger pull-right deletion-with-confirm"
                        data-method="get"
                        id="delete_amp_{{$admin_menu_page->id}}">
                         <span class="glyphicon glyphicon-trash"
