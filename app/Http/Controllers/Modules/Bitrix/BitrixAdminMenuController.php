@@ -59,8 +59,11 @@ class BitrixAdminMenuController extends Controller{
 		return redirect(action('Modules\Bitrix\BitrixAdminMenuController@show', [$module->id, $admin_menu_page->id]));
 	}
 
-	// todo проверка принадлежности к модулю
 	public function show(Bitrix $module, BitrixAdminMenuItems $admin_menu_page, Request $request){
+        if (!$this->moduleOwnsAdminMenuPage($module, $admin_menu_page)){
+            return abort(404);;
+        }
+
 		$data = [
 			'module'           => $module,
 			'parent_menu_vars' => BitrixAdminMenuItems::$parent_menu_vars,
@@ -74,8 +77,11 @@ class BitrixAdminMenuController extends Controller{
 		//
 	}
 
-	// todo проверка принадлежности к модулю
 	public function update(Bitrix $module, BitrixAdminMenuItems $admin_menu_page, Requests\AdminPageFormRequest $request){
+        if (!$this->moduleOwnsAdminMenuPage($module, $admin_menu_page)){
+            return abort(404);;
+        }
+
 		$admin_menu_page->update([
 				'name'        => $request->name,
 				'code'        => $request->code,
@@ -92,8 +98,11 @@ class BitrixAdminMenuController extends Controller{
 		return redirect(action('Modules\Bitrix\BitrixAdminMenuController@show', [$module->id, $admin_menu_page->id]));
 	}
 
-	// todo проверка принадлежности к модулю
 	public function destroy(Bitrix $module, BitrixAdminMenuItems $admin_menu_page, Request $request){
+        if (!$this->moduleOwnsAdminMenuPage($module, $admin_menu_page)){
+            return abort(404);;
+        }
+
 		$admin_menu_page->delete();
 
 		BitrixAdminMenuItems::storeInModuleFolder($module);
