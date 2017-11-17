@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Modules\Bitrix;
 
+use App\Models\Metrics\MetricsEventsLog;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -20,8 +21,10 @@ class BitrixAdminMenuController extends Controller{
         $data = [
             'module'           => $module,
             'admin_menu_pages' => $admin_menu_pages
-
         ];
+
+        // логируем действие
+        MetricsEventsLog::log('Открыт раздел страниц админ. меню', $module);
 
         return view("bitrix.admin_menu.index", $data);
     }
@@ -54,6 +57,12 @@ class BitrixAdminMenuController extends Controller{
             ]
         );
 
+        // логируем действие
+        MetricsEventsLog::log('Создана страница админ. меню', [
+            'module'          => $module,
+            'admin_menu_page' => $admin_menu_page
+        ]);
+
         BitrixAdminMenuItems::storeInModuleFolder($module);
 
         return redirect(action('Modules\Bitrix\BitrixAdminMenuController@show', [
@@ -64,7 +73,7 @@ class BitrixAdminMenuController extends Controller{
 
     public function show(Bitrix $module, BitrixAdminMenuItems $admin_menu_page, Request $request){
         if (!$this->moduleOwnsAdminMenuPage($module, $admin_menu_page)){
-            return abort(404);;
+            return abort(404);
         }
 
         $data = [
@@ -82,7 +91,7 @@ class BitrixAdminMenuController extends Controller{
 
     public function update(Bitrix $module, BitrixAdminMenuItems $admin_menu_page, Requests\AdminPageFormRequest $request){
         if (!$this->moduleOwnsAdminMenuPage($module, $admin_menu_page)){
-            return abort(404);;
+            return abort(404);
         }
 
         $admin_menu_page->update([
@@ -96,6 +105,12 @@ class BitrixAdminMenuController extends Controller{
             ]
         );
 
+        // логируем действие
+        MetricsEventsLog::log('Обновлена страница админ. меню', [
+            'module'          => $module,
+            'admin_menu_page' => $admin_menu_page
+        ]);
+
         BitrixAdminMenuItems::storeInModuleFolder($module);
 
         return redirect(action('Modules\Bitrix\BitrixAdminMenuController@show', [
@@ -106,8 +121,17 @@ class BitrixAdminMenuController extends Controller{
 
     public function destroy(Bitrix $module, BitrixAdminMenuItems $admin_menu_page, Request $request){
         if (!$this->moduleOwnsAdminMenuPage($module, $admin_menu_page)){
-            return abort(404);;
+            return abort(404);
         }
+
+        // логируем действие
+        MetricsEventsLog::log(
+            'Удалена страница админ. меню',
+            [
+                'module'          => $module,
+                'admin_menu_page' => $admin_menu_page
+            ]
+        );
 
         $admin_menu_page->delete();
 

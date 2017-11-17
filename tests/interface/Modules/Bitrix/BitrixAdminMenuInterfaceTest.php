@@ -3,8 +3,6 @@
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Models\Modules\Bitrix\BitrixAdminMenuItems;
 
-// todo удаление
-
 /** @group bitrix_interface */
 class BitrixAdminMenuInterfaceTest extends BitrixTestCase{
 
