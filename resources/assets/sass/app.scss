@@ -127,6 +127,7 @@ a.you-can-change{
   border-bottom : 1px dashed;
   padding       : 3px;
   border-radius : 5px;
+  white-space   : pre;
   &:hover{
     text-decoration : none;
     background      : $hoverBackgroundColor;
