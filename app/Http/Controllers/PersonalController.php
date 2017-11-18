@@ -20,11 +20,14 @@ class PersonalController extends Controller{
             ->orderBy('created_at', 'desc')
             ->get();
 
+        // сортируем
         $sortedModules = [];
         foreach ($bitrixModules as $bitrixModule){
-            $sortedModules[$bitrixModule->sort] = $bitrixModule;
+            $sortedModules[] = $bitrixModule;
         }
-        ksort($sortedModules);
+        usort($sortedModules, function($a, $b){
+            return $a->sort > $b->sort;
+        });
 
         $data = [
             'bitrix_modules' => $sortedModules,

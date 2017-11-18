@@ -10,7 +10,7 @@
             </div>
             <div class="panel-body">
                 <div class="row">
-                    <div class="sections-links col-md-10">
+                    <div class="sections-links col-md-8">
                         <dl>
                             <dt>{{ trans('bitrix.field_description') }}</dt>
                             @if($module->description)
@@ -22,7 +22,7 @@
                             @endif
                         </dl>
                     </div>
-                    <div class="actions col-md-2">
+                    <div class="col-md-2">
                         <form method="post"
                               action="{{ action('Modules\Bitrix\BitrixController@changeSort', [$module]) }}"
                         >
@@ -40,10 +40,12 @@
                             <div class="form-group">
                                 <button id="setSort{{ $module->id }}"
                                         name="setSort{{ $module->id }}"
-                                        class="btn btn-primary btn-sm">Сохранить
+                                        class="btn btn-primary btn-sm">Задать
                                 </button>
                             </div>
                         </form>
+                    </div>
+                    <div class="actions col-md-2">
                         @if ($module->ifUserHasPermission($user, 'D') || $module->ifUserIsOwner($user))
                             @if ($user->canDownloadModule())
                                 @include('bitrix.download_modal', [ 'module' => $module])
