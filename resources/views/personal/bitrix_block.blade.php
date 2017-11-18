@@ -2,7 +2,7 @@
     <a href="{{ action('Modules\Bitrix\BitrixController@create') }}"
        class="btn btn-success pull-right">        {{trans('personal_index.create_bitrix_module')}}</a>
 </h3>
-@if ( !$bitrix_modules->isEmpty())
+@if ($bitrix_modules)
     @foreach($bitrix_modules as $module)
         <div class="panel panel-default">
             <div class="panel-heading">{{ trans('app.bitrix_module') }} "{{$module->name}}"
@@ -23,6 +23,27 @@
                         </dl>
                     </div>
                     <div class="actions col-md-2">
+                        <form method="post"
+                              action="{{ action('Modules\Bitrix\BitrixController@changeSort', [$module]) }}"
+                        >
+                            {{ csrf_field() }}
+                            <div class="form-group">
+                                <label for="sort">Сортировка</label>
+                                <input type="text"
+                                       id="sort{{ $module->id }}"
+                                       name="sort"
+                                       class="form-control"
+                                       placeholder="Сортировка"
+                                       value="{{ $module->sort }}"
+                                >
+                            </div>
+                            <div class="form-group">
+                                <button id="setSort{{ $module->id }}"
+                                        name="setSort{{ $module->id }}"
+                                        class="btn btn-primary btn-sm">Сохранить
+                                </button>
+                            </div>
+                        </form>
                         @if ($module->ifUserHasPermission($user, 'D') || $module->ifUserIsOwner($user))
                             @if ($user->canDownloadModule())
                                 @include('bitrix.download_modal', [ 'module' => $module])
@@ -209,5 +230,5 @@
     @endforeach
 
 @else
-    <p>{{trans('personal_index.empty')}}</p>
+    <p class="lead">Нет ни одного модуля Битрикс. Создайте его сейчас</p>
 @endif

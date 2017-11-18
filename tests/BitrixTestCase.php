@@ -23,11 +23,6 @@ class BitrixTestCase extends TestCase{
 		return Storage::disk('user_modules_bitrix');
 	}
 
-	protected $standartModuleName = 'Ololo';
-	protected $standartModuleDescription = 'Ololo trololo';
-	protected $standartModuleCode = 'ololo_from_test';
-	protected $standartModuleVersion = '0.0.1';
-
 	function deleteFolder($moduleCode){
 		if (Bitrix::where('code', $moduleCode)->count()){
 			$modules = Bitrix::where('code', $moduleCode)->get();

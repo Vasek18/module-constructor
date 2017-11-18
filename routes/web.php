@@ -98,6 +98,7 @@ Route::group([
         Route::delete('{module}', 'Modules\Bitrix\BitrixController@destroy');
     });
     Route::post('{module}/download', 'Modules\Bitrix\BitrixController@download_zip');
+    Route::post('{module}/sort', 'Modules\Bitrix\BitrixController@changeSort');
 
     // настройки
     Route::group(['prefix' => '{module}/admin_options'], function(){

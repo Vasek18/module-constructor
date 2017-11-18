@@ -5,6 +5,7 @@ namespace App\Models\Modules\Bitrix;
 use App\Helpers\vFuncParse;
 use App\Helpers\vZipArchive;
 use App\Models\Modules\Management\ModulesAccess;
+use App\Models\Modules\Sorting;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Auth;
@@ -543,6 +544,24 @@ if(IsModuleInstalled(\''.$this->full_id.'\')){
         return ModulesAccess::where('user_email', $user->email)->where('module_id', $this->id)->where('permission_code', $permissionCode)->count() > 0;
     }
 
+    public function setSort($value = 500, $userID = false){
+        if (!$userID){
+            $userID = Auth::id;
+        }
+        Sorting::updateOrCreate(
+            [
+                'module_id' => $this->id,
+                'user_id'   => $userID,
+            ],
+            [
+
+                'module_id' => $this->id,
+                'user_id'   => $userID,
+                'sort'      => intval($value)
+            ]
+        );
+    }
+
     // динамические атрибуты
     public function getCanDownloadAttribute(){
         $user = User::find(Auth::id());
@@ -576,6 +595,13 @@ if(IsModuleInstalled(\''.$this->full_id.'\')){
 
     public function getNamespaceAttribute(){
         return studly_case($this->PARTNER_CODE)."\\".studly_case($this->code);
+    }
+
+    public function getSortAttribute(){
+        $sorting = $this->sorting()->where('user_id', Auth::id())->first();
+        if ($sorting){
+            return $sorting->sort;
+        }
     }
 
     // фильтры
@@ -642,6 +668,10 @@ if(IsModuleInstalled(\''.$this->full_id.'\')){
 
     public function accesses(){
         return $this->hasMany('App\Models\Modules\Management\ModulesAccess', 'module_id');
+    }
+
+    public function sorting(){
+        return $this->hasMany('App\Models\Modules\Sorting', 'module_id');
     }
 
     public function ownedBy(User $user){

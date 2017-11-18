@@ -16,8 +16,18 @@ class PersonalController extends Controller{
     }
 
     public function index(){
+        $bitrixModules = Bitrix::userCanSee($this->user->id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $sortedModules = [];
+        foreach ($bitrixModules as $bitrixModule){
+            $sortedModules[$bitrixModule->sort] = $bitrixModule;
+        }
+        ksort($sortedModules);
+
         $data = [
-            'bitrix_modules' => Bitrix::userCanSee($this->user->id)->orderBy('created_at', 'desc')->get(),
+            'bitrix_modules' => $sortedModules,
             'user'           => $this->user
         ];
 

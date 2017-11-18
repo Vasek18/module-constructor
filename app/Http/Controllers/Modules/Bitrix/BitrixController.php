@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Modules\Bitrix;
 
 use App\Models\Metrics\MetricsEventsLog;
 use App\Models\Modules\Bitrix\Bitrix;
+use App\Models\Modules\Sorting;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
@@ -14,9 +15,8 @@ use Illuminate\Support\Facades\Response;
 
 /*
 |--------------------------------------------------------------------------
-| Контролер для создания модулей на Битриксе
+| Контролер для модулей на Битриксе
 |--------------------------------------------------------------------------
-|
 */
 
 class BitrixController extends Controller{
@@ -44,7 +44,6 @@ class BitrixController extends Controller{
         if (User::where('bitrix_partner_code', trim($request->PARTNER_CODE))->where('id', '!=', $this->user->id)->count()){
             return back()->withErrors([trans('bitrix_create.this_bitrix_partner_code_is_already_taken')]);
         }
-
         // на будущее сохраняем какие-то поля в таблицу пользователя, если они не были указаны, но были указаны сейчас
         Bitrix::completeUserProfile(Auth::id(), $request);
 
@@ -72,14 +71,25 @@ class BitrixController extends Controller{
         MetricsEventsLog::log('Добавлен модуль', $bitrix);
 
         if ($module_id){
+            // устанавливаем сортировку
+            Sorting::create(
+                [
+
+                    'module_id' => $module_id,
+                    'user_id'   => Auth::id(),
+                    'sort'      => 500
+                ]
+            );
+
             // создание папки модуля пользователя на серваке
             if (!$bitrix->createFolder()){
                 return back()->withErrors([trans('bitrix_create.folder_creation_failure')]);
             }
 
             // письмо мне
-            Mail::send('emails.admin.new_bitrix_module', ['user'   => $this->user,
-                                                          'module' => $bitrix
+            Mail::send('emails.admin.new_bitrix_module', [
+                'user'   => $this->user,
+                'module' => $bitrix
             ], function($m){
                 $m->to(env('GOD_EMAIL'))->subject('Создан новый Битрикс модуль');
             });
@@ -189,6 +199,12 @@ class BitrixController extends Controller{
         ];
 
         return view("bitrix.marketing.index", $data);
+    }
+
+    public function changeSort(Bitrix $module, Request $request){
+        $module->setSort(intval($request->sort), $this->user->id);
+
+        return back();
     }
 
     // удаление модуля
