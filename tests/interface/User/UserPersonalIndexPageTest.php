@@ -38,5 +38,9 @@ class UserPersonalIndexPageTest extends \TestCase{
         // удостоверяемся, что сортировка сработала
         $pageContent = $this->response->getContent();
         $this->assertTrue(strpos($pageContent, 'sort'.$module1->id) > strpos($pageContent, 'sort'.$module2->id));
+
+        // не засоряем папку
+        $module1->deleteFolder();
+        $module2->deleteFolder();
     }
 }

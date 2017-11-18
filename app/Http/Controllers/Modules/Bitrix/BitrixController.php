@@ -204,6 +204,12 @@ class BitrixController extends Controller{
     public function changeSort(Bitrix $module, Request $request){
         $module->setSort(intval($request->sort), $this->user->id);
 
+        // логируем действие
+        MetricsEventsLog::log('Открыта детальная страница модуля', [
+            'module' => $module,
+            'sort'   => $request->sort
+        ]);
+
         return back();
     }
 
