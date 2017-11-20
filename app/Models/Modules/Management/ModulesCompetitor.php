@@ -27,7 +27,6 @@ class ModulesCompetitor extends Model{
         if (!$link){
             return false;
         }
-
         // получаем страницу
         $page = iconv('windows-1251', 'utf-8', file_get_contents($this->link));
         if (!$page){
@@ -40,8 +39,8 @@ class ModulesCompetitor extends Model{
         foreach ($updatesArr as $fields){
             ModulesCompetitorsUpdate::updateOrCreate(
                 [
-                    'module_id'   => $this->id,
-                    'description' => $fields['description']
+                    'module_id' => $this->id,
+                    'version'   => $fields['version'],
                 ],
                 [
                     'module_id'   => $this->id,
@@ -64,7 +63,14 @@ class ModulesCompetitor extends Model{
         // обрезаем до края таблицы
         $html = substr($html, 0, strpos($html, '</table>'));
 
-        $pattern = '/\<tr\>\s+\<td[^\<]+\>\<b\>([^\<]+)\<\/b\>[^\d]+([\d\.]+)[^\<]+\<\/td\>\s+\<td[^\<]+\>([^\<]+)/';
+        // todo дикий костыль, чтобы парсить обновления, в описании которых есть списки. Убрать как только поправим регулярку
+        $html = str_replace(Array(
+            '<ul>',
+            '</ul>',
+            '<li>',
+            '</li>'
+        ), '', $html);
+        $pattern = '/\<tr\>\s+\<td[^\<]+\>\<b\>([^\<]+)\<\/b\>[^\d]+([\d\.]+)[^\<]+\<\/td\>\s+\<td[^\<]+\>([^\<]+)/is'; // todo регулярка не работает, если в описании есть теги
         preg_match_all($pattern, $html, $matches);
 
         foreach ($matches[0] as $c => $match){
@@ -74,7 +80,7 @@ class ModulesCompetitor extends Model{
             $items[] = [
                 'version'     => $matches[1][$c],
                 'date'        => $matches[2][$c],
-                'description' => $matches[3][$c],
+                'description' => strip_tags($matches[3][$c]),
             ];
         }
 
