@@ -63,25 +63,26 @@ class ModulesCompetitor extends Model{
         // обрезаем до края таблицы
         $html = substr($html, 0, strpos($html, '</table>'));
 
-        // todo дикий костыль, чтобы парсить обновления, в описании которых есть списки. Убрать как только поправим регулярку
-        $html = str_replace(Array(
-            '<ul>',
-            '</ul>',
-            '<li>',
-            '</li>'
-        ), '', $html);
-        $pattern = '/\<tr\>\s+\<td[^\<]+\>\<b\>([^\<]+)\<\/b\>[^\d]+([\d\.]+)[^\<]+\<\/td\>\s+\<td[^\<]+\>([^\<]+)/is'; // todo регулярка не работает, если в описании есть теги
-        preg_match_all($pattern, $html, $matches);
+        // разбиваем ячейки таблицы
+        $tds = preg_split('/\<td[^\<]+\>/is', $html);
+        unset($tds[0]); // тут шапка была
 
-        foreach ($matches[0] as $c => $match){
-            if ($c >= $maxCount){
+        $items = [];
+        foreach ($tds as $c => $text){
+            if ($c >= $maxCount * 2){
                 break;
             }
-            $items[] = [
-                'version'     => $matches[1][$c],
-                'date'        => $matches[2][$c],
-                'description' => strip_tags($matches[3][$c]),
-            ];
+
+            if ($c % 2 == 1){ // левая ячейка
+                list($version, $date) = explode('</b>', $text);
+                $items[$c]['version'] = trim(strip_tags($version));
+                $items[$c]['date']    = str_replace([
+                    '(',
+                    ')'
+                ], '', trim(strip_tags($date)));
+            } else{ // правая ячейка
+                $items[$c - 1]['description'] = trim(strip_tags($text));
+            }
         }
 
         return $items;
