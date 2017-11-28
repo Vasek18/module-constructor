@@ -63,13 +63,24 @@
                         <label>
                             <input type="radio"
                                    name="option_{{$i}}_vals_type"
+                                   value="sites_list"
+                                   @if ($option && $option->spec_vals == 'sites_list') checked
+                                    @endif>
+                            <b>Список сайтов</b>
+                        </label>
+                    </div>
+                    <div>{{ trans('bitrix_admin_options.or') }}</div>
+                    <div class="item">
+                        <label>
+                            <input type="radio"
+                                   name="option_{{$i}}_vals_type"
                                    value="iblocks_list"
                                    @if ($option && $option->spec_vals == 'iblocks_list') checked
                                     @endif>
                             <b>{{ trans('bitrix_admin_options.iblocks_list') }}</b>
                         </label>
                     </div>
-                    <div></div>
+                    <div>{{ trans('bitrix_admin_options.or') }}</div>
                     <div class="item">
                         <label>
                             <input type="radio"

@@ -125,6 +125,25 @@ class BitrixHelperFunctions{
 	return $select;
 ',
         ],
+
+        // собираем сайты
+        'sites_list'           => [
+            'is_closure' => true,
+            'name'       => 'sites_list',
+            'body'       => '
+	$select = Array();
+	$select[] = GetMessage("{LANG_KEY}_SELECT");
+	$rsSites = CSite::GetList($by = "sort", $order = "desc");
+    while($arSite = $rsSites->Fetch()){
+        $select[$arSite["ID"]] = $arSite["NAME"];
+    }
+
+	return $select;
+',
+            'args'       => [
+                ['name' => 'IBLOCK_ID']
+            ]
+        ],
     ];
 
     public static function all(){
