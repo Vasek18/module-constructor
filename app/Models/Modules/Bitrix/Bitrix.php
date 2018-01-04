@@ -53,6 +53,7 @@ class Bitrix extends Model{
         'download_counter',
         'last_download',
         'keywords',
+        'is_site',
     ];
 
     public static $requiredFiles = [

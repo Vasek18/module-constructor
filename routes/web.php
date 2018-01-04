@@ -302,6 +302,30 @@ Route::group([
 
     // маркетинг
     Route::get('{module}/marketing', ['uses' => 'Modules\Bitrix\BitrixController@marketing']);
+
+    // шаблоны сайта
+    Route::group(['prefix' => '{module}/templates'], function(){
+        Route::get('', [
+            'as'   => 'bitrix_module_templates',
+            'uses' => 'Modules\Bitrix\BitrixSiteTemplatesController@index'
+        ]);
+    });
+
+    // публичная часть
+    Route::group(['prefix' => '{module}/public'], function(){
+        Route::get('', [
+            'as'   => 'bitrix_module_public',
+            'uses' => 'Modules\Bitrix\BitrixSitePublicController@index'
+        ]);
+    });
+
+    // установщик типового сайта
+    Route::group(['prefix' => '{module}/wizard'], function(){
+        Route::get('', [
+            'as'   => 'bitrix_module_wizard',
+            'uses' => 'Modules\Bitrix\BitrixWizardController@index'
+        ]);
+    });
 });
 
 // менеджмент

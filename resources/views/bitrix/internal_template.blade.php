@@ -8,8 +8,13 @@
             <div class="col-md-12">
                 <div class="panel panel-default">
                     @if ($module->id)
-                        <div class="panel-heading">@yield('h1') | {{ trans('app.bitrix_module') }} "{{$module->name}}"
-                            ({{$module->PARTNER_CODE}}.{{$module->code}})
+                        <div class="panel-heading">@yield('h1') |
+                            @if ($module->is_site)
+                                Типовой сайт
+                            @else
+                                {{ trans('app.bitrix_module') }}
+                            @endif
+                            "{{$module->name}}" ({{$module->PARTNER_CODE}}.{{$module->code}})
                         </div>
                         <div class="panel-body">
                             @yield('page')

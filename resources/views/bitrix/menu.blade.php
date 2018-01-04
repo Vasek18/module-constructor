@@ -1,8 +1,11 @@
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                    data-target="#bitrix_menu" aria-expanded="false">
+            <button type="button"
+                    class="navbar-toggle collapsed"
+                    data-toggle="collapse"
+                    data-target="#bitrix_menu"
+                    aria-expanded="false">
                 <span class="sr-only">{{ trans('bitrix_top_menu.menu') }}</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -10,7 +13,8 @@
             </button>
             <span class="navbar-brand visible-xs">{{ trans('bitrix_top_menu.menu_brand') }}</span>
         </div>
-        <div class="collapse navbar-collapse" id="bitrix_menu">
+        <div class="collapse navbar-collapse"
+             id="bitrix_menu">
             <ul class="nav navbar-nav">
                 <li class="{!! classActiveSegment(3, null) !!}">
                     <a href="{{ route('bitrix_module_detail', $module->id) }}">{{ trans('bitrix_top_menu.detail') }}</a>
@@ -39,6 +43,17 @@
                 <li class="{!! classActiveSegment(3, 'lang') !!}">
                     <a href="{{ route('bitrix_module_lang', $module->id) }}">{{ trans('bitrix_top_menu.lang') }}</a>
                 </li>
+                @if ($module->is_site)
+                    <li class="{!! classActiveSegment(3, 'templates') !!}">
+                        <a href="{{ route('bitrix_module_templates', $module->id) }}">Шаблоны сайта</a>
+                    </li>
+                    <li class="{!! classActiveSegment(3, 'public') !!}">
+                        <a href="{{ route('bitrix_module_public', $module->id) }}">Публичная часть</a>
+                    </li>
+                    <li class="{!! classActiveSegment(3, 'wizard') !!}">
+                        <a href="{{ route('bitrix_module_wizard', $module->id) }}">Установщик</a>
+                    </li>
+                @endif
             </ul>
         </div>
     </div>
