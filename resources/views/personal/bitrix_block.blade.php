@@ -5,7 +5,13 @@
 @if ($bitrix_modules)
     @foreach($bitrix_modules as $module)
         <div class="panel panel-default">
-            <div class="panel-heading">{{ trans('app.bitrix_module') }} "{{$module->name}}"
+            <div class="panel-heading">
+                @if ($module->is_site)
+                    Типовой сайт
+                @else
+                    {{ trans('app.bitrix_module') }}
+                @endif
+                "{{$module->name}}"
                 ({{$module->PARTNER_CODE.'.'.$module->code}}) | {{ trans('bitrix.field_version') }} {{$module->version}}
             </div>
             <div class="panel-body">

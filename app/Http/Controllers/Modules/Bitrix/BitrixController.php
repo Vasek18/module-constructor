@@ -54,32 +54,19 @@ class BitrixController extends Controller{
         $bitrix->PARTNER_NAME = trim($request->PARTNER_NAME);
         $bitrix->PARTNER_URI  = trim($request->PARTNER_URI);
         $bitrix->PARTNER_CODE = trim($request->PARTNER_CODE);
-        $version              = trim($request->MODULE_VERSION);
-        if (!preg_match('/[0-9]+\.[0-9]+\.[0-9]+/is', $version)){
-            $version = '0.0.1';
-        }
-        if ($version == '0.0.0'){
-            $version = '0.0.1';
-        }
-        $bitrix->version      = $version;
+        $bitrix->version      = $this->validateVersionNumber($request->MODULE_VERSION);
+        $bitrix->is_site      = $request->site_create ? true : false;
         $bitrix->default_lang = 'ru'; // todo давать возможность задать
 
         Auth::user()->bitrixes()->save($bitrix);
         $module_id = $bitrix->id;
 
-        // логируем действие
-        MetricsEventsLog::log('Добавлен модуль', $bitrix);
-
         if ($module_id){
-            // устанавливаем сортировку
-            Sorting::create(
-                [
+            // логируем действие
+            MetricsEventsLog::log('Добавлен модуль', $bitrix);
 
-                    'module_id' => $module_id,
-                    'user_id'   => Auth::id(),
-                    'sort'      => 500
-                ]
-            );
+            // устанавливаем сортировку
+            $bitrix->setSort(500, Auth::id());
 
             // создание папки модуля пользователя на серваке
             if (!$bitrix->createFolder()){
@@ -87,12 +74,12 @@ class BitrixController extends Controller{
             }
 
             // письмо мне
-            Mail::send('emails.admin.new_bitrix_module', [
-                'user'   => $this->user,
-                'module' => $bitrix
-            ], function($m){
-                $m->to(env('GOD_EMAIL'))->subject('Создан новый Битрикс модуль');
-            });
+            //            Mail::send('emails.admin.new_bitrix_module', [
+            //                'user'   => $this->user,
+            //                'module' => $bitrix
+            //            ], function($m){
+            //                $m->to(env('GOD_EMAIL'))->subject('Создан новый Битрикс модуль');
+            //            });
 
             flash()->success(trans('bitrix.module_created'));
 
@@ -100,6 +87,18 @@ class BitrixController extends Controller{
         }
 
         return back();
+    }
+
+    public function validateVersionNumber($version){
+        $version = trim($version);
+        if (!preg_match('/[0-9]+\.[0-9]+\.[0-9]+/is', $version)){
+            $version = '0.0.1';
+        }
+        if ($version == '0.0.0'){
+            $version = '0.0.1';
+        }
+
+        return $version;
     }
 
     // детальная страница модуля

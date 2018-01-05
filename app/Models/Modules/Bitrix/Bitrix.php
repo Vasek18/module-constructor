@@ -64,12 +64,11 @@ class Bitrix extends Model{
     // создание папки с модулем на серваке
     // todo проверка защиты
     public function createFolder(){
-        $module_folder = $this->module_folder; // todo так можно скачать модуль, зная всего два эти параметра, а они открытые (Если вообще можно обращаться к этим папкам)
-        if (!$module_folder){
+        $module_folder = $this->module_folder;
+        if (!$module_folder){ // todo что это за проверка?
             return false;
         }
         if ($this->theSameFolderAlreadyExists()){
-            // todo возврат ошибки
             return false;
         }
 
@@ -90,8 +89,13 @@ class Bitrix extends Model{
 
         // воссоздаём начальную структуру для ланга
         $this->disk()->makeDirectory($module_folder.DIRECTORY_SEPARATOR."lang".DIRECTORY_SEPARATOR.$this->default_lang.DIRECTORY_SEPARATOR."install");
-        // подставляем значения в шаблон индексного файла
+        // подставляем значения в шаблон индексного файла ланга
         Bitrix::changeVarsInModuleFileAndSave('bitrix'.DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.$this->default_lang.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'index.php', $this->id);
+
+        // создаём hw для типового сайта
+        if ($this->is_site){
+
+        }
 
         return true;
     }
