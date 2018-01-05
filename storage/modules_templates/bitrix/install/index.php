@@ -52,10 +52,14 @@ Class {MODULE_CLASS_NAME} extends CModule{
 
 	function InstallFiles($arParams = array()){
 		$path = $this->GetPath()."/install/components";
-
 		if (\Bitrix\Main\IO\Directory::isDirectoryExists($path)){
 			CopyDirFiles($path, $_SERVER["DOCUMENT_ROOT"]."/bitrix/components", true, true);
 		}
+
+        $path = $this->GetPath()."/install/wizards";
+        if (\Bitrix\Main\IO\Directory::isDirectoryExists($path)){
+            CopyDirFiles($path, $_SERVER["DOCUMENT_ROOT"]."/bitrix/wizards", true, true);
+        }
 
 		if (\Bitrix\Main\IO\Directory::isDirectoryExists($path = $this->GetPath().'/admin')){
 			CopyDirFiles($this->GetPath()."/install/admin/", $_SERVER["DOCUMENT_ROOT"]."/bitrix/admin");
@@ -79,6 +83,8 @@ Class {MODULE_CLASS_NAME} extends CModule{
 
 	function UnInstallFiles(){
 		\Bitrix\Main\IO\Directory::deleteDirectory($_SERVER["DOCUMENT_ROOT"].'/bitrix/components/'.$this->MODULE_ID.'/');
+
+		\Bitrix\Main\IO\Directory::deleteDirectory($_SERVER["DOCUMENT_ROOT"].'/bitrix/wizards/{PARTNER_CODE}/');
 
 		if (\Bitrix\Main\IO\Directory::isDirectoryExists($path = $this->GetPath().'/admin')){
 			DeleteDirFiles($_SERVER["DOCUMENT_ROOT"].$this->GetPath().'/install/admin/', $_SERVER["DOCUMENT_ROOT"].'/bitrix/admin');

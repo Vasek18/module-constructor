@@ -38,6 +38,7 @@ class Bitrix extends Model{
         '{MODULE_DESCRIPTION}' => 'description',
         '{PARTNER_NAME}'       => 'PARTNER_NAME',
         '{PARTNER_URI}'        => 'PARTNER_URI',
+        '{PARTNER_CODE}'       => 'PARTNER_CODE',
         '{MODULE_CODE}'        => 'code'
     ];
 
