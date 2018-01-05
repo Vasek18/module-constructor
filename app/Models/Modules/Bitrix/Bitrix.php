@@ -73,29 +73,81 @@ class Bitrix extends Model{
             return false;
         }
 
-        // воссоздаём начальную структуру
-        $this->disk()->makeDirectory($module_folder.DIRECTORY_SEPARATOR."install");
-        $this->disk()->makeDirectory($module_folder.DIRECTORY_SEPARATOR."lib");
-
-        // подставляем значения в шаблон индексного файла и шагов установки
-        Bitrix::changeVarsInModuleFileAndSave('bitrix'.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'index.php', $this->id);
-        Bitrix::changeVarsInModuleFileAndSave('bitrix'.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'step.php', $this->id);
-        Bitrix::changeVarsInModuleFileAndSave('bitrix'.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'unstep.php', $this->id);
-
-        // подставляем значения в файл версии
-        Bitrix::changeVarsInModuleFileAndSave('bitrix'.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'version.php', $this->id);
-
-        // этот файл просто до сих пор обязательный
-        Bitrix::changeVarsInModuleFileAndSave('bitrix'.DIRECTORY_SEPARATOR.'include.php', $this->id);
-
-        // воссоздаём начальную структуру для ланга
-        $this->disk()->makeDirectory($module_folder.DIRECTORY_SEPARATOR."lang".DIRECTORY_SEPARATOR.$this->default_lang.DIRECTORY_SEPARATOR."install");
-        // подставляем значения в шаблон индексного файла ланга
-        Bitrix::changeVarsInModuleFileAndSave('bitrix'.DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.$this->default_lang.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'index.php', $this->id);
+        // создаём hw модуля
+        $files = [
+            'bitrix/install/index.php',
+            'bitrix/install/step.php',
+            'bitrix/install/unstep.php',
+            'bitrix/install/version.php',
+            'bitrix/include.php',
+            'bitrix/lang/'.$this->default_lang.'/install/index.php',
+        ];
+        foreach ($files as $path){
+            Bitrix::changeVarsInModuleFileAndSave(
+                $path,
+                $this->id
+            );
+        }
 
         // создаём hw для типового сайта
         if ($this->is_site){
+            $files = [
+                'bitrix/install/wizards/partner_code/module_code/images/ru/solution.png',
+                'bitrix/install/wizards/partner_code/module_code/lang/ru/site/services/.services.php',
+                'bitrix/install/wizards/partner_code/module_code/lang/ru/.description.php',
+                'bitrix/install/wizards/partner_code/module_code/lang/ru/wizard.php',
+                'bitrix/install/wizards/partner_code/module_code/site/public/ru/.htaccess',
+                'bitrix/install/wizards/partner_code/module_code/site/public/ru/.left.menu.php',
+                'bitrix/install/wizards/partner_code/module_code/site/public/ru/.top.menu.php',
+                'bitrix/install/wizards/partner_code/module_code/site/public/ru/_index.php',
+                'bitrix/install/wizards/partner_code/module_code/site/services/main/lang/ru/menu.php',
+                'bitrix/install/wizards/partner_code/module_code/site/services/main/lang/ru/settings.php',
+                'bitrix/install/wizards/partner_code/module_code/site/services/main/lang/ru/site_create.php',
+                'bitrix/install/wizards/partner_code/module_code/site/services/main/files.php',
+                'bitrix/install/wizards/partner_code/module_code/site/services/main/menu.php',
+                'bitrix/install/wizards/partner_code/module_code/site/services/main/settings.php',
+                'bitrix/install/wizards/partner_code/module_code/site/services/main/site_create.php',
+                'bitrix/install/wizards/partner_code/module_code/site/services/main/template.php',
+                'bitrix/install/wizards/partner_code/module_code/site/services/main/theme.php',
+                'bitrix/install/wizards/partner_code/module_code/site/services/.htaccess',
+                'bitrix/install/wizards/partner_code/module_code/site/services/.services.php',
+                'bitrix/install/wizards/partner_code/module_code/.description.php',
+                'bitrix/install/wizards/partner_code/module_code/wizard.php',
+            ];
+            foreach ($files as $path){
+                Bitrix::changeVarsInModuleFileAndSave(
+                    $path,
+                    $this->id,
+                    [],
+                    [],
+                    str_replace(
+                        [
+                            'partner_code',
+                            'module_code'
+                        ], [
+                        $this->PARTNER_CODE,
+                        $this->code
+                    ],
+                        $path
+                    )
+                );
+            }
 
+            // сразу создаём шаблон
+            $template = $this->templates()->create([
+                'name' => BitrixSiteTemplate::$defaultName,
+                'sort' => BitrixSiteTemplate::$defaultSort,
+                'code' => BitrixSiteTemplate::$defaultCode,
+            ]);
+            $template->writeInFolder();
+
+            // и тему к нему
+            $theme = $template->themes()->create([
+                'name' => BitrixSiteTemplateTheme::$defaultName,
+                'sort' => BitrixSiteTemplateTheme::$defaultSort,
+                'code' => BitrixSiteTemplateTheme::$defaultCode,
+            ]);
+            $theme->writeInFolder();
         }
 
         return true;
@@ -126,6 +178,12 @@ class Bitrix extends Model{
 
         //dd($template_search);
         //dd($template_search, $template_replace);
+
+        // заменяем разделители категории на нужные
+        $path = str_replace([
+            '/',
+            '\\'
+        ], DIRECTORY_SEPARATOR, $path);
 
         // подставляем нужные значения в шаблон
         $file = Storage::disk('modules_templates')->get($path);
@@ -678,6 +736,10 @@ if(IsModuleInstalled(\''.$this->full_id.'\')){
 
     public function sorting(){
         return $this->hasMany('App\Models\Modules\Sorting', 'module_id');
+    }
+
+    public function templates(){
+        return $this->hasMany('App\Models\Modules\Bitrix\BitrixSiteTemplate', 'module_id');
     }
 
     public function ownedBy(User $user){
