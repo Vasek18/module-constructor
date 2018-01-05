@@ -37,7 +37,8 @@ class Bitrix extends Model{
         '{MODULE_NAME}'        => 'name',
         '{MODULE_DESCRIPTION}' => 'description',
         '{PARTNER_NAME}'       => 'PARTNER_NAME',
-        '{PARTNER_URI}'        => 'PARTNER_URI'
+        '{PARTNER_URI}'        => 'PARTNER_URI',
+        '{MODULE_CODE}'        => 'code'
     ];
 
     // на случай, если я где-то буду использовать create, эти поля можно будет записывать
