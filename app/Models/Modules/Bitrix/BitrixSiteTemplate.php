@@ -24,20 +24,50 @@ class BitrixSiteTemplate extends Model{
         $module = $this->module()->first();
 
         $files = [
-            'bitrix/install/wizards/partner_code/module_code/site/templates/template_name/lang/ru/description.php',
-            'bitrix/install/wizards/partner_code/module_code/site/templates/template_name/lang/ru/preview.gif',
-            'bitrix/install/wizards/partner_code/module_code/site/templates/template_name/lang/ru/screen.gif',
-            'bitrix/install/wizards/partner_code/module_code/site/templates/template_name/common.css',
-            'bitrix/install/wizards/partner_code/module_code/site/templates/template_name/description.php',
-            'bitrix/install/wizards/partner_code/module_code/site/templates/template_name/favicon.ico',
-            'bitrix/install/wizards/partner_code/module_code/site/templates/template_name/footer.php',
-            'bitrix/install/wizards/partner_code/module_code/site/templates/template_name/header.php',
-            'bitrix/install/wizards/partner_code/module_code/site/templates/template_name/styles.css',
-            'bitrix/install/wizards/partner_code/module_code/site/templates/template_name/template_styles.css',
+            [
+                'in'  => 'bitrix/install/wizards/partner_code/module_code/site/templates/template_name/lang/ru/description.php',
+                'out' => 'bitrix/install/wizards/'.$module->PARTNER_CODE.'/'.$module->code.'/site/templates/'.$this->code.'/lang/ru/description.php'
+            ],
+            [
+                'in'  => 'bitrix/install/wizards/partner_code/module_code/site/templates/template_name/lang/ru/preview.gif',
+                'out' => 'bitrix/install/wizards/'.$module->PARTNER_CODE.'/'.$module->code.'/site/templates/'.$this->code.'/lang/ru/preview.gif'
+            ],
+            [
+                'in'  => 'bitrix/install/wizards/partner_code/module_code/site/templates/template_name/lang/ru/screen.gif',
+                'out' => 'bitrix/install/wizards/'.$module->PARTNER_CODE.'/'.$module->code.'/site/templates/'.$this->code.'/lang/ru/screen.gif'
+            ],
+            [
+                'in'  => 'bitrix/install/wizards/partner_code/module_code/site/templates/template_name/common.css',
+                'out' => 'bitrix/install/wizards/'.$module->PARTNER_CODE.'/'.$module->code.'/site/templates/'.$this->code.'/common.css'
+            ],
+            [
+                'in'  => 'bitrix/install/wizards/partner_code/module_code/site/templates/template_name/description.php',
+                'out' => 'bitrix/install/wizards/'.$module->PARTNER_CODE.'/'.$module->code.'/site/templates/'.$this->code.'/description.php'
+            ],
+            [
+                'in'  => 'bitrix/install/wizards/partner_code/module_code/site/templates/template_name/favicon.ico',
+                'out' => 'bitrix/install/wizards/'.$module->PARTNER_CODE.'/'.$module->code.'/site/templates/'.$this->code.'/favicon.ico'
+            ],
+            [
+                'in'  => 'bitrix/install/wizards/partner_code/module_code/site/templates/template_name/footer.php',
+                'out' => 'bitrix/install/wizards/'.$module->PARTNER_CODE.'/'.$module->code.'/site/templates/'.$this->code.'/footer.php'
+            ],
+            [
+                'in'  => 'bitrix/install/wizards/partner_code/module_code/site/templates/template_name/header.php',
+                'out' => 'bitrix/install/wizards/'.$module->PARTNER_CODE.'/'.$module->code.'/site/templates/'.$this->code.'/header.php'
+            ],
+            [
+                'in'  => 'bitrix/install/wizards/partner_code/module_code/site/templates/template_name/styles.css',
+                'out' => 'bitrix/install/wizards/'.$module->PARTNER_CODE.'/'.$module->code.'/site/templates/'.$this->code.'/styles.css'
+            ],
+            [
+                'in'  => 'bitrix/install/wizards/partner_code/module_code/site/templates/template_name/template_styles.css',
+                'out' => 'bitrix/install/wizards/'.$module->PARTNER_CODE.'/'.$module->code.'/site/templates/'.$this->code.'/template_styles.css'
+            ],
         ];
-        foreach ($files as $path){
+        foreach ($files as $file){
             Bitrix::changeVarsInModuleFileAndSave(
-                $path,
+                $file['in'],
                 $module->id,
                 [
                     '{TEMPLATE_NAME}',
@@ -47,20 +77,20 @@ class BitrixSiteTemplate extends Model{
                     $this->name,
                     $this->description,
                 ],
-                str_replace(
-                    [
-                        'partner_code',
-                        'module_code',
-                        'template_name',
-                    ], [
-                    $module->PARTNER_CODE,
-                    $module->code,
-                    $this->code,
-                ],
-                    $path
-                )
+                $file['out']
             );
         }
+    }
+
+    public function getFolder($full = false){
+        $module        = $this->module()->first();
+        $module_folder = $module->getFolder($full);
+
+        return $module_folder.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'wizards'.DIRECTORY_SEPARATOR.$module->PARTNER_CODE.DIRECTORY_SEPARATOR.$module->code.DIRECTORY_SEPARATOR.'site'.DIRECTORY_SEPARATOR.'templates'.DIRECTORY_SEPARATOR.$this->code;
+    }
+
+    public function deleteFolder(){
+        $this->module()->first()->disk()->deleteDirectory($this->getFolder());
     }
 
     public function module(){

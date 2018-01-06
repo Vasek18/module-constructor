@@ -309,6 +309,10 @@ Route::group([
             'as'   => 'bitrix_module_templates',
             'uses' => 'Modules\Bitrix\BitrixSiteTemplatesController@index'
         ]);
+        Route::get('create', 'Modules\Bitrix\BitrixSiteTemplatesController@create');
+        Route::post('', 'Modules\Bitrix\BitrixSiteTemplatesController@store');
+        Route::get('{template}', 'Modules\Bitrix\BitrixSiteTemplatesController@show');
+        Route::get('{template}/delete', 'Modules\Bitrix\BitrixSiteTemplatesController@destroy');
     });
 
     // публичная часть

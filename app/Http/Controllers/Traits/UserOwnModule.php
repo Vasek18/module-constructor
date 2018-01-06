@@ -7,6 +7,7 @@ use App\Models\Modules\Bitrix\BitrixIblocksElements;
 use App\Models\Modules\Bitrix\BitrixIblocksProps;
 use App\Models\Modules\Bitrix\BitrixIblocksSections;
 use App\Models\Modules\Bitrix\BitrixInfoblocks;
+use App\Models\Modules\Bitrix\BitrixSiteTemplate;
 use App\Models\Modules\Bitrix\BitrixUserField;
 use Illuminate\Http\Request;
 use App\Models\Modules\Bitrix\Bitrix;
@@ -91,6 +92,8 @@ trait UserOwnModule{
     protected function moduleOwnsAdminMenuPage(Bitrix $module, BitrixAdminMenuItems $admin_menu_page){
         return $admin_menu_page->module->id == $module->id;
     }
-}
 
-?>
+    protected function moduleOwnsSiteTemplate(Bitrix $module, BitrixSiteTemplate $template){
+        return $template->module->id == $module->id;
+    }
+}
