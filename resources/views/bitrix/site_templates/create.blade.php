@@ -39,7 +39,7 @@
                       id="name_help"></span>
             </div>
         </div>
-        <div class="form-group">
+        {{--<div class="form-group">
             <label for="code"
                    class="col-md-4 control-label">Код</label>
             <div class="col-md-6">
@@ -55,7 +55,7 @@
                 <span class="help-block"
                       id="code_help"></span>
             </div>
-        </div>
+        </div>--}}
         <div class="form-group">
             <label for="description"
                    class="col-md-4 control-label">Описание</label>
@@ -94,7 +94,7 @@
                        accept=".zip"
                 >
                 <span class="help-block"
-                      id="sort_help"></span>
+                      id="sort_help">Архив должен содержать только папку одного шаблона с файлами внутри. То есть в корне должна быть лишь одна папка и никаких файлов.</span>
             </div>
         </div>
         <div class="form-group">

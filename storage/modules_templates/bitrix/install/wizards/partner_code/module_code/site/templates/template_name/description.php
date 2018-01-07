@@ -2,5 +2,6 @@
     die();
 $arTemplate = Array(
     "NAME"        => GetMessage("SITE_TEMPLATE_NAME"),
-    "DESCRIPTION" => GetMessage("SITE_TEMPLATE_DESCRIPTION")
+    "DESCRIPTION" => GetMessage("SITE_TEMPLATE_DESCRIPTION"),
+    "SORT"        => "{TEMPLATE_SORT}"
 );

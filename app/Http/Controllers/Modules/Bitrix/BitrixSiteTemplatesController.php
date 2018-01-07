@@ -32,43 +32,69 @@ class BitrixSiteTemplatesController extends Controller{
 
     public function store(Bitrix $module, Request $request){
         $this->validate($request, [
-            'name' => 'required',
-            'code' => 'required',
+            'name'    => 'required',
+            'archive' => 'required',
         ]);
 
+        $archivePath = $this->saveUserUploadToPublic($request->file('archive'));
+
+        $templateCode = $this->getTemplateCode($archivePath);
+        if (!$templateCode){
+            unlink($archivePath);
+
+            return back()->withErrors('Архив не соответствует требованиям');
+        }
+
+        /** @var BitrixSiteTemplate $template */
         $template = BitrixSiteTemplate::updateOrCreate(
             [
                 'module_id' => $module->id,
-                // todo мб можно парсить из архива
-                'code'      => trim($request->code)
+                'code'      => $templateCode
             ],
             [
-                'module_id' => $module->id,
-                // todo мб можно парсить из архива
-                'name'      => trim($request->name),
-                // todo мб можно парсить из архива
-                'code'      => trim($request->code),
-                'sort'      => intval($request->sort)
+                'module_id'   => $module->id,
+                'name'        => trim($request->name),
+                'description' => trim($request->description),
+                'code'        => $templateCode,
+                'sort'        => intval($request->sort)
             ]
         );
 
-        // todo проверка наличия обязательных файлов
-        // todo парсинг шаблона?
-        // todo парсинг и проверка тем
-        if ($request->file('archive')){
-            $archivePath = $this->saveUserUploadToPublic($request->file('archive'));
-            $this->extractTemplateToModuleFolder($module, $archivePath);
-            //            $componentCode = $this->getComponentCodeFromFolder($fileName);
-            unlink($archivePath);
-            //            $component->parseTemplates();
-        } else{
-            $template->writeInFolder($module);
+        $this->extractTemplateToModuleFolder($module, $archivePath, $template);
+        unlink($archivePath);
+
+        if (!$template->parseThemes()){
+            $template->createTheme();
         }
+
+        $template->writeInFolder();
 
         return redirect(action('Modules\Bitrix\BitrixSiteTemplatesController@show', [
             $module->id,
             $template->id
         ]));
+    }
+
+    // получаем код шаблона (это родительская папка) и заодно проверяем, что в архиве только шаблон
+    public function getTemplateCode($archivePath){
+        $zipper = new Zipper;
+        $zipper->make($archivePath);
+
+        $templateCode = '';
+        foreach ($zipper->listFiles() as $file){
+            $pathArr              = explode('/', $file);
+            $possibleTemplateCode = $pathArr[0];
+
+            if (!$templateCode){
+                $templateCode = $possibleTemplateCode;
+            } else{
+                if ($templateCode != $possibleTemplateCode){
+                    return false; // в архиве больше одной папки в корне или есть файлы на нижнем уровне
+                }
+            }
+        }
+
+        return $templateCode;
     }
 
     public function saveUserUploadToPublic($archive){
@@ -78,8 +104,7 @@ class BitrixSiteTemplatesController extends Controller{
         return public_path().DIRECTORY_SEPARATOR.'user_upload'.DIRECTORY_SEPARATOR.$fileName;
     }
 
-    // todo проверка, что в архиве ровно одна папка - шаблон
-    public function extractTemplateToModuleFolder(Bitrix $module, $archivePath){
+    public function extractTemplateToModuleFolder(Bitrix $module, $archivePath, BitrixSiteTemplate $template){
         // если вдруг папки для шаблонов нет => создаём её
         $relativePath = DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'wizards'.DIRECTORY_SEPARATOR.$module->PARTNER_CODE.DIRECTORY_SEPARATOR.$module->code.DIRECTORY_SEPARATOR.'site'.DIRECTORY_SEPARATOR.'templates';
         $module->disk()->makeDirectory($module->module_full_id.$relativePath);

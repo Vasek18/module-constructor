@@ -8,6 +8,8 @@ class BitrixSiteCreateFormFilesTest extends BitrixTestCase{
 
     use DatabaseTransactions;
 
+    // todo setup и teardown
+
     function getModuleModel($code = null){
         if (!$code){
             $code = $this->standartModuleCode;

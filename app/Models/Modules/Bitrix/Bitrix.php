@@ -191,9 +191,15 @@ class Bitrix extends Model{
         $file = str_replace($template_search, $template_replace, $file);
         //dd($file);
 
+        $outputFilePath = $outputPath ? $outputPath : $path;
+
+        // замена лишнего 'bitrix'
+        if (strpos($outputFilePath, 'bitrix') === 0){
+            $count          = 1; // только первое вхождение
+            $outputFilePath = str_replace("bitrix", $module->module_folder, $outputFilePath, $count); // todo если изменить диск,то можно избавиться от такой замены
+        }
+
         // записываем в модуль
-        $count          = 1; // только первое вхождение
-        $outputFilePath = str_replace("bitrix", $module->module_folder, $outputPath ? $outputPath : $path, $count); // todo если изменить диск,то можно избавиться от такой замены
         Storage::disk('user_modules_bitrix')->put($outputFilePath, $file);
     }
 
