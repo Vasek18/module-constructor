@@ -109,14 +109,23 @@ class BitrixSiteTemplate extends Model{
         $this->module()->first()->disk()->deleteDirectory($this->getFolder());
     }
 
-    // todo
-    public function parseThemes(){
-
+    public function parseThemesInArchive(){
+        $themes = $this->module()->first()->disk()->directories($this->getFolder().DIRECTORY_SEPARATOR.'themes');
+        if ($themes){
+            foreach ($themes as $theme){
+                $pathArr   = explode('/', $theme);
+                $themeCode = $pathArr[count($pathArr) - 1];
+                $this->themes()->create([
+                    'name' => $themeCode,
+                    'sort' => BitrixSiteTemplateTheme::$defaultSort,
+                    'code' => $themeCode,
+                ]);
+            }
+        }
     }
 
-    // todo
-    public function createTheme(){
-
+    public function listFiles(){
+        return $this->module()->first()->disk()->allFiles($this->getFolder());
     }
 
     public function module(){

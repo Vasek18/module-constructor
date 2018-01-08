@@ -5,5 +5,12 @@
 @stop
 
 @section('page')
-
+    @if (count($templateFiles))
+        <h2>Файлы</h2>
+        <ul class="list-group">
+            @foreach($templateFiles as $file)
+                <li class="list-group-item">{{ $file }}</li>
+            @endforeach
+        </ul>
+    @endif
 @stop

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Modules\Bitrix;
 
 use App\Http\Controllers\Controller;
+use App\Models\Metrics\MetricsEventsLog;
 use Chumper\Zipper\Zipper;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Traits\UserOwnModule;
@@ -63,11 +64,12 @@ class BitrixSiteTemplatesController extends Controller{
         $this->extractTemplateToModuleFolder($module, $archivePath, $template);
         unlink($archivePath);
 
-        if (!$template->parseThemes()){
-            $template->createTheme();
-        }
+        $template->parseThemesInArchive();
 
         $template->writeInFolder();
+
+        // логируем действие
+        MetricsEventsLog::log('Добавлен шаблон сайта', $template);
 
         return redirect(action('Modules\Bitrix\BitrixSiteTemplatesController@show', [
             $module->id,
@@ -122,8 +124,9 @@ class BitrixSiteTemplatesController extends Controller{
         }
 
         $data = [
-            'module'   => $module,
-            'template' => $template,
+            'module'        => $module,
+            'template'      => $template,
+            'templateFiles' => $template->listFiles(),
         ];
 
         return view("bitrix.site_templates.detail", $data);
@@ -133,6 +136,9 @@ class BitrixSiteTemplatesController extends Controller{
         if (!$this->moduleOwnsSiteTemplate($module, $template)){
             return $this->unauthorized($request);
         }
+
+        // логируем действие
+        MetricsEventsLog::log('Удалён шаблон сайта', $template);
 
         $template->delete();
 

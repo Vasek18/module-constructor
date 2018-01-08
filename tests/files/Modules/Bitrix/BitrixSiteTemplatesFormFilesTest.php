@@ -8,6 +8,21 @@ class BitrixSiteTemplatesFormFilesTest extends BitrixTestCase{
 
     use DatabaseTransactions;
 
+    function setUp(){
+        parent::setUp();
+
+        $this->signIn();
+        $this->module = $this->fillNewBitrixSiteForm();
+    }
+
+    function tearDown(){
+        parent::tearDown();
+
+        if ($this->module){
+            $this->module->deleteFolder();
+        }
+    }
+
     // todo проверка создания шаблона (записывается название, описание, сортировка)
     // todo проверка, что файлы (кроме description) не перезаписываются
     // todo проверка, что если обязательного файла нет, то он создаётся

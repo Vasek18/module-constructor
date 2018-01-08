@@ -8,36 +8,26 @@ class BitrixSiteCreateFormFilesTest extends BitrixTestCase{
 
     use DatabaseTransactions;
 
-    // todo setup и teardown
+    function setUp(){
+        parent::setUp();
 
-    function getModuleModel($code = null){
-        if (!$code){
-            $code = $this->standartModuleCode;
-        }
-
-        return Bitrix::where('code', $code)->first();
+        $this->signIn();
     }
 
     /** @test */
     function smn_can_create_bitrix_site(){
-        $this->signIn();
-
-        $this->fillNewBitrixSiteForm();
+        $module = $this->fillNewBitrixSiteForm();
 
         $dirs = $this->disk()->directories();
 
-        $this->deleteFolder($this->standartModuleCode);
+        $module->deleteFolder();
 
         $this->assertTrue(in_array($this->user->bitrix_partner_code.'.ololo_from_test', $dirs));
     }
 
     /** @test */
     function it_fills_folder_with_necessary_files_at_creation(){
-        $this->signIn();
-
-        $this->fillNewBitrixSiteForm();
-
-        $module = $this->getModuleModel();
+        $module = $this->fillNewBitrixSiteForm();
 
         $dirName     = $module->getFolder();
         $partnerCode = $module->PARTNER_CODE;
@@ -65,6 +55,6 @@ class BitrixSiteCreateFormFilesTest extends BitrixTestCase{
         $this->assertFileExists($dirName.'/install/wizards/'.$partnerCode.'/'.$moduleCode.'/.description.php');
         $this->assertFileExists($dirName.'/install/wizards/'.$partnerCode.'/'.$moduleCode.'/wizard.php');
 
-        $this->deleteFolder($this->standartModuleCode);
+        $module->deleteFolder();
     }
 }
