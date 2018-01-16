@@ -101,7 +101,9 @@
             <div class="col-md-6 col-md-offset-4">
                 <button type="submit"
                         class="btn btn-primary"
-                        name="create">
+                        name="create"
+                        id="create"
+                >
                     {{ trans('app.create') }}
                 </button>
             </div>

@@ -47,7 +47,8 @@
                        required
                        aria-describedby="code_help"
                        id="component_code"
-                       data-translit_from="component_name">
+                       data-translit_from="component_name" {{--todo убирать знаки--}}
+                >
                 <span class="help-block"
                       id="code_help">{{ trans('bitrix_components.field_component_code_help') }}</span>
             </div>

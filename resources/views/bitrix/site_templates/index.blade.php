@@ -18,7 +18,7 @@
                     </a>
                     <a href="{{ action('Modules\Bitrix\BitrixSiteTemplatesController@destroy', [$module->id, $template->id]) }}"
                        class="btn btn-danger pull-right deletion-with-confirm"
-                       id="delete_component_{{$template->id}}">
+                       id="delete_template_{{$template->id}}">
                         <span class="glyphicon glyphicon-trash"
                               aria-hidden="true"></span>
                     </a>
