@@ -61,6 +61,7 @@
                                            pattern="[a-z]+[a-z0-9]*"
                                            aria-describedby="MODULE_CODE_help"
                                            data-translit_from="module_name"
+                                           data-transform="onlylatin"
                                            id="module_code">
                                     <span class="help-block"
                                           id="MODULE_CODE_help">{!!trans('bitrix_create.module_code_help')!!}</span>

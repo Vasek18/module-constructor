@@ -91,9 +91,9 @@ class RegisterController extends Controller{
 		$user->save();
 
 		// письмо мне
-		Mail::send('emails.admin.new_user', ['user' => $user], function ($m){
-			$m->to(env('GOD_EMAIL'))->subject('Зарегался новый пользователь');
-		});
+//		Mail::send('emails.admin.new_user', ['user' => $user], function ($m){
+//			$m->to(env('GOD_EMAIL'))->subject('Зарегался новый пользователь');
+//		});
 
         // логируем действие
         MetricsEventsLog::log('Зарегистрирован пользователь', $user);

@@ -20,7 +20,7 @@
                       name="description"
                       class="form-control"
                       rows="10"
-                      required></textarea>
+                      required></textarea> {{--Обязательное, иначе криво выглядит список, да и без описания пост бессмысленный--}}
         </div>
         <div class="checkbox">
             <label>

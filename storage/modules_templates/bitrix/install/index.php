@@ -179,16 +179,22 @@ Class {MODULE_CLASS_NAME} extends CModule{
 		return $ids;
 	}
 
+	function isTypeSite(){
+        return \Bitrix\Main\IO\Directory::isDirectoryExists($path = $this->GetPath().'/install/wizards');
+    }
+
 	function DoInstall(){
 
 		global $APPLICATION;
 		if ($this->isVersionD7()){
 			\Bitrix\Main\ModuleManager::registerModule($this->MODULE_ID);
 
-			$this->InstallDB();
-			$this->createNecessaryMailEvents();
-			$this->InstallEvents();
-			$this->InstallFiles();
+			if (!$this->isTypeSite()){
+                $this->InstallDB();
+                $this->createNecessaryMailEvents();
+                $this->InstallEvents();
+                $this->InstallFiles();
+            }
 		}else{
 			$APPLICATION->ThrowException(Loc::getMessage("{LANG_KEY}_INSTALL_ERROR_VERSION"));
 		}
@@ -207,8 +213,9 @@ Class {MODULE_CLASS_NAME} extends CModule{
 		$this->deleteNecessaryMailEvents();
 		$this->UnInstallEvents();
 
-		if ($request["savedata"] != "Y")
-			$this->UnInstallDB();
+		if ($request["savedata"] != "Y"){
+            $this->UnInstallDB();
+        }
 
 		\Bitrix\Main\ModuleManager::unRegisterModule($this->MODULE_ID);
 

@@ -20,6 +20,10 @@ $(document).on "change", "[data-transform]", ->
 	if (transform.indexOf('uppercase') != -1)
 		input.val(val.toUpperCase())
 
+
+	if (transform.indexOf('onlylatin') != -1)
+		input.val(val.replace(/[^a-zA-Z]/g, ''))
+
 	return
 
 # запускаем бутстраповские поповеры
