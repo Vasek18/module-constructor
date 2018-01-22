@@ -1,10 +1,10 @@
 @if (isset($iblock))
     <div class="panel panel-default">
         <div class="panel-heading">
-            <a href="{{action('Modules\Bitrix\BitrixDataStorageController@create_element', [$module, $iblock])}}"
+            <a href="{{action('Modules\Bitrix\Infoblock\BitrixInfoblockElementController@create', [$module, $iblock])}}"
                class="btn btn-success">{{ trans('bitrix_iblocks_form.add_element_button') }} {{--todo подпись из настроек иб--}}
             </a>
-            <a href="{{action('Modules\Bitrix\BitrixDataStorageController@create_section', [$module, $iblock])}}"
+            <a href="{{action('Modules\Bitrix\Infoblock\BitrixInfoblockSectionController@create', [$module, $iblock])}}"
                class="btn btn-success">{{ trans('bitrix_iblocks_form.add_section_button') }} {{--todo подпись из настроек иб--}}
             </a>
         </div>
@@ -21,7 +21,7 @@
                     @if (isset($section))
                         <tr class="deletion_wrapper">
                             <td>
-                                <a href="{{action('Modules\Bitrix\BitrixDataStorageController@detail_ib', [$module, $iblock])}}#test_data">
+                                <a href="{{action('Modules\Bitrix\Infoblock\BitrixInfoblockController@show', [$module, $iblock])}}#test_data">
                                     <span class="glyphicon glyphicon-home"
                                           aria-hidden="true"></span> {{ trans('bitrix_iblocks_form.section_up') }}</a>
                             </td>
@@ -34,7 +34,7 @@
                     @foreach($sections as $i => $section)
                         <tr class="deletion_wrapper">
                             <td>
-                                <a href="{{action('Modules\Bitrix\BitrixDataStorageController@show_section', [$module, $iblock, $section])}}#test_data">
+                                <a href="{{action('Modules\Bitrix\Infoblock\BitrixInfoblockSectionController@show', [$module, $iblock, $section])}}#test_data">
                                     <span class="glyphicon glyphicon-folder-open"
                                           aria-hidden="true"></span> {{$section->name}}</a>
                             </td>
@@ -42,13 +42,13 @@
                             <td>{{$section->active ? 'Y' : 'N'}}</td>
                             <td>{{$section->sort}}</td>
                             <td>
-                                <a href="{{action('Modules\Bitrix\BitrixDataStorageController@edit_section', [$module, $iblock, $section])}}"
+                                <a href="{{action('Modules\Bitrix\Infoblock\BitrixInfoblockSectionController@edit', [$module, $iblock, $section])}}"
                                    class="btn btn-default"
                                    id="edit_section_{{$section->id}}">
                                     <span class="glyphicon glyphicon-pencil"
                                           aria-hidden="true"></span>
                                 </a>
-                                <a href="{{action('Modules\Bitrix\BitrixDataStorageController@delete_section', [$module, $iblock, $section])}}"
+                                <a href="{{action('Modules\Bitrix\Infoblock\BitrixInfoblockSectionController@destroy', [$module, $iblock, $section])}}"
                                    class="btn btn-danger human_ajax_deletion"
                                    data-method="get"
                                    id="delete_section_{{$section->id}}">
@@ -61,19 +61,19 @@
                     @foreach($elements as $i => $element)
                         <tr class="deletion_wrapper">
                             <td>
-                                <a href="{{action('Modules\Bitrix\BitrixDataStorageController@edit_element', [$module, $iblock, $element])}}">{{$element->name}}</a>
+                                <a href="{{action('Modules\Bitrix\Infoblock\BitrixInfoblockElementController@update', [$module, $iblock, $element])}}">{{$element->name}}</a>
                             </td>
                             <td>{{$element->code}}</td>
                             <td>{{$element->active ? 'Y' : 'N'}}</td>
                             <td>{{$element->sort}}</td>
                             <td>
-                                <a href="{{action('Modules\Bitrix\BitrixDataStorageController@edit_element', [$module, $iblock, $element])}}"
+                                <a href="{{action('Modules\Bitrix\Infoblock\BitrixInfoblockElementController@update', [$module, $iblock, $element])}}"
                                    class="btn btn-default"
                                    id="edit_element_{{$element->id}}">
                                     <span class="glyphicon glyphicon-pencil"
                                           aria-hidden="true"></span>
                                 </a>
-                                <a href="{{action('Modules\Bitrix\BitrixDataStorageController@delete_element', [$module, $iblock, $element])}}"
+                                <a href="{{action('Modules\Bitrix\Infoblock\BitrixInfoblockElementController@destroy', [$module, $iblock, $element])}}"
                                    class="btn btn-danger human_ajax_deletion"
                                    data-method="get"
                                    id="delete_element_{{$element->id}}">

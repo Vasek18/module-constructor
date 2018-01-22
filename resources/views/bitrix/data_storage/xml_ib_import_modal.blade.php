@@ -14,7 +14,7 @@
                 <h4 class="modal-title">{{ trans('bitrix_data_storage.xml_ib_import_title') }}</h4>
             </div>
             <div class="modal-body">
-                <form action="{{ action('Modules\Bitrix\BitrixDataStorageController@xml_ib_import', ['module' => $module]) }}"
+                <form action="{{ action('Modules\Bitrix\Infoblock\BitrixInfoblockController@xml_ib_import', ['module' => $module]) }}"
                       method="POST"
                       enctype="multipart/form-data">
                     <input type="hidden"

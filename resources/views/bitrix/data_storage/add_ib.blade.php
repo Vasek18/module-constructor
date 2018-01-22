@@ -30,10 +30,10 @@
     @endif
     @if (isset($iblock))
         <form method="post"
-              action="{{ action('Modules\Bitrix\BitrixDataStorageController@save_ib', [$module->id, $iblock->id]) }}">
+              action="{{ action('Modules\Bitrix\Infoblock\BitrixInfoblockController@update', [$module->id, $iblock->id]) }}">
             @else
                 <form method="post"
-                      action="{{ action('Modules\Bitrix\BitrixDataStorageController@store_ib', $module->id) }}">
+                      action="{{ action('Modules\Bitrix\Infoblock\BitrixInfoblockController@store', $module->id) }}">
                     @endif
                     {{ csrf_field() }}
                     <ul class="nav nav-tabs iblock_tabs_headings"

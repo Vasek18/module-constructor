@@ -11,7 +11,7 @@
 @section('page')
     <p>
         <a class="btn btn-primary"
-           href="{{ action('Modules\Bitrix\BitrixDataStorageController@detail_ib', [$module->id, $iblock->id]) }}#test_data">
+           href="{{ action('Modules\Bitrix\Infoblock\BitrixInfoblockController@show', [$module->id, $iblock->id]) }}#test_data">
             {{ trans('bitrix_iblocks_form.back_to_iblock') }}
         </a>
     </p>
@@ -31,10 +31,10 @@
              class="tab-pane active"
              id="element">
             @if (isset($element))
-                <form action="{{ action('Modules\Bitrix\BitrixDataStorageController@save_element', [$module->id, $iblock->id, $element->id]) }}"
+                <form action="{{ action('Modules\Bitrix\Infoblock\BitrixInfoblockElementController@update', [$module->id, $iblock->id, $element->id]) }}"
                       method="post">
                     @else
-                        <form action="{{ action('Modules\Bitrix\BitrixDataStorageController@store_element', [$module->id, $iblock->id]) }}"
+                        <form action="{{ action('Modules\Bitrix\Infoblock\BitrixInfoblockElementController@store', [$module->id, $iblock->id]) }}"
                               method="post">
                             @endif
 

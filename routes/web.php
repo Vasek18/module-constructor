@@ -209,31 +209,30 @@ Route::group([
 
         // инфоблоки
         Route::group(['prefix' => 'ib'], function(){
-            Route::get('', 'Modules\Bitrix\BitrixDataStorageController@add_ib');
-            Route::post('', 'Modules\Bitrix\BitrixDataStorageController@store_ib');
-            Route::post('xml_ib_import', 'Modules\Bitrix\BitrixDataStorageController@xml_ib_import');
-            Route::get('{iblock}', 'Modules\Bitrix\BitrixDataStorageController@detail_ib');
-            Route::get('{iblock}/delete', 'Modules\Bitrix\BitrixDataStorageController@delete_ib');
-            Route::post('{iblock}/save', 'Modules\Bitrix\BitrixDataStorageController@save_ib');
-            Route::get('{iblock}/props/{prop}/delete', 'Modules\Bitrix\BitrixDataStorageController@delete_prop'); // todo скорее всего ещё подгруппа
+            Route::get('', ['uses' => 'Modules\Bitrix\Infoblock\BitrixInfoblockController@create']);
+            Route::post('', ['uses' => 'Modules\Bitrix\Infoblock\BitrixInfoblockController@store']);
+            Route::post('xml_ib_import', ['uses' => 'Modules\Bitrix\Infoblock\BitrixInfoblockController@xml_ib_import']);
+            Route::get('{iblock}', ['uses' => 'Modules\Bitrix\Infoblock\BitrixInfoblockController@show']);
+            Route::get('{iblock}/delete', ['uses' => 'Modules\Bitrix\Infoblock\BitrixInfoblockController@destroy']);
+            Route::post('{iblock}/save', ['uses' => 'Modules\Bitrix\Infoblock\BitrixInfoblockController@update']);
 
-            Route::get('{iblock}/create_element', ['uses' => 'Modules\Bitrix\BitrixDataStorageController@create_element']); // todo скорее всего ещё подгруппа
-            Route::post('{iblock}/store_element', ['uses' => 'Modules\Bitrix\BitrixDataStorageController@store_element']); // todo скорее всего ещё подгруппа
-            Route::get('{iblock}/edit_element/{element}', ['uses' => 'Modules\Bitrix\BitrixDataStorageController@edit_element']); // todo скорее всего ещё подгруппа
-            Route::post('{iblock}/save_element/{element}', ['uses' => 'Modules\Bitrix\BitrixDataStorageController@save_element']); // todo скорее всего ещё подгруппа
-            Route::get('{iblock}/delete_element/{element}', ['uses' => 'Modules\Bitrix\BitrixDataStorageController@delete_element']); // todo скорее всего ещё подгруппа
+            // свойства инфоблоков
+            Route::get('{iblock}/props/{prop}/delete', ['uses' => 'Modules\Bitrix\Infoblock\BitrixInfoblockPropController@destroy']);
 
-            Route::get('{iblock}/create_section', ['uses' => 'Modules\Bitrix\BitrixDataStorageController@create_section']); // todo скорее всего ещё подгруппа
-            Route::post('{iblock}/store_section', ['uses' => 'Modules\Bitrix\BitrixDataStorageController@store_section']); // todo скорее всего ещё подгруппа
-            Route::get('{iblock}/edit_section/{section}', ['uses' => 'Modules\Bitrix\BitrixDataStorageController@edit_section']); // todo скорее всего ещё подгруппа
-            Route::get('{iblock}/section/{section}', ['uses' => 'Modules\Bitrix\BitrixDataStorageController@show_section']); // todo скорее всего ещё подгруппа
-            Route::post('{iblock}/save_section/{section}', ['uses' => 'Modules\Bitrix\BitrixDataStorageController@save_section']); // todo скорее всего ещё подгруппа
-            Route::get('{iblock}/delete_section/{section}', ['uses' => 'Modules\Bitrix\BitrixDataStorageController@delete_section']); // todo скорее всего ещё подгруппа
+            // элементы инфоблоков
+            Route::get('{iblock}/create_element', ['uses' => 'Modules\Bitrix\Infoblock\BitrixInfoblockElementController@create']);
+            Route::post('{iblock}/store_element', ['uses' => 'Modules\Bitrix\Infoblock\BitrixInfoblockElementController@store']);
+            Route::get('{iblock}/edit_element/{element}', ['uses' => 'Modules\Bitrix\Infoblock\BitrixInfoblockElementController@edit']);
+            Route::post('{iblock}/save_element/{element}', ['uses' => 'Modules\Bitrix\Infoblock\BitrixInfoblockElementController@update']);
+            Route::get('{iblock}/delete_element/{element}', ['uses' => 'Modules\Bitrix\Infoblock\BitrixInfoblockElementController@destroy']);
 
-        });
-
-        // элементы
-        Route::group(['prefix' => '{iblock}/elements'], function(){
+            // категории инфоблоков
+            Route::get('{iblock}/create_section', ['uses' => 'Modules\Bitrix\Infoblock\BitrixInfoblockSectionController@create']);
+            Route::post('{iblock}/store_section', ['uses' => 'Modules\Bitrix\Infoblock\BitrixInfoblockSectionController@store']);
+            Route::get('{iblock}/section/{section}', ['uses' => 'Modules\Bitrix\Infoblock\BitrixInfoblockSectionController@show']);
+            Route::get('{iblock}/edit_section/{section}', ['uses' => 'Modules\Bitrix\Infoblock\BitrixInfoblockSectionController@edit']);
+            Route::post('{iblock}/save_section/{section}', ['uses' => 'Modules\Bitrix\Infoblock\BitrixInfoblockSectionController@update']);
+            Route::get('{iblock}/delete_section/{section}', ['uses' => 'Modules\Bitrix\Infoblock\BitrixInfoblockSectionController@destroy']);
         });
 
         // пользовательские свойства

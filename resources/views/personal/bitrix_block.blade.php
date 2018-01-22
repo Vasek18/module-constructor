@@ -161,7 +161,7 @@
                                     <ul>
                                         @foreach($module->infoblocks as $infoblock)
                                             <li>
-                                                <a href="{{ action('Modules\Bitrix\BitrixDataStorageController@detail_ib', [$module->id, $infoblock->id]) }}">{{$infoblock->name}}</a>
+                                                <a href="{{ action('Modules\Bitrix\Infoblock\BitrixInfoblockController@show', [$module->id, $infoblock->id]) }}">{{$infoblock->name}}</a>
                                             </li>
                                         @endforeach
                                     </ul>

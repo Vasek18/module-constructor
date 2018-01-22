@@ -69,7 +69,7 @@
     </td>
     <td>
         @if($property)
-            <a href="{{ action('Modules\Bitrix\BitrixDataStorageController@delete_prop', [$module->id, $iblock->id, $property]) }}"
+            <a href="{{ action('Modules\Bitrix\Infoblock\BitrixInfoblockPropController@destroy', [$module->id, $iblock->id, $property]) }}"
                class="btn btn-danger human_ajax_deletion"
                data-method="get"
                id="delete_prop_{{$property->id}}">
