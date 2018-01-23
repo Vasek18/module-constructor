@@ -473,7 +473,7 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 			]
 		];
 		$expectedPropCreationCodeArray = [
-			"IBLOCK_ID"     => '$iblockID',
+			"IBLOCK_ID"     => '$iblock'.$ib->id.'ID',
 			"ACTIVE"        => "Y",
 			"SORT"          => "500",
 			"CODE"          => "TEST",
@@ -545,7 +545,7 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 			]
 		];
 		$expectedPropCreationCodeArray = [
-			"IBLOCK_ID"     => '$iblockID',
+			"IBLOCK_ID"     => '$iblock'.$ib->id.'ID',
 			"ACTIVE"        => "Y",
 			"SORT"          => "500",
 			"CODE"          => "TEST",
@@ -632,7 +632,7 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 			]
 		];
 		$expectedPropCreationCodeArray = [
-			"IBLOCK_ID"     => '$iblockID',
+			"IBLOCK_ID"     => '$iblock'.$ib->id.'ID',
 			"ACTIVE"        => "Y",
 			"SORT"          => "500",
 			"CODE"          => "TEST",
@@ -731,7 +731,7 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 			]
 		];
 		$expectedInstallationElementsFuncCodeArray = [
-			"IBLOCK_ID" => '$iblockID',
+			"IBLOCK_ID" => '$iblock'.$ib->id.'ID',
 			"ACTIVE"    => "Y",
 			"SORT"      => "500",
 			"CODE"      => "trololo",
@@ -790,7 +790,7 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 			]
 		];
 		$expectedInstallationElementsFuncCodeArray = [
-			"IBLOCK_ID" => '$iblockID',
+			"IBLOCK_ID" => '$iblock'.$ib->id.'ID',
 			"ACTIVE"    => "Y",
 			"SORT"      => "500",
 			"CODE"      => "trololo",
@@ -849,7 +849,7 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 			]
 		];
 		$expectedInstallationElementsFuncCodeArray = [
-			"IBLOCK_ID"       => '$iblockID',
+			"IBLOCK_ID"       => '$iblock'.$ib->id.'ID',
 			"ACTIVE"          => "Y",
 			"SORT"            => "500",
 			"CODE"            => "trololo",
@@ -886,7 +886,7 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 		$installFileLangArr = $this->getLangFileArray($this->module);
 
 		$expectedInstallationElementsFuncCodeArray = [
-			"IBLOCK_ID"       => '$iblockID',
+			"IBLOCK_ID"       => '$iblock'.$ib->id.'ID',
 			"ACTIVE"          => "Y",
 			"SORT"            => "500",
 			"CODE"            => "trololo",
@@ -896,7 +896,7 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 			)
 		];
 		$expectedPropCreationCodeArray = [
-			"IBLOCK_ID"     => '$iblockID',
+			"IBLOCK_ID"     => '$iblock'.$ib->id.'ID',
 			"ACTIVE"        => "Y",
 			"SORT"          => "500",
 			"CODE"          => "TEST",
@@ -963,7 +963,7 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 			]
 		];
 		$expectedInstallationElementsFuncCodeArray = [
-			"IBLOCK_ID"       => '$iblockID',
+			"IBLOCK_ID"       => '$iblock'.$ib->id.'ID',
 			"ACTIVE"          => "Y",
 			"SORT"            => "500",
 			"CODE"            => "trololo",
@@ -1028,7 +1028,7 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 			]
 		];
 		$expectedInstallationElementsFuncCodeArray = [
-			"IBLOCK_ID"       => '$iblockID',
+			"IBLOCK_ID"       => '$iblock'.$ib->id.'ID',
 			"ACTIVE"          => "Y",
 			"SORT"            => "500",
 			"CODE"            => "trololo",
@@ -1069,7 +1069,7 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 		$installFileLangArr = $this->getLangFileArray($this->module);
 
 		$expectedInstallationElementsFuncCodeArray = [
-			"IBLOCK_ID"       => '$iblockID',
+			"IBLOCK_ID"       => '$iblock'.$ib->id.'ID',
 			"ACTIVE"          => "Y",
 			"SORT"            => "500",
 			"CODE"            => "trololo",
@@ -1097,7 +1097,7 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 		$installationFileContent = file_get_contents($this->module->getFolder(true).'/install/index.php');
 
 		$expectedInstallationSectionsFuncCodeArray = [
-			"IBLOCK_ID" => '$iblockID',
+			"IBLOCK_ID" => '$iblock'.$ib->id.'ID',
 			"ACTIVE"    => "Y",
 			"SORT"      => "500",
 			"CODE"      => "trololo",
@@ -1800,7 +1800,7 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 			]
 		];
 		$expectedPropCreationCodeArray = [
-			"IBLOCK_ID"     => '$iblockID',
+			"IBLOCK_ID"     => '$iblock'.$iblock->id.'ID',
 			"ACTIVE"        => "Y",
 			"SORT"          => "500",
 			"CODE"          => "TEST",
@@ -1877,7 +1877,7 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 		$installFileLangArr = $this->getLangFileArray($this->module);
 
 		$expectedPropCreationCodeArray = [
-			"IBLOCK_ID"     => '$iblockID',
+			"IBLOCK_ID"     => '$iblock'.$prop->iblock->id.'ID',
 			"ACTIVE"        => "Y",
 			"SORT"          => "400",
 			"CODE"          => "TESTOVOE_SVOISVTO",
@@ -1888,7 +1888,7 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 			"IS_REQUIRED"   => "N",
 		];
 		$expectedPropCreationCodeArray2 = [
-			"IBLOCK_ID"     => '$iblockID',
+			"IBLOCK_ID"     => '$iblock'.$prop->iblock->id.'ID',
 			"ACTIVE"        => "Y",
 			"SORT"          => "500",
 			"CODE"          => "ANOTHER_ONE",
@@ -1921,7 +1921,7 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 		$prop2 = BitrixIblocksProps::where('code', 'ANOTHER_ONE')->first();
 
 		$expectedInstallationElementsFuncCodeArray = [
-			"IBLOCK_ID"       => '$iblockID',
+			"IBLOCK_ID"       => '$iblock'.$iblock->id.'ID',
 			"ACTIVE"          => "Y",
 			"SORT"            => "400",
 			"CODE"            => "",
@@ -1935,7 +1935,7 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 			)
 		];
 		$expectedInstallationElementsFuncCodeArray2 = [
-			"IBLOCK_ID"       => '$iblockID',
+			"IBLOCK_ID"       => '$iblock'.$iblock->id.'ID',
 			"ACTIVE"          => "Y",
 			"SORT"            => "500",
 			"CODE"            => "ololo",
@@ -1971,7 +1971,7 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 		$prop = BitrixIblocksProps::where('code', 'ANOTHER_ONE')->first();
 
 		$expectedInstallationElementFuncCodeArray = [
-			"IBLOCK_ID"         => '$iblockID',
+			"IBLOCK_ID"         => '$iblock'.$iblock->id.'ID',
 			"ACTIVE"            => "Y",
 			"SORT"              => "500",
 			"CODE"              => "vlogennyy_element",
@@ -1982,7 +1982,7 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 			)
 		];
 		$expectedInstallationSectionFuncCodeArray = [
-			"IBLOCK_ID" => '$iblockID',
+			"IBLOCK_ID" => '$iblock'.$iblock->id.'ID',
 			"ACTIVE"    => "Y",
 			"SORT"      => "500",
 			"CODE"      => "testovyy_razdel",
@@ -2029,7 +2029,7 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 		$element2 = \App\Models\Modules\Bitrix\BitrixIblocksElements::where('name', 'Твоя мамка')->first();
 
 		$propArray = Array(
-			"IBLOCK_ID"     => '$iblockID',
+			"IBLOCK_ID"     => '$iblock'.$prop->iblock->id.'ID',
 			"ACTIVE"        => "Y",
 			"SORT"          => "500",
 			"CODE"          => "COLOR",
@@ -2060,7 +2060,7 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 		);
 
 		$elArr1 = Array(
-			"IBLOCK_ID"       => '$iblockID',
+			"IBLOCK_ID"       => '$iblock'.$element->iblock->id.'ID',
 			"ACTIVE"          => "Y",
 			"SORT"            => "500",
 			"CODE"            => "",
@@ -2071,7 +2071,7 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 		);
 
 		$elArr2 = Array(
-			"IBLOCK_ID"       => '$iblockID',
+			"IBLOCK_ID"       => '$iblock'.$element->iblock->id.'ID',
 			"ACTIVE"          => "Y",
 			"SORT"            => "500",
 			"CODE"            => "",
@@ -2113,7 +2113,7 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 		$module2->deleteFolder();
 
 		$this->assertEquals(Array(
-			"IBLOCK_ID"     => '$iblockID',
+			"IBLOCK_ID"     => '$iblock'.$iblock->id.'ID',
 			"ACTIVE"        => "Y",
 			"SORT"          => "500",
 			"CODE"          => "TEST",
@@ -2181,7 +2181,7 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 		$installationFileContent = file_get_contents($this->module->getFolder(true).'/install/index.php');
 
 		$expectedInstallationSectionsFuncCodeArray = [
-			"IBLOCK_ID" => '$iblockID',
+			"IBLOCK_ID" => '$iblock'.$iblock->id.'ID',
 			"ACTIVE"    => "Y",
 			"SORT"      => "500",
 			"CODE"      => "trololo",
@@ -2215,14 +2215,14 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 		$gottenInstallationElementsFuncCodeArray = $this->getIblockElementsCreationFuncCallParamsArray($this->module);
 
 		$expectedInstallationElementFuncCodeArray1 = [
-			"IBLOCK_ID" => '$iblockID',
+			"IBLOCK_ID" => '$iblock'.$iblock->id.'ID',
 			"ACTIVE"    => "Y",
 			"SORT"      => "500",
 			"CODE"      => "testelem",
 			"NAME"      => 'Loc::getMessage("'.$iblock->lang_key.'_ELEMENT_'.$element->id.'_NAME")',
 		];
 		$expectedInstallationElementFuncCodeArray2 = [
-			"IBLOCK_ID"         => '$iblockID',
+			"IBLOCK_ID"         => '$iblock'.$iblock->id.'ID',
 			"ACTIVE"            => "Y",
 			"SORT"              => "500",
 			"CODE"              => "fooel",
@@ -2266,7 +2266,7 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 		$val3 = BitrixIblocksPropsVals::where('value', 'Синий')->first();
 
 		$propArray = Array(
-			"IBLOCK_ID"     => '$iblockID',
+			"IBLOCK_ID"     => '$iblock'.$prop->iblock->id.'ID',
 			"ACTIVE"        => "Y",
 			"SORT"          => "500",
 			"CODE"          => "COLOR",
@@ -2339,13 +2339,14 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 		$gottenInstallationPropsFuncCodeArray = $this->getIblockPropsCreationFuncCallParamsArray($this->module);
 		$gottenInstallationPropsValsFuncCodeArray = $this->getIblockPropsValsCreationFuncCallParamsArray($this->module);
 
+		$iblock = BitrixInfoblocks::where('code', 'TROLOLO')->first();
 		$prop = BitrixIblocksProps::where('code', 'COLOR')->first();
 		$val1 = BitrixIblocksPropsVals::where('value', 'Зелёный')->first();
 		$val2 = BitrixIblocksPropsVals::where('value', 'Любви')->first();
 		$val3 = BitrixIblocksPropsVals::where('value', 'Синий')->first();
 
 		$propArray = Array(
-			"IBLOCK_ID"     => '$iblockID',
+			"IBLOCK_ID"     => '$iblock'.$prop->iblock->id.'ID',
 			"ACTIVE"        => "Y",
 			"SORT"          => "500",
 			"CODE"          => "COLOR",
@@ -2376,7 +2377,7 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 		);
 
 		$elArr1 = Array(
-			"IBLOCK_ID"       => '$iblockID',
+			"IBLOCK_ID"       => '$iblock'.$iblock->id.'ID',
 			"ACTIVE"          => "Y",
 			"SORT"            => "500",
 			"CODE"            => "",
@@ -2428,7 +2429,7 @@ class BitrixInfoblockFormFilesTest extends BitrixTestCase{
 		$gottenInstallationElementsFuncCodeArray = $this->getIblockElementsCreationFuncCallParamsArray($this->module);
 
 		$expectedInstallationElementsFuncCodeArray = [
-			"IBLOCK_ID"       => '$iblockID',
+			"IBLOCK_ID"       => '$iblock'.$ib->id.'ID',
 			"ACTIVE"          => "Y",
 			"SORT"            => "500",
 			"CODE"            => "trololo",

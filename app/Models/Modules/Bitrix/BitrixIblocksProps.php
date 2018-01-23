@@ -57,7 +57,7 @@ class BitrixIblocksProps extends Model{
 		$code = '';
 		$code .= str_repeat("\t", $startingTabs).'$prop'.$this->id.'ID = $this->createIblockProp('.PHP_EOL;
 		$code .= str_repeat("\t", $startingTabs)."\t".'Array('.PHP_EOL;
-		$code .= str_repeat("\t", $startingTabs)."\t\t".'"IBLOCK_ID"'." => ".'$iblockID,'.PHP_EOL;
+		$code .= str_repeat("\t", $startingTabs)."\t\t".'"IBLOCK_ID"'." => ".$this->iblock->php_var_name.','.PHP_EOL;
 		$code .= str_repeat("\t", $startingTabs)."\t\t".'"ACTIVE"'." => ".'"Y",'.PHP_EOL;
 		$code .= str_repeat("\t", $startingTabs)."\t\t".'"SORT"'." => ".'"'.$this->sort.'",'.PHP_EOL;
 		$code .= str_repeat("\t", $startingTabs)."\t\t".'"CODE"'." => ".'"'.$this->code.'",'.PHP_EOL;
@@ -79,9 +79,12 @@ class BitrixIblocksProps extends Model{
 			if (isset($this->dop_params["LIST_TYPE"])){
 				$code .= str_repeat("\t", $startingTabs)."\t\t".'"LIST_TYPE"'." => ".'"'.($this->dop_params["LIST_TYPE"]).'",'.PHP_EOL;
 			}
-			if (isset($this->dop_params["FILE_TYPE"])){
-				$code .= str_repeat("\t", $startingTabs)."\t\t".'"FILE_TYPE"'." => ".'"'.($this->dop_params["FILE_TYPE"]).'",'.PHP_EOL;
-			}
+            if (isset($this->dop_params["FILE_TYPE"])){
+                $code .= str_repeat("\t", $startingTabs)."\t\t".'"FILE_TYPE"'." => ".'"'.($this->dop_params["FILE_TYPE"]).'",'.PHP_EOL;
+            }
+            if (isset($this->dop_params["LINK_IBLOCK_ID"])){
+                $code .= str_repeat("\t", $startingTabs)."\t\t".'"LINK_IBLOCK_ID" => '.(BitrixInfoblocks::find($this->dop_params["LINK_IBLOCK_ID"])->php_var_name).','.PHP_EOL;
+            }
 		}
 		$code .= str_repeat("\t", $startingTabs)."\t".')'.PHP_EOL;
 		$code .= str_repeat("\t", $startingTabs).');'.PHP_EOL;

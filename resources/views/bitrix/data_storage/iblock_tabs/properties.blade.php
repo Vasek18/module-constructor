@@ -11,7 +11,6 @@
     </tr>
     @if ($iblock)
         @foreach($properties as $i => $property)
-            {{--{{dd($property)}}--}}
             @include('bitrix.data_storage.iblock_tabs.properties_item', ['property' => $property, 'i' => $i, 'iblock' => $iblock])
         @endforeach
         {{-- Дополнительно показываем ещё несколько пустых строк --}}

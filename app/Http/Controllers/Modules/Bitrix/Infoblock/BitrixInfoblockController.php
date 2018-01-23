@@ -22,9 +22,10 @@ class BitrixInfoblockController extends Controller{
 
     public function create(Bitrix $module, Request $request){
         $data = [
-            'module'           => $module,
-            'iblock'           => null,
-            'properties_types' => BitrixIblocksProps::$types
+            'module'               => $module,
+            'iblock'               => null,
+            'properties_types'     => BitrixIblocksProps::$types,
+            'iblocksWithLowerSort' => []
         ];
 
         return view("bitrix.data_storage.add_ib", $data);
@@ -253,6 +254,7 @@ class BitrixInfoblockController extends Controller{
         if ($iblock){
             $iblock->update([
                 'name'   => $params['NAME'],
+                'sort'   => $params['SORT'],
                 'params' => json_encode($params, JSON_FORCE_OBJECT)
                 // предыдущие пару параметров дублируются здесь специально, чтобы можно было создавать массив по одному лишь params
             ]);
@@ -261,6 +263,7 @@ class BitrixInfoblockController extends Controller{
                 'module_id' => $module->id,
                 'name'      => $params['NAME'],
                 'code'      => $params['CODE'],
+                'sort'      => $params['SORT'],
                 'params'    => json_encode($params)
                 // предыдущие пару параметров дублируются здесь специально, чтобы можно было создавать массив по одному лишь params
             ]);
@@ -342,12 +345,13 @@ class BitrixInfoblockController extends Controller{
         }
 
         $data = [
-            'module'           => $module,
-            'iblock'           => $iblock,
-            'properties'       => $iblock->properties()->orderBy('sort', 'asc')->get(),
-            'elements'         => $iblock->elements()->where('parent_section_id', null)->orWhere('parent_section_id', 0)->orderBy('sort', 'asc')->get(),
-            'sections'         => $iblock->sections()->where('parent_section_id', null)->orWhere('parent_section_id', 0)->orderBy('sort', 'asc')->get(),
-            'properties_types' => BitrixIblocksProps::$types
+            'module'               => $module,
+            'iblock'               => $iblock,
+            'properties'           => $iblock->properties()->orderBy('sort', 'asc')->get(),
+            'elements'             => $iblock->elements()->where('parent_section_id', null)->orWhere('parent_section_id', 0)->orderBy('sort', 'asc')->get(),
+            'sections'             => $iblock->sections()->where('parent_section_id', null)->orWhere('parent_section_id', 0)->orderBy('sort', 'asc')->get(),
+            'properties_types'     => BitrixIblocksProps::$types,
+            'iblocksWithLowerSort' => $module->infoblocks()->where('sort', '<', $iblock->sort)->get(),
         ];
 
         return view("bitrix.data_storage.add_ib", $data);

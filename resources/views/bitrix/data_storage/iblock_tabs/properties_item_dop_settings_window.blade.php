@@ -117,6 +117,25 @@
                                     @endif>
                         </div>
                     </div>
+                    <div class="form-group"
+                         data-for_type_ids="G E">
+                        <label class="col-md-5">Инфоблок для привязки:</label>
+                        <div class="col-md-7">
+                            @if (isset($iblocksWithLowerSort))
+                                <select name="properties[dop_params][{{$i}}][LINK_IBLOCK_ID]"
+                                        class="form-control">
+                                    <option value="">Выберите</option>
+                                    @foreach ($iblocksWithLowerSort as $iblock)
+                                        <option value="{{ $iblock->id }}"
+                                                @if ($property && $property->dop_params && isset($property->dop_params["LINK_IBLOCK_ID"]) && $property->dop_params["LINK_IBLOCK_ID"] == $iblock->id)
+                                                selected
+                                                @endif
+                                        >{{ $iblock->name }}</option>
+                                    @endforeach
+                                </select>
+                            @endif
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
