@@ -191,10 +191,11 @@ Class {MODULE_CLASS_NAME} extends CModule{
 
 			if (!$this->isTypeSite()){
                 $this->InstallDB();
-                $this->createNecessaryMailEvents();
-                $this->InstallEvents();
-                $this->InstallFiles();
             }
+
+            $this->createNecessaryMailEvents();
+            $this->InstallEvents();
+            $this->InstallFiles();
 		}else{
 			$APPLICATION->ThrowException(Loc::getMessage("{LANG_KEY}_INSTALL_ERROR_VERSION"));
 		}

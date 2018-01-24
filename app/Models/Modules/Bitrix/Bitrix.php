@@ -110,6 +110,7 @@ class Bitrix extends Model{
                 'bitrix/install/wizards/partner_code/module_code/site/services/main/site_create.php',
                 'bitrix/install/wizards/partner_code/module_code/site/services/main/template.php',
                 'bitrix/install/wizards/partner_code/module_code/site/services/main/theme.php',
+                'bitrix/install/wizards/partner_code/module_code/site/services/iblock/install.php',
                 'bitrix/install/wizards/partner_code/module_code/site/services/.htaccess',
                 'bitrix/install/wizards/partner_code/module_code/site/services/.services.php',
                 'bitrix/install/wizards/partner_code/module_code/.description.php',
