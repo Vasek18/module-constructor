@@ -162,6 +162,30 @@
                                                     @endforeach
                                                 </select>
                                             @endif
+                                            @if ($property->type == 'E')
+                                                <select name="props[{{$property->id}}]"
+                                                        id="{{$property->id}}"
+                                                        class="form-control"
+                                                        {{ $property->is_required ? 'required' : '' }}
+                                                >
+                                                    <option value="">{{ trans('app.select') }}</option>
+                                                    @foreach($elements_for_bind as $element)
+                                                        <option value="{{ $element->id }}">{{ $element->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            @endif
+                                            @if ($property->type == 'G')
+                                                <select name="props[{{$property->id}}]"
+                                                        id="{{$property->id}}"
+                                                        class="form-control"
+                                                        {{ $property->is_required ? 'required' : '' }}
+                                                >
+                                                    <option value="">{{ trans('app.select') }}</option>
+                                                    @foreach($sections_for_bind as $section)
+                                                        <option value="{{ $section->id }}">{{ $section->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            @endif
                                         </div>
                                     @endforeach
                                 @endif

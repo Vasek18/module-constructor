@@ -318,6 +318,18 @@ class BitrixInfoblocks extends Model{
         }
     }
 
+    public function getIblocksWithLowerSort(){
+        return $this->module->infoblocks()->where('sort', '<', $this->sort)->get();
+    }
+
+    public function getElementsOfIblocksWithLowerSort(){
+        return $this->module->infoblocks()->where('sort', '<', $this->sort)->with('elements')->get();
+    }
+
+    public function getSectionsOfIblocksWithLowerSort(){
+        return $this->module->infoblocks()->where('sort', '<', $this->sort)->with('sections')->get();
+    }
+
     // свойства вне бд
     public function getLangKeyAttribute(){
         return strtoupper($this->module()->first()->lang_key.'_IBLOCK_'.strtoupper($this->code));

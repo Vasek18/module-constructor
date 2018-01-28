@@ -22,10 +22,12 @@ class BitrixInfoblockElementController extends Controller{
         }
 
         $data = [
-            'module'     => $module,
-            'iblock'     => $iblock,
-            'sections'   => $iblock->sections()->orderBy('sort', 'asc')->get(),
-            'properties' => $iblock->properties()->orderBy('sort', 'asc')->get(),
+            'module'            => $module,
+            'iblock'            => $iblock,
+            'sections'          => $iblock->sections()->orderBy('sort', 'asc')->get(),
+            'properties'        => $iblock->properties()->orderBy('sort', 'asc')->get(),
+            'elements_for_bind' => $iblock->getElementsOfIblocksWithLowerSort(),
+            'sections_for_bind' => $iblock->getSectionsOfIblocksWithLowerSort(),
         ];
 
         return view("bitrix.data_storage.iblock_tabs.test_data_element_edit", $data);
@@ -100,12 +102,14 @@ class BitrixInfoblockElementController extends Controller{
         }
 
         $data = [
-            'module'     => $module,
-            'iblock'     => $iblock,
-            'element'    => $element,
-            'props_vals' => $props_vals,
-            'properties' => $iblock->properties()->orderBy('sort', 'asc')->get(),
-            'sections'   => $iblock->sections()->orderBy('sort', 'asc')->get(),
+            'module'            => $module,
+            'iblock'            => $iblock,
+            'element'           => $element,
+            'props_vals'        => $props_vals,
+            'properties'        => $iblock->properties()->orderBy('sort', 'asc')->get(),
+            'sections'          => $iblock->sections()->orderBy('sort', 'asc')->get(),
+            'elements_for_bind' => $iblock->getElementsOfIblocksWithLowerSort(),
+            'sections_for_bind' => $iblock->getSectionsOfIblocksWithLowerSort(),
         ];
 
         //dd($data);

@@ -403,7 +403,7 @@ class BitrixInfoblockController extends Controller{
             'elements'             => $iblock->elements()->where('parent_section_id', null)->orWhere('parent_section_id', 0)->orderBy('sort', 'asc')->get(),
             'sections'             => $iblock->sections()->where('parent_section_id', null)->orWhere('parent_section_id', 0)->orderBy('sort', 'asc')->get(),
             'properties_types'     => BitrixIblocksProps::$types,
-            'iblocksWithLowerSort' => $module->infoblocks()->where('sort', '<', $iblock->sort)->get(),
+            'iblocksWithLowerSort' => $iblock->getIblocksWithLowerSort(),
         ];
 
         return view("bitrix.data_storage.add_ib", $data);
