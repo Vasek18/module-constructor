@@ -61,13 +61,13 @@
                     @foreach($elements as $i => $element)
                         <tr class="deletion_wrapper">
                             <td>
-                                <a href="{{action('Modules\Bitrix\Infoblock\BitrixInfoblockElementController@update', [$module, $iblock, $element])}}">{{$element->name}}</a>
+                                <a href="{{action('Modules\Bitrix\Infoblock\BitrixInfoblockElementController@edit', [$module, $iblock, $element])}}">{{$element->name}}</a>
                             </td>
                             <td>{{$element->code}}</td>
                             <td>{{$element->active ? 'Y' : 'N'}}</td>
                             <td>{{$element->sort}}</td>
                             <td>
-                                <a href="{{action('Modules\Bitrix\Infoblock\BitrixInfoblockElementController@update', [$module, $iblock, $element])}}"
+                                <a href="{{action('Modules\Bitrix\Infoblock\BitrixInfoblockElementController@edit', [$module, $iblock, $element])}}"
                                    class="btn btn-default"
                                    id="edit_element_{{$element->id}}">
                                     <span class="glyphicon glyphicon-pencil"

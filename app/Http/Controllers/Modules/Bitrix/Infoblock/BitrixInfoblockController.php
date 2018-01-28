@@ -51,46 +51,89 @@ class BitrixInfoblockController extends Controller{
 
         $arr = Parser::xml($file);
 
-        if (isset($arr['Каталог'])){
-            $iblock = BitrixInfoblocks::updateOrCreate(
-                [
-                    'module_id' => $module->id,
-                    'name'      => $arr['Каталог']['Наименование'],
-                ],
-                [
-                    'module_id' => $module->id,
-                    'name'      => $arr['Каталог']['Наименование'],
-                    'code'      => $arr['Каталог']['БитриксКод'],
-                    'params'    => json_encode([
-                        'NAME'               => $arr['Каталог']['Наименование'],
-                        'CODE'               => $arr['Каталог']['БитриксКод'],
-                        'SORT'               => $arr['Каталог']['БитриксСортировка'],
-                        'LIST_PAGE_URL'      => $arr['Каталог']['БитриксURLСписок'],
-                        'SECTION_PAGE_URL'   => $arr['Каталог']['БитриксURLРаздел'],
-                        'DETAIL_PAGE_URL'    => $arr['Каталог']['БитриксURLДеталь'],
-                        'CANONICAL_PAGE_URL' => $arr['Каталог']['БитриксURLКанонический'],
-                    ])
-                ]);
-        } else{
-            $iblock = BitrixInfoblocks::updateOrCreate(
-                [
-                    'module_id' => $module->id,
-                    'name'      => $arr['Классификатор']['Наименование'],
-                ],
-                [
-                    'module_id' => $module->id,
-                    'name'      => $arr['Классификатор']['Наименование'],
-                    'params'    => json_encode([
-                        'NAME' => $arr['Классификатор']['Наименование'],
-                    ])
-                ]);
+        $iblock = $this->importIblockFromXML($module, $arr);
+
+        list($props, $vals) = $this->importPropsFromXml($iblock, $arr);
+
+        if (!$request->only_structure){
+            $sections = $this->importSectionFromXml($iblock, $arr);
+            $this->importElementsFromXml($iblock, $arr, $props, $vals, $sections);
         }
 
-        $tempPropArr = [];
-        $vals        = [];
+        BitrixInfoblocks::writeInFile($module);
 
-        if (isset($arr["Классификатор"]["Свойства"]) && isset($arr["Классификатор"]["Свойства"]['Свойство'])){
-            foreach ($arr["Классификатор"]["Свойства"]['Свойство'] as $propArr){
+        return redirect(action('Modules\Bitrix\Infoblock\BitrixInfoblockController@show', [
+            $module->id,
+            $iblock->id
+        ]));
+    }
+
+    private function importIblockFromXML(Bitrix $module, array $xmlArr){
+        if (isset($xmlArr['Каталог'])){
+            return BitrixInfoblocks::updateOrCreate(
+                [
+                    'module_id' => $module->id,
+                    'name'      => $xmlArr['Каталог']['Наименование'],
+                ],
+                [
+                    'module_id' => $module->id,
+                    'name'      => $xmlArr['Каталог']['Наименование'],
+                    'code'      => $xmlArr['Каталог']['БитриксКод'],
+                    'params'    => json_encode([
+                        'NAME'               => $xmlArr['Каталог']['Наименование'],
+                        'CODE'               => $xmlArr['Каталог']['БитриксКод'],
+                        'SORT'               => $xmlArr['Каталог']['БитриксСортировка'],
+                        'LIST_PAGE_URL'      => $xmlArr['Каталог']['БитриксURLСписок'],
+                        'SECTION_PAGE_URL'   => $xmlArr['Каталог']['БитриксURLРаздел'],
+                        'DETAIL_PAGE_URL'    => $xmlArr['Каталог']['БитриксURLДеталь'],
+                        'CANONICAL_PAGE_URL' => $xmlArr['Каталог']['БитриксURLКанонический'],
+                    ])
+                ]);
+        } elseif (isset($xmlArr['ПакетПредложений'])){
+            return BitrixInfoblocks::updateOrCreate(
+                [
+                    'module_id' => $module->id,
+                    'name'      => $xmlArr['Классификатор']['Наименование'],
+                ],
+                [
+                    'module_id' => $module->id,
+                    'name'      => $xmlArr['Классификатор']['Наименование'],
+                    'code'      => $xmlArr['ПакетПредложений']['БитриксКод'],
+                    'params'    => json_encode([
+                        'NAME'             => $xmlArr['Классификатор']['Наименование'],
+                        'CODE'             => $xmlArr['ПакетПредложений']['БитриксКод'],
+                        'SORT'             => $xmlArr['ПакетПредложений']['БитриксСортировка'],
+                        'LIST_PAGE_URL'    => $xmlArr['ПакетПредложений']['БитриксURLСписок'],
+                        'SECTION_PAGE_URL' => $xmlArr['ПакетПредложений']['БитриксURLДеталь'],
+                        'DETAIL_PAGE_URL'  => $xmlArr['ПакетПредложений']['БитриксURLРаздел'],
+                    ])
+                ]
+            );
+        } else{
+            return BitrixInfoblocks::updateOrCreate(
+                [
+                    'module_id' => $module->id,
+                    'name'      => $xmlArr['Классификатор']['Наименование'],
+                ],
+                [
+                    'module_id' => $module->id,
+                    'name'      => $xmlArr['Классификатор']['Наименование'],
+                    'params'    => json_encode([
+                        'NAME' => $xmlArr['Классификатор']['Наименование'],
+                    ])
+                ]
+            );
+        }
+
+        return false;
+    }
+
+    private function importPropsFromXml(BitrixInfoblocks $iblock, array $xmlArr){
+        $props = [];
+        $vals  = [];
+
+        if (isset($xmlArr["Классификатор"]["Свойства"]) && isset($xmlArr["Классификатор"]["Свойства"]['Свойство'])){
+            foreach ($xmlArr["Классификатор"]["Свойства"]['Свойство'] as $propArr){
                 if (isset($propArr["БитриксТипСвойства"])){ // считаем, что свойство от прочих элементов отличает именно это поле
                     $addPropArr = [
                         'iblock_id'   => $iblock->id,
@@ -137,98 +180,107 @@ class BitrixInfoblockController extends Controller{
                         }
                     }
 
-                    $tempPropArr[$propArr['Ид']] = $propArr['БитриксКод'];
+                    $props[$propArr['Ид']] = $propArr['БитриксКод'];
                 }
             }
         }
 
-        if (!$request->only_structure){
-            // импорт разделов
-            $sections = [];
-            if (isset($arr['Классификатор']['Группы']) && is_array($arr['Классификатор']['Группы'])){
-                if (isset($arr['Классификатор']['Группы']["Группа"]["Ид"])){ // только одна группа
-                    $sectionsForImport = [$arr['Классификатор']['Группы']["Группа"]];
-                } else{ // несколько групп
-                    $sectionsForImport = $arr['Классификатор']['Группы']["Группа"];
-                }
-                foreach ($sectionsForImport as $itemArr){
-                    if (isset($itemArr['Ид'])){
-                        $sectionArr = [
-                            'iblock_id' => $iblock->id,
-                            'name'      => isset($itemArr['Наименование']) ? $itemArr['Наименование'] : '',
-                            'active'    => true,
-                            'code'      => isset($itemArr['БитриксКод']) ? $itemArr['БитриксКод'] : '',
-                        ];
+        return [ // todo нужно как-то разделить по методам
+                 $props,
+                 $vals
+        ];
+    }
 
-                        $sections[$itemArr['Ид']] = BitrixIblocksSections::create($sectionArr);
-                    }
-                }
+    private function importSectionFromXml(BitrixInfoblocks $iblock, array $xmlArr){
+        $sections = [];
+
+        if (isset($xmlArr['Классификатор']['Группы']) && is_array($xmlArr['Классификатор']['Группы'])){
+            if (isset($xmlArr['Классификатор']['Группы']["Группа"]["Ид"])){ // только одна группа
+                $sectionsForImport = [$xmlArr['Классификатор']['Группы']["Группа"]];
+            } else{ // несколько групп
+                $sectionsForImport = $xmlArr['Классификатор']['Группы']["Группа"];
             }
-        }
-
-        // импорт элементов
-        if (!$request->only_structure){
-            if (isset($arr['Каталог']['Товары']) && is_array($arr['Каталог']['Товары'])){ // todo тест на отсутвие товаров в xml
-                if (isset($arr['Каталог']['Товары']['Товар']['Ид'])){ // случай одного товар
-                    $arr['Каталог']['Товары']['Товар'] = Array($arr['Каталог']['Товары']['Товар']);
-                }
-                foreach ($arr['Каталог']['Товары']['Товар'] as $itemArr){
-                    $elementArr = [
+            foreach ($sectionsForImport as $itemArr){
+                if (isset($itemArr['Ид'])){
+                    $sectionArr = [
                         'iblock_id' => $iblock->id,
-                        'name'      => $itemArr['Наименование'],
+                        'name'      => isset($itemArr['Наименование']) ? $itemArr['Наименование'] : '',
                         'active'    => true,
+                        'code'      => isset($itemArr['БитриксКод']) ? $itemArr['БитриксКод'] : '',
                     ];
 
-                    $tempPropValArr = [];
-                    foreach ($itemArr['ЗначенияСвойств']['ЗначенияСвойства'] as $propValArr){
-                        if ($propValArr['Ид'] == 'CML2_CODE'){
-                            $elementArr['code'] = $propValArr['Значение'];
-                        }
-                        if ($propValArr['Ид'] == 'CML2_SORT'){
-                            $elementArr['sort'] = $propValArr['Значение'];
-                        }
-                        if (isset($tempPropArr[$propValArr['Ид']])){
-                            $val = $propValArr['Значение'];
-                            if (is_array($val)){
-                                $val = implode(static::$arrayGlue, $val);
-                            }
-                            if ($val){
-                                $prop = BitrixIblocksProps::where('iblock_id', $iblock->id)->where('code', $tempPropArr[$propValArr['Ид']])->first();
-                                if (!$prop){
-                                    continue;
-                                }
-
-                                if (isset($vals[$val])){ // типа xml_id варианта значения
-                                    $val = $vals[$val]->id;
-                                }
-
-                                $tempPropValArr[$prop->id] = ['value' => $val];
-                            }
-                        }
-                    }
-
-                    // привязка к группе
-                    if (isset($itemArr['Группы'])){
-                        if (isset($itemArr['Группы']['Ид']) && isset($sections[$itemArr['Группы']['Ид']])){
-                            $elementArr['parent_section_id'] = $sections[$itemArr['Группы']['Ид']]->id;
-                        }
-                    }
-
-                    $element = BitrixIblocksElements::create($elementArr);
-
-                    $element->props()->sync($tempPropValArr);
+                    $sections[$itemArr['Ид']] = BitrixIblocksSections::create($sectionArr);
                 }
             }
         }
 
-        BitrixInfoblocks::writeInFile($module);
+        return $sections;
+    }
 
-        flash()->success('Инфоблок импортирован');
+    private function importElementsFromXml(BitrixInfoblocks $iblock, array $xmlArr, array $props, array $propVals, array $sections){ // todo уменьшить количество параметров
+        $elementsXmlArr = [];
 
-        return redirect(action('Modules\Bitrix\Infoblock\BitrixInfoblockController@show', [
-            $module->id,
-            $iblock->id
-        ]));
+        if (isset($xmlArr['Каталог']['Товары']) && is_array($xmlArr['Каталог']['Товары'])){
+            if (isset($xmlArr['Каталог']['Товары']['Товар']['Ид'])){ // случай одного товара
+                $xmlArr['Каталог']['Товары']['Товар'] = Array($xmlArr['Каталог']['Товары']['Товар']);
+            }
+            $elementsXmlArr = $xmlArr['Каталог']['Товары']['Товар'];
+        }
+        if (isset($xmlArr['ПакетПредложений']) && is_array($xmlArr['ПакетПредложений']['Предложения']) && is_array($xmlArr['ПакетПредложений']['Предложения']['Предложение'])){
+            if (isset($xmlArr['ПакетПредложений']['Предложения']['Предложение']['Ид'])){ // случай одного товара
+                $xmlArr['ПакетПредложений']['Предложения']['Предложение'] = Array($xmlArr['ПакетПредложений']['Предложения']['Предложение']);
+            }
+            $elementsXmlArr = $xmlArr['ПакетПредложений']['Предложения']['Предложение'];
+        }
+
+        foreach ($elementsXmlArr as $itemArr){
+            $elementArr = [
+                'iblock_id' => $iblock->id,
+                'name'      => $itemArr['Наименование'],
+                'active'    => true,
+            ];
+
+            $tempPropValArr = [];
+            foreach ($itemArr['ЗначенияСвойств']['ЗначенияСвойства'] as $propValArr){
+                if ($propValArr['Ид'] == 'CML2_CODE'){
+                    $elementArr['code'] = $propValArr['Значение'];
+                }
+                if ($propValArr['Ид'] == 'CML2_SORT'){
+                    $elementArr['sort'] = $propValArr['Значение'];
+                }
+
+                if (isset($props[$propValArr['Ид']])){ // если это свойство иб
+                    $val = $propValArr['Значение'];
+                    if ($val){
+                        if (is_array($val)){
+                            $val = implode(static::$arrayGlue, $val);
+                        }
+
+                        $prop = BitrixIblocksProps::where('iblock_id', $iblock->id)->where('code', $props[$propValArr['Ид']])->first();
+                        if (!$prop){
+                            continue;
+                        }
+
+                        if (isset($propVals[$val])){ // типа xml_id варианта значения
+                            $val = $propVals[$val]->id;
+                        }
+
+                        $tempPropValArr[$prop->id] = ['value' => $val];
+                    }
+                }
+            }
+
+            // привязка к группе
+            if (isset($itemArr['Группы'])){
+                if (isset($itemArr['Группы']['Ид']) && isset($sections[$itemArr['Группы']['Ид']])){
+                    $elementArr['parent_section_id'] = $sections[$itemArr['Группы']['Ид']]->id;
+                }
+            }
+
+            $element = BitrixIblocksElements::create($elementArr);
+
+            $element->props()->sync($tempPropValArr);
+        }
     }
 
     public function update(Bitrix $module, BitrixInfoblocks $iblock, Requests\InfoblockFormRequest $request){
