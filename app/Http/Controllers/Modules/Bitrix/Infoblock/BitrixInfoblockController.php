@@ -78,10 +78,10 @@ class BitrixInfoblockController extends Controller{
                 [
                     'module_id' => $module->id,
                     'name'      => $xmlArr['Каталог']['Наименование'],
-                    'code'      => $xmlArr['Каталог']['БитриксКод'],
+                    'code'      => $xmlArr['Каталог']['БитриксКод'] ?? strtolower(translit($xmlArr['Классификатор']['Наименование'])),
                     'params'    => json_encode([
                         'NAME'               => $xmlArr['Каталог']['Наименование'],
-                        'CODE'               => $xmlArr['Каталог']['БитриксКод'],
+                        'CODE'               => $xmlArr['Каталог']['БитриксКод'] ?? strtolower(translit($xmlArr['Классификатор']['Наименование'])),
                         'SORT'               => $xmlArr['Каталог']['БитриксСортировка'],
                         'LIST_PAGE_URL'      => $xmlArr['Каталог']['БитриксURLСписок'],
                         'SECTION_PAGE_URL'   => $xmlArr['Каталог']['БитриксURLРаздел'],
@@ -98,10 +98,10 @@ class BitrixInfoblockController extends Controller{
                 [
                     'module_id' => $module->id,
                     'name'      => $xmlArr['Классификатор']['Наименование'],
-                    'code'      => $xmlArr['ПакетПредложений']['БитриксКод'],
+                    'code'      => $xmlArr['ПакетПредложений']['БитриксКод'] ?? strtolower(translit($xmlArr['Классификатор']['Наименование'])),
                     'params'    => json_encode([
                         'NAME'             => $xmlArr['Классификатор']['Наименование'],
-                        'CODE'             => $xmlArr['ПакетПредложений']['БитриксКод'],
+                        'CODE'             => $xmlArr['ПакетПредложений']['БитриксКод'] ?? strtolower(translit($xmlArr['Классификатор']['Наименование'])),
                         'SORT'             => $xmlArr['ПакетПредложений']['БитриксСортировка'],
                         'LIST_PAGE_URL'    => $xmlArr['ПакетПредложений']['БитриксURLСписок'],
                         'SECTION_PAGE_URL' => $xmlArr['ПакетПредложений']['БитриксURLДеталь'],
@@ -118,8 +118,10 @@ class BitrixInfoblockController extends Controller{
                 [
                     'module_id' => $module->id,
                     'name'      => $xmlArr['Классификатор']['Наименование'],
+                    'code'      => strtolower(translit($xmlArr['Классификатор']['Наименование'])),
                     'params'    => json_encode([
                         'NAME' => $xmlArr['Классификатор']['Наименование'],
+                        'CODE' => strtolower(translit($xmlArr['Классификатор']['Наименование'])),
                     ])
                 ]
             );
@@ -140,12 +142,15 @@ class BitrixInfoblockController extends Controller{
                         'code'        => $propArr['БитриксКод'],
                         'name'        => $propArr['Наименование'],
                         'sort'        => $propArr["БитриксСортировка"],
-                        'type'        => $propArr["БитриксТипСвойства"],
+                        'type'        => $propArr["БитриксТипСвойства"].($propArr["БитриксРасширениеТипа"] ? ':'.$propArr['БитриксРасширениеТипа'] : ''),
                         'multiple'    => ($propArr["Множественное"] == 'true') ? true : false,
                         'is_required' => ($propArr["БитриксОбязательное"] == 'true') ? true : false,
                     ];
-                    if (isset($propArr["БитриксЗначениеПоУмолчанию"]) && unserialize($propArr["БитриксЗначениеПоУмолчанию"])){
-                        $addPropArr["dop_params"]["DEFAULT_VALUE"] = unserialize($propArr["БитриксЗначениеПоУмолчанию"]);
+                    if (isset($propArr["БитриксЗначениеПоУмолчанию"])){
+                        if ($defaultValueArr = unserialize($propArr["БитриксЗначениеПоУмолчанию"])){ // например, свойство html/текст
+                            $defaultValue                              = $defaultValueArr['TEXT'] ?? '';
+                            $addPropArr["dop_params"]["DEFAULT_VALUE"] = $defaultValue;
+                        }
                     }
                     if (isset($propArr["БитриксТипСписка"]) && $propArr["БитриксТипСписка"] != 'L'){
                         $addPropArr["dop_params"]["LIST_TYPE"] = $propArr["БитриксТипСписка"];
@@ -261,8 +266,13 @@ class BitrixInfoblockController extends Controller{
                             continue;
                         }
 
-                        if (isset($propVals[$val])){ // типа xml_id варианта значения
-                            $val = $propVals[$val]->id;
+                        if ($prop->type == 'S:HTML'){ // HTML/текст передаётся в сериализованном массиве
+                            $val = unserialize($val);
+                            $val = $val['TEXT'];
+                        } else{
+                            if (isset($propVals[$val])){ // типа xml_id варианта значения
+                                $val = $propVals[$val]->id;
+                            }
                         }
 
                         $tempPropValArr[$prop->id] = ['value' => $val];

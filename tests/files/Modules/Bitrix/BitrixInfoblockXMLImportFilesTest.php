@@ -346,7 +346,7 @@ class BitrixInfoblockXMLImportFilesTest extends BitrixTestCase{
         $gottenInstallationFuncCodeArray         = $this->getIblockCreationFuncCallParamsArray($this->module);
         $gottenInstallationPropsFuncCodeArray    = $this->getIblockPropsCreationFuncCallParamsArray($this->module);
         $gottenInstallationElementsFuncCodeArray = $this->getIblockElementsCreationFuncCallParamsArray($this->module);
-        $installFileLangArr              = $this->getLangFileArray($this->module);
+        $installFileLangArr                      = $this->getLangFileArray($this->module);
 
         $iblock  = BitrixInfoblocks::where('code', 'modules')->first();
         $prop    = BitrixIblocksProps::where('code', 'MARKETPLACE_LINK')->first();
@@ -395,5 +395,65 @@ class BitrixInfoblockXMLImportFilesTest extends BitrixTestCase{
         $this->assertEquals($elArr['CODE'], $gottenInstallationElementsFuncCodeArray[0]['CODE']);
         $this->assertEquals($elArr['PROPERTY_VALUES']['$prop'.$prop->id.'ID'], $gottenInstallationElementsFuncCodeArray[0]['PROPERTY_VALUES']['$prop'.$prop->id.'ID']);
         $this->assertEquals($installFileLangArr[$iblock->lang_key.'_ELEMENT_'.$element->id.'_PROP_'.$prop->id.'_VALUE'], 'http://marketplace.1c-bitrix.ru/solutions/aristov.vregions/');
+    }
+
+    /** @test */
+    function it_imports_iblock_with_html_text_prop(){
+        $this->importFile(public_path().'/for_tests/test_iblock_with_html_prop.xml');
+
+        $gottenInstallationFuncCodeArray         = $this->getIblockCreationFuncCallParamsArray($this->module);
+        $gottenInstallationPropsFuncCodeArray    = $this->getIblockPropsCreationFuncCallParamsArray($this->module);
+        $gottenInstallationElementsFuncCodeArray = $this->getIblockElementsCreationFuncCallParamsArray($this->module);
+        $installFileLangArr                      = $this->getLangFileArray($this->module);
+
+        $iblock  = BitrixInfoblocks::where('name', 'Тест')->first();
+        $prop    = BitrixIblocksProps::where('code', 'TEXT')->first();
+        $element = BitrixIblocksElements::where('name', 'Тест')->first();
+
+        $expectedInstallationFuncCodeArray = [
+            "IBLOCK_TYPE_ID" => '$iblockType',
+            "ACTIVE"         => "Y",
+            "LID"            => '$this->getSitesIdsArray()',
+            "CODE"           => "test",
+            "NAME"           => 'Loc::getMessage("'.$iblock->lang_key.'_NAME")',
+            "SORT"           => "500",
+        ];
+
+        $propArray = Array(
+            "IBLOCK_ID"     => '$iblock'.$prop->iblock->id.'ID',
+            "ACTIVE"        => "Y",
+            "SORT"          => "100",
+            "CODE"          => "TEXT",
+            "NAME"          => 'Loc::getMessage("'.$prop->lang_key.'_NAME")',
+            "PROPERTY_TYPE" => "S",
+            "USER_TYPE"     => "HTML",
+            "MULTIPLE"      => "N",
+            "IS_REQUIRED"   => "N",
+        );
+
+        $elArr = Array(
+            "IBLOCK_ID"       => '$iblock'.$element->iblock->id.'ID',
+            "ACTIVE"          => "Y",
+            "SORT"            => "500",
+            "CODE"            => "",
+            "NAME"            => 'Loc::getMessage("'.$element->lang_key.'_NAME")',
+            "PROPERTY_VALUES" => Array(
+                '$prop'.$prop->id.'ID' => 'Loc::getMessage("'.$element->lang_key.'_PROP_'.$prop->id.'_VALUE")',
+            ),
+        );
+
+        $this->assertEquals($expectedInstallationFuncCodeArray['CODE'], $gottenInstallationFuncCodeArray[0]['CODE']);
+        $this->assertEquals($expectedInstallationFuncCodeArray['NAME'], $gottenInstallationFuncCodeArray[0]['NAME']);
+        $this->assertEquals($installFileLangArr[$iblock->lang_key.'_NAME'], 'Тест');
+
+        $this->assertEquals($propArray['CODE'], $gottenInstallationPropsFuncCodeArray[0]['CODE']);
+        $this->assertEquals($propArray['NAME'], $gottenInstallationPropsFuncCodeArray[0]['NAME']);
+        $this->assertEquals($propArray['PROPERTY_TYPE'], $gottenInstallationPropsFuncCodeArray[0]['PROPERTY_TYPE']);
+        $this->assertEquals($propArray['USER_TYPE'], $gottenInstallationPropsFuncCodeArray[0]['USER_TYPE']);
+        $this->assertEquals($installFileLangArr[$prop->lang_key.'_NAME'], 'Текст');
+
+        $this->assertEquals($elArr['CODE'], $gottenInstallationElementsFuncCodeArray[0]['CODE']);
+        $this->assertEquals($elArr['PROPERTY_VALUES']['$prop'.$prop->id.'ID'], $gottenInstallationElementsFuncCodeArray[0]['PROPERTY_VALUES']['$prop'.$prop->id.'ID']);
+        $this->assertEquals($installFileLangArr[$element->lang_key.'_PROP_'.$prop->id.'_VALUE'], 'Ололо');
     }
 }
