@@ -456,4 +456,43 @@ class BitrixInfoblockXMLImportFilesTest extends BitrixTestCase{
         $this->assertEquals($elArr['PROPERTY_VALUES']['$prop'.$prop->id.'ID'], $gottenInstallationElementsFuncCodeArray[0]['PROPERTY_VALUES']['$prop'.$prop->id.'ID']);
         $this->assertEquals($installFileLangArr[$element->lang_key.'_PROP_'.$prop->id.'_VALUE'], 'Ололо');
     }
+
+    // todo сейчас просто берётся первая категория, а должны все
+
+    /** @test */
+    function it_imports_iblock_with_element_with_multiple_sections(){
+        $this->importFile(public_path().'/for_tests/test_iblock_with_elements_with_multiple_sections.xml');
+
+        $gottenInstallationFuncCodeArray         = $this->getIblockCreationFuncCallParamsArray($this->module);
+        $gottenInstallationElementsFuncCodeArray = $this->getIblockElementsCreationFuncCallParamsArray($this->module);
+        $installFileLangArr                      = $this->getLangFileArray($this->module);
+
+        $iblock  = BitrixInfoblocks::where('code', 'test')->first();
+        $element = BitrixIblocksElements::where('name', 'Тест')->first();
+
+        $expectedInstallationFuncCodeArray = [
+            "IBLOCK_TYPE_ID" => '$iblockType',
+            "ACTIVE"         => "Y",
+            "LID"            => '$this->getSitesIdsArray()',
+            "CODE"           => "test",
+            "NAME"           => 'Loc::getMessage("'.$iblock->lang_key.'_NAME")',
+            "SORT"           => "500",
+        ];
+
+        $elArr = Array(
+            "IBLOCK_ID" => '$iblock'.$element->iblock->id.'ID',
+            "ACTIVE"    => "Y",
+            "SORT"      => "500",
+            "CODE"      => "",
+            "NAME"      => 'Loc::getMessage("'.$element->lang_key.'_NAME")',
+        );
+
+        // то есть пока просто проверяем, что ничего не упало // todo потом нужно смотреть, чтобы было несколько категорий
+        $this->assertEquals($expectedInstallationFuncCodeArray['CODE'], $gottenInstallationFuncCodeArray[0]['CODE']);
+        $this->assertEquals($expectedInstallationFuncCodeArray['NAME'], $gottenInstallationFuncCodeArray[0]['NAME']);
+        $this->assertEquals('Тест', $installFileLangArr[$iblock->lang_key.'_NAME']);
+
+        $this->assertEquals($elArr['CODE'], $gottenInstallationElementsFuncCodeArray[0]['CODE']);
+        $this->assertTrue(isset($gottenInstallationElementsFuncCodeArray[0]['IBLOCK_SECTION_ID']));
+    }
 }

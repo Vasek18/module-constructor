@@ -147,8 +147,10 @@ class BitrixInfoblockController extends Controller{
                         'is_required' => ($propArr["БитриксОбязательное"] == 'true') ? true : false,
                     ];
                     if (isset($propArr["БитриксЗначениеПоУмолчанию"])){
-                        if ($defaultValueArr = unserialize($propArr["БитриксЗначениеПоУмолчанию"])){ // например, свойство html/текст
-                            $defaultValue                              = $defaultValueArr['TEXT'] ?? '';
+                        if ($defaultValue = unserialize($propArr["БитриксЗначениеПоУмолчанию"])){ // например, свойство html/текст
+                            if (is_array($defaultValue)){
+                                $defaultValue = $defaultValue['TEXT'];
+                            }
                             $addPropArr["dop_params"]["DEFAULT_VALUE"] = $defaultValue;
                         }
                     }
@@ -282,6 +284,9 @@ class BitrixInfoblockController extends Controller{
 
             // привязка к группе
             if (isset($itemArr['Группы'])){
+                if (is_array($itemArr['Группы']['Ид'])){
+                    $itemArr['Группы']['Ид'] = $itemArr['Группы']['Ид'][0]; // todo в будущем всё же нужна будет множественная привязка к категориям
+                }
                 if (isset($itemArr['Группы']['Ид']) && isset($sections[$itemArr['Группы']['Ид']])){
                     $elementArr['parent_section_id'] = $sections[$itemArr['Группы']['Ид']]->id;
                 }
