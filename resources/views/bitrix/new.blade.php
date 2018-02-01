@@ -127,11 +127,11 @@
                                             class="btn btn-primary"
                                             name="module_create"
                                             value="y">{{trans('bitrix_create.button')}}</button>
-                                    <button type="submit"
+                                    {{--<button type="submit"
                                             class="btn btn-success"
                                             name="site_create"
                                             value="y">Создать типовой сайт
-                                    </button>
+                                    </button>--}}
                                 </div>
                             </div>
                         </form>

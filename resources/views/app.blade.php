@@ -28,11 +28,11 @@
     <script type="text/javascript"
             src="https://cdnjs.cloudflare.com/ajax/libs/webshim/1.16.0/dev/polyfiller.js"></script>
     <script>
-        webshims.activeLang('ru');
-        webshims.polyfill('forms');
-        if (webshims.cfg){
-            webshims.cfg.no$Switch = true;
-        }
+		webshims.activeLang('ru');
+		webshims.polyfill('forms');
+		if (webshims.cfg){
+			webshims.cfg.no$Switch = true;
+		}
     </script>
     <meta property="og:title"
           content="{{ trans('app.meta_title') }}"/>
@@ -162,10 +162,14 @@
     <div class="container-fluid">
         <div class="row footer-actions">
             <div class="col-md-3 col-md-offset-1">
-                @include('i_found_a_bag_modal')
+                @if (Auth::check())
+                    @include('i_found_a_bag_modal')
+                @endif
             </div>
             <div class="col-md-3 col-md-offset-5">
-                @include('on_this_page_i_lack_modal')
+                @if (Auth::check())
+                    @include('on_this_page_i_lack_modal')
+                @endif
             </div>
         </div>
         <div class="row">
