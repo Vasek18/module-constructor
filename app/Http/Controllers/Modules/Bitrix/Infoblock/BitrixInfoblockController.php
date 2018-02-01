@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Modules\Bitrix\Infoblock;
 
+use App\Models\Metrics\MetricsEventsLog;
 use App\Models\Modules\Bitrix\BitrixIblocksPropsVals;
 use App\Models\Modules\Bitrix\BitrixIblocksSections;
 use Illuminate\Http\Request;
@@ -52,6 +53,9 @@ class BitrixInfoblockController extends Controller{
         $arr = Parser::xml($file);
 
         $iblock = $this->importIblockFromXML($module, $arr);
+
+        // логируем действие
+        MetricsEventsLog::log('Импортирован инфоблок', $iblock);
 
         list($props, $vals) = $this->importPropsFromXml($iblock, $arr);
 
@@ -339,6 +343,9 @@ class BitrixInfoblockController extends Controller{
                 'params'    => json_encode($params)
                 // предыдущие пару параметров дублируются здесь специально, чтобы можно было создавать массив по одному лишь params
             ]);
+
+            // логируем действие
+            MetricsEventsLog::log('Создан инфоблок', $iblock);
         }
 
         foreach ($properties["NAME"] as $c => $name){
