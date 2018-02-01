@@ -269,8 +269,13 @@ class BitrixInfoblockController extends Controller{
                         }
 
                         if ($prop->type == 'S:HTML'){ // HTML/текст передаётся в сериализованном массиве
-                            $val = unserialize($val);
-                            $val = $val['TEXT'];
+                            try{
+                                $val = unserialize($val);
+                                $val = $val['TEXT'];
+                            } catch(\ErrorException $e){
+                                // если неправильно сериализовано значение
+                                $val = '';
+                            }
                         } else{
                             if (isset($propVals[$val])){ // типа xml_id варианта значения
                                 $val = $propVals[$val]->id;
